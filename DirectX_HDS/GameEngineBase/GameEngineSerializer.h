@@ -91,3 +91,7 @@ private:
 // File.LoadBin(Ser);
 // 5. Serializer 에 저장되어 있는 데이터를 저장할 객체에 로드 
 // TestPlayer.TestLoad(Ser); 
+
+// typeinfo 사용법
+// const type_info& Info = typeid(Test); 타입아이디의 인자에 변수, 데이터 타입을 넣어주면
+// Info.name(); 함수를 사용하여 어떤 클래스인지 확인할 수 있음.

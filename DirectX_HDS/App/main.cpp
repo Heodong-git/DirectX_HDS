@@ -3,7 +3,16 @@
 #include <GameEngineBase\GameEngineDirectory.h>
 #include <GameEngineCore\GameEngineCore.h>
 
-class TPlayer
+// 테스트
+#include <typeinfo>
+#include <iostream>
+
+class Parent
+{
+
+};
+
+class TPlayer : public Parent
 {
 public:
 	// constrcuter destructer
@@ -109,6 +118,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// 원하는 경로에 파일을 생성하고 저장
 		GameEngineFile File = GameEngineFile("..\\Test.test");
 		File.SaveBin(Ser);
+
+		const type_info& Info = typeid(Test);
+
+		std::cout << Info.name() << std::endl;
+
+		const char* Name = Info.name();
+
+		int a = 0;
 	}
 
 	{
