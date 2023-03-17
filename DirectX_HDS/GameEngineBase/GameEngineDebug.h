@@ -29,3 +29,6 @@ private:
 // 해당 매크로 사용시에는 에러가 발생한 부분에 메세지를 띄워서
 // 어떠한 사유로 인해 오류가 발생되었는지 알게 해준다.
 #define MsgAssert(MsgText) std::string ErrorText = MsgText; MessageBoxA(nullptr, ErrorText.c_str(), "Error", MB_OK); assert(false);
+
+// 단순히 메세지박스만 띄우는 매크로
+#define MsgTextBox(MsgText) std::string ErrorText = MsgText; MessageBoxA(nullptr, ErrorText.c_str(), "Text", MB_OK);

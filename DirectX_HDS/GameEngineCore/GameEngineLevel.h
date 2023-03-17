@@ -1,12 +1,17 @@
 #pragma once
+#include <GameEngineBase\GameEngineTimeEvent.h>
 
 // Ό³Έν :
 class GameEngineLevel
 {
+	friend class GameEngineCore;
+
 public:
+	GameEngineTimeEvent TimeEvent;
+
 	// constrcuter destructer
 	GameEngineLevel();
-	~GameEngineLevel();
+	virtual ~GameEngineLevel();
 
 	// delete Function
 	GameEngineLevel(const GameEngineLevel& _Other) = delete;
@@ -15,6 +20,7 @@ public:
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 protected:
+	virtual void Loading() = 0;
 
 private:
 

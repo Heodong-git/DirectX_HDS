@@ -190,6 +190,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineTimeEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h" />
@@ -222,6 +223,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineTime.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineTimeEvent.h">
       <SubType>
       </SubType>
     </ClInclude>

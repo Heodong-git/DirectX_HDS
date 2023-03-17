@@ -8,9 +8,9 @@
 // lib를 통해서 dll을 사용한다고 하는건.
 // fmod.dll을 쓰겠다.
 #ifdef _DEBUG
-#pragma comment(lib, "GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmodL_vc.lib")
+#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmodL_vc.lib")
 #else
-#pragma comment(lib, "GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
+#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
 #endif
 
 // FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고

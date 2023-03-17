@@ -1,21 +1,25 @@
 #include "ContentsCore.h"
+#include <GameEngineCore\GameEngineCore.h>
+#include "PlayLevel.h"
+#include "TitleLevel.h"
 
-ContentsCore::ContentsCore() 
+ContentsCore::ContentsCore()
 {
 }
 
-ContentsCore::~ContentsCore() 
+ContentsCore::~ContentsCore()
 {
 }
 
-
-void ContentsCore::GameStart() 
+// 게임이 실행되면 동작해야할 함수를 호출
+void ContentsCore::GameStart()
 {
-
-
+	GameEngineCore::CreateLevel<TitleLevel>();
+	GameEngineCore::ChangeLevel("TitleLevel");
 }
 
-void ContentsCore::GameEnd() 
+// 게임이 종료되면 동작해야할 함수를 호출
+void ContentsCore::GameEnd()
 {
 
 }
