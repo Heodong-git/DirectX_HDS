@@ -1,12 +1,11 @@
 #pragma once
 #include <random>
 
-// 설명 :
+// 랜덤한 값을 받아내기 위한 클래스
 class GameEngineRandom
 {
 
 public:
-	// 딱히 나는 여러개의 랜덤을 만들필요가 없고 그냥 하나만 있으면 된다면 이녀석을 사용하면 된다.
 	static GameEngineRandom MainRandom;
 
 	// constrcuter destructer

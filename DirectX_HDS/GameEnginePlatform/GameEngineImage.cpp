@@ -3,7 +3,6 @@
 #include <GameEngineBase/GameEngineDebug.h>
 #include "GameEngineWindow.h"
 
-// 다른 lib를 사용하겠다.
 #pragma comment(lib, "msimg32.lib")
 
 GameEngineImage::GameEngineImage() 
@@ -122,9 +121,6 @@ bool GameEngineImage::ImageLoad(const std::string_view& _Path)
 		return false;
 	}
 
-	// ImageDC 1,1 배열이랑 연결되어 있다. 
-
-	// 1, 1
 	OldBitMap = static_cast<HBITMAP>(SelectObject(ImageDC, BitMap));
 
 	ImageScaleCheck();
@@ -155,7 +151,7 @@ void GameEngineImage::BitCopy(const GameEngineImage* _OtherImage, float4 _Center
 	);
 }
 
-// 구현쪽에서는 디폴트 인자를 표시할 필요가 없습니다.
+// 구현부에서는 디폴트 인자를 표시할 필요가 없음
 void GameEngineImage::TransCopy(const GameEngineImage* _OtherImage, int _CutIndex, float4 _CopyCenterPos, float4 _CopySize, int _Color/* = RGB(255, 0, 255)*/)
 {
 	if (false == _OtherImage->IsCut)
@@ -261,11 +257,6 @@ void GameEngineImage::PlgCopy(const GameEngineImage* _OtherImage, float4 _CopyCe
 	);
 
 }
-//
-//void GameEngineImage::PlgCopy(const GameEngineImage* _OtherImage, int _CutIndex, float4 _CopyCenterPos, float4 _CopySize, float _Angle, GameEngineImage* _FilterImage)
-//{
-//
-//}
 
 void GameEngineImage::Cut(int _X, int _Y)
 {

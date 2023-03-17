@@ -7,8 +7,9 @@
 #include <vector>
 
 
-// final 더이상 상속내릴지 못한다.
-// 상속도 못하고 만들지도 못하게 만든 상태로
+
+
+// final 키워드 : 더이상 상속을 내리지 못하고 무언가 더 연장하지 못함
 
 class GameEngineMath final
 {
@@ -51,7 +52,6 @@ public:
 	float y = 0.0f;
 	float z = 0.0f;
 	float w = 1.0f;
-	// 마지막이 1인지는 3d 때 배우게 될겁니다.
 
 	int ix() const
 	{
@@ -325,7 +325,7 @@ class CollisionData
 {
 public:
 	float4 Position;
-	float4 Scale; // x만 원의 반지름으로 보겠습니다.
+	float4 Scale; // x만 원의 반지름으로 본다.
 
 	float Left() const
 	{
