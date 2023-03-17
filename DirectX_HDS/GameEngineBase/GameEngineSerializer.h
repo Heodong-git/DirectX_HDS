@@ -65,3 +65,29 @@ private:
 	size_t Offset = 0;
 };
 
+
+
+// ------------------ 파일 저장 ----------------------------- 
+// 1. 저장할 데이터 준비    
+// TPlayer TestPlayer;
+// 2. 데이터를 저장할 시리얼라이저 준비
+// GameEngineSerializer Ser;
+// 3. 데이터를 시리얼라이저에 저장 (이때 객체 내부에서 시리얼라이저의 write 함수사용)
+// TestPlayer.TestSave(Ser);
+// 4. 저장할 경로에 파일 생성, 생성자에서 경로입력
+// GameEngineFile File = GameEngineFile("..\\PlayerData.Data");
+// 5. 생성한 파일에 어떠한 형태로 저장할 것인지 정해서 저장함수 사용
+// File.SaveBin(Ser);
+
+
+// ------------------- 파일 로드 ------------------------------
+// 1. 파일을 로드하여 저장할 객체 준비
+// TPlayer TestPlayer;
+// 2. 파일을 로드할 시리얼라이저 준비
+// GameEngineSerializer Ser;
+// 3. 원하는 경로에 있는 파일을 받아온다. 
+// ex) GameEngineFile File = GameEngineFile("C:\\DirectX_HDS\\DirectX_HDS\\PlayerData.Data");
+// 4. 준비된 Serializer 에 로드
+// File.LoadBin(Ser);
+// 5. Serializer 에 저장되어 있는 데이터를 저장할 객체에 로드 
+// TestPlayer.TestLoad(Ser); 
