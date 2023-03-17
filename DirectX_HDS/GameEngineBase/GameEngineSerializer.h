@@ -79,6 +79,21 @@ private:
 // 5. 생성한 파일에 어떠한 형태로 저장할 것인지 정해서 저장함수 사용
 // File.SaveBin(Ser);
 
+// 아래처럼 클래스내부에 Save, Load 함수를 자체적으로 만들어두고 사용할 수 있음
+/*void TestSave(GameEngineSerializer _Ser)
+	{
+		_Ser.Write(TestName);
+		_Ser.Write(TestAtt);
+		_Ser.Write(TestDef);
+	}
+
+	void TestLoad(GameEngineSerializer _Ser)
+	{
+		_Ser.Read(TestName);
+		_Ser.Read(TestAtt);
+		_Ser.Read(TestDef);
+	}*/
+
 
 // ------------------- 파일 로드 ------------------------------
 // 1. 파일을 로드하여 저장할 객체 준비

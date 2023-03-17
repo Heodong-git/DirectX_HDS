@@ -15,11 +15,7 @@ public:
 	CPlayer& operator=(const CPlayer& _Other) = delete;
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
 	
-	std::string TestName = "ZERO";
-	int TestAtt = 10;
-	int TestDef = 304512;
-
-	void TestSave(GameEngineSerializer _Ser)
+	/*void TestSave(GameEngineSerializer _Ser)
 	{
 		_Ser.Write(TestName);
 		_Ser.Write(TestAtt);
@@ -31,10 +27,14 @@ public:
 		_Ser.Read(TestName);
 		_Ser.Read(TestAtt);
 		_Ser.Read(TestDef);
-	}
+	}*/
 
 protected:
 
 private:
-
+	std::string m_Name = "ZERO";
+	float	m_Att = 0.0f;
+	float   m_Hp = 0.0f;
+	float	m_HpMax = 20.0f;
+	
 };

@@ -14,7 +14,7 @@ class GameEngineWindow
 	static LRESULT CALLBACK MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam);
 
 public:
-	// 윈도우를 만들어 주는 기능입니다.
+	// 윈도우 생성
 	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos);
 	static void SettingWindowSize(float4 _Size);
 	static void SettingWindowPos(float4 _Pos);
@@ -55,6 +55,7 @@ public:
 		std::function<void()> _End
 	);
 
+	// 마우스포지션 반환
 	static float4 GetMousePosition();
 
 	GameEngineWindow();
