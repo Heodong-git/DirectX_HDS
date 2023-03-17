@@ -10,6 +10,8 @@ GameEngineDirectory::GameEngineDirectory()
 GameEngineDirectory::~GameEngineDirectory() 
 {
 }
+
+// 
 void GameEngineDirectory::MoveParentToDirectory(const std::string_view& _String)
 {
 	std::string MovePath = "\\";
@@ -27,7 +29,6 @@ bool GameEngineDirectory::Move(const std::string_view& _String)
 
 GameEnginePath GameEngineDirectory::GetPlusFileName(const std::string_view& _String)
 {
-
 	std::string PathString = Path.GetPathToString();
 	PathString += "\\";
 	PathString += _String;
@@ -47,9 +48,6 @@ bool GameEngineDirectory::MoveParent()
 
 	return true;
 }
-
-// .png
-// png
 
 std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(const std::string_view& _Ext)
 {

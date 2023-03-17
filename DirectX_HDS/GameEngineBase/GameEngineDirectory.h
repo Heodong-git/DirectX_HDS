@@ -4,7 +4,6 @@
 #include "GameEnginePath.h"
 
 
-// 설명 :
 class GameEngineFile;
 class GameEngineDirectory
 {
@@ -19,18 +18,21 @@ public:
 	GameEngineDirectory& operator=(const GameEngineDirectory& _Other) = delete;
 	GameEngineDirectory& operator=(GameEngineDirectory&& _Other) noexcept = delete;
 
-	// 이 디렉토리에 이 파일이 있어?
 	bool IsFile(const std::string_view& _FileName);
-
+	
+	// 상위디렉터리로 이동
 	bool MoveParent();
-
+	
+	// 상위디렉터리에 문자열로 넣어준 디렉터리가 있는지 확인하여 이동한다.
 	void MoveParentToDirectory(const std::string_view& _String);
 
+	// 인자로 넣어준 경로로 이동한다. 
 	bool Move(const std::string_view& _String);
 
+	// 패스에 추가경로를 붙여준다.
 	GameEnginePath GetPlusFileName(const std::string_view& _String);
 
-	// 하위는 돌지 않고 그 디렉토리에 해당하는 모든 파일만 리턴해주는 함수.
+	// 하위는 돌지 않고 그 디렉토리에 해당하는 모든 파일만 반환해준다.
 	std::vector<GameEngineFile> GetAllFile(const std::string_view& _Ext = "");
 
 protected:

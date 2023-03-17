@@ -14,9 +14,8 @@ void GameEngineSerializer::BufferResize(size_t _Size)
 	Datas.resize(_Size);
 }
 
-// 
-// [][][][][][][][][][]
-
+// 값이 들어오게 되면
+// 주소값과 데이터의 크기를 넘겨준다.
 void GameEngineSerializer::Write(const int& _Value)
 {
 	Write(&_Value, sizeof(int));
@@ -32,19 +31,21 @@ void GameEngineSerializer::Write(const std::string_view& _Value)
 
 void GameEngineSerializer::Write(const void* _Ptr, size_t _Size)
 {
-	//  1024             1023   + 4
+	// 현재 배열의 크기 체크, 배열이 꽉찼다면
+	// 배열 resize 
 	if (Datas.size() <= Offset + _Size)
 	{
 		Datas.resize(Datas.size() + 1024);
 	}
 
-	//       여기에 복사해라   복사할 위치의 여유크기는
+	// 배열에 메모리를 복사한다. 
 	memcpy_s(&Datas[Offset], Datas.size() - Offset, _Ptr, _Size);
 
+	// 현재 size <-- 크기의 메모리가 저장됐기 때문에 offset 의 값을 그만큼 더해준다.
 	Offset += _Size;
 }
 
-
+// 값을 읽어온다.
 void GameEngineSerializer::Read(int& _Value)
 {
 	Read(&_Value, sizeof(int));
