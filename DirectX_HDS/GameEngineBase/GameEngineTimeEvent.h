@@ -2,19 +2,21 @@
 #include <functional>
 #include <vector>
 
-// 시간과 관련된 이벤트를 수행할 때 사용하는 클래스
 class GameEngineTimeEvent
 {
-private:
+public:
+	// 타임이벤트의 구성요소 
 	class TimeEvent
 	{
 		friend GameEngineTimeEvent;
 
 		bool IsLive = true;
 		float CurTime = 0.0f;
-		float Time = 0.0f;
-		std::function<void()> Event;
+		std::function<void(TimeEvent&, GameEngineTimeEvent*)> Event;
 		bool Loop = false;
+
+	public:
+		float Time = 0.0f;
 	};
 
 public:
@@ -30,12 +32,12 @@ public:
 
 	// 이벤트 추가
 	// 반복될 시간, 실행할 함수, 반복여부
-	void AddEvent(float Time, std::function<void()> _Event, bool _Loop = false);
+	void AddEvent(float Time, std::function<void(TimeEvent&, GameEngineTimeEvent*)> _Event, bool _Loop = false);
 
 	void Update(float _DeltaTime);
 
 private:
 	// 배열에 TimeEvent 저장
-	std::vector<TimeEvent> Event;
+	std::list<TimeEvent> Events;
 };
 

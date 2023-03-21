@@ -8,11 +8,11 @@ GameEngineTimeEvent::~GameEngineTimeEvent()
 {
 }
 
-void GameEngineTimeEvent::AddEvent(float _Time, std::function<void()> _Event, bool _Loop /*= false*/)
+void GameEngineTimeEvent::AddEvent(float _Time, std::function<void(TimeEvent&, GameEngineTimeEvent*)> _Event, bool _Loop /*= false*/)
 {
-	// 기본생성자가 있다면 내부에서 그 기본생성자를 가지고 만들어준다. ?? 
-	// 구글검색요망ㅋㅋ TimeEvent 라는 녀석을 기본생성자를 가지고 만들어서 넣어주고 걔를 반환하는건가 ?
-	TimeEvent& NewEvent = Event.emplace_back();
+	// 기본 생성자가 있으면
+	// 그냥 자기가 내부에서 기본생성자를 사용하여 만들어주는 기능
+	TimeEvent& NewEvent = Events.emplace_back();
 	NewEvent.CurTime = _Time;
 	NewEvent.Time = _Time;
 	NewEvent.Loop = _Loop;
@@ -21,17 +21,31 @@ void GameEngineTimeEvent::AddEvent(float _Time, std::function<void()> _Event, bo
 
 void GameEngineTimeEvent::Update(float _DeltaTime)
 {
-	for (size_t i = 0; i < Event.size(); i++)
-	{
-		Event[i].CurTime -= _DeltaTime;
+	std::list<TimeEvent>::iterator StartIter = Events.begin();
+	std::list<TimeEvent>::iterator EndIter = Events.end();
 
-		if (Event[i].CurTime < 0.0f)
+	for (; StartIter != EndIter;)
+	{
+		// 현재이벤트 = *iter
+		TimeEvent& CurEvent = *StartIter;
+
+		// 이벤트의 시간값 누적감소
+		CurEvent.CurTime -= _DeltaTime;
+
+		// 시간값이 0보다 작아지게 된다면 동작
+		if (CurEvent.CurTime < 0.0f)
 		{
-			Event[i].Event();
-			if (true == Event[i].Loop)
+			CurEvent.Event(CurEvent, this);
+			CurEvent.CurTime = CurEvent.Time;
+
+			// Loop 가 false 라면 동작했기 때문에 이벤트를 제거한다. 
+			if (false == CurEvent.Loop)
 			{
-				Event[i].CurTime = Event[i].Time;
+				StartIter = Events.erase(StartIter);
+				continue;
 			}
 		}
+
+		++StartIter;
 	}
 }

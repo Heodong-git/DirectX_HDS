@@ -74,6 +74,9 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 	// 扩档快 积己
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280, 720 }, { 0, 0 });
 
+	// _Start <---- ContentsCore::GameStart() 牢单.. 
+	std::function<void()> Test = std::bind(GameEngineCore::EngineStart, _Start);
+
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate,
 								 std::bind(GameEngineCore::EngineEnd, _End));
 }

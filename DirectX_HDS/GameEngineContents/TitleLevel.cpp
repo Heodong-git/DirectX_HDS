@@ -9,19 +9,25 @@ TitleLevel::~TitleLevel()
 {
 }
 
-
+// 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void TitleLevel::Loading()
 {
-	// 생성될 때 얘가 동작, 타이틀레벨이 생성되면 만들어야 할 녀석들을 여기서 만든다. 
-	// TimeEvent.AddEvent(5.0f, std::bind(&TitleLevel::TestMsg, this), true);
+	std::function<void(GameEngineTimeEvent::TimeEvent&, GameEngineTimeEvent*)> Test0 =
+		[](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+	{
+		MsgTextBox("도주");
+	};
 
 	// 람다 문법
 	// 이름이 없는 함수를 만들어내는 문법.
-	std::function<void()> Test = []
+	std::function<void(GameEngineTimeEvent::TimeEvent&, GameEngineTimeEvent*)> Test = 
+		[=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 	{
-		MsgTextBox("이벤트 정상 작동");
+		MsgTextBox("공격");
+
+		_Manager->AddEvent(3.0f, Test0, false);
 	};
 
-	TimeEvent.AddEvent(1.0f, Test, true);
+	 TimeEvent.AddEvent(3.0f, Test, false);
 }
 
