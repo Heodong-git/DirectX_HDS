@@ -27,6 +27,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	_ContentsStart();
 }
 
+// Loop , 게임이 실행되면 반복동작
 void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
@@ -40,11 +41,16 @@ void GameEngineCore::EngineUpdate()
 		return;
 	}
 
+	// 사운드업데이트
 	GameEngineSound::SoundUpdate();
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+	// 키업데이트
 	GameEngineInput::Update(TimeDeltaTime);
 
+	// Test? 레벨이 타임이벤트의 업데이트를 실행
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
+	// 메인 레벨의 업데이트
+	//MainLevel->Update(TimeDeltaTime);
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
@@ -73,10 +79,6 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 
 	// 윈도우 생성
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280, 720 }, { 0, 0 });
-
-	// _Start <---- ContentsCore::GameStart() 인데.. 
-	std::function<void()> Test = std::bind(GameEngineCore::EngineStart, _Start);
-
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate,
 								 std::bind(GameEngineCore::EngineEnd, _End));
 }
