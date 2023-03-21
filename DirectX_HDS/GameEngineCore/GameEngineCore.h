@@ -29,7 +29,7 @@ public:
 	GameEngineCore& operator=(GameEngineCore&& _Other) noexcept = delete;
 
 	// 코어실행시 functional 을 활용하여 시작, 종료시 실행할 함수를 받는다.
-	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End);
+	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos = { 0, 0 }, float4 _Size = { 1280, 720 });
 
 	template<typename LevelType>
 	static std::shared_ptr<LevelType> CreateLevel(const std::string_view& _Name = "")

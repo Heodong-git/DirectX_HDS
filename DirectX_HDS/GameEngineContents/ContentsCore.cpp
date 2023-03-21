@@ -17,7 +17,7 @@ void ContentsCore::GameStart()
 {
 	GameEngineCore::CreateLevel<CTitleLevel>();
 	GameEngineCore::CreateLevel<CStageLevel_01>();
-	GameEngineCore::ChangeLevel("TitleLevel");
+	GameEngineCore::ChangeLevel("CStageLevel_01");
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출

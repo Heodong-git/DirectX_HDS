@@ -49,8 +49,8 @@ void GameEngineCore::EngineUpdate()
 
 	// Test? 레벨이 타임이벤트의 업데이트를 실행
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
-	// 메인 레벨의 업데이트
-	//MainLevel->Update(TimeDeltaTime);
+	MainLevel->Update(TimeDeltaTime);
+	MainLevel->Render(TimeDeltaTime);
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
@@ -65,7 +65,7 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	LevelMap.clear();
 }
 
-void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End)
+void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
 {
 	// 릭체크함수호출
 	GameEngineDebug::LeakCheck();
@@ -78,7 +78,7 @@ void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, st
 	}
 
 	// 윈도우 생성
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280, 720 }, { 0, 0 });
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate,
 								 std::bind(GameEngineCore::EngineEnd, _End));
 }

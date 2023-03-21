@@ -36,3 +36,5 @@ private:
 	std::list<TimeEvent> Events;
 };
 
+// GameEngineTimeEvent 를 사용하려는 클래스가 가지게 하고 
+// 원하는 시점에 AddEvent 함수를 호출하여 이벤트를 추가하여 사용 

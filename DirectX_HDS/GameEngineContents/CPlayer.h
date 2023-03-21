@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <GameEngineBase/GameEngineSerializer.h>
+#include <GameEngineCore/GameEngineActor.h>
 
-class CPlayer
+class CPlayer : public GameEngineActor
 {
 public:
 	// constrcuter destructer
@@ -30,6 +31,9 @@ public:
 	}*/
 
 protected:
+	void Update(float _Delta) override;
+	void Render(float _Delta) override;
+
 
 private:
 	std::string m_Name = "ZERO";

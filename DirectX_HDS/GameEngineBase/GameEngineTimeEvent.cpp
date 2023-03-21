@@ -36,7 +36,7 @@ void GameEngineTimeEvent::Update(float _DeltaTime)
 		// 시간값이 0보다 작아지게 된다면 동작
 		if (CurEvent.CurTime < 0.0f)
 		{
-			// 현재 이벤트에 저장되어 있는 함수를 호출
+			// 현재 이벤트가 가진 이벤트함수 호출
 			CurEvent.Event(CurEvent, this);
 			// 이벤트가 실행되었기 때문에 시간초기화(최초시간으로 변경)
 			CurEvent.CurTime = CurEvent.Time;
