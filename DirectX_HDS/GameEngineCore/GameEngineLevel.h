@@ -4,6 +4,7 @@
 #include <string_view>
 #include <map>
 
+
 class GameEngineActor;
 class GameEngineLevel : public GameEngineObject
 {
@@ -22,7 +23,8 @@ public:
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
-	template<typename ActorType >
+
+	template<typename ActorType>
 	std::shared_ptr<ActorType> CreateActor(const std::string_view& _Name)
 	{
 		return CreateActor<ActorType>(0, _Name);
@@ -34,32 +36,33 @@ public:
 		std::shared_ptr<GameEngineActor> NewActor = std::make_shared<ActorType>();
 
 		std::string Name = _Name.data();
-
+	
+		// 2번인자로 아무것도 들어오지 않았다면
 		if (_Name == "")
 		{
+			// 생성한 액터타입의 클래스를 받아와서 name 으로 설정
 			const type_info& Info = typeid(ActorType);
 			Name = Info.name();
 			Name.replace(0, 6, "");
 		}
 
+		// 생성한 액터 초기화
 		ActorInit(NewActor, _Order, this);
 
+		// 액터맵에 추가
 		Actors[_Order].push_back(NewActor);
 
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
 
 protected:
+	// 로딩
 	virtual void Loading() = 0;
-
 	void Update(float _DeltaTime) override;
-
 	void Render(float _DeltaTime) override;
 
 private:
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
-
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
-
 };
 

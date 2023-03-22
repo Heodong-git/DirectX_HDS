@@ -34,11 +34,5 @@ protected:
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
 
-
 private:
-	std::string m_Name = "ZERO";
-	float	m_Att = 0.0f;
-	float   m_Hp = 0.0f;
-	float	m_HpMax = 20.0f;
-	
 };

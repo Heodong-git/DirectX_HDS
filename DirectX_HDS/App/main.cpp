@@ -30,3 +30,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 3월 22일 할일
 // 21일에 프레임워크 추가한 부분 코드 공부 + vertex, 회전관련 내용 공부한거 이해하려고 노력.. ㅎㅎ ; 
 // GameEngineLevel , Mesh , Object <---- 
+
+// 게임엔진레벨 
+// 메쉬

@@ -20,7 +20,8 @@ protected:
 
 private:
 	// 소프트웨어 렌더링
-	// Vertexs <-- ? 
+	// Vertexs <-- 정점, 또는 위치를 의미하는 개념 
+	// 사각형을 그린다고 치면 4개의 점을 표현한다고 볼 수 있..나? 
 	std::vector<float4> Vertexs;
 };
 
