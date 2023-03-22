@@ -27,12 +27,14 @@ void CPlayer::Render(float _Delta)
 	
 	// 크기
 	float4 ArrVertex[VertexCount];
-	float Value = 30.0f;
+	float Value = 0.5f;
+
 	ArrVertex[0] = { -Value, -Value };
 	ArrVertex[1] = { Value, -Value };
 	ArrVertex[2] = { Value, Value };
 	ArrVertex[3] = { -Value, Value };
 	
+	float Scale = 100.0f;
 	POINT ArrPoint[VertexCount];
 
 	// 회전시킬 각도
@@ -41,7 +43,8 @@ void CPlayer::Render(float _Delta)
 	for (size_t i = 0; i < VertexCount; ++i)
 	{
 		// 회전
-		ArrVertex[i].RotaitonZDeg(Angle);
+		ArrVertex[i] *= Scale;
+		ArrVertex[i].RotaitonYDeg(Angle);
 		ArrVertex[i] += Pos;
 
 		int X = ArrVertex[i].ix();
@@ -71,6 +74,7 @@ void CPlayer::Render(float _Delta)
 	// 공간변환의 순서
 	float4 TestVertex[4];
 
+	Value = 10;
 	TestVertex[0] = { -Value, -Value };
 	TestVertex[1] = { Value, -Value };
 	TestVertex[2] = { Value, Value };
@@ -81,7 +85,7 @@ void CPlayer::Render(float _Delta)
 	for (int i = 0; i < 4; ++i)
 	{
 		// 이동
-		TestVertex[i] += float4{ 640 , 360 };
+		TestVertex[i] += float4{ 20 , 20 };
 		
 		// 회전
 		TestVertex[i].RotaitonZDeg(Angle);

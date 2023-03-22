@@ -118,17 +118,47 @@ public:
 	{
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
 	}
+	
+	void RotaitonXDeg(float _Deg)
+	{
+		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotaitonYDeg(float _Deg)
+	{
+		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+	}
 
 	void RotaitonZDeg(float _Deg)
 	{
 		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
+	void RotaitonXRad(float _Rad)
+	{
+		float4 Copy = *this;
+		float Z = Copy.z;
+		float Y = Copy.y;
+		z = Z * cosf(_Rad) - Y * sinf(_Rad);
+		y = Z * sinf(_Rad) + Y * cosf(_Rad);
+	}
+
+	void RotaitonYRad(float _Rad)
+	{
+		float4 Copy = *this;
+		float X = Copy.x;
+		float Z = Copy.z;
+		x = X * cosf(_Rad) - Z * sinf(_Rad);
+		z = X * sinf(_Rad) + Z * cosf(_Rad);
+	}
+
 	void RotaitonZRad(float _Rad)
 	{
 		float4 Copy = *this;
-		x = Copy.x * cosf(_Rad) - Copy.y * sinf(_Rad);
-		y = Copy.x * sinf(_Rad) + Copy.y * cosf(_Rad);
+		float X = Copy.x;
+		float Y = Copy.y;
+		x = X * cosf(_Rad) - Y * sinf(_Rad);
+		y = X * sinf(_Rad) + Y * cosf(_Rad);
 	}
 
 	float4 RotaitonZDegReturn(float _Deg)

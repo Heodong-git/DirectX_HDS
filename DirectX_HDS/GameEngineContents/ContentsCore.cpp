@@ -1,6 +1,7 @@
 #include "ContentsCore.h"
 #include <GameEngineCore\GameEngineCore.h>
 #include "PlayLevel.h"
+#include "CTestLevel.h"
 #include "CTitleLevel.h"
 #include "CStageLevel_01.h"
 
@@ -17,7 +18,8 @@ void ContentsCore::GameStart()
 {
 	GameEngineCore::CreateLevel<CTitleLevel>();
 	GameEngineCore::CreateLevel<CStageLevel_01>();
-	GameEngineCore::ChangeLevel("CStageLevel_01");
+	GameEngineCore::CreateLevel<CTestLevel>();
+	GameEngineCore::ChangeLevel("CTestLevel");
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출
