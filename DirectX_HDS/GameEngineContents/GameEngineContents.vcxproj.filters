@@ -14,6 +14,10 @@
     <ClInclude Include="CTestLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="CStageLevel_02.h">
+      <Filter>Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -27,6 +31,9 @@
       <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="CTestLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageLevel_02.cpp">
       <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>

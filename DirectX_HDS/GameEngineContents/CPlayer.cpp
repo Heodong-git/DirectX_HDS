@@ -14,6 +14,7 @@ void CPlayer::Update(float _Delta)
 }
 
 float Angle = 0.0f;
+float TestAngle = 0.0f;
 void CPlayer::Render(float _Delta)
 {
 	// 윈도우 창에 그릴 수 있는 권한을 받아온다. HDC <-- 
@@ -24,7 +25,7 @@ void CPlayer::Render(float _Delta)
 
 	// 그려질 위치는 x 축으로 640, y축으로 360만큼 이동한 위치
 	float4 Pos = { 640 , 360 };
-	
+
 	// 크기
 	float4 ArrVertex[VertexCount];
 	float Value = 0.5f;
@@ -33,7 +34,7 @@ void CPlayer::Render(float _Delta)
 	ArrVertex[1] = { Value, -Value };
 	ArrVertex[2] = { Value, Value };
 	ArrVertex[3] = { -Value, Value };
-	
+
 	float Scale = 100.0f;
 	POINT ArrPoint[VertexCount];
 
@@ -47,12 +48,12 @@ void CPlayer::Render(float _Delta)
 		ArrVertex[i].RotaitonYDeg(Angle);
 		ArrVertex[i] += Pos;
 
-		int X = ArrVertex[i].ix();
-		int Y = ArrVertex[i].iy();
+		/*int X = ArrVertex[i].ix();
+		int Y = ArrVertex[i].iy();*/
 
-		// 버텍스 위치확인용
-		SetPixel(Dc, X, Y, RGB(255, 0, 0));
-		Rectangle(Dc, X - 20, Y - 20, X + 20, Y + 20);
+		//// 버텍스 위치확인용
+		//SetPixel(Dc, X, Y, RGB(255, 0, 0));
+		//Rectangle(Dc, X - 20, Y - 20, X + 20, Y + 20);
 
 		// 이동하고 
 		// 저장된 위치값을 POINT로 변환하여 POINT 배열에 저장
@@ -64,34 +65,39 @@ void CPlayer::Render(float _Delta)
 	// 회전하는거처럼 보임
 	Polygon(Dc, ArrPoint, VertexCount);
 
-	// 크자이공부
+	float4 TVertex[4] = {};
+	POINT TestArr[4] = {};
 
-	// 크기를 키우고
-	// 회전시킨다음
-	// 이동하고
-	// 공전시키고
-	// 부모의 변환을 적용시킨다.
-	// 공간변환의 순서
-	float4 TestVertex[4];
+	TVertex[0] = { -Value, -Value };
+	TVertex[1] = { Value , -Value };
+	TVertex[2] = { Value, Value };
+	TVertex[3] = { -Value , Value };
 
-	Value = 10;
-	TestVertex[0] = { -Value, -Value };
-	TestVertex[1] = { Value, -Value };
-	TestVertex[2] = { Value, Value };
-	TestVertex[3] = { -Value, Value };
+	// 회전속도
+	TestAngle += _Delta * 360.0f;
 
-	POINT TestArrPoint[4];
-
-	for (int i = 0; i < 4; ++i)
+	for (size_t i = 0; i < 4; ++i)
 	{
-		// 이동
-		TestVertex[i] += float4{ 20 , 20 };
-		
+		// 크기
+		TVertex[i] *= Scale;
 		// 회전
-		TestVertex[i].RotaitonZDeg(Angle);
+		TVertex[i].RotaitonZDeg(TestAngle);
+		// 이동
+		TVertex[i] += float4{ 300, 300 };
 
-		TestArrPoint[i] = TestVertex[i].ToWindowPOINT();
-	}
+		// 포인트 배열에 저장
+		TestArr[i] = TVertex[i].ToWindowPOINT();
+ 	}
 
-	Polygon(Dc, TestArrPoint, 4);
+
+	Polygon(Dc, TestArr, 4);
 }
+
+// 메쉬 회전시키기
+// Angle * 값 <--- 회전속도
+// 1. 메쉬의 버텍스 
+// 2. 버텍스를 저장할 POINT 배열
+// 3. 크기, 자전, 이동으로 연산 <-- 하기전에 각도를 구해줌
+// 4. 포인트배열에 넣어주고 Polygon <--- 함수로 그려준다. 
+// 보통 버텍스는 합 1의 크기 (0.5,0.5) 로 설정하고 * Scale 로 크기를 늘려준다. 
+// 모든회사 공통은 아니지만 대부분은 그렇다. 

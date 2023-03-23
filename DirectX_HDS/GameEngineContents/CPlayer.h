@@ -15,8 +15,15 @@ public:
 	CPlayer(CPlayer&& _Other) noexcept = delete;
 	CPlayer& operator=(const CPlayer& _Other) = delete;
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
-	
-	/*void TestSave(GameEngineSerializer _Ser)
+
+protected:
+	void Update(float _Delta) override;
+	void Render(float _Delta) override;
+
+private:
+};
+
+/*void TestSave(GameEngineSerializer _Ser)
 	{
 		_Ser.Write(TestName);
 		_Ser.Write(TestAtt);
@@ -29,10 +36,3 @@ public:
 		_Ser.Read(TestAtt);
 		_Ser.Read(TestDef);
 	}*/
-
-protected:
-	void Update(float _Delta) override;
-	void Render(float _Delta) override;
-
-private:
-};

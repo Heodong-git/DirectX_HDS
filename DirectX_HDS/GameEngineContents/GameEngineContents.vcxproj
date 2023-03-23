@@ -159,11 +159,16 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CPlayer.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="CStageLevel_01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CStageLevel_02.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -183,6 +188,7 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CStageLevel_01.cpp" />
+    <ClCompile Include="CStageLevel_02.cpp" />
     <ClCompile Include="CTestLevel.cpp" />
     <ClCompile Include="CTitleLevel.cpp">
       <SubType>
