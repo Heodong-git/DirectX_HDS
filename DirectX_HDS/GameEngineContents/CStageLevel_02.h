@@ -1,7 +1,8 @@
 #pragma once
+#include <GameEngineCore/GameEngineLevel.h>
 
 // Ό³Έν :
-class CStageLevel_02
+class CStageLevel_02 : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
@@ -15,6 +16,7 @@ public:
 	CStageLevel_02& operator=(CStageLevel_02&& _Other) noexcept = delete;
 
 protected:
+	void Loading() override;
 
 private:
 
