@@ -47,11 +47,57 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	// 벡터 외적
+	// x y z x
+	//  x x x     <-- 곱셈부호 , 이러한 형태로 벡터를 교차시켜 곱한다.  
+	// x y z x
+	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	{
+		float4 ReturnValue;
+		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
+		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
+		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
+		return ReturnValue;
+	}
+
 public:
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-	float w = 1.0f;
+	// 유니온
+	union
+	{
+		struct
+		{
+			float x;
+			float y;
+			float z;
+			float w;
+		};
+
+		float Arr1D[4];
+	};
+
+	float4()
+		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y)
+		: x(_x), y(_y), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z)
+		: x(_x), y(_y), z(_z), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z, float _w)
+		: x(_x), y(_y), z(_z), w(_w)
+	{
+
+	}
 
 	int ix() const
 	{
@@ -118,23 +164,45 @@ public:
 	{
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
 	}
+
+	// 각축으로 회전시키고, 그 회전시킨 값을 반환한다. 
+	float4 RotationXDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotationXRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotationYDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotationYRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
+
+	float4 RotationZDegReturn(float _Deg)
+	{
+		float4 ReturnValue = *this;
+		ReturnValue.RotationZRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
+	}
 	
-	void RotaitonXDeg(float _Deg)
+	void RotationXDeg(float _Deg)
 	{
-		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		RotationXRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonYDeg(float _Deg)
+	void RotationYDeg(float _Deg)
 	{
-		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		RotationYRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonZDeg(float _Deg)
+	void RotationZDeg(float _Deg)
 	{
-		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		RotationZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonXRad(float _Rad)
+	void RotationXRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float Z = Copy.z;
@@ -143,7 +211,7 @@ public:
 		y = Z * sinf(_Rad) + Y * cosf(_Rad);
 	}
 
-	void RotaitonYRad(float _Rad)
+	void RotationYRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -152,7 +220,7 @@ public:
 		z = X * sinf(_Rad) + Z * cosf(_Rad);
 	}
 
-	void RotaitonZRad(float _Rad)
+	void RotationZRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -160,14 +228,6 @@ public:
 		x = X * cosf(_Rad) - Y * sinf(_Rad);
 		y = X * sinf(_Rad) + Y * cosf(_Rad);
 	}
-
-	float4 RotaitonZDegReturn(float _Deg)
-	{
-		float4 Copy = *this;
-		Copy.RotaitonZDeg(_Deg);
-		return Copy;
-	}
-
 
 	float GetAnagleRad()
 	{
@@ -340,6 +400,8 @@ public:
 		return *this;
 	}
 
+	float4 operator*(const class float4x4& _Other);
+
 	std::string ToString() 
 	{
 		char ArrReturn[256];
@@ -391,3 +453,57 @@ public:
 		return float4{ Right(), Bot() };
 	}
 };
+
+class float4x4
+{
+public:
+	union
+	{
+		float Arr1D[16];
+		float Arr2D[4][4];
+		float4 ArrVector[4];
+
+		// 
+		struct
+		{
+			float _00;
+			float _01;
+			float _02;
+			float _03;
+			float _10;
+			float _11;
+			float _12;
+			float _13;
+			float _20;
+			float _21;
+			float _22;
+			float _23;
+			float _30;
+			float _31;
+			float _32;
+			float _33;
+		};
+	};
+
+	float4x4()
+	{
+		Identity();
+	}
+
+	// 행렬은 기본적으로 항등행렬을 기본으로 한다. 
+	// 항등행렬 : 모든 대각 원소들이 1이며, 나머지 원소들이 0인 정방행렬을 말한다. 
+	void Identity()
+	{
+		memset(Arr1D, 0, sizeof(float) * 16);
+		Arr2D[0][0] = 1.0f;
+		Arr2D[1][1] = 1.0f;
+		Arr2D[2][2] = 1.0f;
+		Arr2D[3][3] = 1.0f;
+	}
+
+
+	// float4 operator*()
+};
+
+
+// 행렬간의 곱셈은 순서에 따라서 결과값이 달라질 수 있기 때문에 순서에 유의해서 사용해야 한다. 

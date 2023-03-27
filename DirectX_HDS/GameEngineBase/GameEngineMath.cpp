@@ -79,3 +79,15 @@ unsigned int GameEngineMath::GetLenth(int _Value)
 
 	return static_cast<unsigned int>(StringValue.size()) - StartIndex;
 }
+
+// 아직 미구현, 오늘 구현예정
+float4 float4::operator*(const class float4x4& _Other)
+{
+	float4 ReturnValue;
+	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
+	ReturnValue.y = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
+	ReturnValue.z = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
+	ReturnValue.w = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
+
+	return ReturnValue;
+}
