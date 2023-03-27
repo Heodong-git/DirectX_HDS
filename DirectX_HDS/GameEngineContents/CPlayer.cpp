@@ -178,7 +178,7 @@ void CPlayer::Render(float _Delta)
 			// 그 값의 z 축이 0보다 크다면 그리지 않는다. 
 			// 이게 지금 한면만 안그리는게 아니라 면 세개를 안그리는거구나? 
 			// 안쪽 또는 바깥쪽에 있는 면을 그리지 않는거임. 
-			float4 Cross = float4::CrossReturn(Dir1, Dir0);
+			float4 Cross = float4::CrossReturn(Dir0, Dir1);
 			if (0 <= Cross.z)
 			{
 				continue;
