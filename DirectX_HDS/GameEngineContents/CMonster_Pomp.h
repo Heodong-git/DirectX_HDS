@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "CKatanaZero_Actor.h"
 
 // 왜 Pomp인지 모름 
-class CMonster_Pomp : public GameEngineActor
+class CMonster_Pomp : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer

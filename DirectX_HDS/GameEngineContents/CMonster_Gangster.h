@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "CKatanaZero_Actor.h"
 
 // ∞ªΩ∫≈Õ 
-class CMonster_Gangster : public GameEngineActor
+class CMonster_Gangster : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer

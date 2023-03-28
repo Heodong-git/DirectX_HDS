@@ -17,9 +17,6 @@
     <ClInclude Include="CStageLevel_02.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="CKatanaZero_Level.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="ContentsCore.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -34,6 +31,15 @@
     </ClInclude>
     <ClInclude Include="CMonster_Pomp.h">
       <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CKatanaZero_Level.h">
+      <Filter>ContentsObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CKatanaZero_Actor.h">
+      <Filter>ContentsObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_HeadHunter.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,9 +58,6 @@
     <ClCompile Include="CStageLevel_02.cpp">
       <Filter>Level</Filter>
     </ClCompile>
-    <ClCompile Include="CKatanaZero_Level.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="ContentsCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -70,6 +73,15 @@
     <ClCompile Include="CMonster_Pomp.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
+    <ClCompile Include="CKatanaZero_Level.cpp">
+      <Filter>ContentsObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKatanaZero_Actor.cpp">
+      <Filter>ContentsObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_HeadHunter.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -83,6 +95,12 @@
     </Filter>
     <Filter Include="Monster">
       <UniqueIdentifier>{62f7222f-158e-442e-9378-401a6fa7fc7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ContentsObject">
+      <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Boss">
+      <UniqueIdentifier>{bf96df3a-a71e-41a6-b52a-ab466f310450}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
