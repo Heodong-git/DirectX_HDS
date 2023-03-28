@@ -47,11 +47,17 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
+	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
+	{
+		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
+	}
+
 	// 벡터 외적
 	// x y z x
 	//  x x x     <-- 곱셈부호 , 이러한 형태로 벡터를 교차시켜 곱한다.  
 	// x y z x
-	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
 		float4 ReturnValue;
 		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
@@ -265,7 +271,7 @@ public:
 
 	float Size() const
 	{
-		return sqrtf(x * x + y * y);
+		return sqrtf(x * x + y * y + z * z);
 	}
 
 	// 2, 0
@@ -279,7 +285,7 @@ public:
 	}
 
 	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
-	float4 NormalizeReturn()
+	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
 		Result.Normalize();
@@ -307,6 +313,11 @@ public:
 		return Lerp(Start, End, Ratio);
 	}
 
+	bool operator ==(const float4& _Value) const
+	{
+		return _Value.x == x && _Value.y == y && _Value.z == z;
+	}
+
 	float4 operator *(const float _Value) const
 	{
 		float4 Return;
@@ -318,7 +329,7 @@ public:
 
 
 
-	float4 operator +(const float4 _Value) const
+	float4 operator +(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x + _Value.x;
@@ -327,7 +338,7 @@ public:
 		return Return;
 	}
 
-	float4 operator -(const float4 _Value) const
+	float4 operator -(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x - _Value.x;
@@ -336,7 +347,7 @@ public:
 		return Return;
 	}
 
-	float4 operator *(const float4 _Value) const
+	float4 operator *(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x * _Value.x;
@@ -345,7 +356,7 @@ public:
 		return Return;
 	}
 
-	float4 operator /(const float4 _Value) const
+	float4 operator /(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x / _Value.x;
@@ -367,7 +378,7 @@ public:
 		return *this;
 	}
 
-	float4& operator *=(const float& _Value)
+	float4& operator *=(const float _Value)
 	{
 		x *= _Value;
 		y *= _Value;
@@ -454,8 +465,23 @@ public:
 	}
 };
 
+// 유니온으로 구성
+// float 1차원배열
+// float 2차원배열
+// float4 로 구성된 배열 세가지로 볼 수 있음 
 class float4x4
 {
+	static const float4x4 Zero;
+
+	static const int YCount = 4;
+	static const int XCount = 4;
+
+private:
+	float4x4(bool)
+	{
+		memset(Arr1D, 0, sizeof(float4x4));
+	}
+
 public:
 	union
 	{
@@ -501,9 +527,61 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	// 크기행렬 
+	void Scale(const float4& _Value)
+	{
+		//100, 0 , 0 , 0
+		// 0 ,100, 0 , 0
+		// 0 , 0 ,100, 0
+		// 0 , 0 , 0 , 1
 
-	// float4 operator*()
+		Identity();
+		Arr2D[0][0] = _Value.x;
+		Arr2D[1][1] = _Value.y;
+		Arr2D[2][2] = _Value.z;
+	}
+
+	// 위치행렬 
+	void Pos(const float4& _Value)
+	{
+		//  0   1   2   3
+		//0 0,  0 , 0 , 0
+		//1 0 , 0,  0 , 0
+		//2 0 , 0 , 0 , 0
+		//3 200, 200 , 200 , 1
+
+		Identity();
+		Arr2D[3][0] = _Value.x;
+		Arr2D[3][1] = _Value.y;
+		Arr2D[3][2] = _Value.z;
+	}
+
+	float4x4 operator*(const float4x4& _Other)
+	{
+		//  0   0   0   0			   		  0   0   0   0	    0   0   0   0
+		//  0,  0 , 0 , 0			   		  0,  0 , 0 , 0	    0,  0 , 0 , 0
+		//  0 , 0,  0 , 0          *   		  0 , 0,  0 , 0  =  0 , 0,  0 , 0
+		//  0 , 0 , 0 , 0			   		  0 , 0 , 0 , 0	    0 , 0 , 0 , 0
+
+		this->Arr2D;
+		_Other.Arr2D;
+
+		float4x4 Return = Zero;
+		for (size_t y = 0; y < YCount; y++)
+		{
+			for (size_t x = 0; x < XCount; x++)
+			{
+				for (size_t j = 0; j < 4; j++)
+				{
+					Return.Arr2D[y][x] += Arr2D[y][j] * _Other.Arr2D[j][x];
+				}
+			}
+		}
+
+		return Return;
+	}
 };
 
 
 // 행렬간의 곱셈은 순서에 따라서 결과값이 달라질 수 있기 때문에 순서에 유의해서 사용해야 한다. 
+// 

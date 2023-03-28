@@ -23,6 +23,9 @@ protected:
 private:
 };
 
+
+
+// 파일입출력이 필수다. 
 /*void TestSave(GameEngineSerializer _Ser)
 	{
 		_Ser.Write(TestName);

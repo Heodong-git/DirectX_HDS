@@ -40,7 +40,7 @@ public:
 		// 2번인자로 아무것도 들어오지 않았다면
 		if (_Name == "")
 		{
-			// 생성한 액터타입의 클래스를 받아와서 name 으로 설정
+			// 생성한 클래스의 이름으로 
 			const type_info& Info = typeid(ActorType);
 			Name = Info.name();
 			Name.replace(0, 6, "");

@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineCore/GameEngineLevel.h>
+#include "CKatanaZero_Level.h"
 
 // Ό³Έν :
-class CStageLevel_01 : public GameEngineLevel
+class CStageLevel_01 : public CKatanaZero_Level
 {
 public:
 	// constrcuter destructer

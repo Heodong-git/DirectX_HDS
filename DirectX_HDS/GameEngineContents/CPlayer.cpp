@@ -145,17 +145,22 @@ void CPlayer::Render(float _Delta)
 		VertexArr[21] = VertexArr[1].RotationXDegReturn(-90.0f);
 		VertexArr[22] = VertexArr[2].RotationXDegReturn(-90.0f);
 		VertexArr[23] = VertexArr[3].RotationXDegReturn(-90.0f);
+		
+		float4x4 ScaleMesh;
+		ScaleMesh.Scale({ 100, 100, 100 });
+		float4x4 PosMesh;
+		PosMesh.Pos({ 640 , 320 , 0 });
 
+		float4x4 WorldMesh = ScaleMesh * PosMesh;
 		// 이게 지금 정면에서 보이는 사각형을 만든거고 이 사각형을
 		// 각각 x, y , z 축으로 회전시켜서 추가로 5개를 더 만들어주게 되면
 		// 정육면체를 완성할 수 있게 된다. 
 		for (size_t i = 0; i < VertexCount; i++)
 		{
-			VertexArr[i] *= Scale;
-			VertexArr[i].RotationXDeg(Angle);
-			VertexArr[i].RotationYDeg(Angle);
-			VertexArr[i].RotationZDeg(Angle);
-			VertexArr[i] += Pos;
+			VertexArr[i] = VertexArr[i] * WorldMesh;
+			//VertexArr[i].RotationXDeg(Angle);
+			//VertexArr[i].RotationYDeg(Angle);
+			//VertexArr[i].RotationZDeg(Angle);
 			VertexArrP[i] = VertexArr[i].ToWindowPOINT();
 		}
 		
@@ -178,16 +183,17 @@ void CPlayer::Render(float _Delta)
 			// 그 값의 z 축이 0보다 크다면 그리지 않는다. 
 			// 이게 지금 한면만 안그리는게 아니라 면 세개를 안그리는거구나? 
 			// 안쪽 또는 바깥쪽에 있는 면을 그리지 않는거임. 
-			float4 Cross = float4::CrossReturn(Dir0, Dir1);
+			float4 Cross = float4::Cross3DReturn(Dir0, Dir1);
 			if (0 <= Cross.z)
 			{
 				continue;
 			}
 
 			Polygon(Dc, &VertexArrP[i * 4], 4);
-		}
-		
+		}	
 	}
+
+	float4x4 Test = {};
 }
 
 

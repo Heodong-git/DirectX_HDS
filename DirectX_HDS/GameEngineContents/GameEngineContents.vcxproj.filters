@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="CTitleLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
@@ -18,9 +17,26 @@
     <ClInclude Include="CStageLevel_02.h">
       <Filter>Level</Filter>
     </ClInclude>
+    <ClInclude Include="CKatanaZero_Level.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_Gangster.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_Grunt.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_Shotgun.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster_Pomp.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="CTitleLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
@@ -36,6 +52,24 @@
     <ClCompile Include="CStageLevel_02.cpp">
       <Filter>Level</Filter>
     </ClCompile>
+    <ClCompile Include="CKatanaZero_Level.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_Gangster.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_Grunt.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_Shotgun.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster_Pomp.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -43,6 +77,12 @@
     </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{306c1f54-a982-4dfa-a8da-431a99449836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{14fbdd8a-955b-4069-ab9f-cf9992d1c077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monster">
+      <UniqueIdentifier>{62f7222f-158e-442e-9378-401a6fa7fc7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -81,13 +81,24 @@ unsigned int GameEngineMath::GetLenth(int _Value)
 }
 
 // 아직 미구현, 오늘 구현예정
+// x y z w
+// x y z w       * 
+// x y z w        
+// x y z w 
+
 float4 float4::operator*(const class float4x4& _Other)
 {
+	// 100   0    0    0                  1     2     3     4
+	//   0  100   0    0                  5     6     7     8
+	//   0    0   100  0                  9     10    11    12
+	//   0    0   0    1                  13   14     15    16
 	float4 ReturnValue;
-	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
-	ReturnValue.y = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
-	ReturnValue.z = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
-	ReturnValue.w = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[0][0] * Arr1D[0]);
+	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[1][0] * Arr1D[1]) + (_Other.Arr2D[2][0] * Arr1D[2]) + (_Other.Arr2D[3][0] * Arr1D[3]);
+	ReturnValue.y = (_Other.Arr2D[0][1] * Arr1D[0]) + (_Other.Arr2D[1][1] * Arr1D[1]) + (_Other.Arr2D[2][1] * Arr1D[2]) + (_Other.Arr2D[3][1] * Arr1D[3]);
+	ReturnValue.z = (_Other.Arr2D[0][2] * Arr1D[0]) + (_Other.Arr2D[1][2] * Arr1D[1]) + (_Other.Arr2D[2][2] * Arr1D[2]) + (_Other.Arr2D[3][2] * Arr1D[3]);
+	ReturnValue.w = (_Other.Arr2D[0][3] * Arr1D[0]) + (_Other.Arr2D[1][3] * Arr1D[1]) + (_Other.Arr2D[2][3] * Arr1D[2]) + (_Other.Arr2D[3][3] * Arr1D[3]);
 
 	return ReturnValue;
 }
+
+const float4x4 float4x4::Zero = float4x4(true);
