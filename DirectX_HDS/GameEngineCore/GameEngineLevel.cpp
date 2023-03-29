@@ -1,8 +1,11 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
+#include "GameEngineCamera.h"
 
 GameEngineLevel::GameEngineLevel()
 {
+	// 레벨은 생성될 때 반드시 카메라를 생성
+	MainCamera = CreateActor<GameEngineCamera>();
 }
 
 GameEngineLevel::~GameEngineLevel()

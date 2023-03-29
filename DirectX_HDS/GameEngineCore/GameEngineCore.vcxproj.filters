@@ -20,6 +20,12 @@
     <ClInclude Include="GameEngineComponent.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineTransform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCamera.h">
+      <Filter>Object\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -40,6 +46,12 @@
     </ClCompile>
     <ClCompile Include="GameEngineComponent.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCamera.cpp">
+      <Filter>Object\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,9 +2,11 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <list>
 #include <memory>
+#include "GameEngineTransform.h"
 
 class GameEngineObject
 {
+	friend class GameEngineLevel;
 public:
 	// constrcuter destructer
 	GameEngineObject();
@@ -68,6 +70,12 @@ public:
 		return Parent;
 	}
 
+	// 트랜스폼 반환 
+	GameEngineTransform& GetTransform()
+	{
+		return Transform;
+	}
+
 protected:
 
 	// virtual 로 선언함으로써 자식클래스들은 이 함수들을 구현해도 되고, 안해도 된다.
@@ -91,12 +99,6 @@ private:
 	std::list<std::shared_ptr<GameEngineObject>> Child;
 
 	////////////////////////////////////////////////////////////// Transform 기하구조
-public:
-	float4 GetPos()
-	{
-		return Pos;
-	}
-
 private:
-	float4 Pos = float4::Zero;
+	GameEngineTransform Transform;
 };

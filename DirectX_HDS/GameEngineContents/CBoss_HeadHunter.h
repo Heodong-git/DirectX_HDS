@@ -16,6 +16,8 @@ public:
 	CBoss_HeadHunter& operator=(CBoss_HeadHunter&& _Other) noexcept = delete;
 
 protected:
+	void Update(float _Delta) override;
+	void Render(float _Delta) override;
 
 private:
 
