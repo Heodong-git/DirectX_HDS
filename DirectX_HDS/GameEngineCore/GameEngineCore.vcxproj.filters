@@ -52,5 +52,8 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{b420b215-6a8f-4fa5-bec3-c52265a46089}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Rendering">
+      <UniqueIdentifier>{4125e805-1a91-4f37-a667-e239ca98c105}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -7,7 +7,6 @@
 #include <string_view>
 #include <typeinfo>
 
-// 해당 라이브러리에 있는 헤더를 사용해야 하기 때문에 작성해준다
 #pragma comment(lib, "GameEngineBase.lib")
 #pragma comment(lib, "GameEnginePlatform.lib")
 

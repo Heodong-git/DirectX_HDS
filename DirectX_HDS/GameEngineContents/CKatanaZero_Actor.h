@@ -1,7 +1,8 @@
 #pragma once
+#include <GameEngineCore/GameEngineActor.h>
 
 // Ό³Έν :
-class CKatanaZero_Actor
+class CKatanaZero_Actor : public GameEngineActor
 {
 public:
 	// constrcuter destructer

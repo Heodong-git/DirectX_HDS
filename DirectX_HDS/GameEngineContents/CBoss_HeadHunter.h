@@ -1,7 +1,8 @@
 #pragma once
+#include "CKatanaZero_Actor.h"
 
 // Ό³Έν :
-class CBoss_HeadHunter
+class CBoss_HeadHunter : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
