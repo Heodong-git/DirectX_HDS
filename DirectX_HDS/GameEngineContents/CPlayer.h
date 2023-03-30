@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <GameEngineBase/GameEngineSerializer.h>
-#include <GameEngineCore/GameEngineActor.h>
+#include "CKatanaZero_Actor.h"
 
-class CPlayer : public GameEngineActor
+class CPlayer : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
@@ -23,8 +23,6 @@ protected:
 private:
 	float Angle = 0.0f;
 };
-
-
 
 // 파일입출력이 필수다. 
 /*void TestSave(GameEngineSerializer _Ser)

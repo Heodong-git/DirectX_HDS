@@ -78,12 +78,6 @@ public:
 
 protected:
 
-	// virtual 로 선언함으로써 자식클래스들은 이 함수들을 구현해도 되고, 안해도 된다.
-	// 구현한다면 본인의 함수로, 구현하지 않는다면 부모클래스의 함수로 동작한다. 
-	virtual void Start() {}
-	virtual void Update(float _DeltaTime) {}
-	virtual void Render(float _DeltaTime) {}
-
 private:
 	std::string Name = "";
 	bool IsActive = true; 

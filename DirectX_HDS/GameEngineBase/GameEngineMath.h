@@ -6,9 +6,6 @@
 #include <Windows.h>
 #include <vector>
 
-
-
-
 // final 키워드 : 더이상 상속을 내리지 못하고 무언가 더 연장하지 못함
 
 class GameEngineMath final
@@ -48,6 +45,27 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	static float GetAngleVectorToVectorDeg(const float4& _Left, const float4& _Right)
+	{
+		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
+	}
+
+	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
+	{
+		float4 Left = _Left;
+		float4 Right = _Right;
+
+		Left.Normalize();
+		Right.Normalize();
+
+		float CosSeta = DotProduct3D(Left, Right);
+
+		float Angle = acosf(CosSeta);
+
+		return Angle;
+	}
+
+
 	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
 	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
 	{
@@ -65,6 +83,14 @@ public:
 		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
 		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
 		return ReturnValue;
+	}
+
+	// 내적
+	static float DotProduct3D(const float4& _Left, const float4& _Right)
+	{
+		//            1         1          1          0          0          0
+		float Value = _Left.x * _Right.x + _Left.y * _Right.y + _Left.z * _Right.z;
+		return Value;
 	}
 
 public:
@@ -167,9 +193,9 @@ public:
 		return w * 0.5f;
 	}
 
-	float GetAnagleDeg() 
+	float GetAnagleDegZ() 
 	{
-		return GetAnagleRad() * GameEngineMath::RadToDeg;
+		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
 	// 각축으로 회전시키고, 그 회전시킨 값을 반환한다. 
@@ -209,34 +235,11 @@ public:
 		RotationZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotationXRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float Z = Copy.z;
-		float Y = Copy.y;
-		z = Z * cosf(_Rad) - Y * sinf(_Rad);
-		y = Z * sinf(_Rad) + Y * cosf(_Rad);
-	}
+	void RotationXRad(float _Rad);
+	void RotationYRad(float _Rad);
+	void RotationZRad(float _Rad);
 
-	void RotationYRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float X = Copy.x;
-		float Z = Copy.z;
-		x = X * cosf(_Rad) - Z * sinf(_Rad);
-		z = X * sinf(_Rad) + Z * cosf(_Rad);
-	}
-
-	void RotationZRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float X = Copy.x;
-		float Y = Copy.y;
-		x = X * cosf(_Rad) - Y * sinf(_Rad);
-		y = X * sinf(_Rad) + Y * cosf(_Rad);
-	}
-
-	float GetAnagleRad()
+	float GetAnagleRadZ()
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
@@ -285,7 +288,7 @@ public:
 		z /= SizeValue;
 	}
 
-	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
+	// 길이를 1로 만들어서 반환 
 	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
@@ -327,8 +330,6 @@ public:
 		Return.z = z * _Value;
 		return Return;
 	}
-
-
 
 	float4 operator +(const float4& _Value) const
 	{
@@ -413,6 +414,7 @@ public:
 	}
 
 	float4 operator*(const class float4x4& _Other);
+	float4& operator*=(const class float4x4& _Other);
 
 	std::string ToString() 
 	{
@@ -474,15 +476,10 @@ class float4x4
 {
 public:
 	static const float4x4 Zero;
-
 	static const int YCount = 4;
 	static const int XCount = 4;
 
 private:
-	float4x4(bool)
-	{
-		memset(Arr1D, 0, sizeof(float4x4));
-	}
 
 public:
 	union
@@ -513,11 +510,6 @@ public:
 		};
 	};
 
-	float4x4()
-	{
-		Identity();
-	}
-
 	// 행렬은 기본적으로 항등행렬을 기본으로 한다. 
 	// 항등행렬 : 모든 대각 원소들이 1이며, 나머지 원소들이 0인 정방행렬을 말한다.
 	void Identity()
@@ -527,6 +519,36 @@ public:
 		Arr2D[1][1] = 1.0f;
 		Arr2D[2][2] = 1.0f;
 		Arr2D[3][3] = 1.0f;
+	}
+
+	// 뷰행렬 연산
+	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
+	{
+		Identity();
+
+		float4 EyePos = _EyePos;
+
+		// 합쳐져서 회전행렬이 된다.
+		float4 EyeDir = _EyeDir.NormalizeReturn();
+		float4 EyeUp = _EyeUp;
+		float4 Right = float4::Cross3DReturn(EyeUp, EyeDir);
+		Right.Normalize();
+
+		float4 UpVector = float4::Cross3DReturn(_EyeDir, Right);
+		Right.Normalize();
+
+		float4 NegEyePos = -_EyePos;
+
+		float D0Value = float4::DotProduct3D(Right, NegEyePos);
+		float D1Value = float4::DotProduct3D(UpVector, NegEyePos);
+		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
+
+		// 여기서 내적을 사용합니다.
+
+		ArrVector[0] = { 1, 0, 0, 0 };
+		ArrVector[1] = { 0, 1, 0, 0 };
+		ArrVector[2] = { 0, 0, 1, 0 };
+		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
 	}
 
 	// 크기행렬 
@@ -644,12 +666,17 @@ public:
 
 		return Return;
 	}
+
+	float4x4()
+	{
+		Identity();
+	}
+
+	float4x4(float4 _x, float4 _y, float4 _z, float4 _w)
+	{
+		ArrVector[0] = _x;
+		ArrVector[1] = _y;
+		ArrVector[2] = _z;
+		ArrVector[3] = _w;
+	}
 };
-
-
-// 행렬간의 곱셈은 순서에 따라서 결과값이 달라질 수 있기 때문에 순서에 유의해서 사용해야 한다. 
-// 크기 - 항등행렬
-// 회전 - 
-// 위치 - 
-
-// 

@@ -1,6 +1,7 @@
 #include "CPlayer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineTransform.h>
+#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCamera.h>
 
 CPlayer::CPlayer()
 {
@@ -14,8 +15,6 @@ void CPlayer::Update(float _Delta)
 {
 }
 
-float Angle = 0.0f;
-float TestAngle = 0.0f;
 void CPlayer::Render(float _Delta)
 {
 	// 윈도우 창에 그릴 수 있는 권한을 받아온다. HDC <-- 
@@ -74,16 +73,13 @@ void CPlayer::Render(float _Delta)
 		// 크기
 		GetTransform().SetLocalScale({ 100 , 100, 100 });
 		// 회전
-		GetTransform().AddLocalRotation({ 0 , 0 , 0.001 });
-		GetTransform().SetLocalPosition({ 640 , 320 , 1 });
+		//GetTransform().AddLocalRotation({ 100 * _Delta , 100 * _Delta , 100 * _Delta });
+		GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
 
 
 		for (size_t i = 0; i < VertexCount; i++)
 		{
-			VertexArr[i] = VertexArr[i] * GetTransform().GetLocalWorldMatrixRef();
-			//VertexArr[i].RotationXDeg(Angle);
-			//VertexArr[i].RotationYDeg(Angle);
-			//VertexArr[i].RotationZDeg(Angle);
+			VertexArr[i] = VertexArr[i] * GetTransform().GetWorldMatrixRef();
 			VertexArrP[i] = VertexArr[i].ToWindowPOINT();
 		}
 		
@@ -116,7 +112,7 @@ void CPlayer::Render(float _Delta)
 		}	
 	}
 
-	GameEngineTransform& Check = GetTransform();
+	float4x4 Test = GetTransform().GetWorldMatrixRef();
 }
 
 
@@ -128,4 +124,4 @@ void CPlayer::Render(float _Delta)
 // 3. 크기, 자전, 이동으로 연산 <-- 하기전에 각도를 구해줌
 // 4. 포인트배열에 넣어주고 Polygon <--- 함수로 그려준다. 
 // 보통 버텍스는 합 1의 크기 (0.5,0.5) 로 설정하고 * Scale 로 크기를 늘려준다. 
-// 모든회사 공통은 아니지만 대부분은 그렇다. 
+// 모든회사 공통은 아니지만 대부분은 그렇다

@@ -16,4 +16,5 @@ void GameEngineTransform::TransformUpdate()
 	LocalPositionMatrix.Pos(LocalPosition);
 
 	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
+	WorldMatrix = LocalWorldMatrix;
 }

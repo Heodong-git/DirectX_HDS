@@ -23,7 +23,6 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<CStageLevel_01>();
 	GameEngineCore::CreateLevel<CStageLevel_02>();
 
-
 	GameEngineCore::CreateLevel<CTestLevel>();
 	GameEngineCore::ChangeLevel("CTestLevel");
 }

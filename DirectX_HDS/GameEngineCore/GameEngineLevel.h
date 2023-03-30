@@ -41,10 +41,12 @@ public:
 		// 2번인자로 아무것도 들어오지 않았다면
 		if (_Name == "")
 		{
-			// 생성한 클래스의 이름으로 
+			// 생성한 클래스의 이름으로.. 엥 여기서 추가 안한거같은데 
 			const type_info& Info = typeid(ActorType);
 			Name = Info.name();
 			Name.replace(0, 6, "");
+			// 임시
+			NewActor.get()->SetName(Name);
 		}
 
 		// 생성한 액터 초기화
@@ -64,8 +66,8 @@ public:
 protected:
 	// 로딩
 	virtual void Loading() = 0;
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override;
+	void Update(float _DeltaTime);
+	void Render(float _DeltaTime);
 
 private:
 	// 메인카메라 , UI카메라 

@@ -41,10 +41,11 @@ void GameEngineCore::EngineUpdate()
 		return;
 	}
 
+	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+	GameEngineInput::Update(TimeDeltaTime);
 	// 사운드업데이트
 	GameEngineSound::SoundUpdate();
-	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
-	// 키업데이트
+	// ?? 
 	GameEngineInput::Update(TimeDeltaTime);
 
 	// Test? 레벨이 타임이벤트의 업데이트를 실행

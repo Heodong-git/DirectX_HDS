@@ -1,5 +1,8 @@
 #include "CBoss_HeadHunter.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCamera.h>
+
 
 CBoss_HeadHunter::CBoss_HeadHunter()
 {
@@ -29,11 +32,11 @@ void CBoss_HeadHunter::Render(float _Delta)
 	
 	GetTransform().SetLocalScale({ 100, 100 , 100 });
 	GetTransform().AddLocalRotation({ 10 * _Delta , 0 , 10 * _Delta});
-	GetTransform().SetLocalPosition({ 100, 100 });
+	GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
 
 	for (int i = 0; i < 4; ++i)
 	{
-		ArrVertex[i] = ArrVertex[i] * GetTransform().GetLocalWorldMatrixRef();
+		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
 		//SetPixel(Dc, ArrVertex[i].x, ArrVertex[i].y, RGB(255, 0, 0));
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}

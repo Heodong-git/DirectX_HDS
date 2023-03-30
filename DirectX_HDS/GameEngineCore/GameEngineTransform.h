@@ -35,7 +35,6 @@ public:
 		TransformUpdate();
 	}
 
-	// 
 	void AddLocalScale(const float4& _Value)
 	{
 		LocalScale += _Value;
@@ -54,6 +53,35 @@ public:
 		TransformUpdate();
 	}
 
+	float4 GetLocalForwardVector()
+	{
+		return LocalWorldMatrix.ArrVector[2].NormalizeReturn();
+	}
+
+	float4 GetLocalUpVector()
+	{
+		return LocalWorldMatrix.ArrVector[1].NormalizeReturn();
+	}
+
+	float4 GetLocalRightVector()
+	{
+		return LocalWorldMatrix.ArrVector[0].NormalizeReturn();
+	}
+
+	float4 GetLocalPosition()
+	{
+		return LocalPosition;
+	}
+
+	float4 GetLocalScale()
+	{
+		return LocalScale;
+	}
+
+	float4 GetLocalRotation()
+	{
+		return LocalRotation;
+	}
 	// 월드매트릭스 반환
 	float4x4 GetLocalWorldMatrix()
 	{
@@ -64,6 +92,22 @@ public:
 	const float4x4& GetLocalWorldMatrixRef()
 	{
 		return LocalWorldMatrix;
+	}
+
+	const float4x4 GetWorldMatrix()
+	{
+		return WorldMatrix;
+	}
+
+	const float4x4& GetWorldMatrixRef()
+	{
+		return WorldMatrix;
+	}
+
+	inline const void SetView(const float4x4& _View)
+	{
+		View = _View;
+		WorldMatrix = WorldMatrix * View;
 	}
 
 protected:
@@ -85,5 +129,7 @@ private:
 
 	// 크기 * 회전 * 이동
 	float4x4 LocalWorldMatrix;
+	float4x4 WorldMatrix;
+	float4x4 View;
 };
 
