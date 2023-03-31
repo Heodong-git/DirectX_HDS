@@ -6,7 +6,17 @@
 #include <Windows.h>
 #include <vector>
 
-// final 키워드 : 더이상 상속을 내리지 못하고 무언가 더 연장하지 못함
+// dx함수들
+// 다이렉트용 벡터
+#include <d3d11_4.h>
+#include <d3dcompiler.h>
+#include <DirectXPackedVector.h>
+
+#pragma comment(lib, "d3d11")
+#pragma comment(lib, "d3dcompiler")
+#pragma comment(lib, "dxguid")
+
+// 상속불가
 class GameEngineMath final
 {
 public:
@@ -49,6 +59,7 @@ public:
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
+	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
 	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
 	{
 		float4 Left = _Left;
@@ -64,36 +75,37 @@ public:
 		return Angle;
 	}
 
-
-	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
+	// 벡터외적 후 Normalize 리턴 
 	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
 	{
 		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
 	}
 
-	// 벡터 외적
-	// x y z x
-	//  x x x     <-- 곱셈부호 , 이러한 형태로 벡터를 교차시켜 곱한다.  
-	// x y z x
+	// 외적
+	// 면의 앞뒤구분, 무언가를 바라봐야할때 ( 더빠르게 회전할 수 있는 방향 )
+	// 외적의 핵심은 수직인 벡터가 나온다는 것.
 	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
-		float4 ReturnValue;
-		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
-		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
-		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
+		//float4 ReturnValue;
+		//ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
+		//ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
+		//ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
+		float4 ReturnValue = DirectX::XMVector3Cross(_Left, _Right);
 		return ReturnValue;
 	}
 
 	// 내적
+	// 내가 돌아야할 각도가 나온다. 
 	static float DotProduct3D(const float4& _Left, const float4& _Right)
 	{
 		//            1         1          1          0          0          0
-		float Value = _Left.x * _Right.x + _Left.y * _Right.y + _Left.z * _Right.z;
-		return Value;
+		// float Value = _Left.x * _Right.x + _Left.y * _Right.y + _Left.z * _Right.z;
+
+		float4 ReturnValue = DirectX::XMVector3Dot(_Left, _Right);
+		return ReturnValue.x;
 	}
 
 public:
-	// 유니온
 	union
 	{
 		struct
@@ -105,6 +117,13 @@ public:
 		};
 
 		float Arr1D[4];
+
+
+		// 윈도우 지원 수학연산 가속(SIMD연산)을 사용하기 위한 다이렉트가 제공해주는 벡터 
+		// 32비트에선 사용불가능
+		DirectX::XMFLOAT3 DirectFloat3;
+		DirectX::XMFLOAT4 DirectFloat4;
+		DirectX::XMVECTOR DirectVector;
 	};
 
 	float4()
@@ -131,22 +150,28 @@ public:
 
 	}
 
+	float4(DirectX::FXMVECTOR _Vector)
+		: DirectVector(_Vector)
+	{
+
+	}
+
 	int ix() const
 	{
 		return static_cast<int>(x);
 	}
 
-	int iy() const 
+	int iy() const
 	{
 		return static_cast<int>(y);
 	}
 
-	int iz() const 
+	int iz() const
 	{
 		return static_cast<int>(z);
 	}
 
-	int iw() const 
+	int iw() const
 	{
 		return static_cast<int>(w);
 	}
@@ -192,12 +217,11 @@ public:
 		return w * 0.5f;
 	}
 
-	float GetAnagleDegZ() 
+	float GetAnagleDegZ()
 	{
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
-	// 각축으로 회전시키고, 그 회전시킨 값을 반환한다. 
 	float4 RotationXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
@@ -218,7 +242,7 @@ public:
 		ReturnValue.RotationZRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
-	
+
 	void RotationXDeg(float _Deg)
 	{
 		RotationXRad(_Deg * GameEngineMath::DegToRad);
@@ -242,10 +266,6 @@ public:
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
-		// functon(1) == 50; 1을 50으로 바꾸는 함수
-		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
-		
-		// cosf(각도);
 
 		float Result = acosf(AngleCheck.x);
 
@@ -257,14 +277,14 @@ public:
 
 	}
 
-	POINT ToWindowPOINT() 
+	POINT ToWindowPOINT()
 	{
 		return POINT(ix(), iy());
 	}
 
 	float4 half() const
 	{
-		return {x * 0.5f,y * 0.5f,z * 0.5f,w};
+		return { x * 0.5f,y * 0.5f,z * 0.5f,w };
 	}
 
 	bool IsZero() const
@@ -277,17 +297,12 @@ public:
 		return sqrtf(x * x + y * y + z * z);
 	}
 
-	// 2, 0
-	// 0, 2
-	void Normalize() 
+	// 노말라이즈
+	void Normalize()
 	{
-		float SizeValue = Size();
-		x /= SizeValue;
-		y /= SizeValue;
-		z /= SizeValue;
+		DirectVector = DirectX::XMVector3Normalize(*this);
 	}
 
-	// 길이를 1로 만들어서 반환 
 	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
@@ -298,7 +313,7 @@ public:
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
 		// 1.5 + 0.5 * 2.5;
-		return Start * (1.0f - Ratio) + (End * Ratio);
+		return DirectX::XMVectorLerp(Start, End, Ratio);
 	}
 
 	static float4 LerpClamp(const float4& Start, const float4& End, float Ratio)
@@ -316,6 +331,11 @@ public:
 		return Lerp(Start, End, Ratio);
 	}
 
+	operator DirectX::FXMVECTOR() const
+	{
+		return DirectVector;
+	}
+
 	bool operator ==(const float4& _Value) const
 	{
 		return _Value.x == x && _Value.y == y && _Value.z == z;
@@ -323,107 +343,111 @@ public:
 
 	float4 operator *(const float _Value) const
 	{
-		float4 Return;
-		Return.x = x * _Value;
-		Return.y = y * _Value;
-		Return.z = z * _Value;
-		return Return;
+		return DirectX::XMVectorMultiply(*this, float4{ _Value , _Value , _Value , 1.0f });
 	}
+
 
 	float4 operator +(const float4& _Value) const
 	{
-		float4 Return;
-		Return.x = x + _Value.x;
-		Return.y = y + _Value.y;
-		Return.z = z + _Value.z;
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorAdd(*this, _Value);
+		Return.w = PrevW;
 		return Return;
 	}
 
 	float4 operator -(const float4& _Value) const
 	{
-		float4 Return;
-		Return.x = x - _Value.x;
-		Return.y = y - _Value.y;
-		Return.z = z - _Value.z;
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorAdd(*this, -_Value);
+		Return.w = PrevW;
 		return Return;
 	}
 
 	float4 operator *(const float4& _Value) const
 	{
-		float4 Return;
-		Return.x = x * _Value.x;
-		Return.y = y * _Value.y;
-		Return.z = z * _Value.z;
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorMultiply(*this, _Value);
+		Return.w = PrevW;
 		return Return;
 	}
 
 	float4 operator /(const float4& _Value) const
 	{
-		float4 Return;
-		Return.x = x / _Value.x;
-		Return.y = y / _Value.y;
-		Return.z = z / _Value.z;
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorDivide(*this, _Value);
+		Return.w = PrevW;
+		return Return;
+	}
+
+
+	float4 operator /(const float _Value) const
+	{
+		float PrevW = w;
+		float4 Return = DirectX::XMVectorDivide(*this, { _Value , _Value , _Value , _Value });
+		Return.w = PrevW;
 		return Return;
 	}
 
 	float4 operator -() const
 	{
-		return {-x, -y, -z, 1.0f};
+		return { -x, -y, -z, w };
 	}
 
-	float4& operator +=(const float4& _Other) 
+	float4& operator +=(const float4& _Other)
 	{
-		x += _Other.x;
-		y += _Other.y;
-		z += _Other.z;
+		*this = *this + _Other;
 		return *this;
 	}
 
 	float4& operator *=(const float _Value)
 	{
-		x *= _Value;
-		y *= _Value;
-		z *= _Value;
+		//x *= _Value;
+		//y *= _Value;
+		//z *= _Value;
+		*this = *this * _Value;
 		return *this;
 	}
 
 	float4& operator /=(const float _Value)
 	{
-		x /= _Value;
-		y /= _Value;
-		z /= _Value;
+		//x /= _Value;
+		//y /= _Value;
+		//z /= _Value;
+		*this = *this / _Value;
 		return *this;
 	}
 
-
 	float4& operator *=(const float4& _Other)
 	{
-		x *= _Other.x;
-		y *= _Other.y;
-		z *= _Other.z;
+		//x *= _Other.x;
+		//y *= _Other.y;
+		//z *= _Other.z;
+		*this = *this * _Other;
 		return *this;
 	}
 
 	float4& operator -=(const float4& _Other)
 	{
-		x -= _Other.x;
-		y -= _Other.y;
-		z -= _Other.z;
+		//x -= _Other.x;
+		//y -= _Other.y;
+		//z -= _Other.z;
+		*this = *this - _Other;
 		return *this;
 	}
 
 	float4& operator /=(const float4& _Other)
 	{
-		x /= _Other.x;
-		y /= _Other.y;
-		z /= _Other.z;
+		//x /= _Other.x;
+		//y /= _Other.y;
+		//z /= _Other.z;
+		*this = *this / _Other;
 		return *this;
 	}
 
 	float4 operator*(const class float4x4& _Other);
 	float4& operator*=(const class float4x4& _Other);
 
-	std::string ToString() 
+	std::string ToString()
 	{
 		char ArrReturn[256];
 
@@ -431,14 +455,13 @@ public:
 
 		return std::string(ArrReturn);
 	}
-
 };
 
 class CollisionData
 {
 public:
 	float4 Position;
-	float4 Scale; // x만 원의 반지름으로 본다.
+	float4 Scale; 
 
 	float Left() const
 	{
@@ -459,7 +482,7 @@ public:
 
 	float4 LeftTop() const
 	{
-		return float4{Left(), Top()};
+		return float4{ Left(), Top() };
 	}
 	float4 RightTop() const
 	{
@@ -475,18 +498,13 @@ public:
 	}
 };
 
-// 유니온으로 구성
-// float 1차원배열
-// float 2차원배열
-// float4 로 구성된 배열 세가지로 볼 수 있음 
 class float4x4
 {
 public:
 	static const float4x4 Zero;
+
 	static const int YCount = 4;
 	static const int XCount = 4;
-
-private:
 
 public:
 	union
@@ -494,8 +512,8 @@ public:
 		float Arr1D[16];
 		float Arr2D[4][4];
 		float4 ArrVector[4];
+		DirectX::XMMATRIX DirectMatrix;
 
-		// 
 		struct
 		{
 			float _00;
@@ -517,42 +535,45 @@ public:
 		};
 	};
 
-	// 행렬은 기본적으로 항등행렬을 기본으로 한다. 
-	// 항등행렬 : 모든 대각 원소들이 1이며, 나머지 원소들이 0인 정방행렬을 말한다.
 	void Identity()
 	{
-		memset(Arr1D, 0, sizeof(float) * 16);
+		DirectMatrix = DirectX::XMMatrixIdentity();
+
+		/*memset(Arr1D, 0, sizeof(float) * 16);
 		Arr2D[0][0] = 1.0f;
 		Arr2D[1][1] = 1.0f;
 		Arr2D[2][2] = 1.0f;
-		Arr2D[3][3] = 1.0f;
+		Arr2D[3][3] = 1.0f;*/
 	}
 
-	// 투영행렬 시야각 연산
+	//                                           1280 / 720
+	//                         수직시야각        화면의 종횡비   근평면      원평면
 	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
 	{
 		Identity();
 
-		// 수직시야각이라면
-		float FOV = _FovAngle * GameEngineMath::DegToRad;
-		//  _FovAngle * _AspectRatio;// 수평시야각 구하는법
+		DirectMatrix = DirectX::XMMatrixPerspectiveFovLH(_FovAngle * GameEngineMath::DegToRad, _AspectRatio, _NearZ, _FarZ);
 
-		// [0] [] [] []
-		// [] [0] [] []
-		// [] [] [0][1]
-		// [] [] [] [0]
-		Arr2D[2][3] = 1.0f;
-		Arr2D[3][3] = 0.0f;
+		//// 수직시야각이라면
+		//float FOV = _FovAngle * GameEngineMath::DegToRad;
+		////  _FovAngle * _AspectRatio;// 수평시야각 구하는법
 
-		Arr2D[0][0] = 1 / (tanf(FOV / 2.0f) * _AspectRatio);
+		//// [0] [] [] []
+		//// [] [0] [] []
+		//// [] [] [0][1]
+		//// [] [] [] [0]
+		//Arr2D[2][3] = 1.0f;
+		//Arr2D[3][3] = 0.0f;
 
-		// y 300
-		// z 5000
-		Arr2D[1][1] = 1 / tanf(FOV / 2.0f); // y / z
+		//Arr2D[0][0] = 1 / (tanf(FOV / 2.0f) * _AspectRatio);
 
-		Arr2D[2][2] = _FarZ / (_FarZ - _NearZ);
+		//// y 300
+		//// z 5000
+		//Arr2D[1][1] = 1 / tanf(FOV / 2.0f); // y / z
 
-		Arr2D[3][2] = -(_NearZ * _FarZ) / (_FarZ - _NearZ);
+		//Arr2D[2][2] = _FarZ / (_FarZ - _NearZ);
+
+		//Arr2D[3][2] = -( _NearZ * _FarZ) / (_FarZ - _NearZ);
 	}
 
 	//            화면의 너비
@@ -571,68 +592,80 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
-	// 뷰행렬 연산
-	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
+	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
 		Identity();
+		DirectMatrix = DirectX::XMMatrixLookToLH(_EyePos, _EyeDir, _EyeUp);
 
-		float4 EyePos = _EyePos;
 
-		// 합쳐져서 회전행렬이 된다.
-		float4 EyeDir = _EyeDir.NormalizeReturn();
-		float4 EyeUp = _EyeUp;
-		float4 Right = float4::Cross3DReturn(EyeUp, EyeDir);
-		Right.Normalize();
+		//float4 EyePos = _EyePos;
 
-		float4 UpVector = float4::Cross3DReturn(_EyeDir, Right);
-		Right.Normalize();
+		//// 합쳐져서 회전행렬이 된다.
+		//float4 EyeDir = _EyeDir.NormalizeReturn();
+		//float4 EyeUp = _EyeUp;
+		//float4 Right = float4::Cross3DReturn(EyeUp, EyeDir);
+		//Right.Normalize();
 
-		float4 NegEyePos = -_EyePos;
+		//float4 UpVector = float4::Cross3DReturn(_EyeDir, Right);
+		//Right.Normalize();
 
-		float D0Value = float4::DotProduct3D(Right, NegEyePos);
-		float D1Value = float4::DotProduct3D(UpVector, NegEyePos);
-		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
+		//float4 NegEyePos = -_EyePos;
 
-		// 여기서 내적을 사용합니다.
+		//float D0Value = float4::DotProduct3D(Right, NegEyePos);
+		//float D1Value = float4::DotProduct3D(UpVector, NegEyePos);
+		//float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
 
-		ArrVector[0] = Right;
-		ArrVector[1] = UpVector;
-		ArrVector[2] = EyeDir;
+		//// 여기서 내적을 사용합니다.
+		//// x + 1;
+		//// 역함수 혹은 역행렬이라고 부릅니다.
+		//// x - 1;
 
-		Transpose();
-		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
+		//ArrVector[0] = Right;
+		//ArrVector[1] = UpVector;
+		//ArrVector[2] = EyeDir;
+
+		//Transpose();
+
+		//ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
 	}
 
-	// 역행렬 연산, 항등행렬의 1 인 부분을 선을 긋고
-	// 서로 반대로 뒤집어 준다고 생각하면 쉬움.
+	// 전치행렬이라고도 한다. 
+	// 항등행렬을 기준으로 1인 부분을 반으로 갈라서 서로 반전시켜주는 거라고 보면 된다.
 	void Transpose()
 	{
-		float4x4 This = *this;
-		Identity();
-		for (size_t y = 0; y < YCount; y++)
-		{
-			for (size_t x = 0; x < XCount; x++)
-			{
-				Arr2D[x][y] = This.Arr2D[y][x];
-			}
-		}
+		// 0   , 0, -1
+		// 100 , 1,  0
+		// 1   , 0,  0
+
+		// 0 , 100,  1
+		// 0,    1,  0
+		// -1 ,  0,  0
+		DirectMatrix = DirectX::XMMatrixTranspose(*this);
+
+		//float4x4 This = *this;
+		//Identity();
+		//for (size_t y = 0; y < YCount; y++)
+		//{
+		//	for (size_t x = 0; x < XCount; x++)
+		//	{
+		//		Arr2D[x][y] = This.Arr2D[y][x];
+		//	}
+		//}
 
 	}
-	// 크기행렬 
+
+
 	void Scale(const float4& _Value)
 	{
 		//100, 0 , 0 , 0
 		// 0 ,100, 0 , 0
 		// 0 , 0 ,100, 0
 		// 0 , 0 , 0 , 1
-
 		Identity();
-		Arr2D[0][0] = _Value.x;
-		Arr2D[1][1] = _Value.y;
-		Arr2D[2][2] = _Value.z;
+		DirectMatrix = DirectX::XMMatrixScalingFromVector(_Value);
 	}
 
-	// 위치행렬 
+	// 위치변환 = w, w를 신경써주어야함 
 	void Pos(const float4& _Value)
 	{
 		//  0   1   2   3
@@ -640,11 +673,12 @@ public:
 		//1 0 , 0,  0 , 0
 		//2 0 , 0 , 0 , 0
 		//3 200, 200 , 200 , 1
-
 		Identity();
-		Arr2D[3][0] = _Value.x;
-		Arr2D[3][1] = _Value.y;
-		Arr2D[3][2] = _Value.z;
+		DirectMatrix = DirectX::XMMatrixTranslationFromVector(_Value);
+
+		//Arr2D[3][0] = _Value.x;
+		//Arr2D[3][1] = _Value.y;
+		//Arr2D[3][2] = _Value.z;
 	}
 
 	void RotationDeg(const float4& _Deg)
@@ -656,14 +690,15 @@ public:
 
 		// 기본적으로 쿼터니온 회전이라는걸 사용하는데 
 		// 짐벌락 해결함.
-		float4x4 RotX = float4x4::Zero;
-		float4x4 RotY = float4x4::Zero;
-		float4x4 RotZ = float4x4::Zero;
-		RotX.RotationXDeg(_Deg.x);
-		RotY.RotationYDeg(_Deg.y);
-		RotZ.RotationZDeg(_Deg.z);
+		//float4x4 RotX = float4x4::Zero;
+		//float4x4 RotY = float4x4::Zero;
+		//float4x4 RotZ = float4x4::Zero;
+		//RotX.RotationXDeg(_Deg.x);
+		//RotY.RotationYDeg(_Deg.y);
+		//RotZ.RotationZDeg(_Deg.z);
 
-		*this = RotX * RotY * RotZ;
+		// *this = RotX * RotY * RotZ;
+		DirectMatrix = DirectX::XMMatrixRotationRollPitchYawFromVector(_Deg * GameEngineMath::DegToRad);
 	}
 
 	void RotationXDeg(const float _Deg)
@@ -674,10 +709,12 @@ public:
 	void RotationXRad(const float _Rad)
 	{
 		Identity();
-		Arr2D[1][1] = cosf(_Rad);
-		Arr2D[1][2] = sinf(_Rad);
-		Arr2D[2][1] = -sinf(_Rad);
-		Arr2D[2][2] = cosf(_Rad);
+
+		DirectMatrix = DirectX::XMMatrixRotationX(_Rad);
+		//Arr2D[1][1] = cosf(_Rad);
+		//Arr2D[1][2] = sinf(_Rad);
+		//Arr2D[2][1] = -sinf(_Rad);
+		//Arr2D[2][2] = cosf(_Rad);
 	}
 
 	void RotationYDeg(const float _Deg)
@@ -688,10 +725,13 @@ public:
 	void RotationYRad(const float _Rad)
 	{
 		Identity();
-		Arr2D[0][0] = cosf(_Rad);
-		Arr2D[0][2] = -sinf(_Rad);
-		Arr2D[2][0] = sinf(_Rad);
-		Arr2D[2][2] = cosf(_Rad);
+
+		DirectMatrix = DirectX::XMMatrixRotationY(_Rad);
+
+		//Arr2D[0][0] = cosf(_Rad);
+		//Arr2D[0][2] = -sinf(_Rad);
+		//Arr2D[2][0] = sinf(_Rad);
+		//Arr2D[2][2] = cosf(_Rad);
 	}
 
 	void RotationZDeg(const float _Deg)
@@ -702,12 +742,13 @@ public:
 	void RotationZRad(const float _Rad)
 	{
 		Identity();
-		Arr2D[0][0] = cosf(_Rad);
-		Arr2D[0][1] = sinf(_Rad);
-		Arr2D[1][0] = -sinf(_Rad);
-		Arr2D[1][1] = cosf(_Rad);
-	}
+		DirectMatrix = DirectX::XMMatrixRotationZ(_Rad);
 
+		//Arr2D[0][0] = cosf(_Rad);
+		//Arr2D[0][1] = sinf(_Rad);
+		//Arr2D[1][0] = -sinf(_Rad);
+		//Arr2D[1][1] = cosf(_Rad);
+	}
 
 	float4x4 operator*(const float4x4& _Other)
 	{
@@ -716,34 +757,59 @@ public:
 		//  0 , 0,  0 , 0          *   		  0 , 0,  0 , 0  =  0 , 0,  0 , 0
 		//  0 , 0 , 0 , 0			   		  0 , 0 , 0 , 0	    0 , 0 , 0 , 0
 
-		this->Arr2D;
-		_Other.Arr2D;
+		//this->Arr2D;
+		//_Other.Arr2D;
 
-		float4x4 Return = Zero;
-		for (size_t y = 0; y < YCount; y++)
-		{
-			for (size_t x = 0; x < XCount; x++)
-			{
-				for (size_t j = 0; j < 4; j++)
-				{
-					Return.Arr2D[y][x] += Arr2D[y][j] * _Other.Arr2D[j][x];
-				}
-			}
-		}
+		//float4x4 Return = Zero;
+		//for (size_t y = 0; y < YCount; y++)
+		//{
+		//	for (size_t x = 0; x < XCount; x++)
+		//	{
+		//		for (size_t j = 0; j < 4; j++)
+		//		{
+		//			Return.Arr2D[y][x] += Arr2D[y][j] * _Other.Arr2D[j][x];
+		//		}
+		//	}
+		//}
 
+		float4x4 Return = DirectX::XMMatrixMultiply(*this, _Other);
 		return Return;
 	}
 
 	float4x4& operator*=(const float4x4& _Other)
 	{
-		*this = *this * _Other;
-
+		// *this = *this * _Other;
+		DirectMatrix = DirectX::XMMatrixMultiply(*this, _Other);
 		return *this;
+	}
+
+	// w 가 0인 곱하기
+	float4 TransformNormal(const float4& _Value)
+	{
+		return DirectX::XMVector3TransformNormal(_Value, *this);
+	}
+
+	// w 가 1인 곱하기
+	// 보통 coord를 사용하는 것이 일반적이지만 일단 w 에 1.0f 을 입력해주는 방식으로 진행할거임
+	float4 TransformCoord(const float4& _Value)
+	{
+		return DirectX::XMVector3TransformCoord(_Value, *this);
+	}
+
+	operator DirectX::FXMMATRIX() const
+	{
+		return DirectMatrix;
 	}
 
 	float4x4()
 	{
 		Identity();
+	}
+
+	float4x4(DirectX::FXMMATRIX _DirectMatrix)
+		: DirectMatrix(_DirectMatrix)
+	{
+
 	}
 
 	float4x4(float4 _x, float4 _y, float4 _z, float4 _w)
@@ -753,4 +819,6 @@ public:
 		ArrVector[2] = _z;
 		ArrVector[3] = _w;
 	}
+
 };
+

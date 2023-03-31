@@ -71,22 +71,25 @@ void CPlayer::Render(float _Delta)
 		VertexArr[23] = VertexArr[3].RotationXDegReturn(-90.0f);
 		
 		// 크기
+		float Check1 = VertexArr[0].w;
 		GetTransform().SetLocalScale({ 100 , 100, 100 });
-		// 회전
 
+		// 회전
+		float Check2 = VertexArr[0].w;
 		// 카메라 매트릭스 세팅
 		// 인자로 카메라의 뷰행렬, 투영행렬 
 		GetTransform().SetCameraMatrix(GetLevel()->GetMainCamera()->GetView(), GetLevel()->GetMainCamera()->GetProjection());
 
-
 		for (size_t i = 0; i < VertexCount; i++)
 		{
+			// 후.. 
+			float4x4 Check3 = GetTransform().GetWorldMatrixRef();
 			VertexArr[i] = VertexArr[i] * GetTransform().GetWorldMatrixRef();
 
 			// 투영행렬의 핵심
+			float Check = VertexArr[i].w;
 			VertexArr[i] /= VertexArr[i].w;
 			VertexArr[i].w = 1.0f;
-
 			VertexArr[i] *= GetLevel()->GetMainCamera()->GetViewPort();
 
 			VertexArrP[i] = VertexArr[i].ToWindowPOINT();

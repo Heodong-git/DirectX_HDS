@@ -107,7 +107,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 	float4 EyePos = GetTransform().GetLocalPosition();
 
 	// 뷰행렬 연산
-	View.LookAtLH(EyePos, EyeDir, EyeUp);
+	View.LookToLH(EyePos, EyeDir, EyeUp);
 
 	// 투영행렬 시야각 연산
 	Projection.PerspectiveFovLH(60.0f, GameEngineWindow::GetScreenSize().x / GameEngineWindow::GetScreenSize().y, Near, Far);
