@@ -521,6 +521,32 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	// 투영행렬 시야각 연산
+	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	{
+		Identity();
+
+		// 수직시야각이라면
+		float FOV = _FovAngle * GameEngineMath::DegToRad;
+		//  _FovAngle * _AspectRatio;// 수평시야각 구하는법
+
+		// [0] [] [] []
+		// [] [0] [] []
+		// [] [] [0][1]
+		// [] [] [] [0]
+		Arr2D[2][3] = 1.0f;
+		Arr2D[3][3] = 0.0f;
+
+		Arr2D[0][0] = 1 / tanf(FOV / 2.0f) * _AspectRatio;
+
+		// y 300
+		// z 5000
+		Arr2D[1][1] = 1 / tanf(FOV / 2.0f); // y / z
+
+		Arr2D[2][2] = _FarZ / (_FarZ - _NearZ);
+
+		Arr2D[3][2] = -(_NearZ * _FarZ) / (_FarZ - _NearZ);
+	}
 	// 뷰행렬 연산
 	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
@@ -545,12 +571,29 @@ public:
 
 		// 여기서 내적을 사용합니다.
 
-		ArrVector[0] = { 1, 0, 0, 0 };
-		ArrVector[1] = { 0, 1, 0, 0 };
-		ArrVector[2] = { 0, 0, 1, 0 };
+		ArrVector[0] = Right;
+		ArrVector[1] = UpVector;
+		ArrVector[2] = EyeDir;
+
+		Transpose();
 		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
 	}
 
+	// 역행렬 연산, 항등행렬의 1 인 부분을 선을 긋고
+	// 서로 반대로 뒤집어 준다고 생각하면 쉬움.
+	void Transpose()
+	{
+		float4x4 This = *this;
+		Identity();
+		for (size_t y = 0; y < YCount; y++)
+		{
+			for (size_t x = 0; x < XCount; x++)
+			{
+				Arr2D[x][y] = This.Arr2D[y][x];
+			}
+		}
+
+	}
 	// 크기행렬 
 	void Scale(const float4& _Value)
 	{

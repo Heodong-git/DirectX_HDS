@@ -45,9 +45,6 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	// 사운드업데이트
 	GameEngineSound::SoundUpdate();
-	// ?? 
-	GameEngineInput::Update(TimeDeltaTime);
-
 	// Test? 레벨이 타임이벤트의 업데이트를 실행
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);

@@ -27,6 +27,11 @@ private:
 	bool FreeCamera = false;
 
 	float4x4 View;
+	// 투영
 	float4x4 Projection;
+
+	// 최소거리, 최대거리 
+	float Near = 0.1f;
+	float Far = 10000.0f;
 };
 

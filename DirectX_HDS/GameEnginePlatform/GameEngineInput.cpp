@@ -112,6 +112,7 @@ bool GameEngineInput::IsKey(const std::string_view& _Name)
 	return Keys.end() != Keys.find(UpperName);
 }
 
+// 키생성시에 toupper 를 삭제했으니 입력한 이름 그대로 사용해야함
 void GameEngineInput::CreateKey(const std::string_view& _Name, int _Key)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
@@ -120,8 +121,6 @@ void GameEngineInput::CreateKey(const std::string_view& _Name, int _Key)
 	{
 		MsgAssert("이미 존재하는 이름의 크기를 또 만들려고 했습니다.");
 	}
-
-	_Key = toupper(_Key);
 
 	Keys[UpperName].Key = _Key;
 }

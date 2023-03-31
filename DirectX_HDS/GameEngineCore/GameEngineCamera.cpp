@@ -1,5 +1,6 @@
 #include "GameEngineCamera.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -20,6 +21,14 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("CamMoveDown", 'E');
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
+
+		GameEngineInput::CreateKey("RotX+", 'U');
+		GameEngineInput::CreateKey("RotX-", 'I');
+		GameEngineInput::CreateKey("RotY+", 'J');
+		GameEngineInput::CreateKey("RotY-", 'K');
+		GameEngineInput::CreateKey("RotZ+", 'N');
+		GameEngineInput::CreateKey("RotZ-", 'M');
+
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
 	}
@@ -35,6 +44,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 	if (true == FreeCamera)
 	{
 		float Speed = 200.0f;
+		float RotSpeed = 180.0f;
 
 		if (true == GameEngineInput::IsPress("SpeedBoost"))
 		{
@@ -65,6 +75,31 @@ void GameEngineCamera::Update(float _DeltaTime)
 		{
 			GetTransform().AddLocalPosition(float4::Back * Speed * _DeltaTime);
 		}
+
+		if (true == GameEngineInput::IsPress("RotY+"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, RotSpeed * _DeltaTime, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotY-"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, -RotSpeed * _DeltaTime, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotZ+"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, 0.0f, RotSpeed * _DeltaTime });
+		}
+		if (true == GameEngineInput::IsPress("RotZ-"))
+		{
+			GetTransform().AddLocalRotation({ 0.0f, 0.0f, -RotSpeed * _DeltaTime });
+		}
+		if (true == GameEngineInput::IsPress("RotX+"))
+		{
+			GetTransform().AddLocalRotation({ RotSpeed * _DeltaTime, 0.0f, 0.0f });
+		}
+		if (true == GameEngineInput::IsPress("RotX-"))
+		{
+			GetTransform().AddLocalRotation({ -RotSpeed * _DeltaTime, 0.0f, 0.0f });
+		}
 	}
 
 	float4 EyeDir = GetTransform().GetLocalForwardVector();
@@ -72,4 +107,5 @@ void GameEngineCamera::Update(float _DeltaTime)
 	float4 EyePos = GetTransform().GetLocalPosition();
 
 	View.LookAtLH(EyePos, EyeDir, EyeUp);
+	Projection.PerspectiveFovLH(60.0f, GameEngineWindow::GetScreenSize().x / GameEngineWindow::GetScreenSize().y, Near, Far);
 }
