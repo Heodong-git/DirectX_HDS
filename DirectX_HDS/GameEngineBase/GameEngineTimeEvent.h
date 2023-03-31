@@ -28,6 +28,7 @@ public:
 	GameEngineTimeEvent& operator=(const GameEngineTimeEvent& _Other) = delete;
 	GameEngineTimeEvent& operator=(GameEngineTimeEvent&& _Other) noexcept = delete;
 
+	// 이벤트추가시 동작하기까지의 시간, 이벤트의 종류, 이벤트매니저를 인자로한 함수
 	void AddEvent(float Time, std::function<void(TimeEvent&, GameEngineTimeEvent*)> _Event, bool _Loop = false);
 	void Update(float _DeltaTime);
 

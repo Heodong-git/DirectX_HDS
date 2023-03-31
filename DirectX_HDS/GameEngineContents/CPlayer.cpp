@@ -73,13 +73,22 @@ void CPlayer::Render(float _Delta)
 		// 크기
 		GetTransform().SetLocalScale({ 100 , 100, 100 });
 		// 회전
-		//GetTransform().AddLocalRotation({ 100 * _Delta , 100 * _Delta , 100 * _Delta });
-		GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
+
+		// 카메라 매트릭스 세팅
+		// 인자로 카메라의 뷰행렬, 투영행렬 
+		GetTransform().SetCameraMatrix(GetLevel()->GetMainCamera()->GetView(), GetLevel()->GetMainCamera()->GetProjection());
 
 
 		for (size_t i = 0; i < VertexCount; i++)
 		{
 			VertexArr[i] = VertexArr[i] * GetTransform().GetWorldMatrixRef();
+
+			// 투영행렬의 핵심
+			VertexArr[i] /= VertexArr[i].w;
+			VertexArr[i].w = 1.0f;
+
+			VertexArr[i] *= GetLevel()->GetMainCamera()->GetViewPort();
+
 			VertexArrP[i] = VertexArr[i].ToWindowPOINT();
 		}
 		
@@ -103,7 +112,9 @@ void CPlayer::Render(float _Delta)
 			// 이게 지금 한면만 안그리는게 아니라 면 세개를 안그리는거구나? 
 			// 안쪽 또는 바깥쪽에 있는 면을 그리지 않는거임. 
 			float4 Cross = float4::Cross3DReturn(Dir0, Dir1);
-			if (0 <= Cross.z)
+
+			// z축이 0보다 작다면 그리지 않음
+			if (0 >= Cross.z)
 			{
 				continue;
 			}

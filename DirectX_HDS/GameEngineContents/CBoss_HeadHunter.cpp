@@ -32,11 +32,18 @@ void CBoss_HeadHunter::Render(float _Delta)
 	
 	GetTransform().SetLocalScale({ 100, 100 , 100 });
 	GetTransform().AddLocalRotation({ 10 * _Delta , 0 , 10 * _Delta});
-	GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
+	
+	GetTransform().SetCameraMatrix(GetLevel()->GetMainCamera()->GetView(), GetLevel()->GetMainCamera()->GetProjection());
 
 	for (int i = 0; i < 4; ++i)
 	{
 		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
+
+		// 투영행렬의 핵심
+		ArrVertex[i] /= ArrVertex[i].w;
+		ArrVertex[i].w = 1.0f;
+
+		ArrVertex[i] *= GetLevel()->GetMainCamera()->GetViewPort();
 		//SetPixel(Dc, ArrVertex[i].x, ArrVertex[i].y, RGB(255, 0, 0));
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
