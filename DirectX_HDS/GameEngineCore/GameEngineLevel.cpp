@@ -2,6 +2,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 
+
 GameEngineLevel::GameEngineLevel()
 {
 	// 레벨은 생성될 때 반드시 카메라를 생성
@@ -33,7 +34,26 @@ void GameEngineLevel::Update(float _DeltaTime)
 		{
 			Actor->Update(_DeltaTime);
 		}
-	}
+	}	
+
+	/*std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator StartIter = Actors.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator EndIter = Actors.end();
+
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		std::list<std::shared_ptr<GameEngineActor>> Actorlist = (*StartIter).second;
+		
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStartIter = Actorlist.begin();
+		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEndIter = Actorlist.end();
+
+		for (; ActorStartIter != ActorEndIter; ++ActorStartIter)
+		{
+			if (nullptr != ActorStartIter->get())
+			{
+				ActorStartIter->get()->Update(_DeltaTime);
+			}
+		}
+	}*/
 }
 
 void GameEngineLevel::Render(float _DeltaTime)
@@ -48,6 +68,24 @@ void GameEngineLevel::Render(float _DeltaTime)
 			Actor->Render(_DeltaTime);
 		}
 	}
+
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator StartIter = Actors.begin();
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator EndIter = Actors.end();
+
+	//for (; StartIter != EndIter; ++StartIter)
+	//{
+	//	std::list<std::shared_ptr<GameEngineActor>> Actorlist = (*StartIter).second;
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ListStartIter = Actorlist.begin();
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ListEndIter = Actorlist.end();
+
+	//	for (; ListStartIter != ListEndIter; ++ListStartIter)
+	//	{
+	//		if (nullptr != ListStartIter->get())
+	//		{
+	//			ListStartIter->get()->Render(_DeltaTime);
+	//		}
+	//	}
+	//}
 }
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)

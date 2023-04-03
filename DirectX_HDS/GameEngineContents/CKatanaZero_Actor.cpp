@@ -7,3 +7,4 @@ CKatanaZero_Actor::CKatanaZero_Actor()
 CKatanaZero_Actor::~CKatanaZero_Actor()
 {
 }
+

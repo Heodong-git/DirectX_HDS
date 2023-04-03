@@ -10,8 +10,7 @@ GameEngineDirectory::GameEngineDirectory()
 GameEngineDirectory::~GameEngineDirectory() 
 {
 }
-
-// 
+ 
 void GameEngineDirectory::MoveParentToDirectory(const std::string_view& _String)
 {
 	std::string MovePath = "\\";

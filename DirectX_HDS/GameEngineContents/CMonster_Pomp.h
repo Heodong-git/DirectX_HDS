@@ -1,7 +1,7 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
-// 왜 Pomp인지 모름 
+// 왜 Pomp인지 모름 , 모히칸악당
 class CMonster_Pomp : public CKatanaZero_Actor
 {
 public:

@@ -1,7 +1,7 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
-// 설명 :
+// 보스 
 class CBoss_HeadHunter : public CKatanaZero_Actor
 {
 public:

@@ -17,11 +17,11 @@ public:
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
 
 protected:
-	void Update(float _Delta) override;
-	void Render(float _Delta) override;
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
 
 private:
-	float Angle = 0.0f;
 };
 
 // 파일입출력이 필수다. 

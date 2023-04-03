@@ -11,6 +11,10 @@ CPlayer::~CPlayer()
 {
 }
 
+void CPlayer::Start()
+{
+}
+
 void CPlayer::Update(float _Delta)
 {
 }
