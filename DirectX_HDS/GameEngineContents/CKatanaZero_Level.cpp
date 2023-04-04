@@ -13,7 +13,7 @@ void CKatanaZero_Level::Start()
 	
 }
 
-// GameEngineLevel 의 업데이트가 virtual 이 되어야될거같은데. 
+// GameEngineLevel 의 업데이트가 virtual 이 되어야될거같은데. 음. ㅇㅇ 
 void CKatanaZero_Level::Update(float _DeltaTime)
 {
 	if (110.0f >= GetTimeLimit())
@@ -24,7 +24,7 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	// 제한시간감소 
 	TimeDecrease(_DeltaTime);
 
-	GameEngineLevel::Update(_DeltaTime);
+	//GameEngineLevel::Update(_DeltaTime);
 }
 
 void CKatanaZero_Level::TimeOver()
