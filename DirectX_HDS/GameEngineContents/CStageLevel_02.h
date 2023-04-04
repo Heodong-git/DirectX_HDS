@@ -16,7 +16,7 @@ public:
 	CStageLevel_02& operator=(CStageLevel_02&& _Other) noexcept = delete;
 
 protected:
-	void Loading() override;
+	void Start() override;
 
 private:
 

@@ -59,17 +59,6 @@ public:
 		Name = _Name;
 	}
 
-	// 부모클래스 세팅, 반환
-	void SetParent(GameEngineObject* _Parent)
-	{
-		Parent = _Parent;
-	}
-
-	GameEngineObject* GetParent()
-	{
-		return Parent;
-	}
-
 	// 트랜스폼 반환 
 	GameEngineTransform& GetTransform()
 	{
@@ -81,16 +70,9 @@ protected:
 private:
 	std::string Name = "";
 	bool IsActive = true; 
-	bool IsDeath = false;
-
-	// shared ptr 의 순환참조를 방지하기 위해 부모의 주소값은 shared ptr X
-	// 순환참조 : shared ptr 로 만들어낸 객체가 서로가 서로를 shared_ptr로 가질 경우 발생하는 문제 
-	// 카운트가 1 밑으로 떨어지지 않아서 메모리 릭이 남게 된다. 
-
+	bool IsDeath = false;	
 	// 업데이트 오더
 	int Order = 0;
-	GameEngineObject* Parent = nullptr;
-	std::list<std::shared_ptr<GameEngineObject>> Child;
 
 	////////////////////////////////////////////////////////////// Transform 기하구조
 private:

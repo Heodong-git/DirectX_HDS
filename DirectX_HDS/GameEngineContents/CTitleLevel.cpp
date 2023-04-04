@@ -23,7 +23,7 @@ void TestF()
 }
 
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
-void CTitleLevel::Loading()
+void CTitleLevel::Start()
 {
 	// 람다 : 이름이 없는 함수를 만들어주는 기능
 	// 두개의 인자를 받는 function 객체에

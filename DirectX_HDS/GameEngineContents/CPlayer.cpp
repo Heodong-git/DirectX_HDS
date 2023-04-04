@@ -91,6 +91,7 @@ void CPlayer::Render(float _Delta)
 			VertexArr[i] = VertexArr[i] * GetTransform().GetWorldMatrixRef();
 
 			// 투영행렬의 핵심
+			// 아무튼 -1 ~ 1 사이에 쳐넣고 w는 1로, 그 후에 뷰포트행렬을 곱해서 원래크기로 만들어준다. 
 			float Check = VertexArr[i].w;
 			VertexArr[i] /= VertexArr[i].w;
 			VertexArr[i].w = 1.0f;

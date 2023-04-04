@@ -34,6 +34,7 @@ public:
 	// 타임오버
 	void TimeOver();
 protected:
+	void Start() override;
 	void Update(float _DeltaTime);
 
 private:

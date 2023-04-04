@@ -90,17 +90,17 @@
     <Filter Include="Player">
       <UniqueIdentifier>{306c1f54-a982-4dfa-a8da-431a99449836}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{14fbdd8a-955b-4069-ab9f-cf9992d1c077}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Monster">
       <UniqueIdentifier>{62f7222f-158e-442e-9378-401a6fa7fc7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ContentsObject">
-      <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Boss">
       <UniqueIdentifier>{bf96df3a-a71e-41a6-b52a-ab466f310450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{14fbdd8a-955b-4069-ab9f-cf9992d1c077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ContentsObject">
+      <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -13,9 +13,7 @@ GameEngineLevel::~GameEngineLevel()
 {
 }
 
-
-
-void GameEngineLevel::Loading()
+void GameEngineLevel::Start()
 {
 
 
@@ -91,7 +89,9 @@ void GameEngineLevel::Render(float _DeltaTime)
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
 {
 	_Actor->Level = this;
-	_Actor->SetParent(_Parent);
 	_Actor->SetOrder(_Order);
 	_Actor->Start();
+
+	// 리스트에 추가
+	Actors[_Order].push_back(_Actor);
 }

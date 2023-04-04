@@ -654,6 +654,18 @@ public:
 
 	}
 
+	void Inverse()
+	{
+		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
+	}
+
+	float4x4 InverseReturn() const
+	{
+		float4x4 Return = *this;
+		Return.Inverse();
+		return Return;
+	}
+
 
 	void Scale(const float4& _Value)
 	{
