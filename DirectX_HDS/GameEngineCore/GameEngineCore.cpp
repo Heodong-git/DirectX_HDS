@@ -101,7 +101,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	NextLevel = LevelMap[UpperName];
 }
 
-// 초기화시에 레벨로딩
+// 초기화시에 레벨 Start
 void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
 	_Level->Start();

@@ -654,6 +654,7 @@ public:
 
 	}
 
+	// ¿ªÇà·Ä 
 	void Inverse()
 	{
 		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);

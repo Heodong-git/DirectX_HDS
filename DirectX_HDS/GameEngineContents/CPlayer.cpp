@@ -3,6 +3,9 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include <GameEngineCore/GameEngineComponent.h>
+#include <GameEngineCore/GameEngineRenderer.h>
+
 CPlayer::CPlayer()
 {
 }
@@ -13,6 +16,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
+	
 }
 
 void CPlayer::Update(float _Delta)
