@@ -19,6 +19,8 @@ void GameEngineTransform::TransformUpdate()
 
 	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
 
+	// 스케일, 회전, 이동 , 공전, 부모 , 뷰행렬, 투영행렬, 뷰포트행렬 
+
 
 	// 부모가 없다면 
 	if (nullptr == Parent)

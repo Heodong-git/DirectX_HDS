@@ -195,6 +195,7 @@ private:
 	// 뷰포트행렬 
 	float4x4 ViewPort;
 
+	// 부모자식구조 
 	GameEngineTransform* Parent = nullptr;
 	std::list <GameEngineTransform*> Child;
 };

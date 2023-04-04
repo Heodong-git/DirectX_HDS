@@ -20,6 +20,7 @@ public:
 		m_TimeLimit = _Time;
 	}
 
+	// 제한시간 반환
 	inline float GetTimeLimit()
 	{
 		return m_TimeLimit;
@@ -39,5 +40,5 @@ protected:
 
 private:
 	// 임시, 스테이지의 제한시간
-	float m_TimeLimit = 180.0f;
+	float m_TimeLimit = 120.0f;
 };

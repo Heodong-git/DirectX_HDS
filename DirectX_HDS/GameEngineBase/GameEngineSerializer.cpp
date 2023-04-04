@@ -14,8 +14,6 @@ void GameEngineSerializer::BufferResize(size_t _Size)
 	Datas.resize(_Size);
 }
 
-// 값이 들어오게 되면
-// 주소값과 데이터의 크기를 넘겨준다.
 void GameEngineSerializer::Write(const int& _Value)
 {
 	Write(&_Value, sizeof(int));
