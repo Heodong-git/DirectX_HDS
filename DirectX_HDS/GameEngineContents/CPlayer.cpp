@@ -1,9 +1,9 @@
 #include "CPlayer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEnginePlatform/GameEngineInput.h>
+
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-
-#include <GameEngineCore/GameEngineComponent.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
 CPlayer::CPlayer()
@@ -16,16 +16,147 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
-	
+	if (false == GameEngineInput::IsKey("PlayerMoveLeft"))
+	{
+		GameEngineInput::CreateKey("PlayerMoveLeft", 'A');
+		GameEngineInput::CreateKey("PlayerMoveRight", 'D');
+		GameEngineInput::CreateKey("PlayerMoveUp", 'Q');
+		GameEngineInput::CreateKey("PlayerMoveDown", 'E');
+		GameEngineInput::CreateKey("PlayerMoveForward", 'W');
+		GameEngineInput::CreateKey("PlayerMoveBack", 'S');
+
+		GameEngineInput::CreateKey("PlayerScaleY+", 'Y');
+		GameEngineInput::CreateKey("PlayerScaleY-", 'U');
+		GameEngineInput::CreateKey("PlayerScaleZ+", 'H');
+		GameEngineInput::CreateKey("PlayerScaleZ-", 'J');
+		GameEngineInput::CreateKey("PlayerScaleX+", 'N');
+		GameEngineInput::CreateKey("PlayerScaleX-", 'M');
+
+
+		GameEngineInput::CreateKey("PlayerRotX+", 'R');
+		GameEngineInput::CreateKey("PlayerRotX-", 'T');
+		GameEngineInput::CreateKey("PlayerRotY+", 'F');
+		GameEngineInput::CreateKey("PlayerRotY-", 'G');
+		GameEngineInput::CreateKey("PlayerRotZ+", 'V');
+		GameEngineInput::CreateKey("PlayerRotZ-", 'B');
+		GameEngineInput::CreateKey("PlayerSpeedBoost", VK_LSHIFT);
+	}
+
+
+	// 나는 스케일을 1로 고정해 놓는게 좋다.
+	Render0 = CreateComponent<GameEngineRenderer>();
+	Render1 = CreateComponent<GameEngineRenderer>();
+	Render2 = CreateComponent<GameEngineRenderer>();
+
+	Render1->GetTransform()->DebugOn();
+
+	Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
+	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
 }
 
-void CPlayer::Update(float _Delta)
+void CPlayer::Update(float _DeltaTime)
 {
+	float RotSpeed = 180.0f;
+
+	float Speed = 200.0f;
+
+
+	if (true == GameEngineInput::IsPress("PlayerSpeedBoost"))
+	{
+		Speed = 500.0f;
+	}
+
+	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
+	{
+		GetTransform()->AddLocalPosition(float4::Left * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveRight"))
+	{
+		GetTransform()->AddLocalPosition(float4::Right * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveUp"))
+	{
+		GetTransform()->AddLocalPosition(float4::Up * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveDown"))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveForward"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveBack"))
+	{
+		GetTransform()->AddLocalPosition(float4::Back * Speed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("PlayerRotY+"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, RotSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotY-"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, -RotSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotZ+"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, 0.0f, RotSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotZ-"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, 0.0f, -RotSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotX+"))
+	{
+		GetTransform()->AddLocalRotation({ RotSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotX-"))
+	{
+		GetTransform()->AddLocalRotation({ -RotSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+
+	float ScaleSpeed = 10.0f;
+
+	if (true == GameEngineInput::IsPress("PlayerScaleY+"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, ScaleSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleY-"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, -ScaleSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleZ+"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, 0.0f, ScaleSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleZ-"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, 0.0f, -ScaleSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleX+"))
+	{
+		GetTransform()->AddLocalScale({ ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleX-"))
+	{
+		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+
+	// Render1->GetTransform()->SetWorldPosition({ 0.0f, 0.0f, 0.0f });
+	// 지금 문제가 x,y,z 축으로 회전을 하고나면 
+	// 가운데의 렌더러가 0으로 worldrotation 을 세팅해주었는데도 불구하고 회전함. 인가? 
+	Render1->GetTransform()->SetWorldRotation(float4{ 0 , 0, 0 });
+
+	GameEngineTransform* CheckTrans = Render1->GetTransform();
+
+
+	float4x4 Test = Render1->GetTransform()->GetLocalWorldMatrixRef();
+	int a = 0;
 }
 
 void CPlayer::Render(float _Delta)
 {
-
 }
 
 

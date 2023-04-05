@@ -1,10 +1,9 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
-#include <list>
-#include <memory>
+#include "GameEngineObjectBase.h"
 #include "GameEngineTransform.h"
 
-class GameEngineObject
+class GameEngineObject : public GameEngineObjectBase
 {
 	friend class GameEngineLevel;
 public:
@@ -25,55 +24,14 @@ public:
 	GameEngineObject& operator=(const GameEngineObject& _Other) = delete;
 	GameEngineObject& operator=(GameEngineObject&& _Other) noexcept = delete;
 
-	// 업데이트 순서 세팅 , 반환
-	int GetOrder()
+	GameEngineTransform* GetTransform()
 	{
-		return Order;
+		return &Transform;
 	}
-
-	void SetOrder(int _Order)
-	{
-		Order = _Order;
-	}
-
-	// 업데이트 On , Off 
-	void On()
-	{
-		IsActive = true;
-	}
-
-	void Off()
-	{
-		IsActive = false;
-	}
-
-	// 데스, 바로 죽는 게 아님
-	void Death()
-	{
-		IsDeath = true;
-	}
-
-	// 동적할당을 한번 줄이기 위해서 string_view 사용
-	void SetName(const std::string_view& _Name)
-	{
-		Name = _Name;
-	}
-
-	// 트랜스폼 반환 
-	GameEngineTransform& GetTransform()
-	{
-		return Transform;
-	}
-
 protected:
 
 private:
-	std::string Name = "";
-	bool IsActive = true; 
-	bool IsDeath = false;	
-	// 업데이트 오더
-	int Order = 0;
-
+	
 	////////////////////////////////////////////////////////////// Transform 기하구조
 private:
 	GameEngineTransform Transform;

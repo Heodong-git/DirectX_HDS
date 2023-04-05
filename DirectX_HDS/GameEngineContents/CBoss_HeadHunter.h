@@ -16,9 +16,10 @@ public:
 	CBoss_HeadHunter& operator=(CBoss_HeadHunter&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
 
 private:
-
+	std::shared_ptr<class GameEngineRenderer> Render0;
 };

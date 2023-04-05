@@ -35,6 +35,9 @@
     <ClInclude Include="GameEngineCollision.h">
       <Filter>Object\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineObjectBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -70,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
       <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineObjectBase.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

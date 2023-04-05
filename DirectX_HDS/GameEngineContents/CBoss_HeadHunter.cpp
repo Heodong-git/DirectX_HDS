@@ -2,6 +2,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineRenderer.h>
 
 
 CBoss_HeadHunter::CBoss_HeadHunter()
@@ -12,11 +13,17 @@ CBoss_HeadHunter::~CBoss_HeadHunter()
 {
 }
 
-void CBoss_HeadHunter::Update(float _Delta)
+void CBoss_HeadHunter::Start()
 {
+	//Render0 = CreateComponent<GameEngineRenderer>();
 }
 
-void CBoss_HeadHunter::Render(float _Delta)
+void CBoss_HeadHunter::Update(float _DeltaTime)
+{
+	//float4x4 Check = Render0->GetActor()->GetTransform()->GetWorldMatrixRef();
+}
+
+void CBoss_HeadHunter::Render(float _DeltaTime)
 {
 	
 }

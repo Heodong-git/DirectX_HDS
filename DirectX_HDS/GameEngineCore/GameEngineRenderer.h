@@ -16,6 +16,7 @@ public:
 	GameEngineRenderer& operator=(GameEngineRenderer&& _Other) noexcept = delete;
 
 protected:
+	void Render(float _Delta) override;
 
 private:
 

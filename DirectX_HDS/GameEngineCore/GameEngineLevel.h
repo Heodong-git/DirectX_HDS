@@ -4,7 +4,6 @@
 #include <string_view>
 #include <map>
 
-
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineLevel : public GameEngineUpdateObject
