@@ -143,13 +143,9 @@ void CPlayer::Update(float _DeltaTime)
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
 
-	// Render1->GetTransform()->SetWorldPosition({ 0.0f, 0.0f, 0.0f });
-	// 지금 문제가 x,y,z 축으로 회전을 하고나면 
-	// 가운데의 렌더러가 0으로 worldrotation 을 세팅해주었는데도 불구하고 회전함. 인가? 
 	Render1->GetTransform()->SetWorldRotation(float4{ 0 , 0, 0 });
 
 	GameEngineTransform* CheckTrans = Render1->GetTransform();
-
 
 	float4x4 Test = Render1->GetTransform()->GetLocalWorldMatrixRef();
 	int a = 0;
