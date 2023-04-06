@@ -4,9 +4,9 @@
 #include <map>
 #include <list>
 #include <memory>
-#include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineCore/GameEngineNameObject.h>
 
 template<typename ResourcesType>
 class GameEngineResource : public GameEngineNameObject

@@ -58,14 +58,13 @@ public:
 protected:
 
 private:
-	std::string Name = "";
 	bool ActiveValue = true; 
 	bool DeathValue = false; 
 	bool DebugValue = false;
 	int Order = 0;
 };
 
-
+//                                                         GameEngineNameObject <-- 얘는 그냥 따로 다중상속 
 //                               GameEngineObjectBase      -  GameEngineTransform
 //                                 GameEngineObject    
 //								GameEngineUpdateObject
