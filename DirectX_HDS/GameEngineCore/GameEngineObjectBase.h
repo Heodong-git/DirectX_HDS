@@ -44,11 +44,6 @@ public:
 		DeathValue = true;
 	}
 
-	// string_view 를 사용함으로써 동적할당을 한번 줄일 수 있음
-	void SetName(const std::string_view& _Name)
-	{
-		Name = _Name;
-	}
 
 	void DebugOn()
 	{

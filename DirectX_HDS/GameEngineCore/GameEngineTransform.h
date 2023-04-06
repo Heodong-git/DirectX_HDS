@@ -266,6 +266,7 @@ private:
 
 	float4 LocalScale = float4::One;
 	float4 LocalRotation = float4::Null;
+	Quaternion LocalQuaternion = DirectX::XMQuaternionIdentity();
 	float4 LocalPosition = float4::Zero;
 
 	float4 WorldScale = float4::One;
@@ -274,6 +275,7 @@ private:
 
 	float4x4 LocalScaleMatrix;
 	float4x4 LocalRotationMatrix;
+	Quaternion WorldQuaternion = DirectX::XMQuaternionIdentity();
 	float4x4 LocalPositionMatrix;
 
 	// scale * rotation * position

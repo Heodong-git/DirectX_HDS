@@ -44,8 +44,6 @@ public:
 			const type_info& Info = typeid(ActorType);
 			Name = Info.name();
 			Name.replace(0, 6, "");
-			// 임시
-			// NewActor.get()->SetName(Name);
 		}
 
 		// 생성한 액터 초기화

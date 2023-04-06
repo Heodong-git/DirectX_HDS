@@ -16,7 +16,8 @@ void GameEngineTransform::TransformUpdate()
 
 	LocalRotation.w = 0.0f;
 
-	LocalRotationMatrix.RotationDeg(LocalRotation);
+	LocalQuaternion = LocalRotation.EulerDegToQuaternion();
+	LocalRotationMatrix = LocalQuaternion.QuaternionToRotationMatrix();
 	//LocalRotationMatrix.RotationDegToXYZ(LocalRotation);
 	LocalPositionMatrix.Pos(LocalPosition);
 

@@ -144,9 +144,10 @@ void CPlayer::Update(float _DeltaTime)
 	}
 
 	Render1->GetTransform()->SetWorldRotation(float4{ 0 , 0, 0 });
-
+	//GetTransform()->SetLocalRotation(float4{ 0 , 0, 0 });
+	GameEngineTransform* ActorTrans = GetTransform();
 	GameEngineTransform* CheckTrans = Render1->GetTransform();
-
+ 
 	float4x4 Test = Render1->GetTransform()->GetLocalWorldMatrixRef();
 	int a = 0;
 }

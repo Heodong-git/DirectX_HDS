@@ -2,8 +2,10 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineObjectBase.h"
 #include "GameEngineTransform.h"
+#include <GameEngineCore/GameEngineNameObject.h>
 
-class GameEngineObject : public GameEngineObjectBase
+// 다중상속
+class GameEngineObject : public GameEngineObjectBase , public GameEngineNameObject
 {
 	friend class GameEngineLevel;
 public:

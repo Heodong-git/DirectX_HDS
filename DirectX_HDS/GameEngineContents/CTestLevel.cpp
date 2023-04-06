@@ -21,3 +21,4 @@ void CTestLevel::Start()
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>();
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
 }
+

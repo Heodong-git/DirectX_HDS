@@ -1,4 +1,6 @@
 #include "CKatanaZero_Level.h"
+#include <GameEngineBase/GameEngineDebug.h>
+
 
 CKatanaZero_Level::CKatanaZero_Level()
 {
@@ -8,21 +10,17 @@ CKatanaZero_Level::~CKatanaZero_Level()
 {
 }
 
-void CKatanaZero_Level::Start()
-{
-	
-}
-
 void CKatanaZero_Level::Update(float _DeltaTime)
 {
-	if (110.0f >= GetTimeLimit())
+	if (115.0f >= GetTimeLimit())
 	{
-		int a = 0;
+		MsgAssert("실험용");
 	}
 
 	// 제한시간감소 
 	TimeDecrease(_DeltaTime);
 
+	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
 	GameEngineLevel::Update(_DeltaTime);
 }
 

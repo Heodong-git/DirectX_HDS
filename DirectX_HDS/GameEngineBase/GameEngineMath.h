@@ -243,6 +243,15 @@ public:
 		return ReturnValue;
 	}
 
+	void RotationXRad(float _Rad);
+	void RotationYRad(float _Rad);
+	void RotationZRad(float _Rad);
+
+	float4 EulerDegToQuaternion();
+	class float4x4 QuaternionToRotationMatrix();
+	float4 QuaternionToEulerDeg();
+	float4 QuaternionToEulerRad();
+
 	void RotationXDeg(float _Deg)
 	{
 		RotationXRad(_Deg * GameEngineMath::DegToRad);
@@ -257,10 +266,6 @@ public:
 	{
 		RotationZRad(_Deg * GameEngineMath::DegToRad);
 	}
-
-	void RotationXRad(float _Rad);
-	void RotationYRad(float _Rad);
-	void RotationZRad(float _Rad);
 
 	float GetAnagleRadZ()
 	{
@@ -498,6 +503,8 @@ public:
 	}
 };
 
+typedef float4 Quaternion;
+
 class float4x4
 {
 public:
@@ -591,6 +598,36 @@ public:
 		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;
 		Arr2D[3][3] = 1.0f;
 	}
+
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	{
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeRotQuaternion(float4& _RotQuaternion)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &_RotQuaternion.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
+	void DecomposePos(float4& _Pos)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &Temp1.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeScale(float4& _Scale)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &Temp0.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
 
 	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
