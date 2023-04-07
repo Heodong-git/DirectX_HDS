@@ -44,6 +44,9 @@
     <ClInclude Include="GameEngineNameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDevice.h">
+      <Filter>Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -92,6 +95,9 @@
     <ClCompile Include="GameEngineNameObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDevice.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -111,6 +117,9 @@
     </Filter>
     <Filter Include="Object\Collision">
       <UniqueIdentifier>{b0488d95-b181-4875-bac8-2c2c94c0e7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{fd4191af-fd7d-4a7e-81b4-3afdc683cedc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

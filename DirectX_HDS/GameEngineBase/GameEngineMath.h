@@ -217,6 +217,50 @@ public:
 		return w * 0.5f;
 	}
 
+
+	// 반환타입 unsigned int ??? 
+	int uix() const
+	{
+		return static_cast<unsigned int>(x);
+	}
+
+	int uiy() const
+	{
+		return static_cast<unsigned int>(y);
+	}
+
+	int uiz() const
+	{
+		return static_cast<unsigned int>(z);
+	}
+
+	int uiw() const
+	{
+		return static_cast<unsigned int>(w);
+	}
+
+	int uhix() const
+	{
+		return static_cast<unsigned int>(x * 0.5f);
+	}
+
+	int uhiy() const
+	{
+		return static_cast<unsigned int>(y * 0.5f);
+	}
+
+	int uhiz() const
+	{
+		return static_cast<unsigned int>(z * 0.5f);
+	}
+
+	int uhiw() const
+	{
+		return static_cast<unsigned int>(w * 0.5f);
+	}
+
+
+
 	float GetAnagleDegZ()
 	{
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;

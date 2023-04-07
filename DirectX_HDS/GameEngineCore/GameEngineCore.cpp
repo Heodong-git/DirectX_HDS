@@ -5,6 +5,7 @@
 #include <GameEnginePlatform\GameEngineSound.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
+#include <GameEngineCore/GameEngineDevice.h>
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -20,6 +21,9 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
+	// 리소스 초기화 이전에 디바이스 초기화를 해준다.
+	GameEngineDevice::Initialize();
+
 	// Core Init 
 	CoreResourcesInit();
 
@@ -67,6 +71,7 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	// sharedptr 로 인해 메모리가 제거되는 걸 알고 있지만. 
 	CoreResourcesEnd();
+	GameEngineDevice::Release();
 }
 
 void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
