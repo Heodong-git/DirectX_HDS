@@ -55,7 +55,12 @@ void GameEngineCore::EngineUpdate()
 	// Test? 레벨이 타임이벤트의 업데이트를 실행
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
+
+	// 렌더링을 시작할 때 화면을 지워주고
+	GameEngineDevice::RenderStart();
+	// 렌더링
 	MainLevel->Render(TimeDeltaTime);
+	GameEngineDevice::RenderEnd();
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)

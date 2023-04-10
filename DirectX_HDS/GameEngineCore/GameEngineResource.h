@@ -7,6 +7,7 @@
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineCore/GameEngineNameObject.h>
+#include "GameEngineDevice.h"
 
 template<typename ResourcesType>
 class GameEngineResource : public GameEngineNameObject

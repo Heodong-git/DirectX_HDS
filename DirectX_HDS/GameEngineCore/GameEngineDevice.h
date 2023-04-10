@@ -15,6 +15,21 @@ public:
 	static void CreateSwapChain();
 	static void Release();
 
+	static void RenderStart();
+
+	static void RenderEnd();
+
+	static ID3D11Device* GetDevice()
+	{
+		return Device;
+	}
+
+	static ID3D11DeviceContext* GetContext()
+	{
+		return Context;
+	}
+
+
 	// HWND
 protected:
 
@@ -33,6 +48,8 @@ private:
 	//    다이렉트 x를 사용하는 화면도 여러개를 띄울수가 있는데 그 화면 1개를 담당하는 API로 치자면 백버퍼DC1개가 SwapChain
 	static IDXGISwapChain* SwapChain;
 	static IDXGIAdapter* GetHighPerformanceAdapter();
+
+	static std::shared_ptr<class GameEngineRenderTarget> BackBufferTarget;
 
 	// constrcuter destructer
 	GameEngineDevice();
