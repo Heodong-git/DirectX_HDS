@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
+// 얘한테 일정시간마다 액터정보저장하는 기능이 필요함
 class CKatanaZero_Level : public GameEngineLevel
 {
 public:

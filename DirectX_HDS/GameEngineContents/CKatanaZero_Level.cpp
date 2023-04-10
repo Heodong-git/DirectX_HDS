@@ -14,7 +14,7 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 {
 	if (115.0f >= GetTimeLimit())
 	{
-		MsgAssert("실험용");
+		//MsgAssert("실험용");
 	}
 
 	// 제한시간감소 

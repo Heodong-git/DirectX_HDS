@@ -2,8 +2,8 @@
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
-#include "GameEngineResource.h"
 
+#include "GameEngineResource.h"
 #include "GameEngineMesh.h"
 #include "GameEngineTexture.h"
 #include <memory>
@@ -47,9 +47,10 @@ void GameEngineCore::CoreResourcesInit()
 	ArrVertex[22] = ArrVertex[2].RotationXDegReturn(-90.0f);
 	ArrVertex[23] = ArrVertex[3].RotationXDegReturn(-90.0f);
 
+	// 인자로 넣어준 버텍스로 create 
 	GameEngineMesh::Create("Box", ArrVertex);
+	// 생성한 box 로 텍스쳐생성.. 이런 인터페이스인가
 	GameEngineTexture::Create("Box", "C:www");
-
 }
 
 void GameEngineCore::CoreResourcesEnd()

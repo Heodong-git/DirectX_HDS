@@ -2,7 +2,6 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
-// Ό³Έν :
 class GameEngineDevice
 {
 public:
@@ -13,9 +12,7 @@ public:
 	GameEngineDevice& operator=(GameEngineDevice&& _Other) noexcept = delete;
 
 	static void Initialize();
-
 	static void CreateSwapChain();
-
 	static void Release();
 
 	// HWND

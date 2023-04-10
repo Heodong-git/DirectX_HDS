@@ -21,7 +21,6 @@ public:
 		std::shared_ptr<GameEngineTexture> NewMesh = GameEngineResource::Create(_Name);
 	}
 
-
 protected:
 
 private:

@@ -44,6 +44,7 @@ IDXGIAdapter* GameEngineDevice::GetHighPerformanceAdapter()
 		IDXGIAdapter* CurAdapter = nullptr;
 
 		Factory->EnumAdapters(Adapterindex, &CurAdapter);
+
 		if (nullptr == CurAdapter)
 		{
 			break;
@@ -93,7 +94,6 @@ void GameEngineDevice::CreateSwapChain()
 	// 그래픽이미지 포맷
 	SwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	// 뭐였지?
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	// 이 스왑체인은 단순히 
@@ -101,36 +101,29 @@ void GameEngineDevice::CreateSwapChain()
 	// 쉐이더에서도 이걸 사용할수 있게 하겠다.
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
 
-	// 안티얼라이언싱 퀄리티 1짜리롤 
-	// 자동으로 최대치로 넣어달라는 겁니다.
+	// 안티앨리어싱 자동추가 
 	SwapChainDesc.SampleDesc.Quality = 0;
 	SwapChainDesc.SampleDesc.Count = 1;
 }
 
+// 디바이스초기화
 void GameEngineDevice::Initialize()
 {
-	// Com객체라고 해요.
-	// 9때는 
-	// Device->TextureLoad();
-	// Device->DrawMesh();
-
 	if (nullptr == GameEngineWindow::GetHWnd())
-	{
-		MsgAssert("윈도우가 만들어지지 않았는데 디바이스를 초가화 할수는 없습니다.");
+	{ 
+		MsgAssert("윈도우가 만들어지지 않았는데 디바이스를 초가화 할 수는 없습니다.");
 		return;
 	}
 
 	int iFlag = 0;
 
 #ifdef _DEBUG
-	// 다이렉트x도 디버그 기능을 지원하는데
+	// 다이렉트X 도 디버그 기능을 지원
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif
-
 	D3D_FEATURE_LEVEL Level = D3D_FEATURE_LEVEL_11_0;
 
-	// 이 어뎁터는 그래픽카드와 직접 연결되는 인터페이스
-	// 그래픽카드와 연결되는 인터페이스인데
+	// 그래픽카드와 직접 연결되는 인터페이스
 	IDXGIAdapter* Adapter = GetHighPerformanceAdapter();
 
 	if (nullptr == Adapter)
@@ -139,14 +132,14 @@ void GameEngineDevice::Initialize()
 		return;
 	}
 
-	// CPU로 그려
+	// CPU로 그린다. 
 	// D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_SOFTWARE
 
-	// 그래픽카드로 찾아서 그려줘.
+	// 그래픽카드로 찾아서 그린다 
 	// D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_HARDWARE
 
-	// sdk 소프트웨어 디벨롭먼트 키트
-	// 즉개발자에게 제공되는 lib header 라이브러리들의 총집합을 xxxx SDK
+	// 소프트웨어 디벨롭먼트 키트
+	// 개발자에게 제공되는 lib , header 등의 총집합을 SDK 라고 한다. 
 
 	// D3D11_SDK_VERSION 그냥 이 윈도우에서 지원하는 sdk 버전이 define
 
@@ -184,9 +177,7 @@ void GameEngineDevice::Initialize()
 		return;
 	}
 
-	// 윈도우와 연결하는 작업.
-	// 즉 백버퍼 만드는 작업을 하게 됩니다.
-
+	// 윈도우와 연결하는 작업, 백버퍼를 만드는 작업을 수행
 	CreateSwapChain();
 }
 
@@ -203,6 +194,4 @@ void GameEngineDevice::Release()
 		Context->Release();
 		Context = nullptr;
 	}
-
-
 }
