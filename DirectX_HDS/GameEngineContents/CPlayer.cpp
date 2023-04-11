@@ -17,6 +17,17 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
+	// 키생성
+	//if (false == GameEngineInput::IsKey("Attack"))
+	//{
+	//	// 음 이게 전부인가 이친구는? 
+	//	GameEngineInput::CreateKey("Attack", VK_LBUTTON);
+	//	GameEngineInput::CreateKey("Left_Move", 'A');
+	//	GameEngineInput::CreateKey("Right_Move", 'D');
+	//	GameEngineInput::CreateKey("Jump", 'W');
+	//	GameEngineInput::CreateKey("Landing", 'S');
+	//}
+
 	if (false == GameEngineInput::IsKey("PlayerMoveLeft"))
 	{
 		GameEngineInput::CreateKey("PlayerMoveLeft", 'A');
