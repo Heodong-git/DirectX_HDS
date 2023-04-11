@@ -2,6 +2,9 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
+// 임시, 아직쌤은 적용안함
+#include <memory>
+
 class GameEngineDevice
 {
 public:
@@ -35,7 +38,7 @@ protected:
 
 private:
 	// 다이렉트9에서는 Device 포인터로 모든 함수를 호출함.
-	// ID3D9Device*
+	// ID3D9Device*	
 
 	// 다이렉트11 부터는 2가지로 인터페이스가 분리되었다.
 	// 1. 리소스는 디바이스 인터페이스가 있다. 그래픽카드의 ram에 해당하는 부분에 대한 권한은 Device
@@ -49,6 +52,8 @@ private:
 	static IDXGISwapChain* SwapChain;
 	static IDXGIAdapter* GetHighPerformanceAdapter();
 
+	// 백버퍼에 그릴수 있는 권한을 shared ptr로 가진다. 고 볼 수 있음
+	// 백버퍼 (디바이스를 기준으로 SwapChain) 
 	static std::shared_ptr<class GameEngineRenderTarget> BackBufferTarget;
 
 	// constrcuter destructer

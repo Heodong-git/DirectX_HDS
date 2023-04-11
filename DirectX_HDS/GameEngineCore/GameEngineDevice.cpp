@@ -32,7 +32,6 @@ IDXGIAdapter* GameEngineDevice::GetHighPerformanceAdapter()
 	IDXGIAdapter* Adapter = nullptr;
 
 	// c++에서 지원하는 클래스를 구분하기 위한 GUI를 얻어오는 
-	// 
 	// MIDL_INTERFACE("7b7166ec-21c7-44ae-b21a-c9ae321ae369")
 	HRESULT HR = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&Factory);
 
@@ -106,20 +105,15 @@ void GameEngineDevice::CreateSwapChain()
 	// 쉐이더에서도 이걸 사용할수 있게 하겠다.
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
 
-	// 안티얼라이언싱 퀄리티 1짜리롤 
-	// 자동으로 최대치로 넣어달라는 겁니다.
+	// 안티앨리어싱
 	SwapChainDesc.SampleDesc.Quality = 0;
-
-	// Msaa가 1개 인지 켜겠다 였는지 기억이 안나요.
 	SwapChainDesc.SampleDesc.Count = 1;
-	// 켜기는 하겠다.
-
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
-	// 큰의미는 없음 화면사이즈 조정가능을 생각한 옵션인데 무시
+    // 화면조정을 위해 들어간 기능, 굳이 더 알려고 할 필요 X
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	// false면 전체화면 입니다.
+	// true - 창 , false - 전체
 	SwapChainDesc.Windowed = true;
 
 	IDXGIDevice* SwapDevice = nullptr;
@@ -157,8 +151,6 @@ void GameEngineDevice::CreateSwapChain()
 	SwapAdapter->Release();
 	SwapFactory->Release();
 
-	// 랜더타겟은 DC의 라고 보시면 됩니다.
-
 	ID3D11Texture2D* SwapBackBufferTexture = nullptr;
 
 	HRESULT Result = SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&SwapBackBufferTexture));
@@ -172,7 +164,6 @@ void GameEngineDevice::CreateSwapChain()
 	BackBufferTexture->Create(SwapBackBufferTexture);
 
 	BackBufferTarget = GameEngineRenderTarget::Create("MainBackBufferTarget", BackBufferTexture, { 0.0f, 0.0f, 1.0f, 1.0f });
-
 }
 
 void GameEngineDevice::RenderStart()
@@ -194,11 +185,6 @@ void GameEngineDevice::RenderEnd()
 
 void GameEngineDevice::Initialize()
 {
-	// Com객체라고 해요.
-	// 9때는 
-	// Device->TextureLoad();
-	// Device->DrawMesh();
-
 	if (nullptr == GameEngineWindow::GetHWnd())
 	{
 		MsgAssert("윈도우가 만들어지지 않았는데 디바이스를 초가화 할수는 없습니다.");
@@ -208,14 +194,13 @@ void GameEngineDevice::Initialize()
 	int iFlag = 0;
 
 #ifdef _DEBUG
-	// 다이렉트x도 디버그 기능을 지원하는데
+	// 다이렉트x도 디버그 기능을 지원
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 	D3D_FEATURE_LEVEL Level = D3D_FEATURE_LEVEL_11_0;
 
-	// 이 어뎁터는 그래픽카드와 직접 연결되는 인터페이스
-	// 그래픽카드와 연결되는 인터페이스인데
+	// 그래픽카드와 직접연결되는 인터페이스
 	IDXGIAdapter* Adapter = GetHighPerformanceAdapter();
 
 	if (nullptr == Adapter)
@@ -269,11 +254,10 @@ void GameEngineDevice::Initialize()
 		return;
 	}
 
-	// 윈도우와 연결하는 작업.
-	// 즉 백버퍼 만드는 작업을 하게 됩니다.
+	// 윈도우와 연결하는 작업
+	// 즉 백버퍼 만드는 작업을 하게 된다.
 	// 다이렉트 x에서 멀티쓰레드 관련 
 	Result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-
 	CreateSwapChain();
 }
 

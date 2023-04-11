@@ -26,16 +26,11 @@ public:
 
 	void Clear();
 
-
-
 protected:
 
 private:
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
-
 	std::shared_ptr<GameEngineTexture> Texture;
-
 	void Create(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
-
 };
 
