@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineCore.h"
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEnginePlatform\GameEngineWindow.h>

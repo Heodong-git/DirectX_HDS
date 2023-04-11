@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineTime.h"
 
 GameEngineTime GameEngineTime::GlobalTime;

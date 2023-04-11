@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "CKatanaZero_Level.h"
 #include <GameEngineBase/GameEngineDebug.h>
 

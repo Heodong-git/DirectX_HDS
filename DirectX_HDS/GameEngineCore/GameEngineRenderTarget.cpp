@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineRenderTarget.h"
 
 GameEngineRenderTarget::GameEngineRenderTarget()

@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineComponent.h"
 
 GameEngineComponent::GameEngineComponent()

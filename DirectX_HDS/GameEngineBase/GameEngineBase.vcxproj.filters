@@ -31,6 +31,7 @@
     <ClCompile Include="GameEngineTimeEvent.cpp">
       <Filter>Time</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -63,6 +64,7 @@
     <ClInclude Include="GameEngineTimeEvent.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">

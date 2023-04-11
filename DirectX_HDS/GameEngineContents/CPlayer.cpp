@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "CPlayer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>

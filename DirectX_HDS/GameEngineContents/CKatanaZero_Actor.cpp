@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "CKatanaZero_Actor.h"
 
 CKatanaZero_Actor::CKatanaZero_Actor()

@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "CStageLevel_01.h"
 #include "CPlayer.h"
 

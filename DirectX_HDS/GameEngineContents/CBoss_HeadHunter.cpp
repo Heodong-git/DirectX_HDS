@@ -1,3 +1,5 @@
+#include "PrecompileHeader.h"
+
 #include "CBoss_HeadHunter.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
