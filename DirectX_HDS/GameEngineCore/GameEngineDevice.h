@@ -2,9 +2,6 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
-// 임시, 아직쌤은 적용안함
-#include <memory>
-
 class GameEngineDevice
 {
 public:
