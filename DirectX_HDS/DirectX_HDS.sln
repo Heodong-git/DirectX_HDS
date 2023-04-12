@@ -45,6 +45,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{5088AA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "Shader\Shader.vcxproj", "{51D6463A-F96C-424D-ABF9-A2E4913B0EDD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "문서", "문서", "{983D2D95-703D-487E-B83D-1D90B986E7AC}"
+	ProjectSection(SolutionItems) = preProject
+		랜파.jpg = 랜파.jpg
+		수학.txt = 수학.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

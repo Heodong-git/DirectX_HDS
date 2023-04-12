@@ -1,7 +1,7 @@
 #pragma once
 #include "GameEngineResource.h"
 
-// 설명 :
+// 설명 : 
 class GameEngineRenderingPipeLine : public GameEngineResource<GameEngineRenderingPipeLine>
 {
 public:
@@ -15,6 +15,7 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
+	// 
 	void InputAssembler1();
 	void VertexShader();
 	void InputAssembler2();

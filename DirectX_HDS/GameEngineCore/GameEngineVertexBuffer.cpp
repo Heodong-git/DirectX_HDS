@@ -74,6 +74,5 @@ void GameEngineVertexBuffer::Setting()
 	// const UINT* pStrides, 버텍스 1개의 크기가 얼마야
 	// const UINT* pOffsets 버텍스 몇번째 부터 할까?
 
-
 	GameEngineDevice::GetContext()->IASetVertexBuffers(0, 1, &Buffer, &VertexSize, &Offset);
 }
