@@ -25,6 +25,21 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	GameEngineLevel::Update(_DeltaTime);
 }
 
+bool CKatanaZero_Level::RecordTimeCheck()
+{
+	return true;
+}
+
+// 일정 시간마다 현재 액터의 상태 등을 기록하여 저장
+void CKatanaZero_Level::RecordActor()
+{
+}
+
+// 저장된 정보들을 불러오고 역재생
+void CKatanaZero_Level::ReversePlay(float _DeltaTime)
+{
+}
+
 void CKatanaZero_Level::TimeOver()
 {
 	// 플레이어 사망, 자막출력 

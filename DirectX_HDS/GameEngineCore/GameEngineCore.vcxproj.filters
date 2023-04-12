@@ -60,6 +60,15 @@
     <ClInclude Include="GameEngineDirectBuffer.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineVertexShader.h">
+      <Filter>Object\Rendering\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineShader.h">
+      <Filter>Object\Rendering\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderingPipeLine.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -124,6 +133,15 @@
     <ClCompile Include="GameEngineDirectBuffer.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineVertexShader.cpp">
+      <Filter>Object\Rendering\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineShader.cpp">
+      <Filter>Object\Rendering\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderingPipeLine.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -146,6 +164,9 @@
     </Filter>
     <Filter Include="Device">
       <UniqueIdentifier>{fd4191af-fd7d-4a7e-81b4-3afdc683cedc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Shader">
+      <UniqueIdentifier>{4eb5422c-9000-4004-8460-09b424739235}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

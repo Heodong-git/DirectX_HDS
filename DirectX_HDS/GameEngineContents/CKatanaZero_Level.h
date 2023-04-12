@@ -31,14 +31,22 @@ public:
 	inline void TimeDecrease(float _DeltaTime)
 	{
 		m_TimeLimit -= _DeltaTime;
+		m_RecordTime -= _DeltaTime;
 	}
 
-	// 타임오버
-	void TimeOver();
 protected:
 	void Update(float _DeltaTime);
 
 private:
+	// 타임오버
+	void TimeOver();
+
+	// 타임체크
+	bool RecordTimeCheck();
+	void RecordActor();
+	void ReversePlay(float _DeltaTime);
+
 	// 임시, 스테이지의 제한시간
 	float m_TimeLimit = 120.0f;
+	float m_RecordTime = 120.0f;
 };

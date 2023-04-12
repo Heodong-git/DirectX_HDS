@@ -15,8 +15,7 @@ GameEngineRenderer::~GameEngineRenderer()
 
 void GameEngineRenderer::Render(float _Delta)
 {
-	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
-
+	
 	const int VertexCount = 24;
 
 	float4 ArrVertex[VertexCount];
@@ -76,9 +75,13 @@ void GameEngineRenderer::Render(float _Delta)
 
 	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
 
+	// 버텍스 쉐이더 단계
 	for (size_t i = 0; i < VertexCount; i++)
 	{
+		// 버텍스 쉐이더 : 
 		ArrVertex[i] = ArrVertex[i] * GetTransform()->GetWorldViewProjectionMatrixRef();
+
+		// 레스터라이저
 		// 투영행렬의 핵심
 		ArrVertex[i] /= ArrVertex[i].w;
 
@@ -89,6 +92,9 @@ void GameEngineRenderer::Render(float _Delta)
 
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
+
+	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
+
 
 	for (size_t i = 0; i < 6; i++)
 	{

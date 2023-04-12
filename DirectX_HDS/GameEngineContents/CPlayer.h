@@ -3,7 +3,6 @@
 #include <GameEngineBase/GameEngineSerializer.h>
 #include "CKatanaZero_Actor.h"
 
-// 드래곤, 제로중에 뭘로할까~~
 class CPlayer : public CKatanaZero_Actor
 {
 public:

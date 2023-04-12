@@ -18,6 +18,8 @@ const float4 float4::One = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::Zero = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::Null = { 0.0f, 0.0f, 0.0f, 0.0f };
 
+const float4 float4::Red = { 1.0f, 0.0f, 0.0f, 1.0f };
+
 
 void float4::RotationXRad(float _Rad)
 {

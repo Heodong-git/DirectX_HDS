@@ -60,3 +60,20 @@ void GameEngineVertexBuffer::Create(const void* _Data, UINT _VertexSize, UINT _V
 	}
 
 }
+
+void GameEngineVertexBuffer::Setting()
+{
+	if (nullptr == Buffer)
+	{
+		MsgAssert("ID3DBuffer가 만들어지지 않은 버텍스 버퍼 입니다.");
+		return;
+	}
+	// UINT StartSlot, 버텍스 버퍼를 여러개 세팅했을때 그 여러개중 몇번째 부터 시작해서 세팅할래
+	// UINT NumBuffers, 버텍스 버퍼를 볓개 세팅했어?
+	// ID3D11Buffer* const* ppVertexBuffers, 버퍼의 배열 배열에 1개
+	// const UINT* pStrides, 버텍스 1개의 크기가 얼마야
+	// const UINT* pOffsets 버텍스 몇번째 부터 할까?
+
+
+	GameEngineDevice::GetContext()->IASetVertexBuffers(0, 1, &Buffer, &VertexSize, &Offset);
+}

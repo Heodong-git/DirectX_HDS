@@ -44,6 +44,8 @@ public:
 	static const float4 Zero;
 	static const float4 Null;
 
+	static const float4 Red;
+
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{
 		return AngleToDirection2DToRad(_Deg * GameEngineMath::DegToRad);
