@@ -11,7 +11,10 @@
 #include "GameEngineTexture.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineVertexBuffer.h"
+#include "GameEngineIndexBuffer.h"
 #include "GameEngineRenderingPipeLine.h"
+
+#include "GameEngineVertexShader.h"
 
 void GameEngineCore::CoreResourcesInit()
 {
@@ -19,12 +22,16 @@ void GameEngineCore::CoreResourcesInit()
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 		// 앞면
-		ArrVertex[0] = { { -0.5f, -0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, -0.5f,0.0f }, float4::Red };
-		ArrVertex[2] = { { 0.5f, 0.5f,0.0f }, float4::Red };
-		ArrVertex[3] = { { -0.5f, 0.5f,0.0f }, float4::Red };
+		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, 0.5f,0.0f }, float4::Red };
+		ArrVertex[2] = { { 0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[3] = { { -0.5f, -0.5f,0.0f }, float4::Red };
+
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 3, 2 };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
+		GameEngineIndexBuffer::Create("Rect", ArrIndex);
+
 
 		// GameEngineMesh::Create("Rect", ArrVertex);
 		// GameEngineMesh::Create("Rect");
@@ -70,17 +77,40 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex[23] = ArrVertex[3].RotationXDegReturn(-90.0f);
 
 	}
+	{
+		GameEngineDirectory NewDir;
+		// 인자로 입력한 폴더가 존재하는 디렉터리로 이동
+		NewDir.MoveParentToDirectory("Shader");
+		// 이동
+		NewDir.Move("Shader");
+		// 해당하는 파일을 받아온다. 
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
+
+		// 일단 현시점에서는 이렇게. 
+		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+	}
+
 
 	{
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DRect");
+			// 파이프라인 세팅
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTexture");
+
+			// 코어리소스 초기화에서 생성한 리소스 중에서 어떤종류를 사용할지 세팅
 			Pipe->SetVertexBuffer("Rect");
+			Pipe->SetIndexBuffer("Rect");
+			Pipe->SetVertexShader("TextureShader.hlsl");
 		}
 	}
 }
 
+// 
 void GameEngineCore::CoreResourcesEnd()
 {
+	// 생성한 리소스들을 모두 제거해준다. 
+	// shard ptr 사용으로 인해 레퍼런스카운트가 0 이되면 자동으로 제거되지만
+	// 원하는시점에 제거하기 위해서. 
+	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
 	GameEngineResource<GameEngineVertexBuffer>::ResourcesClear();
 	GameEngineResource<GameEngineMesh>::ResourcesClear();
 	GameEngineResource<GameEngineTexture>::ResourcesClear();

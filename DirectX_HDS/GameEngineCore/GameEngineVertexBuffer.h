@@ -25,7 +25,7 @@ public:
 		Res->Create(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
 	}
 
-	void Setting();
+	void Setting() override;
 
 protected:
 

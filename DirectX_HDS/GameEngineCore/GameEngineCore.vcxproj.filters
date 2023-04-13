@@ -69,6 +69,9 @@
     <ClInclude Include="GameEngineRenderingPipeLine.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineIndexBuffer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -141,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineRenderingPipeLine.cpp">
       <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

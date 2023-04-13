@@ -1,7 +1,7 @@
 #pragma once
 #include "GameEngineResource.h"
 
-// 설명 : 
+// 설명 : 임시클래스, 적응될 때 까지 사용 
 class GameEngineRenderingPipeLine : public GameEngineResource<GameEngineRenderingPipeLine>
 {
 public:
@@ -15,38 +15,41 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
-	// 
-	void InputAssembler1();
-	void VertexShader();
-	void InputAssembler2();
-	// Lod라는 개념이 있는데
-	// 레벨 오브 디테일이라는 개념으로 버텍스버퍼 + 인덱스버퍼(매쉬)를 단계에 따라서 n개 만든다
-	// 5개 만들었다고 치고
-	// 100개
-	// 1000개
-	// 4000개
-	// 8000개
-	// 10000개
-	// 캐릭터가 멀리 있어서 자세히 봎
-	// void HullShader(); 버텍스를 쪼개기 위한 표시를 새기고
-	// void Tessellator(); 쪼갠다.
-	// 
-	// 
-	// void DomainShader(); 입자처리
-	// void GeometryShaeder(); 버텍스 생성.
-	//                         인스턴싱
-
-	// 이건 진짜 미친듯이 중요합니다.
-	void Rasterizer();
-	void PixelShader();
-	void OutputMerger();
-
 	void SetVertexBuffer(const std::string_view& _Value);
+	void SetIndexBuffer(const std::string_view& _Value);
+	void SetVertexShader(const std::string_view& _Value);
+
+	void Render();
 
 protected:
 
 private:
-	std::shared_ptr<class GameEngineVertexBuffer> VertexBuffer;
+	// 각 정점에 대한 정보 준비
+	void InputAssembler1();
+	// 정점에 대한 연산, 가상의 3D로 입력되어 있는 좌표를 2D로 변환하는 작업
+	// 인풋어셈블러 단계에서 출력되는 프리미티브에 대한 연산 
+	void VertexShader();
+	// 정점의 정보를 토대로 어떤 순서로 그릴지 정하고 조립한다. 
+	void InputAssembler2();
+
+	// 여기부터 지오메트리쉐이더 까지는 lod (레벨오브디테일) 과 관련된 내용으로 현 프로젝트에서는 없어도 무관
+	void HullShader();
+	void Tessellator();
+	void DomainShader();
+	void GeometryShaeder();
+
+	// ***중요 
+	// 원근투영 w나누기, 카메라범위를 벗어나는 pixel 잘라내기, viewport 곱셈, 모든 픽셀들에 대한 pixelshader 호출
+	void Rasterizer();
+	// 각 pixel의 데이터 생성, pixel 출력데이터를 결합해 출력될 색상을 결정한다.
+	void PixelShader();
+	// pixel 셰이더에서 출력된 pixel 값을 렌더타겟에 그리는 작업을 수행한다. 
+	void OutputMerger();
+
+	// 렌더링 파이프라인에서 사용할 데이터를 저장한다. 
+	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
+	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
+	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;
 
 };
 

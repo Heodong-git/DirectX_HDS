@@ -57,8 +57,10 @@ public:
 		return NamedResources[UpperName];
 	}
 
+	virtual void Setting() {}
 
 protected:
+	// 인자로 들어온 문자열의 이름으로 리소스를 만든다. 
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
@@ -69,9 +71,11 @@ protected:
 			return nullptr;
 		}
 
+		// 중복체크 후 shardptr 로 리소스 생성
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
-		NewRes->SetName(UpperName);
 
+		// 리소스 이름세팅
+		NewRes->SetName(UpperName);
 		// std::pair<key, value>
 		// NamedResources.insert(std::make_pair(UpperName, NewRes));
 		// 조금이라도 최적화가 필요하다면 아래처럼 사용할 수 도 있음

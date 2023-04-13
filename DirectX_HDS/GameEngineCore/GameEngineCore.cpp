@@ -8,6 +8,8 @@
 #include <GameEngineBase\GameEngineTime.h>
 #include <GameEngineCore/GameEngineDevice.h>
 
+
+
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
 std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;

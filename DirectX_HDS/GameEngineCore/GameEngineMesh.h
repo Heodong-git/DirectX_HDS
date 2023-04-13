@@ -3,6 +3,7 @@
 #include <vector>
 #include <GameEngineBase/GameEngineMath.h>
 
+// 설명 : 입자의 크기에 대하여 나타내는 표준 단위적인 의미가 있다. 
 class GameEngineMesh : public GameEngineResource<GameEngineMesh>
 {
 public:
