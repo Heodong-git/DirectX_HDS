@@ -28,6 +28,9 @@ public:
 	{
 		return ViewPort;
 	}
+
+	void Setting();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -41,6 +44,8 @@ private:
 	float4x4 Projection;
 	// 뷰포트
 	float4x4 ViewPort;
+
+	D3D11_VIEWPORT ViewPortData;
 
 	// 최소거리, 최대거리 
 	float Near = 0.1f;

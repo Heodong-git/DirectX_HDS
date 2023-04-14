@@ -58,6 +58,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 
 void GameEngineLevel::Render(float _DeltaTime)
 {
+	GetMainCamera()->Setting();
 	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{

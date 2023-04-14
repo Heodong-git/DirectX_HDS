@@ -61,16 +61,22 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineVertexShader.h">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineShader.h">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineRenderingPipeLine.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineIndexBuffer.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRasterizer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePixelShader.h">
+      <Filter>Resources\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,16 +143,22 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineVertexShader.cpp">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineShader.cpp">
-      <Filter>Object\Rendering\Shader</Filter>
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineRenderingPipeLine.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineIndexBuffer.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRasterizer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePixelShader.cpp">
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +183,7 @@
     <Filter Include="Device">
       <UniqueIdentifier>{fd4191af-fd7d-4a7e-81b4-3afdc683cedc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Rendering\Shader">
+    <Filter Include="Resources\Shader">
       <UniqueIdentifier>{4eb5422c-9000-4004-8460-09b424739235}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

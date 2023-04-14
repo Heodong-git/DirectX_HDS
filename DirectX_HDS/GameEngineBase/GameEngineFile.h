@@ -24,7 +24,7 @@ public:
 	//GameEngineFile& operator=(const GameEngineFile& _Other) = delete;
 	//GameEngineFile& operator=(GameEngineFile&& _Other) noexcept = delete;
 
-	// 전체경로를 반환
+	// 저장되어 있는 전체경로를 반환
 	std::string GetFullPath() 
 	{
 		return Path.Path.string();

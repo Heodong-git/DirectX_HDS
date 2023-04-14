@@ -21,7 +21,7 @@ GameEngineTexture::~GameEngineTexture()
 }
 
 
-void GameEngineTexture::Create(ID3D11Texture2D* _Create)
+void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
 	CreateRenderTargetView();

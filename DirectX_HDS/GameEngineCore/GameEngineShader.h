@@ -1,6 +1,6 @@
 #pragma once
 
-// 설명 : 소프트웨어 명령의 집합으로 주로 그래픽 하드웨어의 렌더링 효과를 계산하는 데 쓰인다. 
+// 설명 : 색의 농담, 색조, 명암 효과를 주는 주체 라는 뜻
 class GameEngineShader
 {
 public:

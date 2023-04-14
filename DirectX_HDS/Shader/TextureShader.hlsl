@@ -8,7 +8,7 @@ struct Input
 	// 시맨틱 : 인풋 구조체의 변수들이 어떤 자료와 연결될 지 알려주는 것
     
     //           각각의 변수가 어떤 역할인지
-    float4 Pos : POSITIONT0;
+    float4 Pos : POSITION;
     float4 Color : COLOR;
 };
 
@@ -20,6 +20,7 @@ struct Output
     float4 Color : COLOR;
 };
 
+// 
 Output Texture_VS(Input _Value)
 {
     Output OutPutValue = (Output)0;
@@ -31,4 +32,18 @@ Output Texture_VS(Input _Value)
     // _Value.Pos *= 월드뷰프로젝션;
 
     return OutPutValue;
+}
+
+struct OutColor
+{
+    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
+    float4 Color : SV_Target0;
+};
+
+
+OutColor Texture_PS(Output _Value)
+{
+    OutColor ReturnColor = (OutColor) 0;
+    ReturnColor.Color = _Value.Color;
+    return ReturnColor;
 }
