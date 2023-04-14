@@ -201,6 +201,9 @@ void GameEngineRenderingPipeLine::Render()
 	PixelShader();
 	OutputMerger();
 
+	// 위의 과정은 렌더링을 위한 준비과정일 뿐이지 순서가 중요하지 않다. 세팅하는 과정일뿐 순서에 얽매이지마라. 
+
+
 	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데
 	// 무조건 인덱스 버퍼를 사용할거임.
 	GameEngineDevice::GetContext()->DrawIndexed(IndexBufferPtr->GetIndexCount(), 0, 0);

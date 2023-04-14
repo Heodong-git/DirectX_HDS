@@ -26,6 +26,9 @@ public:
 		return m_Angle;
 	}
 
+	// 자신의 정보를 세이브,로드하는 기능.. 인데 
+	// 각자 가지고 있는 변수가 다르다... 흠 
+
 protected:
 
 private:

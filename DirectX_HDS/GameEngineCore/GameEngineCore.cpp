@@ -24,7 +24,7 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	// 리소스 초기화 이전에 디바이스 초기화를 해준다.
+	// 리소스 초기화 이전에 디바이스 초기화를 해준다. 
 	GameEngineDevice::Initialize();
 
 	// Core Init 

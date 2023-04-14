@@ -43,6 +43,6 @@ void CTitleLevel::Start()
 
 	// 소유한 타임이벤트의 함수호출
 	// 람다 테스트용으로 만든 Test 함수를 호출 한것. 
-	TimeEvent.AddEvent(5.0f, Test, false);
+	TimeEvent.AddEvent(5.0f, TestFunction, false);
 }
 

@@ -33,8 +33,7 @@ void GameEngineCore::CoreResourcesInit()
 	//	D3D11_INPUT_CLASSIFICATION InputSlotClass;
 	//	UINT InstanceDataStepRate; 
 	//} 	
-
-
+	
 	//const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 	//UINT NumElements, // 
 	//const void* pShaderBytecodeWithInputSignature,  // 쉐이더의 바이너리 코드를 내놔
@@ -42,6 +41,7 @@ void GameEngineCore::CoreResourcesInit()
 	//ID3D11InputLayout** ppInputLayout // 만들어져 나오는 포인터
 
 	{
+		// 버텍스 초기화
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 		// 앞면
@@ -117,6 +117,7 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
+		// 레스터라이저 세팅
 		D3D11_RASTERIZER_DESC Desc = {};
 
 		//D3D11_FILL_MODE FillMode;
@@ -158,7 +159,6 @@ void GameEngineCore::CoreResourcesInit()
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
 	}
-	
 	{
 		{
 			// 파이프라인 세팅

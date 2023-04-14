@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 
+
 CTestLevel::CTestLevel()
 {
 }
@@ -22,5 +23,7 @@ void CTestLevel::Start()
 
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>();
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
+
+	CKatanaZero_Level::Start();
 }
 

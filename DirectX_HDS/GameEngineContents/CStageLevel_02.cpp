@@ -11,4 +11,5 @@ CStageLevel_02::~CStageLevel_02()
 
 void CStageLevel_02::Start()
 {
+	
 }
