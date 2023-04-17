@@ -1,7 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
-// 설명 :
 class CKatanaZero_Actor : public GameEngineActor
 {
 public:
@@ -15,7 +14,6 @@ public:
 	CKatanaZero_Actor& operator=(const CKatanaZero_Actor& _Other) = delete;
 	CKatanaZero_Actor& operator=(CKatanaZero_Actor&& _Other) noexcept = delete;
 
-	// 굳이 이럴거 없이 그냥 멤버변수를 가져다 써도 되지만 가독성이 이게 더 좋은 것 같음.
 	inline void SetAngle(float _Angle)
 	{
 		m_Angle = _Angle;
@@ -28,9 +26,14 @@ public:
 
 	// 자신의 정보를 세이브,로드하는 기능.. 인데 
 	// 각자 가지고 있는 변수가 다르다... 흠 
+	// 액터레코딩인포 클래스를 만들어서 가지고 있게 하고 그 클래스 내부의 변수를 사용?
 
 protected:
 
 private:
 	float m_Angle = 0.0f;
+
+
+	// -------------------------recording info-------------------------------
+	// 역재생에 필요한 녹화될 정보들을 아래 부분에 작성하고, 함수를 그 정보들을 저장하고, 로드하는 함수를 구현? 
 };

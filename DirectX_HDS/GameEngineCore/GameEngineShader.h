@@ -21,7 +21,7 @@ public:
 	}
 
 protected:
-	// 쉐이더 코드를 2진데이터로 변형했을때 그걸 그래픽카드가 내부에 숨긴다.  
+	// 쉐이더 코드를 2진데이터로 변형했을때 그걸 그래픽카드가 내부에 숨긴다.	 
 	ID3DBlob* BinaryCode = nullptr;
 	std::string Version = "";
 	std::string EntryPoint = "";

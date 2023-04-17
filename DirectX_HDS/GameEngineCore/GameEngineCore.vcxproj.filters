@@ -78,6 +78,9 @@
     <ClInclude Include="GameEnginePixelShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineInputLayOut.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -159,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="GameEnginePixelShader.cpp">
       <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineInputLayOut.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

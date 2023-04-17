@@ -6,7 +6,6 @@
 #include "GameEngineResource.h"
 
 #include "GameEngineVertex.h"
-
 #include "GameEngineMesh.h"
 #include "GameEngineTexture.h"
 #include "GameEngineRenderTarget.h"
@@ -18,8 +17,10 @@
 
 #include "GameEngineVertexShader.h"
 
+// 렌더링파이프라인에 필요한 리소스 생성 및 로드 후 파이프라인세팅 
 void GameEngineCore::CoreResourcesInit()
 {
+	// 버텍스버퍼의 내용과 인풋레이아웃의 내용이 더 중요. 
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
@@ -46,15 +47,14 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex.resize(4);
 		// 앞면
 		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, 0.5f,0.0f }, float4::Red };
-		ArrVertex[2] = { { 0.5f, -0.5f,0.0f }, float4::Red };
-		ArrVertex[3] = { { -0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, float4::White };
+		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, float4::Black};
+		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, float4::Red };
 
-		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 3, 2 };
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
-
 
 		// GameEngineMesh::Create("Rect", ArrVertex);
 		// GameEngineMesh::Create("Rect");
@@ -155,7 +155,7 @@ void GameEngineCore::CoreResourcesInit()
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
 		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
-		Desc.FrontCounterClockwise = TRUE;
+		Desc.FrontCounterClockwise = FALSE;
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
 	}
@@ -164,7 +164,7 @@ void GameEngineCore::CoreResourcesInit()
 			// 파이프라인 세팅
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTexture");
 
-			// 코어리소스 초기화에서 생성한 리소스 중에서 어떤종류를 사용할지 세팅
+			// 렌더링파이프라인에서 사용할 리소스 세팅
 			Pipe->SetVertexBuffer("Rect");
 			Pipe->SetIndexBuffer("Rect");
 			Pipe->SetVertexShader("TextureShader.hlsl");
@@ -179,7 +179,7 @@ void GameEngineCore::CoreResourcesEnd()
 {
 	// 생성한 리소스들을 모두 제거해준다. 
 	// shard ptr 사용으로 인해 레퍼런스카운트가 0 이되면 자동으로 제거되지만
-	// 원하는시점에 삭제되는 것을 확실히 하기 위해서
+	// 원하는시점에 삭제되는 것을 확실히 하고, 여기서 제거되지 않는다면 문제가 있는 것이라고 판단하기 위해서. 
 	GameEngineResource<GameEnginePixelShader>::ResourcesClear();
 	GameEngineResource<GameEngineRasterizer>::ResourcesClear();
 	GameEngineResource<GameEngineVertexShader>::ResourcesClear();

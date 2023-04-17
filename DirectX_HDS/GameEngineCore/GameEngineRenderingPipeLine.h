@@ -58,6 +58,7 @@ private:
 	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	// 렌더링 파이프라인에서 사용할 데이터를 저장한다. 
+	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
 	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
 	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
 	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;

@@ -45,6 +45,10 @@ public:
 	static const float4 Null;
 
 	static const float4 Red;
+	static const float4 Blue;
+	static const float4 Green;
+	static const float4 White;
+	static const float4 Black;
 
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{

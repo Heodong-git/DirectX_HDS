@@ -6,9 +6,11 @@
 #include "GameEngineVertexShader.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineInputLayOut.h"
 
 GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 {
+	InputLayOutPtr = std::make_shared<GameEngineInputLayOut>();
 }
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
@@ -20,6 +22,14 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 // (Vertex) 정점에 대한 정보를 준비한다.
 void GameEngineRenderingPipeLine::InputAssembler1()
 {
+	if (nullptr == InputLayOutPtr)
+	{
+		MsgAssert("인풋 레이아웃이 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
+		return;
+	}
+
+	InputLayOutPtr->Setting();
+
 	if (nullptr == VertexBufferPtr)
 	{
 		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
@@ -33,7 +43,7 @@ void GameEngineRenderingPipeLine::InputAssembler1()
 // 각 정점(Vertex)에 대한 연산수행 
 // InputAssembler 단계에서 출력되는 premitive 의 각 vertex에 대한 연산 수행
 // 모든 정점들에 대해서 한번씩 실행되고 각 정점마다 한번만 호출된다. ****** 매우중요
-// 가상의 3D 공간에 있는 꼭지점(vertex)들의 위치를 2차원 화면의 좌표로 변환하는 작업 ( 변환행렬적용 ) 
+// 가상의 3D 공간에 있는 정점(vertex)들의 위치를 2차원 화면의 좌표로 변환하는 작업 ( 변환행렬적용 ) 
 // Transform , skinning , vertex lighting 등의 특수 효과를 수행할 수 있다. 
 void GameEngineRenderingPipeLine::VertexShader()
 {
@@ -138,6 +148,15 @@ void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
 	}
+
+	// 버텍스버퍼를 세팅할때 버텍스쉐이더가 세팅되어있다면 InputLayOut 리소스를 생성하고
+	// 세팅되어있지 않다면 return 
+	if (nullptr == VertexShaderPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 
@@ -162,6 +181,13 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 쉐이더를 사용하려고 했습니다.");
 	}
+
+	if (nullptr == VertexBufferPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 void GameEngineRenderingPipeLine::SetPixelShader(const std::string_view& _Value)
@@ -206,7 +232,9 @@ void GameEngineRenderingPipeLine::Render()
 
 	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데
 	// 무조건 인덱스 버퍼를 사용할거임.
-	GameEngineDevice::GetContext()->DrawIndexed(IndexBufferPtr->GetIndexCount(), 0, 0);
+	UINT IndexCount = IndexBufferPtr->GetIndexCount();
+	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
+
 
 	// 메쉬 <= 외형이 어떻게 보일것인가.
 	//         픽셀건져내기할 범위를 지정하는 Rasterizer

@@ -1,10 +1,13 @@
 #pragma once
 #include "GameEngineResource.h"
+#include "GameEngineVertex.h"
 #include "GameEngineDirectBuffer.h"
 
 // 설명 : 
 class GameEngineVertexBuffer : public GameEngineResource<GameEngineVertexBuffer>, public GameEngineDirectBuffer
 {
+	friend class GameEngineInputLayOut;
+
 public:
 	// constrcuter destructer
 	GameEngineVertexBuffer();
@@ -20,7 +23,7 @@ public:
 	static void Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
 	{
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::Create(_Name);
-
+		Res->LayOutInfo = &VertexType::LayOut;
 		// 2번인자 형변환
 		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
 	}
@@ -30,6 +33,7 @@ public:
 protected:
 
 private:
+	GameEngineInputLayOutInfo* LayOutInfo = nullptr;
 	void ResCreate(const void* _Data, UINT _VertexSize, UINT _VertexCount);
 
 	UINT Offset = 0;

@@ -5,6 +5,8 @@
 // Ό³Έν : 
 class GameEngineVertexShader : public GameEngineResource<GameEngineVertexShader>, public GameEngineShader
 {
+	friend class GameEngineInputLayOut;
+
 public:
 	// constrcuter destructer
 	GameEngineVertexShader();
