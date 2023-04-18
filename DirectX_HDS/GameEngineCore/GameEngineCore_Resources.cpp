@@ -14,6 +14,7 @@
 #include "GameEngineRenderingPipeLine.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineConstantBuffer.h"
 
 #include "GameEngineVertexShader.h"
 
@@ -180,12 +181,13 @@ void GameEngineCore::CoreResourcesEnd()
 	// 생성한 리소스들을 모두 제거해준다. 
 	// shard ptr 사용으로 인해 레퍼런스카운트가 0 이되면 자동으로 제거되지만
 	// 원하는시점에 삭제되는 것을 확실히 하고, 여기서 제거되지 않는다면 문제가 있는 것이라고 판단하기 위해서. 
-	GameEngineResource<GameEnginePixelShader>::ResourcesClear();
-	GameEngineResource<GameEngineRasterizer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
-	GameEngineResource<GameEngineIndexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineVertexBuffer>::ResourcesClear();
-	GameEngineResource<GameEngineMesh>::ResourcesClear();
-	GameEngineResource<GameEngineTexture>::ResourcesClear();
-	GameEngineResource<GameEngineRenderTarget>::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
+	GameEngineMesh::ResourcesClear();
+	GameEngineTexture::ResourcesClear();
+	GameEngineRenderTarget::ResourcesClear();
 }

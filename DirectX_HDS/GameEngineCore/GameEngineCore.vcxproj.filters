@@ -11,9 +11,6 @@
     <ClInclude Include="GameEngineResource.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineMesh.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineActor.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -38,28 +35,13 @@
     <ClInclude Include="GameEngineObjectBase.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineTexture.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineNameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineDevice.h">
       <Filter>Device</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineRenderTarget.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="GameEngineVertexBuffer.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineVertex.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineDirectBuffer.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineVertexShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
@@ -69,17 +51,42 @@
     <ClInclude Include="GameEngineRenderingPipeLine.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineIndexBuffer.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineRasterizer.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="GameEnginePixelShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="EngineEnum.h" />
+    <ClInclude Include="GameEngineDirectBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineIndexBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertexBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderTarget.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTexture.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRasterizer.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
     <ClInclude Include="GameEngineInputLayOut.h">
-      <Filter>Resources</Filter>
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertex.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineMesh.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineConstantBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineShaderResHelper.h">
+      <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +98,6 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineResource.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineMesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineActor.cpp">
@@ -123,28 +127,13 @@
     <ClCompile Include="GameEngineCore_Resources.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineTexture.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineNameObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineDevice.cpp">
       <Filter>Device</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineRenderTarget.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
-    <ClCompile Include="GameEngineVertexBuffer.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineVertex.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineDirectBuffer.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineVertexShader.cpp">
       <Filter>Resources\Shader</Filter>
     </ClCompile>
@@ -154,17 +143,41 @@
     <ClCompile Include="GameEngineRenderingPipeLine.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineIndexBuffer.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineRasterizer.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="GameEnginePixelShader.cpp">
       <Filter>Resources\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDirectBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertexBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderTarget.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTexture.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRasterizer.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
     <ClCompile Include="GameEngineInputLayOut.cpp">
-      <Filter>Resources</Filter>
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertex.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineMesh.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineConstantBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineShaderResHelper.cpp">
+      <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +204,18 @@
     </Filter>
     <Filter Include="Resources\Shader">
       <UniqueIdentifier>{4eb5422c-9000-4004-8460-09b424739235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Buffer">
+      <UniqueIdentifier>{ea1c4fc5-ce7c-450a-b15e-7f03fb5de8be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Mesh">
+      <UniqueIdentifier>{8e01a25f-1e3d-48db-b9b8-bdb6afe1cd1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\RenderingSetting">
+      <UniqueIdentifier>{da2c267f-1112-4288-9907-0c41bdb721f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture">
+      <UniqueIdentifier>{2a16e1da-6304-431f-86f8-42ca6f36fce7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

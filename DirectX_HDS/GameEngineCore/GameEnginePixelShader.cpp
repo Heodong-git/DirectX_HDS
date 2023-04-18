@@ -3,6 +3,7 @@
 
 GameEnginePixelShader::GameEnginePixelShader()
 {
+	Type = ShaderType::Pixel;
 }
 
 GameEnginePixelShader::~GameEnginePixelShader()

@@ -15,6 +15,16 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
+	inline  std::shared_ptr<class GameEngineVertexShader> GetVertexShader()
+	{
+		return VertexShaderPtr;
+	}
+
+	inline  std::shared_ptr<class GameEnginePixelShader> GetPixelShader()
+	{
+		return PixelShaderPtr;
+	}
+
 	void SetVertexBuffer(const std::string_view& _Value);
 	void SetIndexBuffer(const std::string_view& _Value);
 	void SetVertexShader(const std::string_view& _Value);

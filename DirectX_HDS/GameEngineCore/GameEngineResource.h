@@ -60,6 +60,15 @@ public:
 	virtual void Setting() {}
 
 protected:
+	// 언네임드리소스 생성
+	static std::shared_ptr<ResourcesType> CreateUnNamed()
+	{
+		// 리소스 생성후 단순하게 리스트에 push_back 후 생성한 리소스를 shared ptr로 반환 
+		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
+		UnNamedRes.push_back(NewRes);
+		return NewRes;
+	}
+
 	// 인자로 들어온 문자열의 이름으로 리소스를 만든다. 
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)
 	{
@@ -83,6 +92,11 @@ protected:
 		return NewRes;
 	}
 
+	static void ResourcesClear()
+	{
+		NamedResources.clear();
+		UnNamedRes.clear();
+	}
 
 private:
 	std::string Path;
@@ -91,11 +105,6 @@ private:
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
 
-	static void ResourcesClear()
-	{
-		NamedResources.clear();
-		UnNamedRes.clear();
-	}
 };
 
 // template 클래스의 경우 
