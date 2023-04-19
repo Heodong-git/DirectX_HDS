@@ -54,14 +54,13 @@ float4 Texture_PS(Output _Value) : SV_Target0
 {
     return OutColor;
 }
+
 // 아래 과정을 생략하여 위 코드처럼 작성이 가능하다. 
 //struct OutColor
 //{
 //    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
 //    float4 Color : SV_Target0;
 //};
-
-
 
 //OutColor Texture_PS(Output _Value)
 //{

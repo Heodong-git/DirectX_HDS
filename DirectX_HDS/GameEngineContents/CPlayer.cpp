@@ -65,8 +65,7 @@ void CPlayer::Start()
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
-	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-	
+	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void CPlayer::Update(float _DeltaTime)
@@ -159,8 +158,6 @@ void CPlayer::Update(float _DeltaTime)
 	{
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
-
-	float4 Check = TestColor;
 }
 
 // 디버그용으로 사용

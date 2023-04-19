@@ -15,7 +15,7 @@ void GameEngineShaderResHelper::Copy(const GameEngineShaderResHelper& _ResHelper
 // 상수버퍼 세팅
 void GameEngineConstantBufferSetter::Setting()
 {
-	Res->ChangeData(CPUData, CPUDataSize);
+	Res->ChangeData(CPUData, static_cast<UINT>(CPUDataSize));
 
 	ShaderType Type = ParentShader->GetType();
 
@@ -73,15 +73,16 @@ void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _N
 
 	for (; NameStartIter != NameEndIter; ++NameStartIter)
 	{
-		// 
 		GameEngineConstantBufferSetter& Setter = NameStartIter->second;
 
+		// 버퍼의사이즈가 다르다면
 		if (Setter.Res->GetBufferSize() != _Size)
 		{
 			MsgAssert("상수버퍼와 세팅하려는 데이터의 크기가 다릅니다. 상수버퍼 : " + std::to_string(Setter.Res->GetBufferSize()) + "유저가 세팅한 데이터" + std::to_string(_Size) + UpperName);
 			return;
 		}
 
+		// 사이즈가 같다면
 		Setter.CPUData = _Data;
 		Setter.CPUDataSize = _Size;
 	}

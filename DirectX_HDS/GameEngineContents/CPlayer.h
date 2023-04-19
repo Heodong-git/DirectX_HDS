@@ -17,6 +17,7 @@ public:
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
 
 	float4 TestColor;
+	float4 TestColor1;
 
 protected:
 	void Start() override;
