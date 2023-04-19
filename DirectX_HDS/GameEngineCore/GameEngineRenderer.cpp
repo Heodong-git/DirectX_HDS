@@ -1,8 +1,7 @@
 #include "PrecompileHeader.h"
-#include "GameEngineRenderer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 
-
+#include "GameEngineRenderer.h"
 #include "GameEngineLevel.h"
 #include "GameEngineCamera.h"
 #include "GameEngineRenderingPipeLine.h"
@@ -61,5 +60,5 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name)
 		ShaderResHelper.SetConstantBufferLink("TransformData", World);
 	}
 
-	//GetTransform()->GetWorldMatrix(); // ? 
+	GetTransform()->GetWorldMatrix(); // ? 
 }
