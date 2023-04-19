@@ -16,6 +16,8 @@ public:
 	CPlayer& operator=(const CPlayer& _Other) = delete;
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
 
+	float4 TestColor;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

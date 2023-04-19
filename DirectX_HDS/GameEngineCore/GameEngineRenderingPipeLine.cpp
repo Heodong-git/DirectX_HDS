@@ -215,7 +215,7 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 // 매쉬 + 머티리얼
 void GameEngineRenderingPipeLine::Render()
 {
-	// 렌더링은 렌더링 파이프라인을 한바퀴 돌리는 것을 말한다. 
+	// 렌더링 - 렌더링파이프라인 한바퀴 수행
 	InputAssembler1();
 	VertexShader();
 	InputAssembler2();
@@ -240,6 +240,6 @@ void GameEngineRenderingPipeLine::Render()
 	//         픽셀건져내기할 범위를 지정하는 Rasterizer
 	//         w나누기를 하고 뷰포트를 곱해서
 
-	// 머티리얼 <= 색깔이 어떻게 나올것인가?
+	// 머티리얼 <= 색깔이 어떻게 나올것인가? 메시에 적용하여 시각적인 모양을 조절할 수 있는 에셋
 	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
 }

@@ -20,6 +20,11 @@ public:
 	// 사용할 쉐이더, 쉐이더에서 어떤 텍스쳐를 사용할지, 샘플러, 상수버퍼는 어떤것을 사용했는지 알아야한다. 
 	void SetPipeLine(const std::string_view& _Name);
 
+	inline GameEngineShaderResHelper& GetShaderResHelper()
+	{
+		return ShaderResHelper;
+	}
+
 protected:
 	void Render(float _Delta) override;
 

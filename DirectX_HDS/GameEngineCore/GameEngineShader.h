@@ -27,6 +27,11 @@ public:
 		return ResHelper;
 	}
 
+	inline ShaderType GetType()
+	{
+		return Type;
+	}
+
 protected:
 	// 쉐이더는 각자 자신이 어떤 타입인지 구분 할 수 있도록
 	ShaderType Type = ShaderType::None;

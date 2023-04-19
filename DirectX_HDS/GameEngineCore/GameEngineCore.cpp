@@ -27,7 +27,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	// 리소스 초기화 이전에 디바이스 초기화를 해준다. 
 	GameEngineDevice::Initialize();
 
-	// Core Init 
+	// 게임에서 사용할 리소스 초기화
 	CoreResourcesInit();
 
 	if (nullptr == _ContentsStart)
@@ -82,6 +82,7 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	GameEngineDevice::Release();
 }
 
+// 릭체크 함수 호출, 마우스 LR 버튼 생성, 윈도우생성, 루프실행
 void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
 {
 	// 릭체크함수호출

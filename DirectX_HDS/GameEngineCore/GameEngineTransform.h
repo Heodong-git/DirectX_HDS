@@ -39,10 +39,10 @@ public:
 
 	void SetWorldRotation(const float4& _Value)
 	{
-		if (true == IsDebug())
+		/*if (true == IsDebug())
 		{
 			int a = 0;
-		}
+		}*/
 
 		WorldRotation = _Value;
 

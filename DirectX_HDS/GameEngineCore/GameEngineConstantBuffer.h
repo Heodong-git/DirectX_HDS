@@ -5,6 +5,8 @@
 // 설명 : 파이프라인 안에서 실행되는 프로그래밍 가능 셰이더에 상수 정보를 제공하는데 사용된다. 
 class GameEngineConstantBuffer : public GameEngineResource<GameEngineConstantBuffer>, public GameEngineDirectBuffer
 {
+	friend class GameEngineConstantBufferSetter;
+
 public:
 
 	// constrcuter destructer
@@ -40,6 +42,7 @@ public:
 
 		// 데이터가 없다면 버퍼를 생성 후 
 		std::shared_ptr<GameEngineConstantBuffer> Buffer = CreateUnNamed();
+		Buffer->SetName(UpperName);
 		// 인자로 들어온 string 을 키값으로 하여 저장 후 
 		ConstantBufferRes[_Byte][UpperName] = Buffer;
 		// 리소스생성
@@ -48,6 +51,8 @@ public:
 		return Buffer;
 	}
 
+	void ChangeData(const void* _Data, UINT _Size);
+
 	static void ResourcesClear();
 
 protected:
@@ -55,5 +60,8 @@ protected:
 
 private:
 	static std::map<int, std::map<std::string, std::shared_ptr<GameEngineConstantBuffer>>> ConstantBufferRes;
+
+	void VSSetting(UINT _Slot);
+	void PSSetting(UINT _Slot);
 };
 

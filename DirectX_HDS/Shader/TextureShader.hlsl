@@ -8,11 +8,9 @@ cbuffer TransformData : register(b0)
     float4x4 WorldMatrix;
 }
 
-
 // 1. 어떤 정보가 들어올지 구조체로 만들어야 함
 // 2. 어디가 포지션, 어디가 컬러인지
 // 3. 이름은 내가 정하면 된다.
-
 struct Input
 {
 	// 시맨틱 : 인풋 구조체의 변수들이 어떤 자료와 연결될 지 알려주는 것
@@ -30,11 +28,11 @@ struct Output
     float4 Color : COLOR;
 };
 
-// 
 Output Texture_VS(Input _Value)
 {
     Output OutPutValue = (Output)0;
 	
+    _Value.Pos.w = 1.0f;
     // 월드매트릭스 곱 : mul 함수를 사용하여 가능
     OutPutValue.Pos = mul(_Value.Pos, WorldMatrix);
     //OutPutValue.Pos = _Value.Pos;
@@ -45,12 +43,16 @@ Output Texture_VS(Input _Value)
 
     return OutPutValue;
 }
-
+ 
+cbuffer OutPixelColor : register(b0)
+{
+    float4 OutColor;
+}
 
 // 0번째 타겟에 출력하라는 의미가 된다. 
 float4 Texture_PS(Output _Value) : SV_Target0
 {
-    return float4(1.0f, 0.0f, 0.0f, 1.0f);
+    return OutColor;
 }
 // 아래 과정을 생략하여 위 코드처럼 작성이 가능하다. 
 //struct OutColor

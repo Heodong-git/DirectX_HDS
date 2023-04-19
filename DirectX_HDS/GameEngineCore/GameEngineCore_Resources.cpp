@@ -56,14 +56,10 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
-
-		// GameEngineMesh::Create("Rect", ArrVertex);
-		// GameEngineMesh::Create("Rect");
-		//GameEngineMesh::Create("Box");
 	}
 
 	{
-		// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
+		// 얘는 지금 안쓰고있음
 		std::vector<float4> ArrVertex;
 		ArrVertex.resize(24);
 		// 앞면
@@ -112,7 +108,8 @@ void GameEngineCore::CoreResourcesInit()
 		// 해당하는 파일을 받아온다. 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		// 일단 현시점에서는 이렇게. 
+		// 일단 현시점에서는 이렇게.
+		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드 
 		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 	}

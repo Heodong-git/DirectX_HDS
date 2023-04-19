@@ -55,18 +55,18 @@ void CPlayer::Start()
 	}
 
 
-	// 나는 스케일을 1로 고정해 놓는게 좋다.
+	// 컴포넌트생성
 	Render0 = CreateComponent<GameEngineRenderer>();
+	// 파이프라인세팅 
 	Render0->SetPipeLine("2DTexture");
-	Render1 = CreateComponent<GameEngineRenderer>();
-	Render1->SetPipeLine("2DTexture");
-	Render2 = CreateComponent<GameEngineRenderer>();
-	Render2->SetPipeLine("2DTexture");
-
-	Render1->GetTransform()->DebugOn();
-
-	Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
-	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
+	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
+	Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	// 렌더러의 크기
+	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
+	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
+	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	
 }
 
 void CPlayer::Update(float _DeltaTime)
@@ -83,10 +83,12 @@ void CPlayer::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
 	{
+		TestColor.x += _DeltaTime;
 		GetTransform()->AddLocalPosition(float4::Left * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("PlayerMoveRight"))
 	{
+		TestColor.x -= _DeltaTime;
 		GetTransform()->AddLocalPosition(float4::Right * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("PlayerMoveUp"))
@@ -158,8 +160,7 @@ void CPlayer::Update(float _DeltaTime)
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
 
-	Render1->GetTransform()->SetWorldRotation(float4{ 0 , 0, 0 });
-	//GetTransform()->SetLocalRotation(float4{ 0 , 0, 0 });
+	float4 Check = TestColor;
 }
 
 // 디버그용으로 사용

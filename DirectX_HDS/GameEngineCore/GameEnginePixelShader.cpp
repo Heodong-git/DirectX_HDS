@@ -68,6 +68,8 @@ void GameEnginePixelShader::ShaderLoad(const std::string_view& _Path
 	{
 		MsgAssert("버텍스 쉐이더 핸들 생성에 실패했습니다");
 	}
+
+	ShaderResCheck();
 }
 
 void GameEnginePixelShader::Setting()

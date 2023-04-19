@@ -35,7 +35,7 @@ void GameEngineInputLayOut::ResCreate(std::shared_ptr<class GameEngineVertexBuff
 
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateInputLayout(
 		&LayOutInfos[0],
-		LayOutInfos.size(),
+		static_cast<UINT>(LayOutInfos.size()),
 		_Shader->BinaryCode->GetBufferPointer(),
 		_Shader->BinaryCode->GetBufferSize(),
 		&InputLayOut);

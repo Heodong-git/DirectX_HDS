@@ -29,6 +29,9 @@ void CKatanaZero_Level::Start()
 
 void CKatanaZero_Level::Update(float _DeltaTime)
 {
+	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
+	GameEngineLevel::Update(_DeltaTime);
+	
 	if (m_MaxTimeLimit <= GetTimeLimit())
 	{
 		if (false == IsTimeOver())
@@ -42,8 +45,6 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	// 제한시간증가 
 	TimeIncrease(_DeltaTime);
 	// TimeEvent.AddEvent(3.0f, )
-	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
-	GameEngineLevel::Update(_DeltaTime);
 }
 
 // 저장된 정보들을 불러오고 역재생

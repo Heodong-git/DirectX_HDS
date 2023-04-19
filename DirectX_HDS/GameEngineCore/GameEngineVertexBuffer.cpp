@@ -21,7 +21,7 @@ void GameEngineVertexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT
 	BufferInfo.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	BufferInfo.ByteWidth = VertexSize * VertexCount;
 
-	// 메모리 어디에 둘거야? 
+	//  메모리 어디에 둘거야? 
 	//	D3D11_USAGE_DEFAULT
 	//	값 : 0
 	//	GPU에서 읽기 및 쓰기 액세스가 필요한 리소스입니다.이는 가장 일반적인 사용 선택일 수 있습니다.
