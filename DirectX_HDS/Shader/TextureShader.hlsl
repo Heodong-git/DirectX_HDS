@@ -5,7 +5,23 @@
 // constantbuffer (상수버퍼) : 장면의 물체마다 달라지는 상수 데이터를 담기 위한 저장공간
 cbuffer TransformData : register(b0)
 {
+    float4 LocalScale;
+    float4 LocalRotation;
+    float4 LocalQuaternion;
+    float4 LocalPosition;
+    float4 WorldScale;
+    float4 WorldRotation;
+    float4 WorldQuaternion;
+    float4 WorldPosition;
+    float4x4 LocalScaleMatrix;
+    float4x4 LocalRotationMatrix;
+    float4x4 LocalPositionMatrix;
+    float4x4 LocalWorldMatrix;
     float4x4 WorldMatrix;
+    float4x4 View;
+    float4x4 Projection;
+    float4x4 ViewPort;
+    float4x4 WorldViewProjectionMatrix;
 }
 
 // 1. 어떤 정보가 들어올지 구조체로 만들어야 함
@@ -34,7 +50,7 @@ Output Texture_VS(Input _Value)
 	
     _Value.Pos.w = 1.0f;
     // 월드매트릭스 곱 : mul 함수를 사용하여 가능
-    OutPutValue.Pos = mul(_Value.Pos, WorldMatrix);
+    OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     //OutPutValue.Pos = _Value.Pos;
     OutPutValue.Color = _Value.Color;
 	

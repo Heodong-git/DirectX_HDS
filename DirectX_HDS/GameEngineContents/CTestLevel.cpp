@@ -17,8 +17,10 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::Start()
 {
-	// 카메라는 부모의 생성자에서 무조건 만들어지기 때문에
-	// 여기서 위치를 세팅해준다. 
+	// 각 레벨에서는 반드시 시작할때 투영타입을 세팅해준다. 
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+
+	// 카메라가 어느 위치에서 바라볼 것인지
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
 
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");

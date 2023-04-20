@@ -633,6 +633,14 @@ public:
 		//Arr2D[3][2] = -( _NearZ * _FarZ) / (_FarZ - _NearZ);
 	}
 
+	// 직교투영
+	void OrthographicLH(float _ScreenWidth, float _ScreenHeight, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	{
+		Identity();
+
+		DirectMatrix = DirectX::XMMatrixOrthographicLH(_ScreenWidth, _ScreenHeight, _NearZ, _FarZ);
+	}
+
 	//            화면의 너비
 	void ViewPort(float _Width, float _Height, float _Left, float _Right, float _ZMin = 0.0f, float _ZMax = 1.0f)
 	{
