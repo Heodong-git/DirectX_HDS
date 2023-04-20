@@ -49,9 +49,6 @@ public:
 		// 생성한 액터 초기화
 		ActorInit(NewActor, _Order, this);
 
-		// 액터맵에 추가
-		Actors[_Order].push_back(NewActor);
-
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
 
