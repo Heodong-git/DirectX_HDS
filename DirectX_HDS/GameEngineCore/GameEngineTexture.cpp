@@ -20,7 +20,6 @@ GameEngineTexture::~GameEngineTexture()
 	}
 }
 
-
 void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
@@ -44,4 +43,9 @@ void GameEngineTexture::CreateRenderTargetView()
 		return;
 	}
 
+}
+
+
+void GameEngineTexture::ResLoad(const std::string_view& _Path)
+{
 }

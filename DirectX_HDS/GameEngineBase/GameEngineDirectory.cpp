@@ -70,7 +70,15 @@ std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(std::vector<std::str
 	{
 		if (true == Entry.is_directory())
 		{
-			// 재귀를 돌리면 다 돌것이다.
+			GameEngineDirectory ChildDir(Entry.path());
+
+			std::vector<GameEngineFile> ChildFiles = ChildDir.GetAllFile(_Ext);
+
+
+			for (size_t i = 0; i < ChildFiles.size(); i++)
+			{
+				Files.push_back(ChildFiles[i]);
+			}
 			continue;
 		}
 

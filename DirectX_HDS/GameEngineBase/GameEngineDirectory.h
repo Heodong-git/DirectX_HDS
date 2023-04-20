@@ -12,6 +12,18 @@ public:
 	GameEngineDirectory();
 	~GameEngineDirectory();
 
+	GameEngineDirectory(std::string_view& _Path)
+		: Path(_Path)
+	{
+
+	}
+
+	GameEngineDirectory(std::filesystem::path _Path)
+		: Path(_Path)
+	{
+
+	}
+
 	// delete Function
 	GameEngineDirectory(const GameEngineDirectory& _Other) = delete;
 	GameEngineDirectory(GameEngineDirectory&& _Other) noexcept = delete;
