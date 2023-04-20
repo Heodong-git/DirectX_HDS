@@ -1,5 +1,8 @@
 #pragma once
 #include "GameEngineResource.h"
+#include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
+
+#pragma comment(lib, "DirectXTex.lib")
 
 // WINAPI ÀÇ IMAGE
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
