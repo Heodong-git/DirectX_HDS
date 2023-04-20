@@ -54,7 +54,6 @@
     <ClInclude Include="GameEnginePixelShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="EngineEnum.h" />
     <ClInclude Include="GameEngineDirectBuffer.h">
       <Filter>Resources\Buffer</Filter>
     </ClInclude>
@@ -88,6 +87,7 @@
     <ClInclude Include="GameEngineShaderResHelper.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />

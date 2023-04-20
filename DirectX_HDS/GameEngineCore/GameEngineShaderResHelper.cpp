@@ -54,7 +54,7 @@ void GameEngineShaderResHelper::Setting()
 	}
 }
 
-void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, size_t _Size)
+void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 

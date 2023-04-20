@@ -2,7 +2,6 @@
 
 // 엔진에서 사용할 enum class 의 집합 
 
-
 // 쉐이더타입 
 enum class ShaderType
 {
@@ -11,7 +10,7 @@ enum class ShaderType
 	Pixel,
 };
 
-// 카메라타입 
+// 카메라타입
 enum class CameraType
 {
 	None,

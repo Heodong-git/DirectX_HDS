@@ -1,5 +1,5 @@
 #pragma once
-#include "EngineEnum.h"
+#include "GameEngineEnum.h"
 #include "GameEngineShaderResHelper.h"
 
 // 설명 : 색의 농담, 색조, 명암 효과를 주는 주체 라는 뜻

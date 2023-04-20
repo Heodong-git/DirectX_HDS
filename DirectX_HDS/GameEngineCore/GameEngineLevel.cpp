@@ -21,6 +21,12 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::Update(float _DeltaTime)
 {
+	if (true == MainCamera->IsFreeCamera())
+	{
+		MainCamera->Update(_DeltaTime);
+		return;
+	}
+
 	// 맵에 저장되어 있기 때문에 2중 for문으로 처리
 	// 맵 탐색 후 리스트탐색 
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)

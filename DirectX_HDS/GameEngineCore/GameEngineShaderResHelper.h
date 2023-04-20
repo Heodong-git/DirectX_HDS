@@ -19,7 +19,7 @@ class GameEngineConstantBufferSetter : public GameEngineShaderResources
 public:
 	std::shared_ptr<GameEngineConstantBuffer> Res;
 	const void* CPUData;
-	size_t CPUDataSize;
+	UINT CPUDataSize;
 
 	void Setting() override;
 };
@@ -64,7 +64,7 @@ public:
 		SetConstantBufferLink(_Name, reinterpret_cast<const void*>(&_Data), sizeof(DataType));
 	}
 
-	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, size_t _Size);
+	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size);
 
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
 

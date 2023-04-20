@@ -1,5 +1,6 @@
 #pragma once
 #include "GameEngineActor.h"
+#include "GameEngineEnum.h"
 
 class GameEngineCamera : public GameEngineActor
 {
@@ -31,10 +32,21 @@ public:
 
 	void Setting();
 
-protected:
-	void Start() override;
+	void SetProjectionType(CameraType _Type)
+	{
+		ProjectionType = _Type;
+	}
+
+	inline bool IsFreeCamera()
+	{
+		return FreeCamera;
+	}
+
 	void Update(float _DeltaTime) override;
 
+protected:
+	void Start() override;
+	
 private:
 	bool FreeCamera = false;
 
@@ -45,8 +57,17 @@ private:
 	// 뷰포트
 	float4x4 ViewPort;
 
+	TransformData OldData;
+	CameraType ProjectionType = CameraType::None;
+
 	D3D11_VIEWPORT ViewPortData;
 
+	// 가로세로
+	float Width = 0.0f;
+	float Height = 0.0f;
+
+	// 시야각
+	float FOV = 60.0f;
 	// 최소거리, 최대거리 
 	float Near = 0.1f;
 	float Far = 10000.0f;

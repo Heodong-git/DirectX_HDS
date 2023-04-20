@@ -56,8 +56,8 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name)
 	if (true == ShaderResHelper.IsConstantBuffer("TransformData"))
 	{
 		// 여기서 월드뷰프로젝션 * 수행
-		const float4x4& World = GetTransform()->GetWorldViewProjectionMatrixRef();
-		ShaderResHelper.SetConstantBufferLink("TransformData", World);
+		const TransformData& Data = GetTransform()->GetTransDataRef();
+		ShaderResHelper.SetConstantBufferLink("TransformData", Data);
 	}
 
 	GetTransform()->GetWorldMatrix(); // ? 
