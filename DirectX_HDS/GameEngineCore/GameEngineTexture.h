@@ -2,12 +2,11 @@
 #include "GameEngineResource.h"
 #include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
 
-#pragma comment(lib, "DirectXTex.lib")
-
 // WINAPI 의 IMAGE
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
 {
 	friend GameEngineDevice;
+	friend class GameEngineTextureSetter;
 
 public:
 	// constrcuter destructer
@@ -49,7 +48,7 @@ public:
 
 	ID3D11RenderTargetView* GetRTV()
 	{
-		return RenderTarget;
+		return RTV;
 	}
 
 protected:
@@ -58,12 +57,18 @@ private:
 	// HIBITMAP 
 	ID3D11Texture2D* Texture2D = nullptr;
 	// HDC : 비트맵에 그릴수 있는 권한, 이 한묶음의 세트가 그대로 다이렉트버전으로 변경됐다고 보면 됨 
-	ID3D11RenderTargetView* RenderTarget = nullptr;
+	ID3D11RenderTargetView* RTV = nullptr;
+	ID3D11ShaderResourceView* SRV = nullptr;
+
+	DirectX::TexMetadata Data = {};
+	DirectX::ScratchImage Image = {};
 
 	void ResLoad(const std::string_view& _Path);
 	void ResCreate(ID3D11Texture2D* _Value);
 
 	void CreateRenderTargetView();
 
+	void VSSetting(UINT _Slot);
+	void PSSetting(UINT _Slot);
 };
 

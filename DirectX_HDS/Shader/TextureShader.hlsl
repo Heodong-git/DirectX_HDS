@@ -33,7 +33,7 @@ struct Input
     
     //           각각의 변수가 어떤 역할인지
     float4 Pos : POSITION;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 struct Output
@@ -41,7 +41,7 @@ struct Output
     // 레스터라이저에게 보내는 정보 
     // w 값으로 나눈 후 뷰포트 곱하고 픽셀을 건져낼 때 사용할 포지션 정보를 보낸 거야
     float4 Pos : SV_Position;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 Output Texture_VS(Input _Value)
@@ -52,7 +52,7 @@ Output Texture_VS(Input _Value)
     // 월드매트릭스 곱 : mul 함수를 사용하여 가능
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     //OutPutValue.Pos = _Value.Pos;
-    OutPutValue.Color = _Value.Color;
+    OutPutValue.UV = _Value.UV;
 	
 	// 다음단계에서 사용할 정보들.
     // _Value.Pos *= 월드뷰프로젝션;
@@ -65,11 +65,26 @@ cbuffer OutPixelColor : register(b0)
     float4 OutColor;
 }
 
-// 0번째 타겟에 출력하라는 의미가 된다. 
+// 텍스쳐를 사용하려면 
+Texture2D DiffuseTex : register(t0);
+
+// 샘플러 
+SamplerState CLAMPSAMPLER : register(s0);
+
 float4 Texture_PS(Output _Value) : SV_Target0
 {
-    return OutColor;
+    // 스위즐링 표현법이라고 해서
+    // float4
+    // float4.xy == float2
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    
+    return Color;
 }
+// 0번째 타겟에 출력하라는 의미가 된다. 
+//float4 Texture_PS(Output _Value) : SV_Target0
+//{
+//    return OutColor;
+//}
 
 // 아래 과정을 생략하여 위 코드처럼 작성이 가능하다. 
 //struct OutColor

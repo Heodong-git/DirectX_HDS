@@ -23,8 +23,9 @@ public:
 
 	// 파일명반환
 	std::string GetFileName() const;
-	// 경로반환 
-	std::string GetPathToString() const;
+	// 풀경로반환
+	std::string GetFullPath() const;
+	std::string GetExtension() const;
 
 	// 상위디렉터리로 이동
 	void MoveParent();

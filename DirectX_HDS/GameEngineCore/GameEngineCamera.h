@@ -57,10 +57,11 @@ private:
 	// 뷰포트
 	float4x4 ViewPort;
 
-	TransformData OldData;
+	TransformData OldData = {};
 	CameraType ProjectionType = CameraType::None;
 
-	D3D11_VIEWPORT ViewPortData;
+	// 초기화ㅇㅇ
+	D3D11_VIEWPORT ViewPortData = {};
 
 	// 가로세로
 	float Width = 0.0f;

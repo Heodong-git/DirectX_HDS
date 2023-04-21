@@ -35,6 +35,11 @@ public:
 		return Name.c_str();
 	}
 
+	std::string GetNameToString()
+	{
+		return Name;
+	}
+
 	void SetPath(const std::string_view& _Value)
 	{
 		Path = _Value;

@@ -41,8 +41,13 @@ std::string GameEnginePath::GetFileName() const
 	return Path.filename().string();
 }
 
+// 확장자명 가져오기
+std::string GameEnginePath::GetExtension() const
+{
+	return Path.extension().string();
+}
 
-std::string GameEnginePath::GetPathToString() const
+std::string GameEnginePath::GetFullPath() const
 {
 	return Path.string();
 }
@@ -92,7 +97,7 @@ bool GameEnginePath::IsExists()
 
 bool GameEnginePath::IsExistsToPlusString(const std::string_view& _String)
 {
-	std::string Str = GetPathToString() + _String.data();
+	std::string Str = GetFullPath() + _String.data();
 	return 0 == _access(Str.c_str(), 0);
 }
 

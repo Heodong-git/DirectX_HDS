@@ -23,7 +23,7 @@ void CMouse::Start()
 	// 파이프라인세팅 
 	Renderer->SetPipeLine("2DTexture");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
-	Renderer->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	//Renderer->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 렌더러의 크기
 	Renderer->GetTransform()->SetLocalScale({ 10.0f, 10.0f , 0.0f });
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  

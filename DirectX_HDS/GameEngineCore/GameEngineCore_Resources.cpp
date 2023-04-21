@@ -21,9 +21,22 @@
 // 렌더링파이프라인에 필요한 리소스 생성 및 로드 후 파이프라인세팅 
 void GameEngineCore::CoreResourcesInit()
 {
+	// 파일을 읽어온다. 
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		NewDir.Move("katanazero_resources");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
 	// 버텍스버퍼의 내용과 인풋레이아웃의 내용이 더 중요. 
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
-	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	//typedef struct D3D11_INPUT_ELEMENT_DESC
 	//{
@@ -42,15 +55,35 @@ void GameEngineCore::CoreResourcesInit()
 	//SIZE_T BytecodeLength,
 	//ID3D11InputLayout** ppInputLayout // 만들어져 나오는 포인터
 
+	// 샘플러를 먼저 생성해주어야한다. 
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
+
+		// 
+
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("CLAMPSAMPLER", SamperData);
+	}
+
 	{
 		// 버텍스 초기화
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 		// 앞면
-		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, float4::White };
-		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, float4::Black};
-		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, float4::Red };
+		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, {0.0f, 0.0f} };
+		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, {1.0f, 0.0f} };
+		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, {1.0f, 1.0f} };
+		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, {0.0f, 1.0f} };
 
 		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
 
@@ -105,10 +138,9 @@ void GameEngineCore::CoreResourcesInit()
 		NewDir.MoveParentToDirectory("Shader");
 		// 이동
 		NewDir.Move("Shader");
-		// 해당하는 파일을 받아온다. 
+
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		// 일단 현시점에서는 이렇게.
 		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드 
 		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");

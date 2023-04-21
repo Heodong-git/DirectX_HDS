@@ -37,9 +37,10 @@ void CPlayer::Start()
 	// 파이프라인세팅 
 	Render0->SetPipeLine("2DTexture");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
-	Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 렌더러의 크기
-	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });	
+
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
 	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -70,13 +71,13 @@ void CPlayer::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Player_Attack"))
 	{
 		// 일단 이건 맞는데. 마우스를 하려면 어떻게? 
-		CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
+		/*CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
 		float4 BossPos = Level->GetBoss()->GetTransform()->GetWorldPosition();
 		
 		float4 MoveDir = BossPos - GetTransform()->GetWorldPosition();
 		MoveDir.Normalize();
 
-		GetTransform()->AddLocalPosition(MoveDir * Speed * _DeltaTime);
+		GetTransform()->AddLocalPosition(MoveDir * Speed * _DeltaTime);*/
 	}
 
 	if (true == GameEngineInput::IsPress("Test"))
