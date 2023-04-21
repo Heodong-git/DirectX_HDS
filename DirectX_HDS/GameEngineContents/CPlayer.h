@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEngineSerializer.h>
 #include "CKatanaZero_Actor.h"
 
+
 class CPlayer : public CKatanaZero_Actor
 {
 public:
@@ -26,8 +27,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineRenderer> Render0;
-	std::shared_ptr<class GameEngineRenderer> Render1;
-	std::shared_ptr<class GameEngineRenderer> Render2;
 };
 
 // 파일입출력이 필수다. 

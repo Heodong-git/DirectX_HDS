@@ -47,13 +47,38 @@ public:
 	{
 		return m_TimeOver;
 	}
+
+	std::shared_ptr<class CBoss_HeadHunter> GetBoss()
+	{
+		return m_Boss;
+	}
+
+	std::shared_ptr<class CPlayer> GetPlayer()
+	{
+		return m_Player;
+	}
+
+	void SetPlayer(std::shared_ptr<class CPlayer> _Player)
+	{
+		m_Player = _Player;
+	}
+
+	void SetBoss(std::shared_ptr<class CBoss_HeadHunter> _Boss)
+	{
+		m_Boss = _Boss;
+	}
+
 protected:
 	// 녹화하고 역재생 해야하는 레벨에서만 재정의한 Start에서 얘를 호출하면 되게 하려고 했는데
 	// 그냥 다호출하거나 오버라이딩으로 처리하고, recording == true 인 레벨에서만 녹화 
 	void Start() override;
 	void Update(float _DeltaTime);
 
+
 private:
+	std::shared_ptr<class CPlayer> m_Player = nullptr;
+	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
+
 	// 타임오버
 	void TimeOver();
 

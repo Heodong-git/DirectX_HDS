@@ -42,6 +42,9 @@
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="CMouse.h">
+      <Filter>Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -84,6 +87,9 @@
       <Filter>Boss</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="CMouse.cpp">
+      <Filter>Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -103,6 +109,9 @@
     </Filter>
     <Filter Include="ContentsObject">
       <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mouse">
+      <UniqueIdentifier>{2cb0de99-639b-450c-ba8b-298cce7c3b9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

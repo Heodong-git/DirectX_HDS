@@ -232,15 +232,22 @@
     <Filter Include="ThirdParty\DirectXTex\Header">
       <UniqueIdentifier>{33f3d46f-bba6-41fb-8059-d6678c6ff4fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Debug">
+      <UniqueIdentifier>{10774fb5-11fc-491b-b2d3-59db44c37090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Release">
+      <UniqueIdentifier>{e432dad6-6d4a-4eea-a071-a116a05364bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
       <Filter>ThirdParty\DirectXTex\Header</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
-      <Filter>ThirdParty\DirectXTex\bin</Filter>
-    </CopyFileToFolders>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Release\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Release</Filter>
+    </None>
   </ItemGroup>
 </Project>

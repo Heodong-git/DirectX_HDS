@@ -15,6 +15,9 @@ public:
 	CBoss_HeadHunter& operator=(const CBoss_HeadHunter& _Other) = delete;
 	CBoss_HeadHunter& operator=(CBoss_HeadHunter&& _Other) noexcept = delete;
 
+
+	float4 TestColor;
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;

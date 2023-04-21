@@ -7,6 +7,9 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
+#include <GameEngineContents/CKatanaZero_Level.h>
+#include "CBoss_HeadHunter.h"
+
 CPlayer::CPlayer()
 {
 }
@@ -22,6 +25,7 @@ void CPlayer::Start()
 	{
 		// 음 이게 전부인가 이친구는? 
 		GameEngineInput::CreateKey("Player_Attack", VK_LBUTTON);
+		GameEngineInput::CreateKey("Test", VK_RBUTTON);
 		GameEngineInput::CreateKey("Player_Left_Move", 'A');
 		GameEngineInput::CreateKey("Player_Right_Move", 'D');
 		GameEngineInput::CreateKey("Player_Jump", 'W');
@@ -43,7 +47,7 @@ void CPlayer::Start()
 
 void CPlayer::Update(float _DeltaTime)
 {
-	float Speed = 200.0f;
+	float Speed = 1000.0f;
 
 	// 임시무브 
 	if (true == GameEngineInput::IsPress("Player_Left_Move"))
@@ -62,6 +66,25 @@ void CPlayer::Update(float _DeltaTime)
 	{
 		GetTransform()->AddLocalPosition(float4::Down * Speed * _DeltaTime);
 	}
+
+	if (true == GameEngineInput::IsPress("Player_Attack"))
+	{
+		// 일단 이건 맞는데. 마우스를 하려면 어떻게? 
+		CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
+		float4 BossPos = Level->GetBoss()->GetTransform()->GetWorldPosition();
+		
+		float4 MoveDir = BossPos - GetTransform()->GetWorldPosition();
+		MoveDir.Normalize();
+
+		GetTransform()->AddLocalPosition(MoveDir * Speed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("Test"))
+	{
+		// 마우스위치 방향 공격 테스트용
+		// 마우스를 액터로 만들어야 할 거 같은데 
+	}
+
 }
 
 // 디버그용으로 사용
