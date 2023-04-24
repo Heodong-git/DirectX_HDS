@@ -23,5 +23,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineRenderer> Renderer;
+	// 마우스커서 쫓아가기
+	void FollowCursor();
+	std::shared_ptr<class GameEngineRenderer> m_Renderer;
+	float4 m_Scale = { 50.0f, 50.0f, 50.0f };
 };

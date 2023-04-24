@@ -3,8 +3,9 @@
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
-#include "GameEngineResource.h"
 
+#include "GameEngineResource.h"
+#include "GameEngineShaderResHelper.h"
 #include "GameEngineVertex.h"
 #include "GameEngineMesh.h"
 #include "GameEngineTexture.h"
@@ -37,6 +38,9 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스버퍼의 내용과 인풋레이아웃의 내용이 더 중요. 
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
+
+	//새로운 무언가를 만든다면 이런형태로 정보를 넘겨주어야함. 
+	//GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	//typedef struct D3D11_INPUT_ELEMENT_DESC
 	//{
@@ -74,7 +78,24 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineSampler::Create("CLAMPSAMPLER", SamperData);
 	}
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
 
+		// 
+
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("WRAPSAMPLER", SamperData);
+	}
 	{
 		// 버텍스 초기화
 		std::vector<GameEngineVertex> ArrVertex;

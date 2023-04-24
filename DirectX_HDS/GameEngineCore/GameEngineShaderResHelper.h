@@ -84,6 +84,8 @@ public:
 
 	void SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size);
 
+	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
+
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
 
 	void Setting();

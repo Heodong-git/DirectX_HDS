@@ -45,6 +45,9 @@
     <ClInclude Include="CMouse.h">
       <Filter>Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="CTitleManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -89,6 +92,9 @@
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="CMouse.cpp">
       <Filter>Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="CTitleManager.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

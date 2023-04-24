@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineShaderResHelper.h>
 
 
 CBoss_HeadHunter::CBoss_HeadHunter()
@@ -20,10 +21,11 @@ void CBoss_HeadHunter::Start()
 	Render0 = CreateComponent<GameEngineRenderer>();
 	// 파이프라인세팅 
 	Render0->SetPipeLine("2DTexture");
+	Render0->GetShaderResHelper().SetTexture("GameTex", "headhunter_idle_0.png");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
 	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 렌더러의 크기
-	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	Render0->GetTransform()->SetLocalScale(m_Scale);
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
 	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };

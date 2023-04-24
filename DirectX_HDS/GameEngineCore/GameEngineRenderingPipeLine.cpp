@@ -37,7 +37,9 @@ void GameEngineRenderingPipeLine::InputAssembler1()
 	}
 
 	VertexBufferPtr->Setting();
-	// GameEngineDevice::GetContext()->IASetVertexBuffers()
+	
+	// 012 023 3개씩 끊어서 한면으로 만들어라 라는 내용을 여기서 처리
+	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
 }
 
 // 각 정점(Vertex)에 대한 연산수행 
@@ -212,10 +214,8 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 	}
 }
 
-// 매쉬 + 머티리얼
-void GameEngineRenderingPipeLine::Render()
+void GameEngineRenderingPipeLine::RenderingPipeLineSetting()
 {
-	// 렌더링 - 렌더링파이프라인 한바퀴 수행
 	InputAssembler1();
 	VertexShader();
 	InputAssembler2();
@@ -228,8 +228,12 @@ void GameEngineRenderingPipeLine::Render()
 	OutputMerger();
 
 	// 위의 과정은 렌더링을 위한 준비과정일 뿐이지 순서가 중요하지 않다. 세팅하는 과정일뿐 순서에 얽매이지마라. 
+}
 
 
+// 매쉬 + 머티리얼
+void GameEngineRenderingPipeLine::Render()
+{
 	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데
 	// 무조건 인덱스 버퍼를 사용할거임.
 	UINT IndexCount = IndexBufferPtr->GetIndexCount();

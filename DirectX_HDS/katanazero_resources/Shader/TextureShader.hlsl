@@ -74,7 +74,7 @@ cbuffer OutPixelColor : register(b0)
 }
 
 // 텍스쳐를 사용하려면 
-Texture2D DiffuseTex : register(t0);
+Texture2D GameTex : register(t0);
 
 // 샘플러
 SamplerState CLAMPSAMPLER : register(s0);
@@ -85,7 +85,7 @@ float4 Texture_PS(PixelInputType _Value) : SV_Target0
     // float4
     // float4.xy == float2
     // float4.xyz == float3 
-    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    float4 Color = GameTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     
     return Color;
 }

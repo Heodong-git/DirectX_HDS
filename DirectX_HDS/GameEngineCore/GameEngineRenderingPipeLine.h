@@ -15,6 +15,12 @@ public:
 	GameEngineRenderingPipeLine& operator=(const GameEngineRenderingPipeLine& _Other) = delete;
 	GameEngineRenderingPipeLine& operator=(GameEngineRenderingPipeLine&& _Other) noexcept = delete;
 
+	static std::shared_ptr<class GameEngineRenderingPipeLine> Create(const std::string_view& _Name)
+	{
+		std::shared_ptr<class GameEngineRenderingPipeLine> NewRes = GameEngineResource<GameEngineRenderingPipeLine>::Create(_Name);
+		return NewRes;
+	}
+
 	inline  std::shared_ptr<class GameEngineVertexShader> GetVertexShader()
 	{
 		return VertexShaderPtr;
@@ -37,6 +43,7 @@ public:
 		FILL_MODE = _Value;
 	}
 
+	void RenderingPipeLineSetting();
 	void Render();
 
 protected:

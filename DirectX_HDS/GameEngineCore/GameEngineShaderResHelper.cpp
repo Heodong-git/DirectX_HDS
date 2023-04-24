@@ -177,3 +177,35 @@ void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _N
 	}
 
 }
+
+void GameEngineShaderResHelper::SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName)
+{
+	std::string UpperName = GameEngineString::ToUpper(_SettingName);
+
+	// multimap 의 find 함수를 호출하여, 해당 키값으로 데이터가 있는지 확인하여 받아온다.
+	std::multimap<std::string, GameEngineTextureSetter>::iterator FindIter = TextureSetters.find(UpperName);
+
+	// 만약 FindIter가 end 라면 해당하는 텍스쳐가 없는 것
+	if (TextureSetters.end() == FindIter)
+	{
+		MsgAssert("쉐이더에서 이런 이름의 텍스처 세팅를 사용하지 않았습니다." + UpperName);
+		return;
+	}
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameStartIter = TextureSetters.lower_bound(UpperName);
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameEndIter = TextureSetters.upper_bound(UpperName);
+
+	std::shared_ptr<GameEngineTexture> FindTex = GameEngineTexture::Find(_ImageName);
+
+	if (nullptr == FindTex)
+	{
+		MsgAssert("이런 이름의 텍스처는 로드한 적이 없습니다." + UpperName);
+		return;
+	}
+
+	for (; NameStartIter != NameEndIter; ++NameStartIter)
+	{
+		GameEngineTextureSetter& Setter = NameStartIter->second;
+		Setter.Res = FindTex;
+	}
+}
