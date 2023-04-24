@@ -89,8 +89,8 @@ void GameEngineShader::ShaderResCheck()
 		case D3D_SIT_TEXTURE:
 		{
 			// 텍스쳐를 찾아오고
-			// 기본세팅 : EngineBaseTex 
-			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("1.png");
+			// 기본세팅 : EngineBaseTex , 실험 : spr_cursor_0
+			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
 
 			// 텍스쳐 세터의 정보를 세팅
 			GameEngineTextureSetter Setter;

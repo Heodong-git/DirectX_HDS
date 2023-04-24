@@ -50,7 +50,8 @@ private:
 	// 정점의 정보를 토대로 어떤 순서로 그릴지 정하고 조립한다. 
 	void InputAssembler2();
 
-	// 여기부터 지오메트리쉐이더 까지는 lod (레벨오브디테일) 과 관련된 내용으로 현 프로젝트에서는 없어도 무관
+	// 여기부터 지오메트리쉐이더 까지는 테셀레이션
+	// lod (레벨오브디테일) 과 관련된 내용으로 현 프로젝트에서는 없어도 무관
 	void HullShader();
 	void Tessellator();
 	void DomainShader();
@@ -61,7 +62,7 @@ private:
 	void Rasterizer();
 	// 각 pixel의 데이터 생성, pixel 출력데이터를 결합해 출력될 색상을 결정한다.
 	void PixelShader();
-	// pixel 셰이더에서 출력된 pixel 값을 렌더타겟에 그리는 작업을 수행한다. 
+	// pixel 셰이더에서 출력된 각각의 pixel 값을 렌더타겟에 그리는 작업을 수행한다. 
 	void OutputMerger();
 
 	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;

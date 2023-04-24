@@ -113,5 +113,8 @@
     <Filter Include="Mouse">
       <UniqueIdentifier>{2cb0de99-639b-450c-ba8b-298cce7c3b9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{bcc2db5d-7aac-468e-8fe0-d531276faea7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

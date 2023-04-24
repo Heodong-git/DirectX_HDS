@@ -24,8 +24,8 @@ void GameEngineCore::CoreResourcesInit()
 	// 파일을 읽어온다. 
 	{
 		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("katanazero_resources");
-		NewDir.Move("katanazero_resources");
+		NewDir.MoveParentToDirectory("EngineResources");
+		NewDir.Move("EngineResources");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -135,8 +135,9 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		GameEngineDirectory NewDir;
 		// 인자로 입력한 폴더가 존재하는 디렉터리로 이동
-		NewDir.MoveParentToDirectory("Shader");
+		NewDir.MoveParentToDirectory("katanazero_resources");
 		// 이동
+		NewDir.Move("katanazero_resources");
 		NewDir.Move("Shader");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });

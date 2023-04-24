@@ -12,7 +12,10 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-
+// 상하좌우 z축
+// 우클릭유지 : 회전 
+// 자유시점 : P
+// 투영모드 변경 : O 
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
