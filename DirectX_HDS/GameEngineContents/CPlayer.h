@@ -26,8 +26,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineRenderer> Render0;
-	float4 m_Scale = { 75.0f , 75.0f , 0.0f };
+	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer;
+	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
 };
 
 // 파일입출력이 필수다. 

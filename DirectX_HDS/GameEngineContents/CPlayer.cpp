@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include <GameEngineContents/CKatanaZero_Level.h>
 #include "CBoss_HeadHunter.h"
@@ -33,14 +34,14 @@ void CPlayer::Start()
 	}
 
 	// 컴포넌트생성
-	Render0 = CreateComponent<GameEngineRenderer>();
+	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
 	// 파이프라인세팅 
-	Render0->SetPipeLine("2DTexture");
-	Render0->GetShaderResHelper().SetTexture("GameTex", "player_idle_0.png");
+	m_Renderer->SetPipeLine("2DTexture");
+	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
 	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 렌더러의 크기
-	Render0->GetTransform()->SetLocalScale(m_Scale);
+	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
 
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
@@ -50,6 +51,16 @@ void CPlayer::Start()
 void CPlayer::Update(float _DeltaTime)
 {
 	float Speed = 1000.0f;
+
+	if (true == GameEngineInput::IsDown("Player_Left_Move"))
+	{
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	if (true == GameEngineInput::IsDown("Player_Right_Move"))
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
 
 	// 임시무브 
 	if (true == GameEngineInput::IsPress("Player_Left_Move"))

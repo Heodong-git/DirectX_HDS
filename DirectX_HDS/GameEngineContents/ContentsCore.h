@@ -13,6 +13,8 @@ public:
 	ContentsCore& operator=(const ContentsCore& _Other) = delete;
 	ContentsCore& operator=(ContentsCore&& _Other) noexcept = delete;
 
+	static void ContentsResourcesCreate();
+
 	static void GameStart();
 	static void GameEnd();
 

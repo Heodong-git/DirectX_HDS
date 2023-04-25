@@ -21,7 +21,7 @@ void CBoss_HeadHunter::Start()
 	Render0 = CreateComponent<GameEngineRenderer>();
 	// 파이프라인세팅 
 	Render0->SetPipeLine("2DTexture");
-	Render0->GetShaderResHelper().SetTexture("GameTex", "headhunter_idle_0.png");
+	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "headhunter_idle_0.png");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
 	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 렌더러의 크기

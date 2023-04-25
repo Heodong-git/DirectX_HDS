@@ -27,7 +27,7 @@ void CMouse::Start()
 	m_Renderer = CreateComponent<GameEngineRenderer>();
 	// 파이프라인세팅 
 	m_Renderer->SetPipeLine("2DTexture");
-	m_Renderer->GetShaderResHelper().SetTexture("GameTex", "cursor_0.png");
+	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "cursor_0.png");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
 	//Renderer->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	
@@ -69,4 +69,6 @@ void CMouse::FollowCursor()
 					   OriginMousePos.y + GameEngineWindow::GetScreenSize().hy() };
 
 	GetTransform()->SetLocalPosition(WorldMousePos);
+	
+	float4 check = GetTransform()->GetLocalPosition();
 }

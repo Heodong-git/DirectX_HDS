@@ -359,6 +359,36 @@ public:
 		TransData = _Data;
 	}
 
+	void SetLocalFlipScaleX()
+	{
+		TransData.LocalScale.x = -TransData.LocalScale.x;
+		SetLocalScale(TransData.LocalScale);
+	}
+
+	// x축값을 음수로 
+	void SetLocalNegativeScaleX()
+	{
+		if (0 < TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
+	// x축값을 양수로 
+	void SetLocalPositiveScaleX()
+	{
+		if (0 > TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
 protected:
 
 private:

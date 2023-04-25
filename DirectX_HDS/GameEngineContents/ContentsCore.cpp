@@ -16,9 +16,16 @@ ContentsCore::~ContentsCore()
 {
 }
 
+void ContentsCore::ContentsResourcesCreate()
+{
+	// 텍스쳐 로드만 각각 필요한 레벨에서. 레벨체인지하게 될 경우 로드한 리소스 삭제까지. 
+}
+
 // 게임이 실행되면 동작해야할 함수를 호출
 void ContentsCore::GameStart()
 {
+	ContentsResourcesCreate();
+
 	// 레벨생성 후 레벨체인지 , 생성시 이름을 넣어주지 않는다면
 	// 클래스 이름과 동일한 이름으로 레벨 생성
 	GameEngineCore::CreateLevel<CTitleLevel>();

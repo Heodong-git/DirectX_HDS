@@ -3,20 +3,20 @@
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
-
 #include "GameEngineResource.h"
 #include "GameEngineShaderResHelper.h"
-#include "GameEngineVertex.h"
+
 #include "GameEngineMesh.h"
+#include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
-#include "GameEngineRenderTarget.h"
+#include "GameEngineVertex.h"
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
+#include "GameEngineConstantBuffer.h"
 #include "GameEngineRenderingPipeLine.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
-#include "GameEngineConstantBuffer.h"
-
+#include "GameEngineRenderTarget.h"
 #include "GameEngineVertexShader.h"
 
 // 렌더링파이프라인에 필요한 리소스 생성 및 로드 후 파이프라인세팅 
@@ -113,6 +113,30 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
+		// 블렌드
+		D3D11_BLEND_DESC Desc = { 0, };
+
+		// 자동으로 알파 부분을 제거해서 출력한다. 엄청느림
+		Desc.AlphaToCoverageEnable = false;
+
+		// true  : 블렌드를 여러개 세팅 
+		// false : 0번에 세팅된 걸로 모두 세팅
+		Desc.IndependentBlendEnable = false;
+
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+
+		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	{
 		// 얘는 지금 안쓰고있음
 		std::vector<float4> ArrVertex;
 		ArrVertex.resize(24);
@@ -204,12 +228,13 @@ void GameEngineCore::CoreResourcesInit()
 		// 선 앤티앨리어싱을 활성화할지 여부를 지정합니다. 선 그리기를 수행하고 MultisampleEnable이 
 		// FALSE 인 경우에만 적용됩니다 . 이 멤버에 대한 자세한 내용은 비고를 참조하세요.
 
-		// 와이어 프레임은 선으로 표현하는 겁니다. 
-		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+		// 와이어 프레임은 선으로 표현
+		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 		Desc.FrontCounterClockwise = FALSE;
 
-		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
+		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 	{
 		{
@@ -220,8 +245,9 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexBuffer("Rect");
 			Pipe->SetIndexBuffer("Rect");
 			Pipe->SetVertexShader("TextureShader.hlsl");
-			Pipe->SetRasterizer("EngineBase");
+			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
+			Pipe->SetBlend("AlphaBlend");
 		}
 	}
 }
@@ -232,13 +258,15 @@ void GameEngineCore::CoreResourcesEnd()
 	// 생성한 리소스들을 모두 제거해준다. 
 	// shard ptr 사용으로 인해 레퍼런스카운트가 0 이되면 자동으로 제거되지만
 	// 원하는시점에 삭제되는 것을 확실히 하고, 여기서 제거되지 않는다면 문제가 있는 것이라고 판단하기 위해서. 
-	GameEngineConstantBuffer::ResourcesClear();
-	GameEnginePixelShader::ResourcesClear();
-	GameEngineRasterizer::ResourcesClear();
-	GameEngineVertexShader::ResourcesClear();
-	GameEngineIndexBuffer::ResourcesClear();
-	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineMesh::ResourcesClear();
+	GameEngineBlend::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineRenderTarget::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEngineRenderingPipeLine::ResourcesClear();
 }
