@@ -17,7 +17,8 @@ public:
 
 protected:
 	void Start() override;
-
+	void Update(float _DeltaTime);
 
 private:
+	float4 m_CurMouseLocalPos = {};
 };

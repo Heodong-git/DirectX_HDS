@@ -7,9 +7,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-
 #include <GameEngineContents/CKatanaZero_Level.h>
-#include "CBoss_HeadHunter.h"
 
 CPlayer::CPlayer()
 {
@@ -21,83 +19,68 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
-	// 키생성
-	if (false == GameEngineInput::IsKey("Attack"))
+	if (false == GameEngineInput::IsKey("attack"))
 	{
-		// 음 이게 전부인가 이친구는? 
-		GameEngineInput::CreateKey("Player_Attack", VK_LBUTTON);
-		GameEngineInput::CreateKey("Test", VK_RBUTTON);
-		GameEngineInput::CreateKey("Player_Left_Move", 'A');
-		GameEngineInput::CreateKey("Player_Right_Move", 'D');
-		GameEngineInput::CreateKey("Player_Jump", 'W');
-		GameEngineInput::CreateKey("Player_Down_Move", 'S');
+		GameEngineInput::CreateKey("player_attack", VK_LBUTTON);
+		// GameEngineInput::CreateKey("test", VK_RBUTTON);
+		GameEngineInput::CreateKey("player_snail", VK_LSHIFT);
+		GameEngineInput::CreateKey("player_left_Move", 'A');
+		GameEngineInput::CreateKey("player_right_Move", 'D');
+		GameEngineInput::CreateKey("player_jump", 'W');
+		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
 
-	// 컴포넌트생성
 	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
-	// 파이프라인세팅 
 	m_Renderer->SetPipeLine("2DTexture");
 	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
-	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
-	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
-	// 렌더러의 크기
 	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
 
+	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
+	// Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
-	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+	// TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void CPlayer::Update(float _DeltaTime)
 {
-	float Speed = 1000.0f;
-
-	if (true == GameEngineInput::IsDown("Player_Left_Move"))
+	// 크로노스 사용시 
+	if (true == GameEngineInput::IsPress("player_snail"))
 	{
-		GetTransform()->SetLocalNegativeScaleX();
+		m_Snail = true;
 	}
-
-	if (true == GameEngineInput::IsDown("Player_Right_Move"))
+	else if (false == GameEngineInput::IsPress("player_snail"))
+	{
+		m_Snail = false;
+	}
+	
+	if (true == GameEngineInput::IsDown("player_right_Move"))
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	// 임시무브 
-	if (true == GameEngineInput::IsPress("Player_Left_Move"))
+	if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-		GetTransform()->AddLocalPosition(float4::Left * Speed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("Player_Right_Move"))
+	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
-		GetTransform()->AddLocalPosition(float4::Right * Speed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("Player_Jump"))
+	if (true == GameEngineInput::IsPress("player_jump"))
 	{
-		GetTransform()->AddLocalPosition(float4::Up * Speed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Up * m_MoveSpeed * _DeltaTime);
 	}
-	if (true == GameEngineInput::IsPress("Player_Down_Move"))
+	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
-		GetTransform()->AddLocalPosition(float4::Down * Speed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Down * m_MoveSpeed * _DeltaTime);
 	}
 
-	if (true == GameEngineInput::IsPress("Player_Attack"))
+	if (true == GameEngineInput::IsDown("player_attack"))
 	{
-		// 일단 이건 맞는데. 마우스를 하려면 어떻게? 
-		/*CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
-		float4 BossPos = Level->GetBoss()->GetTransform()->GetWorldPosition();
 		
-		float4 MoveDir = BossPos - GetTransform()->GetWorldPosition();
-		MoveDir.Normalize();
-
-		GetTransform()->AddLocalPosition(MoveDir * Speed * _DeltaTime);*/
 	}
-
-	if (true == GameEngineInput::IsPress("Test"))
-	{
-		// 마우스위치 방향 공격 테스트용
-		// 마우스를 액터로 만들어야 할 거 같은데 
-	}
-
 }
 
 // 디버그용으로 사용

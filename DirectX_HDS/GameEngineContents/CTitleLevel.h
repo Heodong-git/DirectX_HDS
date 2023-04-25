@@ -17,7 +17,9 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _DeltaTime);
 
 private:
+	std::shared_ptr<class CTitleUIManager> m_UIManager = nullptr;
 };
 

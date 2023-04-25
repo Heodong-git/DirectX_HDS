@@ -20,6 +20,11 @@ public:
 	float4 TestColor;
 	float4 TestColor1;
 
+	inline bool IsSnail() const
+	{
+		return m_Snail;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -28,6 +33,8 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer;
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
+	float  m_MoveSpeed = 500.0f;
+	bool   m_Snail = false;
 };
 
 // 파일입출력이 필수다. 

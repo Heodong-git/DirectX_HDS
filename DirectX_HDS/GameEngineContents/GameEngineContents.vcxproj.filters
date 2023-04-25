@@ -42,10 +42,13 @@
     <ClInclude Include="CMouse.h">
       <Filter>Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="CTitleManager.h">
+    <ClInclude Include="CTitleUIManager.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="CBackGround.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -88,10 +91,13 @@
     <ClCompile Include="CMouse.cpp">
       <Filter>Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="CTitleManager.cpp">
+    <ClCompile Include="CTitleUIManager.cpp">
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="CBackGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -114,6 +120,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{bcc2db5d-7aac-468e-8fe0-d531276faea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround">
+      <UniqueIdentifier>{f770b974-b08f-4364-a1b8-a6d93954a3e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

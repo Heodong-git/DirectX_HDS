@@ -5,7 +5,7 @@
 
 // TEST
 #include <GameEngineBase/GameEngineTimeEvent.h>
-#include "CTitleManager.h"
+#include "CTitleUIManager.h"
 
 CTitleLevel::CTitleLevel()
 {
@@ -28,14 +28,26 @@ void TestF()
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+
+	// 타이틀 ui를 관리하는 매니저 클래스 
+	m_UIManager = CreateActor<CTitleUIManager>("TitleUIManager");
+}
+
+void CTitleLevel::Update(float _DeltaTime)
+{
+}
+
+/*
 	// 람다 : 이름이 없는 함수를 만들어주는 기능
 	// 두개의 인자를 받는 function 객체에
 	// [](인자)
 	// {
 	// }
 	// 의 형태로 이름없는 함수를 만들어 대입할 수 있다. 코드블록 내부에 동작할 코드 작성
-	// 이런 형태로 이름 없는 함수를 만들어주고 내부에서 무언가를 하게 만든다. 
-	//std::function<void(GameEngineTimeEvent::TimeEvent&, GameEngineTimeEvent*)> Test = 
+	// 이런 형태로 이름 없는 함수를 만들어주고 내부에서 무언가를 하게 만든다.
+	//std::function<void(GameEngineTimeEvent::TimeEvent&, GameEngineTimeEvent*)> Test =
 	//	[=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 	//{
 	//	MsgTextBox("공격");
@@ -44,15 +56,6 @@ void CTitleLevel::Start()
 	//};
 
 	//// 소유한 타임이벤트의 함수호출
-	//// 람다 테스트용으로 만든 Test 함수를 호출 한것. 
+	//// 람다 테스트용으로 만든 Test 함수를 호출 한것.
 	//TimeEvent.AddEvent(5.0f, TestFunction, false);
-	
-
-	// 각 레벨에서는 반드시 시작할때 투영타입을 세팅해준다. 
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	// 카메라가 어느 위치에서 바라볼 것인지
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
-
-	std::shared_ptr<CTitleManager> TitleManager = CreateActor<CTitleManager>("TitleManager");
-}
-
+*/

@@ -6,6 +6,8 @@
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 #include "CMouse.h"
+#include "CBackGround.h"
+#include "CTitleUIManager.h"
 
 
 CTestLevel::CTestLevel()
@@ -37,12 +39,12 @@ void CTestLevel::Start()
 		}
 	}
 
-
 	// 각 레벨에서는 반드시 시작할때 투영타입을 세팅해준다. 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 
 	// 카메라가 어느 위치에서 바라볼 것인지
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
 
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
 	SetPlayer(NewPlayer);
@@ -50,6 +52,19 @@ void CTestLevel::Start()
 	SetBoss(NewBoss);
 	NewBoss->GetTransform()->SetLocalPosition({ 100, 100 , });
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
-	CKatanaZero_Level::Start();
+	SetMouse(NewMouse);
+	std::shared_ptr<CTitleUIManager> TitleManager = CreateActor<CTitleUIManager>("TitleUIManager");
+	TitleManager->CreateRender();
+}
+
+void CTestLevel::Update(float _DeltaTime)
+{
+	std::shared_ptr<CMouse> Mouse = GetMouse();
+	if (nullptr != Mouse)
+	{
+		m_CurMouseLocalPos = Mouse->GetTransform()->GetLocalPosition();
+	}
+ 
+	CKatanaZero_Level::Update(_DeltaTime);
 }
 

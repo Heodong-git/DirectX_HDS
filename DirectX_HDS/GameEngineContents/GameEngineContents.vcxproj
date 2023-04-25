@@ -163,6 +163,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CBoss_HeadHunter.h">
       <SubType>
       </SubType>
@@ -220,13 +224,14 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTitleManager.h">
+    <ClInclude Include="CTitleUIManager.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBackGround.cpp" />
     <ClCompile Include="CBoss_HeadHunter.cpp" />
     <ClCompile Include="CKatanaZero_Actor.cpp" />
     <ClCompile Include="CKatanaZero_Level.cpp" />
@@ -247,7 +252,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="CTitleManager.cpp" />
+    <ClCompile Include="CTitleUIManager.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
