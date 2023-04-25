@@ -53,7 +53,6 @@ void CTestLevel::Start()
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
 	SetBoss(NewBoss);
-	NewBoss->GetTransform()->SetLocalPosition({ 100, 100 , });
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
 	std::shared_ptr<CTitleUIManager> TitleManager = CreateActor<CTitleUIManager>("TitleUIManager");

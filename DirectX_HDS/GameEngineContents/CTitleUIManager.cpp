@@ -43,7 +43,7 @@ void CTitleUIManager::Update(float _DeltaTime)
 
 	float4 movepos = renderpos.LerpClamp(renderpos, StartPoint, 1.0f);
 	movepos.Normalize();
-	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 120 * _DeltaTime);
+	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 140 * _DeltaTime);
 }
 
 void CTitleUIManager::Render(float _DeltaTime)
@@ -57,7 +57,8 @@ void CTitleUIManager::CreateRender()
 	m_KatanaRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_KatanaRender->SetPipeLine("2DTexture");
 	m_KatanaRender->GetShaderResHelper().SetTexture("DiffuseTex", "spr_titlegraphic_big2_0.png");
-	m_KatanaRender->GetTransform()->SetLocalScale(float4{ 400.0f , 200.0f });
+	m_KatanaRender->GetTransform()->SetLocalScale(float4{ 350.0f , 180.0f });
+	m_KatanaRender->GetTransform()->SetLocalPosition(float4{ 0.0f , 100.0f });
 	
 	/*m_ZERRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_ZERRender->SetPipeLine("2DTexture");

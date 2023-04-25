@@ -56,7 +56,7 @@ void CPlayer::Update(float _DeltaTime)
 	
 	if (true == GameEngineInput::IsDown("player_right_Move"))
 	{
-		GetTransform()->SetLocalPositiveScaleX();
+		// GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	// 임시무브 
