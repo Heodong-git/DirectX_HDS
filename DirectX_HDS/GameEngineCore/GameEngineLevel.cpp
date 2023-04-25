@@ -18,8 +18,7 @@ void GameEngineLevel::Start()
 {
 }
 
-
-void GameEngineLevel::Update(float _DeltaTime)
+void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
 	if (true == MainCamera->IsFreeCamera())
 	{
@@ -38,7 +37,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 			Actor->Update(_DeltaTime);
 			Actor->ComponentsUpdate(_DeltaTime);
 		}
-	}	
+	}
 
 	/*std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator StartIter = Actors.begin();
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator EndIter = Actors.end();
@@ -46,7 +45,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 	for (; StartIter != EndIter; ++StartIter)
 	{
 		std::list<std::shared_ptr<GameEngineActor>> Actorlist = (*StartIter).second;
-		
+
 		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStartIter = Actorlist.begin();
 		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEndIter = Actorlist.end();
 
@@ -60,10 +59,10 @@ void GameEngineLevel::Update(float _DeltaTime)
 	}*/
 }
 
-void GameEngineLevel::Render(float _DeltaTime)
+void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	GetMainCamera()->Setting();
-	
+
 	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
 	{
 		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
@@ -92,6 +91,17 @@ void GameEngineLevel::Render(float _DeltaTime)
 	//		}
 	//	}
 	//}
+}
+
+
+void GameEngineLevel::Update(float _DeltaTime)
+{
+
+}
+
+void GameEngineLevel::Render(float _DeltaTime)
+{
+	
 }
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)

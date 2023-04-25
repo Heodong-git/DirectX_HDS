@@ -9,6 +9,9 @@
 #include "CBackGround.h"
 #include "CTitleUIManager.h"
 
+// test
+#include <GameEngineCore/GameEngineVideo.h>
+
 
 CTestLevel::CTestLevel()
 {

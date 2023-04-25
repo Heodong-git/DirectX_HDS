@@ -9,7 +9,7 @@ class GameEngineObjectBase
 public:
 	// constrcuter destructer
 	GameEngineObjectBase();
-	// 얘도 순수가상함수처리 해주어야할 것 같음. 
+	// 얘도 순수가상함수처리 해주어야할 것 같음
 	~GameEngineObjectBase();
 
 	// delete Function
@@ -31,17 +31,28 @@ public:
 
 	void On()
 	{
-		ActiveValue = true;
+		UpdateValue = true;
 	}
 
 	void Off()
 	{
-		ActiveValue = false;
+		UpdateValue = false;
 	}
 
 	void Death()
 	{
 		DeathValue = true;
+	}
+
+	// ㅇㅇㅇ 
+	virtual bool IsDeath()
+	{
+		return DeathValue;
+	}
+
+	virtual bool IsUpdate()
+	{
+		return UpdateValue;
 	}
 
 
@@ -58,7 +69,7 @@ public:
 protected:
 
 private:
-	bool ActiveValue = true; 
+	bool UpdateValue = true;
 	bool DeathValue = false; 
 	bool DebugValue = false;
 	int Order = 0;

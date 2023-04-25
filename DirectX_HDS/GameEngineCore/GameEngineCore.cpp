@@ -53,16 +53,17 @@ void GameEngineCore::EngineUpdate()
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
 	GameEngineInput::Update(TimeDeltaTime);
-	// 사운드업데이트
 	GameEngineSound::SoundUpdate();
-	// Test? 레벨이 타임이벤트의 업데이트를 실행
+
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
+	MainLevel->ActorUpdate(TimeDeltaTime);
 
 	// 렌더링을 시작할 때 화면을 지워주고
 	GameEngineDevice::RenderStart();
-	// 렌더링
+	// 렌더 
 	MainLevel->Render(TimeDeltaTime);
+	MainLevel->ActorRender(TimeDeltaTime);
 	GameEngineDevice::RenderEnd();
 }
 

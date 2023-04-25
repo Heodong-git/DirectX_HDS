@@ -15,9 +15,12 @@ public:
 	CTestLevel& operator=(const CTestLevel& _Other) = delete;
 	CTestLevel& operator=(CTestLevel&& _Other) noexcept = delete;
 
+	// test
+	std::shared_ptr<class GameEngineVideo> Video;
+
 protected:
 	void Start() override;
-	void Update(float _DeltaTime);
+	void Update(float _DeltaTime) override;
 
 private:
 	float4 m_CurMouseLocalPos = {};
