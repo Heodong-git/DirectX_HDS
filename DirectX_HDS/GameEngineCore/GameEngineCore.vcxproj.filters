@@ -103,6 +103,9 @@
     <ClInclude Include="GameEngineVideo.h">
       <Filter>Resources\Movie</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDepthState.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineVideo.cpp">
       <Filter>Resources\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDepthState.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@
 #include "GameEngineMesh.h"
 #include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
+#include "GameEngineDepthState.h"
 #include "GameEngineVertex.h"
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
@@ -135,6 +136,27 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
 
 		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	{
+		{
+			D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+			//BOOL DepthEnable;
+			//D3D11_DEPTH_WRITE_MASK DepthWriteMask;
+			//D3D11_COMPARISON_FUNC DepthFunc;
+			//BOOL StencilEnable;
+			//UINT8 StencilReadMask;
+			//UINT8 StencilWriteMask;
+			//D3D11_DEPTH_STENCILOP_DESC FrontFace;
+			//D3D11_DEPTH_STENCILOP_DESC BackFace;
+
+			Desc.DepthEnable = true;
+			Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+			Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+			Desc.StencilEnable = false;
+
+			GameEngineDepthState::Create("EngineDepth", Desc);
+		}
 	}
 
 	{
