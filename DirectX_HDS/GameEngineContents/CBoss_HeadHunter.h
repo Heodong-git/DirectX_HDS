@@ -25,5 +25,5 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineRenderer> Render0;
-	float4 m_Scale = { 75.0f , 75.0f , 0.0f };
+	float4 m_Scale = { 75.0f , 100.0f , 0.0f };
 };

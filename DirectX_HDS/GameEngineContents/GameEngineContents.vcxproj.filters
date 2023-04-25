@@ -17,9 +17,6 @@
     <ClInclude Include="CStageLevel_02.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="ContentsCore.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="CMonster_Gangster.h">
       <Filter>Monster</Filter>
     </ClInclude>
@@ -48,6 +45,7 @@
     <ClInclude Include="CTitleManager.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="ContentsCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -64,9 +62,6 @@
     </ClCompile>
     <ClCompile Include="CStageLevel_02.cpp">
       <Filter>Level</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentsCore.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="CMonster_Gangster.cpp">
       <Filter>Monster</Filter>
@@ -96,6 +91,7 @@
     <ClCompile Include="CTitleManager.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="ContentsCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -109,9 +105,6 @@
     </Filter>
     <Filter Include="Boss">
       <UniqueIdentifier>{bf96df3a-a71e-41a6-b52a-ab466f310450}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{14fbdd8a-955b-4069-ab9f-cf9992d1c077}</UniqueIdentifier>
     </Filter>
     <Filter Include="ContentsObject">
       <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>

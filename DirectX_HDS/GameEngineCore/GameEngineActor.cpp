@@ -20,6 +20,7 @@ void GameEngineActor::ComponentInit(std::shared_ptr<class GameEngineComponent> _
 	ComponentsList.push_back(_Component);
 }
 
+// 
 void GameEngineActor::ComponentsUpdate(float _DeltaTime)
 {
 	for (std::shared_ptr<class GameEngineComponent>& Component : ComponentsList)

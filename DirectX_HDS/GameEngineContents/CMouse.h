@@ -25,6 +25,6 @@ protected:
 private:
 	// 마우스커서 쫓아가기
 	void FollowCursor();
-	std::shared_ptr<class GameEngineRenderer> m_Renderer;
+	std::shared_ptr<class GameEngineRenderer> m_Renderer = nullptr;
 	float4 m_Scale = { 50.0f, 50.0f, 50.0f };
 };

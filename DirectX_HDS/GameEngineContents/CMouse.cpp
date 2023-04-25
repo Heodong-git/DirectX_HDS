@@ -30,8 +30,12 @@ void CMouse::Start()
 	m_Renderer->GetShaderResHelper().SetTexture("GameTex", "cursor_0.png");
 	// 리소스헬퍼 -> 사용할 상수버퍼 링크 , 상수버퍼의 OutPixelColor 컬러를 TestColor로 사용하겠다는 의미
 	//Renderer->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	
 	// 렌더러의 크기
 	m_Renderer->GetTransform()->SetLocalScale(m_Scale);
+
+	// 시작할땐 렌더러 오프
+	m_Renderer->Off();
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
 	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };
