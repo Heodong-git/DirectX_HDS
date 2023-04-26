@@ -33,6 +33,8 @@ void CTestLevel::Start()
 		NewDir.MoveParentToDirectory("katanazero_resources");
 		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("TestLevel");
 
 		// 파일 전체로드 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
@@ -47,20 +49,17 @@ void CTestLevel::Start()
 
 	// 카메라가 어느 위치에서 바라볼 것인지
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
-	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
-
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
 	SetBoss(NewBoss);
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
-	std::shared_ptr<CTitleUIManager> TitleManager = CreateActor<CTitleUIManager>("TitleUIManager");
-	TitleManager->CreateRender();
 }
 
 void CTestLevel::Update(float _DeltaTime)
 {
+	// 어 
 	std::shared_ptr<CMouse> Mouse = GetMouse();
 	if (nullptr != Mouse)
 	{

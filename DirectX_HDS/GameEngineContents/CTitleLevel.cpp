@@ -2,10 +2,12 @@
 #include "CTitleLevel.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineTexture.h>
 
 // TEST
 #include <GameEngineBase/GameEngineTimeEvent.h>
 #include "CTitleUIManager.h"
+#include "CBackGround.h"
 
 CTitleLevel::CTitleLevel()
 {
@@ -15,10 +17,10 @@ CTitleLevel::~CTitleLevel()
 {
 }
 
-void TestFunction(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-{
-	MsgTextBox("테스트용 함수 호출되나? ");
-}
+//void TestFunction(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+//{
+//	MsgTextBox("테스트용 함수 호출되나? ");
+//}
 
 void TestF()
 {
@@ -28,15 +30,38 @@ void TestF()
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {
+	{
+		// 디렉토리 클래스생성
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("TitleLevel");
+
+		// 파일 전체로드 
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
 
-	// 타이틀 ui를 관리하는 매니저 클래스 
+	// background 생성, 검은색깔개 + 뒷배경
+	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
+
+	// Title 의 모든 UI 
 	m_UIManager = CreateActor<CTitleUIManager>("TitleUIManager");
+	m_UIManager->CreateRender();
 }
 
 void CTitleLevel::Update(float _DeltaTime)
 {
+	CKatanaZero_Level::Update(_DeltaTime);
 }
 
 /*

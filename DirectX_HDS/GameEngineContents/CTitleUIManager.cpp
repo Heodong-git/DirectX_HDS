@@ -1,10 +1,11 @@
 #include "PrecompileHeader.h"
 #include "CTitleUIManager.h"
+#include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-
+#include <GameEngineCore/GameEngineCore.h>
 
 CTitleUIManager::CTitleUIManager()
 {
@@ -29,10 +30,20 @@ void CTitleUIManager::Update(float _DeltaTime)
 	// 메뉴선택시 
 	if (true == GameEngineInput::IsDown("TitleMenu_Select"))
 	{
-		int a = 0; 
+		// 잘댐 
+		// GameEngineCore::ChangeLevel("CTestLevel");
+		return;
 	}
 
+	FenceRenderMove(_DeltaTime);
+}
 
+void CTitleUIManager::Render(float _DeltaTime)
+{
+}
+
+void CTitleUIManager::FenceRenderMove(float _DeltaTime)
+{
 	float4 StartPoint = { 0 , 350 };
 	float4 renderpos = m_FenceRender->GetTransform()->GetLocalPosition();
 	if (renderpos.y >= StartPoint.y)
@@ -46,28 +57,52 @@ void CTitleUIManager::Update(float _DeltaTime)
 	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 140 * _DeltaTime);
 }
 
-void CTitleUIManager::Render(float _DeltaTime)
-{
-}
-
 void CTitleUIManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
+	
+	// ZERTextRender 
+	m_ZERRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_ZERRender->SetPipeLine("2DTexture");
+	m_ZERRender->SetTexture("spr_titlegraphic_big_1.png");
+	m_ZERRender->GetTransform()->SetLocalScale(float4{ 350.0f , 200.0f });
+	m_ZERRender->GetTransform()->SetLocalPosition(float4{ -55.0f , 30.0f });
 
+	// KatanaTexRender 
 	m_KatanaRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_KatanaRender->SetPipeLine("2DTexture");
-	m_KatanaRender->GetShaderResHelper().SetTexture("DiffuseTex", "spr_titlegraphic_big2_0.png");
-	m_KatanaRender->GetTransform()->SetLocalScale(float4{ 350.0f , 180.0f });
+	m_KatanaRender->SetTexture("spr_titlegraphic_big2_0.png");
+	m_KatanaRender->GetTransform()->SetLocalScale(float4{ 350.0f , 170.0f });
 	m_KatanaRender->GetTransform()->SetLocalPosition(float4{ 0.0f , 100.0f });
 	
-	/*m_ZERRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_ZERRender->SetPipeLine("2DTexture");
-	m_ZERRender->GetShaderResHelper().SetTexture("DiffuseTex", "spr_titlegraphic_big2_0.png");
-	m_ZERRender->GetTransform()->SetLocalScale(float4{ 400.0f , 200.0f });*/
-	//m_ORender = CreateComponent<GameEngineSpriteRenderer>();
+	// OTexRender
+	m_ORender = CreateComponent<GameEngineSpriteRenderer>();
+	m_ORender->SetPipeLine("2DTexture");
+	m_ORender->SetTexture("spr_titlegraphic_big_2.png");
+	m_ORender->GetTransform()->SetLocalScale(float4{ 130.0f , 200.0f });
+	m_ORender->GetTransform()->SetLocalPosition(float4{ 160.0f , 30.0f });
+	
+	// FenceRender 
 	m_FenceRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_FenceRender->SetPipeLine("2DTexture");
-	m_FenceRender->GetShaderResHelper().SetTexture("DiffuseTex", "spr_title_fence_0.png");
+	m_FenceRender->SetTexture("spr_title_fence_0.png");
 	m_FenceRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y * 2.0f });
-	//m_PlantsRender = CreateComponent<GameEngineSpriteRenderer>();
+
+	// PlantsRender
+	m_PlantsRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_PlantsRender->SetPipeLine("2DTexture");
+	m_PlantsRender->SetTexture("spr_title_plants_0.png");
+	m_PlantsRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y / 1.5f});
+
+	float plantsrenderYmove = -(screensize.y / 6.0f);
+	m_PlantsRender->GetTransform()->SetLocalPosition({ 0 , plantsrenderYmove });
+
+	m_TranslucentBoxRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_TranslucentBoxRender->SetPipeLine("2DTexture");
+	m_TranslucentBoxRender->SetTexture("background_black.png");
+	m_TranslucentBoxRender->GetTransform()->SetLocalScale({ screensize.x / 2.5f , screensize.y / 3.0f });
+
+	// 임시위치 
+	m_TranslucentBoxRender->GetTransform()->SetLocalPosition({ 0 , -210.0f });
+	
 }

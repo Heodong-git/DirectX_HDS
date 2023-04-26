@@ -64,13 +64,11 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		// 
-
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
+		
+		// 텍스쳐가 멀리있을 때 뭉개서 출력할 것인지
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -82,13 +80,11 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		// 
-
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
+		
+		// 텍스쳐가 멀리있을 때 뭉개서 출력할 것인지
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -139,24 +135,24 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
-		{
-			D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
-			//BOOL DepthEnable;
-			//D3D11_DEPTH_WRITE_MASK DepthWriteMask;
-			//D3D11_COMPARISON_FUNC DepthFunc;
-			//BOOL StencilEnable;
-			//UINT8 StencilReadMask;
-			//UINT8 StencilWriteMask;
-			//D3D11_DEPTH_STENCILOP_DESC FrontFace;
-			//D3D11_DEPTH_STENCILOP_DESC BackFace;
+		
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+		//BOOL DepthEnable;
+		//D3D11_DEPTH_WRITE_MASK DepthWriteMask;
+		//D3D11_COMPARISON_FUNC DepthFunc;
+		//BOOL StencilEnable;
+		//UINT8 StencilReadMask;
+		//UINT8 StencilWriteMask;
+		//D3D11_DEPTH_STENCILOP_DESC FrontFace;
+		//D3D11_DEPTH_STENCILOP_DESC BackFace;
 
-			Desc.DepthEnable = true;
-			Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
-			Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
-			Desc.StencilEnable = false;
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
 
-			GameEngineDepthState::Create("EngineDepth", Desc);
-		}
+		GameEngineDepthState::Create("EngineDepth", Desc);
+		
 	}
 
 	{

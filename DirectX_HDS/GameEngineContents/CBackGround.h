@@ -22,8 +22,10 @@ protected:
 
 
 private:
-	float4 m_RenderCurPos = {};
+	void CreateRender();
+	
 	float4 m_StartPoint = { 0 , 350 , 0};
 	float  m_MoveSpeed = 150.0f;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGroundRender = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGroundBlackRender = nullptr;
 };
