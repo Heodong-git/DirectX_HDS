@@ -195,10 +195,6 @@ bool GameEngineVideo::IsFinished()
 }
 
 
-
-
-
-
 void GameEngineVideo::Release()
 {
 	if (nullptr != VideoWindowPtr)

@@ -42,5 +42,5 @@ void CPlayManager::CreateRender()
 	m_HUDRender->SetPipeLine("2DTexture");
 	m_HUDRender->SetTexture("HUD.png");
 	m_HUDRender->GetTransform()->SetLocalScale({ screensize.x , 50.0f });
-	m_HUDRender->GetTransform()->SetLocalPosition({ 0 , 339.0f });
+	m_HUDRender->GetTransform()->SetLocalPosition({ 0 , 338.0f });
 }

@@ -58,7 +58,6 @@ void CTestLevel::Start()
 	SetBoss(NewBoss);
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
-
 }
 
 void CTestLevel::Update(float _DeltaTime)

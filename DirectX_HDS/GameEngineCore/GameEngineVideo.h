@@ -33,9 +33,7 @@ public:
 	void Stop();
 	bool IsFinished();
 
-
 protected:
-
 
 private:
 	enum class VideoState

@@ -90,6 +90,9 @@ private:
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
 	std::shared_ptr<class CMouse> m_Mouse = nullptr;
 
+	bool m_Wait = true;
+	bool m_Playing = false; 
+
 	// 타임오버
 	void TimeOver();
 
