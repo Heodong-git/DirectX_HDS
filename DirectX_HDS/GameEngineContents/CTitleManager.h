@@ -3,18 +3,18 @@
 
 // 설명 : 타이틀레벨에서 사용하는 모든 UI를 관리
 class GameEngineRenderer;
-class CTitleUIManager : public CKatanaZero_Actor
+class CTitleManager : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CTitleUIManager();
-	~CTitleUIManager();
+	CTitleManager();
+	~CTitleManager();
 
 	// delete Function
-	CTitleUIManager(const CTitleUIManager& _Other) = delete;
-	CTitleUIManager(CTitleUIManager&& _Other) noexcept = delete;
-	CTitleUIManager& operator=(const CTitleUIManager& _Other) = delete;
-	CTitleUIManager& operator=(CTitleUIManager&& _Other) noexcept = delete;
+	CTitleManager(const CTitleManager& _Other) = delete;
+	CTitleManager(CTitleManager&& _Other) noexcept = delete;
+	CTitleManager& operator=(const CTitleManager& _Other) = delete;
+	CTitleManager& operator=(CTitleManager&& _Other) noexcept = delete;
 
 	//const std::list <std::shared_ptr<class GameEngineActor>>& GetUIList() const
 	//{

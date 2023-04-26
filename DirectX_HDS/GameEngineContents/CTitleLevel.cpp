@@ -6,7 +6,7 @@
 
 // TEST
 #include <GameEngineBase/GameEngineTimeEvent.h>
-#include "CTitleUIManager.h"
+#include "CTitleManager.h"
 #include "CBackGround.h"
 
 CTitleLevel::CTitleLevel()
@@ -55,8 +55,8 @@ void CTitleLevel::Start()
 	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
 
 	// Title ÀÇ ¸ðµç UI 
-	m_UIManager = CreateActor<CTitleUIManager>("TitleUIManager");
-	m_UIManager->CreateRender();
+	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
+	m_TitleManager->CreateRender();
 }
 
 void CTitleLevel::Update(float _DeltaTime)

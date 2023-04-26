@@ -42,12 +42,15 @@
     <ClInclude Include="CMouse.h">
       <Filter>Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="CTitleUIManager.h">
+    <ClInclude Include="CTitleManager.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="CBackGround.h">
       <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayManager.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,12 +94,15 @@
     <ClCompile Include="CMouse.cpp">
       <Filter>Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="CTitleUIManager.cpp">
+    <ClCompile Include="CTitleManager.cpp">
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="CBackGround.cpp">
       <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayManager.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

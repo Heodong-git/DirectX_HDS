@@ -20,6 +20,6 @@ protected:
 	void Update(float _DeltaTime);
 
 private:
-	std::shared_ptr<class CTitleUIManager> m_UIManager = nullptr;
+	std::shared_ptr<class CTitleManager> m_TitleManager = nullptr;
 };
 

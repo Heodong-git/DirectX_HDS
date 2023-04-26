@@ -203,7 +203,7 @@ void GameEngineCore::CoreResourcesInit()
 		// 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Shader");
-
+		// 임시변경
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
 		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드 

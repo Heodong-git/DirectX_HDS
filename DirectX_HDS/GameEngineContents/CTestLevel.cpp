@@ -7,7 +7,8 @@
 #include "CBoss_HeadHunter.h"
 #include "CMouse.h"
 #include "CBackGround.h"
-#include "CTitleUIManager.h"
+#include "CTitleManager.h"
+#include "CPlayManager.h"
 
 // test
 #include <GameEngineCore/GameEngineVideo.h>
@@ -49,12 +50,15 @@ void CTestLevel::Start()
 
 	// 카메라가 어느 위치에서 바라볼 것인지
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
+
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
 	SetBoss(NewBoss);
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
+
 }
 
 void CTestLevel::Update(float _DeltaTime)

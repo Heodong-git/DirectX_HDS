@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CTitleUIManager.h"
+#include "CTitleManager.h"
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
@@ -7,42 +7,43 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCore.h>
 
-CTitleUIManager::CTitleUIManager()
+CTitleManager::CTitleManager()
 {
 }
 
-CTitleUIManager::~CTitleUIManager()
+CTitleManager::~CTitleManager()
 {
+	
 }
 
-void CTitleUIManager::Start()
+void CTitleManager::Start()
 {
 	if (false == GameEngineInput::IsKey("TitleMenu_Up"))
 	{
 		GameEngineInput::CreateKey("TitleMenu_Up", 'w');
 		GameEngineInput::CreateKey("TitleMenu_Down", 's');
 		GameEngineInput::CreateKey("TitleMenu_Select", VK_SPACE);
+		GameEngineInput::CreateKey("ChangeLevel_Test", VK_F1);
 	}
 }
 
-void CTitleUIManager::Update(float _DeltaTime)
+void CTitleManager::Update(float _DeltaTime)
 {
-	// 메뉴선택시 
-	if (true == GameEngineInput::IsDown("TitleMenu_Select"))
+	// 임시적용
+	if (true == GameEngineInput::IsDown("ChangeLevel_Test"))
 	{
-		// 잘댐 
-		// GameEngineCore::ChangeLevel("CTestLevel");
+		GameEngineCore::ChangeLevel("CTestLevel");
 		return;
 	}
 
 	FenceRenderMove(_DeltaTime);
 }
 
-void CTitleUIManager::Render(float _DeltaTime)
+void CTitleManager::Render(float _DeltaTime)
 {
 }
 
-void CTitleUIManager::FenceRenderMove(float _DeltaTime)
+void CTitleManager::FenceRenderMove(float _DeltaTime)
 {
 	float4 StartPoint = { 0 , 350 };
 	float4 renderpos = m_FenceRender->GetTransform()->GetLocalPosition();
@@ -57,7 +58,7 @@ void CTitleUIManager::FenceRenderMove(float _DeltaTime)
 	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 140 * _DeltaTime);
 }
 
-void CTitleUIManager::CreateRender()
+void CTitleManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
 	
