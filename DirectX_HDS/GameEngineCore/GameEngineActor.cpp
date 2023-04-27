@@ -25,6 +25,11 @@ void GameEngineActor::ComponentsUpdate(float _DeltaTime)
 {
 	for (std::shared_ptr<class GameEngineComponent>& Component : ComponentsList)
 	{
+		if (false == Component->IsUpdate())
+		{
+			continue;
+		}
+
 		Component->Update(_DeltaTime);
 	}
 }
@@ -33,6 +38,21 @@ void GameEngineActor::ComponentsRender(float _DeltaTime)
 {
 	for (std::shared_ptr<class GameEngineComponent>& Component : ComponentsList)
 	{
+		if (false == Component->IsUpdate())
+		{
+			continue;
+		}
+
 		Component->Render(_DeltaTime);
+	}
+}
+
+void GameEngineActor::AccLiveTime(float _LiveTime)
+{
+	GameEngineUpdateObject::AccLiveTime(_LiveTime);
+
+	for (std::shared_ptr<class GameEngineComponent>& Component : ComponentsList)
+	{
+		Component->AccLiveTime(_LiveTime);
 	}
 }

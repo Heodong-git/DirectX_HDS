@@ -81,6 +81,11 @@ void CPlayer::Update(float _DeltaTime)
 	{
 		
 	}
+
+	if (5.0f <= m_Renderer->GetLiveTime())
+	{
+		m_Renderer->Off();
+	}
 }
 
 // 디버그용으로 사용

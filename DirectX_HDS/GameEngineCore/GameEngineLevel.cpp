@@ -20,6 +20,21 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
+	// 액터 update 가 false 일 경우, live 타임 값에 변동을 주지 않는다.
+	for (std::pair<int, std::list<std::shared_ptr<GameEngineActor>>> OrderGroup : Actors)
+	{
+		std::list<std::shared_ptr<GameEngineActor>>& ActorList = OrderGroup.second;
+
+		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
+		{
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
+			Actor->AccLiveTime(_DeltaTime);
+		}
+	}
+
 	if (true == MainCamera->IsFreeCamera())
 	{
 		MainCamera->Update(_DeltaTime);
@@ -34,6 +49,11 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
+			Actor->AccLiveTime(_DeltaTime);
 			Actor->Update(_DeltaTime);
 			Actor->ComponentsUpdate(_DeltaTime);
 		}
@@ -112,4 +132,13 @@ void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Or
 
 	// 리스트에 추가
 	Actors[_Order].push_back(_Actor);
+}
+
+void GameEngineLevel::LevelChangeStart()
+{
+
+}
+void GameEngineLevel::LevelChangeEnd()
+{
+
 }

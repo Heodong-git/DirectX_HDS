@@ -1,6 +1,12 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
+enum class ELEVEL_STATE
+{
+	WAIT,
+	PLAY,
+};
+
 class CKatanaZero_Level : public GameEngineLevel
 {
 public:
@@ -90,9 +96,7 @@ private:
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
 	std::shared_ptr<class CMouse> m_Mouse = nullptr;
 
-	bool m_Wait = true;
-	bool m_Playing = false; 
-
+	ELEVEL_STATE m_CurState = ELEVEL_STATE::WAIT;
 	// 타임오버
 	void TimeOver();
 

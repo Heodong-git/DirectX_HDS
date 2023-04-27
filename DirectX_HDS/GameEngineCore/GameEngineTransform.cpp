@@ -31,8 +31,8 @@ void GameEngineTransform::TransformUpdate()
 	else // 차이
 	{
 		float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-		float4 PScale, PRoatation, PPosition;
-		ParentWorldMatrix.Decompose(PScale, PRoatation, PPosition);
+		float4 PScale, PRotation, PPosition;
+		ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
 
 
 		if (true == AbsoluteScale)
@@ -43,8 +43,8 @@ void GameEngineTransform::TransformUpdate()
 		if (true == AbsoluteRotation)
 		{
 			// 부모의 회전 
-			PRoatation = float4::Zero;
-			PRoatation.EulerDegToQuaternion();
+			PRotation = float4::Zero;
+			PRotation.EulerDegToQuaternion();
 		}
 		if (true == AbsolutePosition)
 		{
@@ -57,7 +57,7 @@ void GameEngineTransform::TransformUpdate()
 		MatScale.Scale(PScale);
 
 		//rot
-		MatRot = PRoatation.QuaternionToRotationMatrix();
+		MatRot = PRotation.QuaternionToRotationMatrix();
 
 		//pos
 		MatPos.Pos(PPosition);

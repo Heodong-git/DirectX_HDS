@@ -8,6 +8,7 @@
 #include "GameEnginePixelShader.h"
 #include "GameEngineBlend.h"
 #include "GameEngineInputLayOut.h"
+#include "GameEngineDepthState.h"
 
 GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 {
@@ -138,14 +139,22 @@ void GameEngineRenderingPipeLine::PixelShader()
 // 픽셀세이더에서 출력된 픽셀값을 렌더 타겟에 쓰는 작업을 수행
 void GameEngineRenderingPipeLine::OutputMerger()
 {
-	if (nullptr == BlendPtr)
+	if (nullptr == BlendStatePtr)
 	{
 		MsgAssert("블랜드가 존재하지 않아 아웃풋 머저 과정을 완료할수가 없습니다.");
 		return;
 	}
 
-	BlendPtr->Setting();
+	BlendStatePtr->Setting();
 	// GameEngineDevice::GetContext()->OMSetRenderTargets
+
+	if (nullptr == DepthStatePtr)
+	{
+		MsgAssert("블랜드가 존재하지 않아 아웃풋 머저 과정을 완료할수가 없습니다.");
+		return;
+	}
+
+	DepthStatePtr->Setting();
 }
 
 
@@ -211,12 +220,24 @@ void GameEngineRenderingPipeLine::SetPixelShader(const std::string_view& _Value)
 	}
 }
 
-void GameEngineRenderingPipeLine::SetBlend(const std::string_view& _Value)
+void GameEngineRenderingPipeLine::SetBlendState(const std::string_view& _Value)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Value);
-	BlendPtr = GameEngineBlend::Find(UpperName);
+	BlendStatePtr = GameEngineBlend::Find(UpperName);
 
-	if (nullptr == BlendPtr)
+	if (nullptr == BlendStatePtr)
+	{
+		MsgAssert("존재하지 않는 블랜드를 세팅하려고 했습니다.");
+		return;
+	}
+}
+
+void GameEngineRenderingPipeLine::SetDepthState(const std::string_view& _Value)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Value);
+	DepthStatePtr = GameEngineDepthState::Find(UpperName);
+
+	if (nullptr == DepthStatePtr)
 	{
 		MsgAssert("존재하지 않는 블랜드를 세팅하려고 했습니다.");
 		return;

@@ -266,7 +266,8 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
-			Pipe->SetBlend("AlphaBlend");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
 		}
 	}
 }

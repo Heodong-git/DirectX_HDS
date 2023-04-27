@@ -27,12 +27,15 @@ public:
 	void Clear();
 
 	void Setting() override;
-
+	void CreateDepthTexture();
 protected:
 
 private:
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
 	std::shared_ptr<GameEngineTexture> Texture;
+
+	// 깊이버퍼용 텍스쳐
+	std::shared_ptr<GameEngineTexture> DepthTexture;
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 };
 

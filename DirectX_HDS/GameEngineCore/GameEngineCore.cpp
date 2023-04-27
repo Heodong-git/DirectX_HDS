@@ -38,9 +38,30 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 // Loop , 게임이 실행되면 반복동작
 void GameEngineCore::EngineUpdate()
 {
+	// 다음 레벨이 nullptr 이 아니라면
 	if (nullptr != NextLevel)
 	{
+		// 현재 레벨도 nullptr 이 아니라면 
+		if (nullptr != MainLevel)
+		{
+			// 현재 메인레벨의 종료시점의 작업수행
+			MainLevel->LevelChangeEnd();
+		}
+
+		// 메인레벨은 다음레벨이 된다. 
 		MainLevel = NextLevel;
+
+		// 변경된 레벨의 start 
+		if (nullptr != MainLevel)
+		{
+			MainLevel->LevelChangeStart();
+		}
+
+		// 변수초기화 
+		NextLevel = nullptr;
+
+		// 로딩이 오래걸릴수 있기 때문에 델타타임을 한번 리셋 
+		GameEngineTime::GlobalTime.Reset();
 	}
 
 	if (nullptr == MainLevel)
@@ -50,6 +71,14 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+
+	// 델타타임이 너무 오버됐을 경우를 대비, 좋지는 않다. 
+	// 문제??? 
+	if (TimeDeltaTime > 1 / 30.0f)
+	{
+		TimeDeltaTime = 1 / 30.0f;
+	}
+
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 

@@ -58,6 +58,9 @@ public:
 	}
 
 protected:
+
+	virtual void LevelChangeStart();
+	virtual void LevelChangeEnd();
 	// ·Îµù
 	virtual void Start() = 0;
 	void Update(float _DeltaTime);

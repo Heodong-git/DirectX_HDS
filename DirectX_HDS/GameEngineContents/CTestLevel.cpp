@@ -72,3 +72,13 @@ void CTestLevel::Update(float _DeltaTime)
 	CKatanaZero_Level::Update(_DeltaTime);
 }
 
+void CTestLevel::LevelChangeStart()
+{
+	int a = 0;
+}
+
+void CTestLevel::LevelChangeEnd()
+{
+	int a = 0;
+}
+
