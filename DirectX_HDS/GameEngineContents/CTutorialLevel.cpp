@@ -66,8 +66,8 @@ void CTutorialLevel::ActorLoad()
 
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
 	SetPlayer(NewPlayer);
-	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
-	SetBoss(NewBoss);
+	/*std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
+	SetBoss(NewBoss);*/
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
 }
