@@ -43,4 +43,10 @@ void CPlayManager::CreateRender()
 	m_HUDRender->SetTexture("HUD.png");
 	m_HUDRender->GetTransform()->SetLocalScale({ screensize.x , 50.0f });
 	m_HUDRender->GetTransform()->SetLocalPosition({ 0 , 338.0f });
+
+	m_MiddleRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_MiddleRender->SetPipeLine("2DTexture");
+	/*m_MiddleRender->SetTexture();
+	m_MiddleRender->GetTransform()->SetLocalScale({ 100.0f, 100.0f });*/
+	
 }
