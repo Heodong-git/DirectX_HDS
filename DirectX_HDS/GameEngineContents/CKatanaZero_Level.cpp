@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "CKatanaZero_Level.h"
+#include "CMouse.h"
 
 
 CKatanaZero_Level::CKatanaZero_Level()
@@ -31,7 +32,13 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 {
 	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
 	GameEngineLevel::Update(_DeltaTime);
-	
+
+	std::shared_ptr<CMouse> Mouse = GetMouse();
+	if (nullptr != Mouse)
+	{
+		m_CurMouseLocalPos = Mouse->GetTransform()->GetLocalPosition();
+	}
+
 	if (m_MaxTimeLimit <= GetTimeLimit())
 	{
 		if (false == IsTimeOver())

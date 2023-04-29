@@ -281,6 +281,7 @@ void GameEngineCore::CoreResourcesEnd()
 	GameEngineMesh::ResourcesClear();
 	GameEngineBlend::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
+	GameEngineDepthState::ResourcesClear();
 	GameEngineRasterizer::ResourcesClear();
 	GameEngineIndexBuffer::ResourcesClear();
 	GameEnginePixelShader::ResourcesClear();

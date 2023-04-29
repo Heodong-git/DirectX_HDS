@@ -19,6 +19,9 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
+	virtual void ResourcesLoad() override;
+	virtual void ActorLoad() override;
+
 private:
 	std::shared_ptr<class CTitleManager> m_TitleManager = nullptr;
 };

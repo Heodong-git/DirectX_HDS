@@ -92,6 +92,11 @@ protected:
 
 
 private:
+	virtual void ResourcesLoad() = 0 {};
+	virtual void ActorLoad() = 0 {};
+
+	float4 m_CurMouseLocalPos = {};
+
 	std::shared_ptr<class CPlayer> m_Player = nullptr;
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
 	std::shared_ptr<class CMouse> m_Mouse = nullptr;

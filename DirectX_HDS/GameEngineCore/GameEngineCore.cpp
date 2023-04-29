@@ -7,6 +7,7 @@
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
 #include <GameEngineCore/GameEngineDevice.h>
+#include "GameEngineVideo.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -86,12 +87,18 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 
-	// 렌더링을 시작할 때 화면을 지워주고
-	GameEngineDevice::RenderStart();
-	// 렌더 
-	MainLevel->Render(TimeDeltaTime);
-	MainLevel->ActorRender(TimeDeltaTime);
-	GameEngineDevice::RenderEnd();
+
+	// 비디오가 재생중이라면 렌더링을 하지 않는다. 
+	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
+	if (State != GameEngineVideo::VideoState::Running)
+	{
+		// 렌더링을 시작할 때 화면을 지워주고
+		GameEngineDevice::RenderStart();
+		// 렌더 
+		MainLevel->Render(TimeDeltaTime);
+		MainLevel->ActorRender(TimeDeltaTime);
+		GameEngineDevice::RenderEnd();
+	}
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)

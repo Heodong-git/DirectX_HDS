@@ -22,10 +22,12 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+	virtual void ResourcesLoad() override;
+	virtual void ActorLoad() override;
+
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 
 private:
-	float4 m_CurMouseLocalPos = {};
 	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
 };

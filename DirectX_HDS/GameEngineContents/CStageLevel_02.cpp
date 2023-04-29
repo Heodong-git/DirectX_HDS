@@ -13,3 +13,11 @@ void CStageLevel_02::Start()
 {
 	
 }
+
+void CStageLevel_02::ResourcesLoad()
+{
+}
+
+void CStageLevel_02::ActorLoad()
+{
+}

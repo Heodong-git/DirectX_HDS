@@ -52,6 +52,9 @@
     <ClInclude Include="CPlayManager.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="CTutorialLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="CPlayManager.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialLevel.cpp">
+      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

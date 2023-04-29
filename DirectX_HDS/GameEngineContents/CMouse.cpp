@@ -35,7 +35,9 @@ void CMouse::Start()
 	m_Renderer->GetTransform()->SetLocalScale(m_Scale);
 
 	// 시작할땐 렌더러 오프
-	m_Renderer->Off();
+	//
+	//m_Renderer->Off();
+
 	// 초기색상이고, 지금 TestColor 이랑 연동되어 있으니까  
 	// Update에서 x값은 +- 하면 빨간색계열로 색변동이있음
 	TestColor = { 1.0f, 0.0f, 0.0f, 1.0f };

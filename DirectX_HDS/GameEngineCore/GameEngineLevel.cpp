@@ -2,6 +2,7 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
+#include "GameEngineVideo.h"
 
 
 GameEngineLevel::GameEngineLevel()

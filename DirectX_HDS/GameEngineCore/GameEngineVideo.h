@@ -7,6 +7,15 @@
 class GameEngineVideo : public GameEngineResource<GameEngineVideo>
 {
 public:
+	enum class VideoState
+	{
+		Init,
+		Running,
+		Stop,
+
+		UNKNOWN,
+	};
+
 	GameEngineVideo();
 	~GameEngineVideo() override;
 
@@ -33,19 +42,15 @@ public:
 	void Stop();
 	bool IsFinished();
 
+	static VideoState GetCurState();
+
 protected:
 
+
 private:
-	enum class VideoState
-	{
-		Init,
-		Running,
-		Stop,
+	static GameEngineVideo* CurVideo;
 
-		UNKNOWN,
-	};
-
-	VideoState CurState = VideoState::UNKNOWN;
+	VideoState CurState;
 
 	//이 인터페이스는 애플리케이션이 필터 그래프를 작성할 수 있도록 하는 메소드를 제공합니다(마소 공식 문서)
 	//Dx의 Factory와 비슷한 개념으로 보입니다.
