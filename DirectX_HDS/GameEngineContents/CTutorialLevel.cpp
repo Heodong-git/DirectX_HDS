@@ -19,6 +19,7 @@ CTutorialLevel::~CTutorialLevel()
 
 void CTutorialLevel::Start()
 {
+	ShowCursor(false);
 	CKatanaZero_Level::Start();
 
 	// 리소스로드 
@@ -64,10 +65,11 @@ void CTutorialLevel::ActorLoad()
 {
 	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
 
-	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
+	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(EACTORORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
-	/*std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
-	SetBoss(NewBoss);*/
-	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
+	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(EACTORORDER::BOSS),"HeadHunter");
+	NewBoss->GetTransform()->SetLocalPosition({ 100 , -50 });
+	SetBoss(NewBoss);
+	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>(static_cast<int>(EACTORORDER::CURSOR), "Mouse");
 	SetMouse(NewMouse);
 }

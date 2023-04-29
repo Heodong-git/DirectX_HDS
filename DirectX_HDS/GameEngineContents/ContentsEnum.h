@@ -1,1 +1,14 @@
 #pragma once
+
+enum class EACTORORDER
+{
+	BACKGROUND,
+	OBJECT,
+	MONSTER,
+	BOSS,
+	UI,
+	PLAYER,
+	PLAYER_EFFECT,
+	EFFECT,
+	CURSOR,
+};
