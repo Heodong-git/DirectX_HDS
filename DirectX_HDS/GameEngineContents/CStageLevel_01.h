@@ -18,9 +18,7 @@ public:
 protected:
 	void Start() override;
 
+private:
 	virtual void ResourcesLoad() override;
 	virtual void ActorLoad() override;
-
-private:
-
 };

@@ -30,33 +30,9 @@ void TestF()
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {
-	{
-		// 디렉토리 클래스생성
-		GameEngineDirectory NewDir;
-		// 원하는 폴더를 가진 디렉터리로 이동
-		NewDir.MoveParentToDirectory("katanazero_resources");
-		// 그 폴더로 이동
-		NewDir.Move("katanazero_resources");
-		NewDir.Move("Texture");
-		NewDir.Move("TitleLevel");
-
-		// 파일 전체로드 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
-
-	// background 생성, 검은색깔개 + 뒷배경
-	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
-
-	// Title 의 모든 UI 
-	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
-	m_TitleManager->CreateRender();
+	CKatanaZero_Level::Start();
+	ResourcesLoad();
+	ActorLoad();
 }
 
 void CTitleLevel::Update(float _DeltaTime)
@@ -66,10 +42,31 @@ void CTitleLevel::Update(float _DeltaTime)
 
 void CTitleLevel::ResourcesLoad()
 {
+	// 디렉토리 클래스생성
+	GameEngineDirectory NewDir;
+	// 원하는 폴더를 가진 디렉터리로 이동
+	NewDir.MoveParentToDirectory("katanazero_resources");
+	// 그 폴더로 이동
+	NewDir.Move("katanazero_resources");
+	NewDir.Move("Texture");
+	NewDir.Move("TitleLevel");
+
+	// 파일 전체로드 
+	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
 }
 
 void CTitleLevel::ActorLoad()
 {
+	// background 생성, 검은색깔개 + 뒷배경
+	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
+
+	// Title 의 모든 UI 
+	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
+	m_TitleManager->CreateRender();
 }
 
 /*

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CKatanaZero_Level.h"
 #include "CMouse.h"
+#include <GameEngineCore/GameEngineCamera.h>
 
 
 CKatanaZero_Level::CKatanaZero_Level()
@@ -18,6 +19,7 @@ void RecordActor(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _M
 
 void CKatanaZero_Level::Start()
 {
+	CameraLoad();
 	if (true == GetRecordUse())
 	{
 		// 각각의 Play Level 은 레벨의 액터정보를 정해둔 시간 간격으로 저장한다. 
@@ -52,6 +54,13 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	// 제한시간증가 
 	TimeIncrease(_DeltaTime);
 	// TimeEvent.AddEvent(3.0f, )
+}
+
+void CKatanaZero_Level::CameraLoad()
+{
+	// 카메라세팅
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
 }
 
 // 저장된 정보들을 불러오고 역재생

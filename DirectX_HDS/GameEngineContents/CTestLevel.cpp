@@ -24,10 +24,7 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::Start()
 {
-	// 각 레벨에서는 반드시 시작할때 투영타입을 세팅해준다. 
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	// 카메라가 어느 위치에서 바라볼 것인지
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+	CKatanaZero_Level::Start();
 
 	// 해당 레벨에서 사용할 리소스를 로드한다. 
 	// 해당 레벨이 종료되면 로드한 리소스를 모두 삭제한다 
@@ -88,6 +85,7 @@ void CTestLevel::ActorLoad()
 	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
 	SetMouse(NewMouse);
 }
+
 
 void CTestLevel::LevelChangeStart()
 {

@@ -19,9 +19,7 @@ CTutorialLevel::~CTutorialLevel()
 
 void CTutorialLevel::Start()
 {
-	// 카메라세팅
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+	CKatanaZero_Level::Start();
 
 	// 리소스로드 
 	ResourcesLoad();

@@ -55,7 +55,7 @@ void CTitleManager::FenceRenderMove(float _DeltaTime)
 
 	float4 movepos = renderpos.LerpClamp(renderpos, StartPoint, 1.0f);
 	movepos.Normalize();
-	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 140 * _DeltaTime);
+	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 170 * _DeltaTime);
 }
 
 void CTitleManager::CreateRender()
