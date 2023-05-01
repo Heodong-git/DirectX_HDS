@@ -39,21 +39,24 @@
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="CMouse.h">
+    <ClInclude Include="CCursor.h">
       <Filter>Mouse</Filter>
     </ClInclude>
     <ClInclude Include="CTitleManager.h">
-      <Filter>UIManager</Filter>
+      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="CBackGround.h">
       <Filter>BackGround</Filter>
     </ClInclude>
     <ClInclude Include="CPlayManager.h">
-      <Filter>UIManager</Filter>
+      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="CTutorialLevel.h">
       <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordingManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,21 +97,24 @@
       <Filter>Boss</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
-    <ClCompile Include="CMouse.cpp">
+    <ClCompile Include="CCursor.cpp">
       <Filter>Mouse</Filter>
     </ClCompile>
     <ClCompile Include="CTitleManager.cpp">
-      <Filter>UIManager</Filter>
+      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="CBackGround.cpp">
       <Filter>BackGround</Filter>
     </ClCompile>
     <ClCompile Include="CPlayManager.cpp">
-      <Filter>UIManager</Filter>
+      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="CTutorialLevel.cpp">
       <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordingManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +139,7 @@
     <Filter Include="BackGround">
       <UniqueIdentifier>{f770b974-b08f-4364-a1b8-a6d93954a3e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UIManager">
+    <Filter Include="Manager">
       <UniqueIdentifier>{bcc2db5d-7aac-468e-8fe0-d531276faea7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

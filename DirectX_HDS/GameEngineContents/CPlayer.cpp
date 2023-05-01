@@ -9,6 +9,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineContents/CKatanaZero_Level.h>
 
+#include "CCursor.h"
+
 CPlayer::CPlayer()
 {
 }
@@ -21,7 +23,7 @@ void CPlayer::Start()
 {
 	if (false == GameEngineInput::IsKey("attack"))
 	{
-		GameEngineInput::CreateKey("player_attack", VK_LBUTTON);
+		GameEngineInput::CreateKey("player_slash", VK_LBUTTON);
 		// GameEngineInput::CreateKey("test", VK_RBUTTON);
 		GameEngineInput::CreateKey("player_snail", VK_LSHIFT);
 		GameEngineInput::CreateKey("player_left_Move", 'A');
@@ -77,9 +79,15 @@ void CPlayer::Update(float _DeltaTime)
 		GetTransform()->AddLocalPosition(float4::Down * m_MoveSpeed * _DeltaTime);
 	}
 
-	if (true == GameEngineInput::IsDown("player_attack"))
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
-		
+		CKatanaZero_Level* CurLevel = dynamic_cast<CKatanaZero_Level*>(GetLevel());
+		if (nullptr == CurLevel)
+		{
+			MsgAssert("Level 의 dynamic_cast에 실패 했습니다.");
+			return;
+		}
+		GetTransform()->SetLocalPosition(CurLevel->GetCursor()->GetTransform()->GetLocalPosition());
 	}
 
 	//if (5.0f <= m_Renderer->GetLiveTime())

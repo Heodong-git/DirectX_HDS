@@ -1,6 +1,6 @@
 #pragma once
 
-enum class EACTORORDER
+enum class ERENDERORDER
 {
 	BACKGROUND,
 	OBJECT,

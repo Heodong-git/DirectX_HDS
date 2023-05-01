@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "CKatanaZero_Level.h"
-#include "CMouse.h"
+#include "CCursor.h"
 #include <GameEngineCore/GameEngineCamera.h>
 
 
@@ -35,10 +35,12 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
 	GameEngineLevel::Update(_DeltaTime);
 
-	std::shared_ptr<CMouse> Mouse = GetMouse();
-	if (nullptr != Mouse)
+	// 현재 커서가 nullptr 이 아니라면 
+	// 받아와서 로컬포지션을 저장
+	std::shared_ptr<CCursor> Cursor = GetCursor();
+	if (nullptr != Cursor)
 	{
-		m_CurMouseLocalPos = Mouse->GetTransform()->GetLocalPosition();
+		m_CurMouseLocalPos = Cursor->GetTransform()->GetLocalPosition();
 	}
 
 	if (m_MaxTimeLimit <= GetTimeLimit())
@@ -61,11 +63,6 @@ void CKatanaZero_Level::CameraLoad()
 	// 카메라세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
-}
-
-// 저장된 정보들을 불러오고 역재생
-void CKatanaZero_Level::ReversePlay(float _DeltaTime)
-{
 }
 
 void CKatanaZero_Level::TimeOver()

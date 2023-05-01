@@ -7,7 +7,7 @@
 #include "CPlayManager.h"
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
-#include "CMouse.h"
+#include "CCursor.h"
 
 CTutorialLevel::CTutorialLevel()
 {
@@ -65,11 +65,11 @@ void CTutorialLevel::ActorLoad()
 {
 	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
 
-	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(EACTORORDER::PLAYER),"Player");
+	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
-	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(EACTORORDER::BOSS),"HeadHunter");
+	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(ERENDERORDER::BOSS),"HeadHunter");
 	NewBoss->GetTransform()->SetLocalPosition({ 100 , -50 });
 	SetBoss(NewBoss);
-	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>(static_cast<int>(EACTORORDER::CURSOR), "Mouse");
-	SetMouse(NewMouse);
+	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
+	SetCursor(NewCursor);
 }

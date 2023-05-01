@@ -58,7 +58,6 @@ public:
 	}
 
 protected:
-
 	virtual void LevelChangeStart();
 	virtual void LevelChangeEnd();
 	// ·Îµù

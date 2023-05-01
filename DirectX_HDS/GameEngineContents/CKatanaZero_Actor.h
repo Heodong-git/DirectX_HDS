@@ -14,10 +14,6 @@ public:
 	CKatanaZero_Actor& operator=(const CKatanaZero_Actor& _Other) = delete;
 	CKatanaZero_Actor& operator=(CKatanaZero_Actor&& _Other) noexcept = delete;
 
-	// 자신의 정보를 세이브,로드하는 기능.. 인데 
-	// 각자 가지고 있는 변수가 다르다... 흠 
-	// 액터레코딩인포 클래스를 만들어서 가지고 있게 하고 그 클래스 내부의 변수를 사용?
-
 protected:
 	void Update(float _DeltaTime) override;
 

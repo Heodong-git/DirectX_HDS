@@ -5,7 +5,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
-#include "CMouse.h"
+#include "CCursor.h"
 #include "CBackGround.h"
 #include "CTitleManager.h"
 #include "CPlayManager.h"
@@ -82,8 +82,8 @@ void CTestLevel::ActorLoad()
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
 	SetBoss(NewBoss);
-	std::shared_ptr<CMouse> NewMouse = CreateActor<CMouse>("Mouse");
-	SetMouse(NewMouse);
+	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>("Mouse");
+	SetCursor(NewCursor);
 }
 
 

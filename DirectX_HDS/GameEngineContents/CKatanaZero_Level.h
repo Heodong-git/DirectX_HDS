@@ -74,14 +74,14 @@ public:
 		m_Boss = _Boss;
 	}
 
-	void SetMouse(std::shared_ptr<class CMouse> _Mouse)
+	void SetCursor(std::shared_ptr<class CCursor> _Cursor)
 	{
-		m_Mouse = _Mouse;
+		m_Cursor = _Cursor;
 	}
 
-	std::shared_ptr<class CMouse> GetMouse()
+	std::shared_ptr<class CCursor> GetCursor()
 	{
-		return m_Mouse;
+		return m_Cursor;
 	}
 
 protected:
@@ -90,10 +90,9 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
-
 private:
-	virtual void ResourcesLoad() = 0 {};
-	virtual void ActorLoad() = 0 {};
+	virtual void ResourcesLoad() {};
+	virtual void ActorLoad() {};
 
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
 	virtual void CameraLoad();
@@ -102,14 +101,11 @@ private:
 
 	std::shared_ptr<class CPlayer> m_Player = nullptr;
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
-	std::shared_ptr<class CMouse> m_Mouse = nullptr;
+	std::shared_ptr<class CCursor> m_Cursor = nullptr;
 
 	ELEVEL_STATE m_CurState = ELEVEL_STATE::WAIT;
 	// 타임오버
 	void TimeOver();
-
-	// 역재생
-	void ReversePlay(float _DeltaTime);
 
 	bool m_Recording = true;
 	bool m_TimeOver = false;

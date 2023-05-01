@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CMouse.h"
+#include "CCursor.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -8,11 +8,11 @@
 #include <GameEngineContents/CKatanaZero_Level.h>
 #include "CPlayer.h"
 
-CMouse::CMouse()
+CCursor::CCursor()
 {
 }
 
-CMouse::~CMouse()
+CCursor::~CCursor()
 {
 }
 
@@ -21,7 +21,7 @@ CMouse::~CMouse()
 // 특정한 상황에서 액터 업데이트 on off 와 동시에 수행 ㄱㄱ 마우스가 보이면 actor off, 마우스가 안보이면 actor on 
 // 주의점 2번 false 호출했으면 ture 두번 호출해야 보임. 이거만 유의 
 
-void CMouse::Start()
+void CCursor::Start()
 {
 	// 컴포넌트생성
 	m_Renderer = CreateComponent<GameEngineRenderer>();
@@ -45,17 +45,17 @@ void CMouse::Start()
 	m_Renderer->GetTransform()->SetLocalPosition({ 0.0f , 0.0f, 0.0f });
 }
 
-void CMouse::Update(float _DeltaTime)
+void CCursor::Update(float _DeltaTime)
 {
 	// 커서 쫓아가기 
 	FollowCursor();
 }
 
-void CMouse::Render(float _DeltaTime)
+void CCursor::Render(float _DeltaTime)
 {
 }
 
-void CMouse::FollowCursor()
+void CCursor::FollowCursor()
 {
 	CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();

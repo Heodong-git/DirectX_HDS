@@ -195,7 +195,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMouse.h">
+    <ClInclude Include="CCursor.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -212,6 +212,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CRecordingManager.h" />
     <ClInclude Include="CStageLevel_01.h">
       <SubType>
       </SubType>
@@ -247,13 +248,14 @@
     <ClCompile Include="CMonster_Grunt.cpp" />
     <ClCompile Include="CMonster_Pomp.cpp" />
     <ClCompile Include="CMonster_Shotgun.cpp" />
-    <ClCompile Include="CMouse.cpp" />
+    <ClCompile Include="CCursor.cpp" />
     <ClCompile Include="ContentsCore.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayManager.cpp" />
+    <ClCompile Include="CRecordingManager.cpp" />
     <ClCompile Include="CStageLevel_01.cpp" />
     <ClCompile Include="CStageLevel_02.cpp" />
     <ClCompile Include="CTestLevel.cpp" />

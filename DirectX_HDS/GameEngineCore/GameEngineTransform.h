@@ -33,7 +33,6 @@ struct TransformData
 	float4x4 ViewPort;
 	float4x4 WorldViewProjectionMatrix;
 
-
 public:
 	TransformData()
 	{
