@@ -1,7 +1,7 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
-// 설명 :
+// 설명 : 
 class CPlayManager : public CKatanaZero_Actor
 {
 public:

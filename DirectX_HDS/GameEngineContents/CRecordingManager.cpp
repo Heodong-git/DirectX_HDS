@@ -15,7 +15,6 @@ CRecordingManager::~CRecordingManager()
 {
 }
 
-
 void Test(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 {
 	MsgAssert("들어오나?");

@@ -23,14 +23,14 @@ void CTitleManager::Start()
 		GameEngineInput::CreateKey("TitleMenu_Up", 'w');
 		GameEngineInput::CreateKey("TitleMenu_Down", 's');
 		GameEngineInput::CreateKey("TitleMenu_Select", VK_SPACE);
-		GameEngineInput::CreateKey("ChangeLevel_Test", VK_F1);
+		GameEngineInput::CreateKey("Title_ChangeLevel", VK_F1);
 	}
 }
 
 void CTitleManager::Update(float _DeltaTime)
 {
 	// 임시적용
-	if (true == GameEngineInput::IsDown("ChangeLevel_Test"))
+	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
 	{
 		GameEngineCore::ChangeLevel("CTutorialLevel");
 		return;

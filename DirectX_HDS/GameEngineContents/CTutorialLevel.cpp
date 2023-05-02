@@ -66,10 +66,10 @@ void CTutorialLevel::ResourcesLoad()
 void CTutorialLevel::ActorLoad()
 {
 	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
-
 	// test
 	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
 
+	// Setname 안하고있음
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(ERENDERORDER::BOSS),"HeadHunter");
