@@ -72,5 +72,6 @@ void CCursor::FollowCursor()
 
 	GetTransform()->SetLocalPosition(WorldMousePos);
 	
+	// 단순 값 체크용 변수 
 	float4 check = GetTransform()->GetLocalPosition();
 }
