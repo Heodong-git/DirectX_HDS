@@ -32,7 +32,7 @@ void CTitleManager::Update(float _DeltaTime)
 	// 임시적용
 	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
 	{
-		GameEngineCore::ChangeLevel("CTutorialLevel");
+		GameEngineCore::ChangeLevel("TutorialLevel");
 		return;
 	}
 

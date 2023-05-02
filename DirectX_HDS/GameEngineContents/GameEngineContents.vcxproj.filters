@@ -40,7 +40,7 @@
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="CCursor.h">
-      <Filter>Mouse</Filter>
+      <Filter>Cursor</Filter>
     </ClInclude>
     <ClInclude Include="CTitleManager.h">
       <Filter>Manager</Filter>
@@ -98,7 +98,7 @@
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="CCursor.cpp">
-      <Filter>Mouse</Filter>
+      <Filter>Cursor</Filter>
     </ClCompile>
     <ClCompile Include="CTitleManager.cpp">
       <Filter>Manager</Filter>
@@ -133,14 +133,14 @@
     <Filter Include="ContentsObject">
       <UniqueIdentifier>{65356542-28c0-4efe-a90f-c9b4a4113903}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mouse">
-      <UniqueIdentifier>{2cb0de99-639b-450c-ba8b-298cce7c3b9d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BackGround">
       <UniqueIdentifier>{f770b974-b08f-4364-a1b8-a6d93954a3e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{bcc2db5d-7aac-468e-8fe0-d531276faea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cursor">
+      <UniqueIdentifier>{2cb0de99-639b-450c-ba8b-298cce7c3b9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

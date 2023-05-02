@@ -46,10 +46,9 @@ void CPlayer::Start()
 
 void CPlayer::Update(float _DeltaTime)
 {
-	// 픽셀테스트용 
-	std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
-
-	GameEnginePixelColor Pixel = Ptr->GetPixel(359, 92);
+	// 픽셀테스트용 코드 , 일단 잘댐
+	/*std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
+	GameEnginePixelColor Pixel = Ptr->GetPixel(359, 92);*/
 
 
 	// 크로노스 사용시 

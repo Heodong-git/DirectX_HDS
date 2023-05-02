@@ -1,8 +1,10 @@
 #include "PrecompileHeader.h"
 #include "CTutorialLevel.h"
 
+#include <GameEnginePlatform/GameengineInput.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #include "CPlayManager.h"
 #include "CRecordingManager.h"
@@ -21,8 +23,11 @@ CTutorialLevel::~CTutorialLevel()
 
 void CTutorialLevel::Start()
 {
-	ShowCursor(false);
 	CKatanaZero_Level::Start();
+	if (false == GameEngineInput::IsKey("TestKey"))
+	{
+		GameEngineInput::CreateKey("Testkey", VK_F1);
+	}
 
 	// 리소스로드 
 	ResourcesLoad();
@@ -32,14 +37,21 @@ void CTutorialLevel::Start()
 
 void CTutorialLevel::Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("Testkey"))
+	{
+		GameEngineCore::ChangeLevel("TitleLevel");
+		return;
+	}
 }
 
 void CTutorialLevel::LevelChangeStart()
 {
+	ShowCursor(false);
 }
 
 void CTutorialLevel::LevelChangeEnd()
 {
+	ShowCursor(true);
 }
 
 void CTutorialLevel::ResourcesLoad()
