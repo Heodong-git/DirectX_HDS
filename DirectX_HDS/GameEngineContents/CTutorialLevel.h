@@ -28,4 +28,7 @@ private:
 
 	float4 m_CurMouseLocalPos = {};
 	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
+
+	// test
+	std::shared_ptr<class CRecordingManager> m_RecordingManager = nullptr;
 };

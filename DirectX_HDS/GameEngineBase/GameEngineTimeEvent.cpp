@@ -16,7 +16,7 @@ void GameEngineTimeEvent::AddEvent(float _Time, std::function<void(TimeEvent&, G
 	TimeEvent& NewEvent = Events.emplace_back();
 	NewEvent.CurTime = _Time;
 	NewEvent.Time = _Time;
-	NewEvent.Loop = _Loop;
+	NewEvent.Loop = _Loop;	
 	NewEvent.Event = _Event;
 }
 

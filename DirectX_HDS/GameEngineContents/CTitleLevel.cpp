@@ -17,16 +17,6 @@ CTitleLevel::~CTitleLevel()
 {
 }
 
-//void TestFunction(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-//{
-//	MsgTextBox("테스트용 함수 호출되나? ");
-//}
-
-void TestF()
-{
-
-}
-
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {

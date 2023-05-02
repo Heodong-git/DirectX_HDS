@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 
 #include "CPlayManager.h"
+#include "CRecordingManager.h"
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 #include "CCursor.h"
@@ -16,6 +17,7 @@ CTutorialLevel::CTutorialLevel()
 CTutorialLevel::~CTutorialLevel()
 {
 }
+
 
 void CTutorialLevel::Start()
 {
@@ -64,6 +66,9 @@ void CTutorialLevel::ResourcesLoad()
 void CTutorialLevel::ActorLoad()
 {
 	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
+
+	// test
+	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
 
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
