@@ -15,11 +15,6 @@ public:
 	CTitleManager(CTitleManager&& _Other) noexcept = delete;
 	CTitleManager& operator=(const CTitleManager& _Other) = delete;
 	CTitleManager& operator=(CTitleManager&& _Other) noexcept = delete;
-
-	//const std::list <std::shared_ptr<class GameEngineActor>>& GetUIList() const
-	//{
-	//	return m_UIList;
-	//}
 	
 	void CreateRender();
 
@@ -30,7 +25,7 @@ protected:
 
 private:
 	void FenceRenderMove(float _DeltaTime);
-	//std::list <std::shared_ptr<class GameEngineActor>> m_UIList;
+	
 	std::shared_ptr<class GameEngineSpriteRenderer> m_KatanaRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_ZERRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_ORender = nullptr;
