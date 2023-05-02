@@ -2,6 +2,50 @@
 #include "GameEngineResource.h"
 #include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
 
+class GameEnginePixelColor
+{
+public:
+	static GameEnginePixelColor Black;
+
+	union
+	{
+		struct
+		{
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
+		};
+
+		unsigned char ColorChar[4];
+		int Color;
+	};
+
+	bool operator==(GameEnginePixelColor _Color)
+	{
+		return Color == _Color.Color;
+	}
+
+	float4 Tofloat4()
+	{
+
+	}
+
+	// 변수초기화
+	GameEnginePixelColor()
+	{
+
+	}
+
+	GameEnginePixelColor(char _r, char _g, char _b, char _a)
+		: r(_r), g(_g), b(_b), a(_a)
+	{
+
+	}
+};
+
+
+
 // WINAPI 의 IMAGE
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
 {
@@ -62,15 +106,18 @@ public:
 		return DSV;
 	}
 
-	unsigned int GetWidth()
+	int GetWidth()
 	{
 		return Desc.Width;
 	}
 
-	unsigned int GetHeight()
+	int GetHeight()
 	{
 		return Desc.Height;
 	}
+
+	GameEnginePixelColor GetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor = GameEnginePixelColor::Black);
+
 protected:
 
 private:

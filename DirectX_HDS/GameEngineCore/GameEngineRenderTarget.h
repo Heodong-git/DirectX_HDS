@@ -27,6 +27,10 @@ public:
 	void Clear();
 
 	void Setting() override;
+	
+	// GameEngineVideo 테스트용 함수
+	void Reset();
+
 	void CreateDepthTexture();
 protected:
 
