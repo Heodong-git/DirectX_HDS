@@ -8,6 +8,7 @@
 #include "CTutorialLevel.h"
 #include "CStageLevel_01.h"
 #include "CStageLevel_02.h"
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 ContentsCore::ContentsCore()
 {
@@ -26,6 +27,8 @@ void ContentsCore::ContentsResourcesCreate()
 void ContentsCore::GameStart()
 {
 	ContentsResourcesCreate();
+
+	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 
 	// 레벨생성 후 레벨체인지 , 생성시 이름을 넣어주지 않는다면
 	// 클래스 이름과 동일한 이름으로 레벨 생성

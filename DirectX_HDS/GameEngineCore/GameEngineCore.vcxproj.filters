@@ -107,28 +107,34 @@
       <Filter>Resources\RenderingSetting</Filter>
     </ClInclude>
     <ClInclude Include="imconfig.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_dx11.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_win32.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui_internal.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_rectpack.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_textedit.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_truetype.h">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineGUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCoreWindow.h">
+      <Filter>UI\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -237,25 +243,31 @@
       <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_draw.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_dx11.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_win32.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_tables.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineGUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCoreWindow.cpp">
+      <Filter>UI\SubWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,8 +331,14 @@
     <Filter Include="Resources\Movie">
       <UniqueIdentifier>{fc818609-f2f7-4352-abe5-11aaa57c977d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui">
+    <Filter Include="UI">
+      <UniqueIdentifier>{b41b1c99-d13a-4fe5-b3fa-26266a1f118b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\ImGui">
       <UniqueIdentifier>{9b06a65b-8bec-4c21-8749-48c111dcc54b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\SubWindow">
+      <UniqueIdentifier>{7b5fbd23-2c0f-471c-ac35-4b8a570e2ba8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

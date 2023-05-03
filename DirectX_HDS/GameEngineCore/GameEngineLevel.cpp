@@ -3,6 +3,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 #include "GameEngineVideo.h"
+#include "GameEngineGUI.h"
 
 
 GameEngineLevel::GameEngineLevel()
@@ -94,6 +95,8 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 			Actor->ComponentsRender(_DeltaTime);
 		}
 	}
+
+	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 
 	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator StartIter = Actors.begin();
 	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator EndIter = Actors.end();

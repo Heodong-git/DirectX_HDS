@@ -6,6 +6,8 @@
 
 // LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM)
 
+// static 구현
+std::function<LRESULT(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)> GameEngineWindow::UserMessageFunction;
 HWND GameEngineWindow::HWnd = nullptr;
 HDC GameEngineWindow::WindowBackBufferHdc = nullptr;
 float4 GameEngineWindow::WindowSize = {800, 600};
@@ -14,34 +16,21 @@ float4 GameEngineWindow::ScreenSize = { 800, 600 };
 GameEngineImage* GameEngineWindow::BackBufferImage = nullptr;
 GameEngineImage* GameEngineWindow::DoubleBufferImage = nullptr;
 bool GameEngineWindow::IsWindowUpdate = true;
-
+WNDCLASSEX GameEngineWindow::wcex;
 
 
 LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
-    switch (_message)
+    if (nullptr != UserMessageFunction)
     {
-    case WM_MOUSEMOVE:
-    {
-        int a = 0;
-        break;
+        if (0 != UserMessageFunction(_hWnd, _message, _wParam, _lParam))
+        {
+            return true;
+        }
     }
 
-    case WM_SETFOCUS:
+    switch (_message)
     {
-        int a = 0;
-        break;
-    }
-    case WM_ACTIVATE:
-    {
-        int a = 0;
-        break;
-    }
-    case WM_KILLFOCUS:
-    {
-        int a = 0;
-        break;
-    }
     case WM_KEYDOWN:
     {
         GameEngineInput::IsAnyKeyOn();
@@ -50,7 +39,7 @@ LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WP
     case WM_DESTROY:
     {
         // Message함수가 0을 리턴하게 만들어라.
-        PostQuitMessage(0);
+        //  PostQuitMessage(0);
         IsWindowUpdate = false;
         break;
     }
@@ -153,13 +142,13 @@ int GameEngineWindow::WindowLoop(
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-
             if (nullptr != _Loop)
             {
                 _Loop();
             }
+
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
 
             GameEngineInput::IsAnyKeyOff();
             continue;
@@ -237,4 +226,9 @@ float4 GameEngineWindow::GetMousePosition()
     ScreenToClient(HWnd, PointPtr);
 
     return { static_cast<float>(MoniterPoint.x),static_cast<float>(MoniterPoint.y) };
+}
+
+void GameEngineWindow::Release()
+{
+    ::UnregisterClassA(wcex.lpszClassName, wcex.hInstance);
 }

@@ -1,11 +1,13 @@
 #include "PrecompileHeader.h"
 #include "CTitleLevel.h"
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineBase/GameEngineTimeEvent.h>
+
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 // TEST
-#include <GameEngineBase/GameEngineTimeEvent.h>
 #include "CTitleManager.h"
 #include "CBackGround.h"
 
@@ -17,12 +19,32 @@ CTitleLevel::~CTitleLevel()
 {
 }
 
+// imgui 테스트용
+void CTitleLevel::TestFunction()
+{
+	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
+}
+
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {
 	CKatanaZero_Level::Start();
 	ResourcesLoad();
 	ActorLoad();
+
+	// imgui window 생성시 인터페이스, 윈도우를 생성하고 함수를 넘겨준다.
+	// 각각의 레벨에서 imgui 로 사용할 함수들을 바인딩해주고 사용한다. 
+	// 하 ㅡㅡ 
+	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+
+	if (nullptr == Window)
+	{
+		MsgAssert("테스트 코드 미작동");
+		return;
+	}
+
+	Window->Test = std::bind(&CTitleLevel::TestFunction, this);
+	Window->Test1 = std::bind(&CTitleLevel::TestFunction, this);
 }
 
 void CTitleLevel::Update(float _DeltaTime)
@@ -58,6 +80,8 @@ void CTitleLevel::ActorLoad()
 	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
 	m_TitleManager->CreateRender();
 }
+
+
 
 /*
 	// 람다 : 이름이 없는 함수를 만들어주는 기능

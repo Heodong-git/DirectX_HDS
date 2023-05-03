@@ -57,6 +57,13 @@ public:
 		return MainCamera;
 	}
 
+	std::shared_ptr<GameEngineLevel> GetSharedThis()
+	{
+		// GameEngineLevel의 shared_ptr type를 반환하는데 
+		// 너무길어서 조금더 간단하게 사용하기 위해 작성
+		return Shared_This_dynamic_pointer<GameEngineLevel>();
+	}
+
 protected:
 	virtual void LevelChangeStart();
 	virtual void LevelChangeEnd();

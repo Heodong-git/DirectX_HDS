@@ -8,6 +8,7 @@
 #include <GameEngineBase\GameEngineTime.h>
 #include <GameEngineCore/GameEngineDevice.h>
 #include "GameEngineVideo.h"
+#include "GameEngineGUI.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -28,6 +29,9 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 
 	// 게임에서 사용할 리소스 초기화
 	CoreResourcesInit();
+
+	// imgui 초기화
+	GameEngineGUI::Initialize();
 
 	if (nullptr == _ContentsStart)
 	{
@@ -110,11 +114,14 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	_ContentsEnd();
 
+	GameEngineGUI::Release();
+
 	LevelMap.clear();
 
 	// sharedptr 로 인해 메모리가 제거되는 걸 알고 있지만. 
 	CoreResourcesEnd();
 	GameEngineDevice::Release();
+	GameEngineWindow::Release();
 }
 
 // 릭체크 함수 호출, 마우스 LR 버튼 생성, 윈도우생성, 루프실행

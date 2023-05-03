@@ -12,10 +12,7 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-// 상하좌우 z축
-// 우클릭유지 : 회전 
-// 자유시점 : P
-// 투영모드 변경 : O 
+
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
@@ -26,6 +23,13 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("CamMoveDown", 'E');
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
+
+		GameEngineInput::CreateKey("RotY+", VK_NUMPAD1);
+		GameEngineInput::CreateKey("RotY-", VK_NUMPAD2);
+		GameEngineInput::CreateKey("RotZ+", VK_NUMPAD4);
+		GameEngineInput::CreateKey("RotZ-", VK_NUMPAD5);
+		GameEngineInput::CreateKey("RotX+", VK_NUMPAD7);
+		GameEngineInput::CreateKey("RotX-", VK_NUMPAD8);
 
 		GameEngineInput::CreateKey("CamRot", VK_RBUTTON);
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
@@ -127,7 +131,17 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	}
 
+}
 
+
+void GameEngineCamera::Setting()
+{
+	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
+}
+
+void GameEngineCamera::Render(float _DeltaTime)
+{
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
 	float4 EyeUp = GetTransform()->GetLocalUpVector();
@@ -153,11 +167,4 @@ void GameEngineCamera::Update(float _DeltaTime)
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
-}
-
-
-void GameEngineCamera::Setting()
-{
-	// 랜더타겟 1개 1개마다 뷰포트를 세팅해줄수 있다.
-	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
 }

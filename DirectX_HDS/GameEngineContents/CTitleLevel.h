@@ -23,6 +23,7 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
+	void TestFunction();
 	std::shared_ptr<class CTitleManager> m_TitleManager = nullptr;
 };
 
