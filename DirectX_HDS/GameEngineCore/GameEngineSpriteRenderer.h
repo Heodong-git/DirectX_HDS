@@ -15,6 +15,8 @@ public:
 	GameEngineSpriteRenderer& operator=(const GameEngineSpriteRenderer& _Other) = delete;
 	GameEngineSpriteRenderer& operator=(GameEngineSpriteRenderer&& _Other) noexcept = delete;
 
+	// 텍스쳐의 크기그대로 세팅
+	void SetScaleToTexture(const std::string_view& _Name);
 	void SetTexture(const std::string_view& _Name);
 
 	void SetFlipX();
