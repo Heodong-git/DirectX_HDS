@@ -88,7 +88,6 @@ float4 Texture_PS(Output _Value) : SV_Target0
     // float4.xy == float2
     // float4.xyz == float3 
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
-    clip(Color);
     // 최종적으로 반환된 색상을 출력하게 되는데.. 
     return Color;
 }
