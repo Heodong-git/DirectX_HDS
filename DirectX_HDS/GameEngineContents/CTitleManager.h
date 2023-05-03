@@ -44,14 +44,17 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_PlantsRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_TranslucentBoxRender = nullptr;
 
-	// test
-
+	// 텍스트렌더러 
 	float4 m_TextRenderOriginPos = float4{ 0 , -160 };
 	std::shared_ptr<class GameEngineSpriteRenderer> m_NewGameTextRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_SettingTextRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_ExitTextRender = nullptr;
 
+	// 메뉴 
 	EMENU_TYPE m_CurMenu = EMENU_TYPE::NEWGAME;
 	std::vector<EMENU_TYPE> m_vecMenu;
 	int m_CurIdx = 0;
+
+	// 투명박스 
+	std::shared_ptr<class GameEngineSpriteRenderer> m_TransparencyBoxRender = nullptr;
 };

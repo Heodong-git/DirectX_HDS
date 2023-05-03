@@ -188,4 +188,9 @@ void CTitleManager::CreateRender()
 	m_ExitTextRender->GetTransform()->SetLocalScale({ 50 , 27 });
 	m_ExitTextRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4 { 0, -100});
 
+	m_TransparencyBoxRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_TransparencyBoxRender->SetPipeLine("2DTexture");
+	m_TransparencyBoxRender->SetTexture("exit_text.png");
+	m_TransparencyBoxRender->GetTransform()->SetLocalScale({500, 30});
+	// m_TransparencyBoxRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4{ 0,0 });
 }
