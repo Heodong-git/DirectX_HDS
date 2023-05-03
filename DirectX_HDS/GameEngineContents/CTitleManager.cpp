@@ -20,8 +20,8 @@ void CTitleManager::Start()
 {
 	if (false == GameEngineInput::IsKey("TitleMenu_Up"))
 	{
-		GameEngineInput::CreateKey("TitleMenu_Up", 'w');
-		GameEngineInput::CreateKey("TitleMenu_Down", 's');
+		GameEngineInput::CreateKey("TitleMenu_Up", 'W');
+		GameEngineInput::CreateKey("TitleMenu_Down", 'S');
 		GameEngineInput::CreateKey("TitleMenu_Select", VK_SPACE);
 		GameEngineInput::CreateKey("TitleMenu_Select_Enter", VK_RETURN);
 		GameEngineInput::CreateKey("Title_ChangeLevel", VK_F1);
@@ -38,13 +38,6 @@ void CTitleManager::Start()
 
 void CTitleManager::Update(float _DeltaTime)
 {
-	// 임시적용
-	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
-	{
-		GameEngineCore::ChangeLevel("TutorialLevel");
-		return;
-	}
-
 	if (false == m_Arrive)
 	{
 		FenceRenderMove(_DeltaTime);
@@ -84,14 +77,25 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		{
 			return;
 		}
-		
-		
-		// 그게 아니라면 
+		else
+		{
+			--m_CurIdx;
+			m_CurMenu = m_vecMenu[m_CurIdx];
+		}
 	}
 
 	if (true == GameEngineInput::IsDown("TitleMenu_Down"))
 	{
-		
+		if (EMENU_TYPE::EXIT == m_CurMenu)
+		{
+			return;
+		}
+
+		else
+		{
+			++m_CurIdx;
+			m_CurMenu = m_vecMenu[m_CurIdx];
+		}
 	}
 }
 
