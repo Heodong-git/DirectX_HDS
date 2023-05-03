@@ -21,7 +21,9 @@ void CTitleManager::Start()
 	if (false == GameEngineInput::IsKey("TitleMenu_Up"))
 	{
 		GameEngineInput::CreateKey("TitleMenu_Up", 'W');
+		GameEngineInput::CreateKey("TitleMenu_Up_2", VK_UP);
 		GameEngineInput::CreateKey("TitleMenu_Down", 'S');
+		GameEngineInput::CreateKey("TitleMenu_Down_2", VK_DOWN);
 		GameEngineInput::CreateKey("TitleMenu_Select", VK_SPACE);
 		GameEngineInput::CreateKey("TitleMenu_Select_Enter", VK_RETURN);
 		GameEngineInput::CreateKey("Title_ChangeLevel", VK_F1);
@@ -70,7 +72,8 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsDown("TitleMenu_Up"))
+	if (true == GameEngineInput::IsDown("TitleMenu_Up") ||
+		true == GameEngineInput::IsDown("TitleMenu_Up_2"))
 	{
 		// 현재 메뉴가 뉴게임으로 선택되어 있을 경우 return 
 		if (EMENU_TYPE::NEWGAME == m_CurMenu)	
@@ -84,7 +87,8 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsDown("TitleMenu_Down"))
+	if (true == GameEngineInput::IsDown("TitleMenu_Down") ||
+		true == GameEngineInput::IsDown("TitleMenu_Down_2"))
 	{
 		if (EMENU_TYPE::EXIT == m_CurMenu)
 		{
