@@ -57,7 +57,7 @@ void CCursor::Render(float _DeltaTime)
 
 void CCursor::FollowCursor()
 {
-	CKatanaZero_Level* Level = dynamic_cast<CKatanaZero_Level*>(GetLevel());
+	CKatanaZero_Level* Level = GetReturnCastLevel();
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 

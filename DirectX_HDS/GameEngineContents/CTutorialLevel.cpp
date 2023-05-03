@@ -46,12 +46,12 @@ void CTutorialLevel::Update(float _DeltaTime)
 
 void CTutorialLevel::LevelChangeStart()
 {
-	ShowCursor(false);
+	//ShowCursor(false);
 }
 
 void CTutorialLevel::LevelChangeEnd()
 {
-	ShowCursor(true);
+	//ShowCursor(true);
 }
 
 void CTutorialLevel::ResourcesLoad()

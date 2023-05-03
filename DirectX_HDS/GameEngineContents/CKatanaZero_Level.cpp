@@ -15,6 +15,7 @@ CKatanaZero_Level::~CKatanaZero_Level()
 void RecordActor(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 {
 	// 잘들어오고 여기서 호출될때마다 액터들의 정보를 저장하면 된다. 
+	// ㅋㅋㅋㅋ 이거아니야
 }
 
 void CKatanaZero_Level::Start()
@@ -27,8 +28,6 @@ void CKatanaZero_Level::Start()
 		TimeEvent.AddEvent(m_SaveInterval, RecordActor, true);
 	}
 }
-
-
 
 void CKatanaZero_Level::Update(float _DeltaTime)
 {
@@ -53,6 +52,7 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 		}
 		return;
 	}
+
 	// 제한시간증가 
 	TimeIncrease(_DeltaTime);
 	// TimeEvent.AddEvent(3.0f, )

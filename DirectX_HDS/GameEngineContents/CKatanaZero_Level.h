@@ -104,7 +104,7 @@ private:
 	std::shared_ptr<class CCursor> m_Cursor = nullptr;
 
 	ELEVEL_STATE m_CurState = ELEVEL_STATE::WAIT;
-	// 타임오버
+	// 타임오버	
 	void TimeOver();
 
 	bool m_Recording = true;

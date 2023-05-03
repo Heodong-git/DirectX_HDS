@@ -14,6 +14,8 @@ public:
 	CKatanaZero_Actor& operator=(const CKatanaZero_Actor& _Other) = delete;
 	CKatanaZero_Actor& operator=(CKatanaZero_Actor&& _Other) noexcept = delete;
 
+	class CKatanaZero_Level* GetReturnCastLevel() const;
+
 protected:
 	void Update(float _DeltaTime) override;
 
