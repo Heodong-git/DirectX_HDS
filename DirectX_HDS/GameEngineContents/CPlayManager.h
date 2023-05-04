@@ -1,6 +1,8 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
+
+// 하나만있어도 될거같은데.. 어차피 다음레벨넘어가도.. 흠 
 // 설명 : 
 class CPlayManager : public CKatanaZero_Actor
 {
@@ -24,6 +26,8 @@ private:
 	void CreateRender();
 
 	// 몇개 안들고 있는데 전부 그냥 들고 있는게 맞는거같기도?? 
+	
+	// 얘는따로인게 맞는거같기도하고  
 	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGroundRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_HUDRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_InvenRender = nullptr;

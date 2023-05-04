@@ -46,6 +46,15 @@ void CTitleLevel::Update(float _DeltaTime)
 	CKatanaZero_Level::Update(_DeltaTime);
 }
 
+void CTitleLevel::LevelChangeStart()
+{
+	
+}
+
+void CTitleLevel::LevelChangeEnd()
+{
+}
+
 void CTitleLevel::ResourcesLoad()
 {
 	// 디렉토리 클래스생성

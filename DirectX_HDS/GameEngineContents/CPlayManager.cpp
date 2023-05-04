@@ -79,6 +79,4 @@ void CPlayManager::CreateRender()
 	m_MouseRRender->SetTexture("spr_right_click_1.png");
 	m_MouseRRender->GetTransform()->SetLocalScale({ 25 , 25 });
 	m_MouseRRender->GetTransform()->SetLocalPosition({ 610 , 310 });
-
-	
 }

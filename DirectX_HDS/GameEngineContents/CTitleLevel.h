@@ -19,6 +19,9 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
+	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
+
 	virtual void ResourcesLoad() override;
 	virtual void ActorLoad() override;
 
