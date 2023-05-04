@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCoreWindow.h"
+#include <GameEngineBase/GameEngineString.h>
 
 GameEngineCoreWindow::GameEngineCoreWindow()
 {
@@ -11,7 +12,9 @@ GameEngineCoreWindow::~GameEngineCoreWindow()
 
 void GameEngineCoreWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
-	if (ImGui::Button("Test"))
+
+	std::string Text = GameEngineString::AnsiToUTF8("ø¿»£»£»£√P");
+	if (ImGui::Button(Text.c_str()))
 	{
 		
 	}
