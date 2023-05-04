@@ -45,7 +45,7 @@ void CTitleManager::Update(float _DeltaTime)
 		FenceRenderMove(_DeltaTime);
 	}
 
-	if (true == m_Arrive)
+	else if (true == m_Arrive)
 	{
 		MenuUpdate(_DeltaTime);
 	}
@@ -68,6 +68,7 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		case EMENU_TYPE::SETTING:
 			break;
 		case EMENU_TYPE::EXIT:
+			GameEngineWindow::AppOff();
 			break;
 		}
 	}
@@ -82,6 +83,16 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		}
 		else
 		{
+			switch (m_CurMenu)
+			{
+			case EMENU_TYPE::SETTING:
+				m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(m_MenuStartPos);
+				break;
+			case EMENU_TYPE::EXIT:
+				m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(m_MenuMiddlePos);
+				break;
+			}
+
 			--m_CurIdx;
 			m_CurMenu = m_vecMenu[m_CurIdx];
 		}
@@ -97,6 +108,16 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 
 		else
 		{
+			switch (m_CurMenu)
+			{
+			case EMENU_TYPE::NEWGAME:
+				m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(m_MenuMiddlePos);
+				break;
+			case EMENU_TYPE::SETTING:
+				m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(m_MenuEndPos);
+				break;
+			}
+
 			++m_CurIdx;
 			m_CurMenu = m_vecMenu[m_CurIdx];
 		}
@@ -119,7 +140,7 @@ void CTitleManager::FenceRenderMove(float _DeltaTime)
 
 	float4 movepos = renderpos.LerpClamp(renderpos, StartPoint, 1.0f);
 	movepos.Normalize();
-	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 210 * _DeltaTime);
+	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 360 * _DeltaTime);
 }
 
 void CTitleManager::CreateRender()
@@ -144,6 +165,9 @@ void CTitleManager::CreateRender()
 	m_ORender = CreateComponent<GameEngineSpriteRenderer>();
 	m_ORender->SetPipeLine("2DTexture");
 	m_ORender->SetTexture("spr_titlegraphic_big_2.png");
+	// 반투명텍스쳐사용시
+	//m_ORender->SetPipeLine("2DTranslucentTexture");
+	//m_ORender->GetShaderResHelper().SetTexture("TranslucentTex", "spr_titlegraphic_big_2.png");
 	m_ORender->GetTransform()->SetLocalScale(float4{ 130.0f , 200.0f });
 	m_ORender->GetTransform()->SetLocalPosition(float4{ 160.0f , 30.0f });
 	
@@ -154,6 +178,7 @@ void CTitleManager::CreateRender()
 	m_FenceRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y * 2.0f });
 
 	// PlantsRender
+	// 움직여야되고 
 	m_PlantsRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_PlantsRender->SetPipeLine("2DTexture");
 	m_PlantsRender->SetTexture("spr_title_plants_0.png");
@@ -163,8 +188,8 @@ void CTitleManager::CreateRender()
 	m_PlantsRender->GetTransform()->SetLocalPosition({ 0 , plantsrenderYmove });
 
 	m_TranslucentBoxRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_TranslucentBoxRender->SetPipeLine("2DTexture");
-	m_TranslucentBoxRender->SetTexture("background_black.png");
+	m_TranslucentBoxRender->SetPipeLine("2DTranslucentTexture");
+	m_TranslucentBoxRender->GetShaderResHelper().SetTexture("TranslucentTex", "background_black.png");
 	m_TranslucentBoxRender->GetTransform()->SetLocalScale({ screensize.x / 2.5f , screensize.y / 4.0f });
 
 	// 임시위치 
@@ -188,10 +213,13 @@ void CTitleManager::CreateRender()
 	m_ExitTextRender->GetTransform()->SetLocalScale({ 50 , 27 });
 	m_ExitTextRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4 { 0, -100});
 
-	m_TransparencyBoxRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_TransparencyBoxRender->SetPipeLine("2DTexture");
-	//m_TransparencyBoxRender->SetScaleToTexture("menu_white_bar.png");
-	m_TransparencyBoxRender->SetTexture("menu_white_bar.png");
-	m_TransparencyBoxRender->GetTransform()->SetLocalScale({450, 30});
-	// m_TransparencyBoxRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4{ 0,0 });
+	m_MenuSelectBoxRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_MenuSelectBoxRender->SetPipeLine("2DTranslucentTexture");
+	m_MenuSelectBoxRender->GetShaderResHelper().SetTexture("TranslucentTex", "menu_white_bar.png");
+	m_MenuSelectBoxRender->GetTransform()->SetLocalScale({450, 30});
+	m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(float4 { 0 , -160});
+
+	// 새게임 . -160
+	// 설정 . -210 
+	// 종료 . -260
 }

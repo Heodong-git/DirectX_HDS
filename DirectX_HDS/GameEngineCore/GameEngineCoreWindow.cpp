@@ -11,19 +11,18 @@ GameEngineCoreWindow::~GameEngineCoreWindow()
 
 void GameEngineCoreWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
-	if (ImGui::Button("Button1"))
+	if (ImGui::Button("Test"))
 	{
-		if (nullptr != Test)
-		{
-			Test();
-		}
+		
 	}
 
-	if (ImGui::Button("Button2"))
+	if (ImGui::Button("Test"))
 	{
-		if (nullptr != Test1)
-		{
-			Test1();
-		}
+		
+	}
+
+	if (ImGui::Button("Test"))
+	{
+		
 	}
 }

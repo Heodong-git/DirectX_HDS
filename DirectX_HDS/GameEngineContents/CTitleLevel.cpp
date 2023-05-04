@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
+#include <GameEngineCore/GameEngineRenderingPipeLine.h>
 
 // TEST
 #include "CTitleManager.h"
@@ -19,11 +20,18 @@ CTitleLevel::~CTitleLevel()
 {
 }
 
+// imgui 버튼생성 인터페이스 , 어. 
+// 1. 실행할 클래스멤버함수를 생성
+// 2. 코어윈도우를 상속받은 클래스를 만들어서 아래처럼 함수포인터를 넘겨준다. 
+// std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+// Window->Test = std::bind(&CTitleLevel::TestFunction, this);
+// Window->Test1 = std::bind(&CTitleLevel::TestFunction, this);
+
 // imgui 테스트용
-void CTitleLevel::TestFunction()
-{
-	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
-}
+//void CTitleLevel::TestFunction()
+//{
+//	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
+//}
 
 // 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
@@ -31,20 +39,6 @@ void CTitleLevel::Start()
 	CKatanaZero_Level::Start();
 	ResourcesLoad();
 	ActorLoad();
-
-	// imgui window 생성시 인터페이스, 윈도우를 생성하고 함수를 넘겨준다.
-	// 각각의 레벨에서 imgui 로 사용할 함수들을 바인딩해주고 사용한다. 
-	// 하 ㅡㅡ 
-	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
-
-	if (nullptr == Window)
-	{
-		MsgAssert("테스트 코드 미작동");
-		return;
-	}
-
-	Window->Test = std::bind(&CTitleLevel::TestFunction, this);
-	Window->Test1 = std::bind(&CTitleLevel::TestFunction, this);
 }
 
 void CTitleLevel::Update(float _DeltaTime)
@@ -64,7 +58,7 @@ void CTitleLevel::ResourcesLoad()
 	NewDir.Move("TitleLevel");
 
 	// 파일 전체로드 
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd"});
 	for (size_t i = 0; i < File.size(); i++)
 	{
 		GameEngineTexture::Load(File[i].GetFullPath());
@@ -80,8 +74,6 @@ void CTitleLevel::ActorLoad()
 	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
 	m_TitleManager->CreateRender();
 }
-
-
 
 /*
 	// 람다 : 이름이 없는 함수를 만들어주는 기능

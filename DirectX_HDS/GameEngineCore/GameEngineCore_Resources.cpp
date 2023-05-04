@@ -209,6 +209,10 @@ void GameEngineCore::CoreResourcesInit()
 		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드 
 		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
+
+		// 테스트 ㅇㅇ 
+		GameEngineVertexShader::Load(Files[1].GetFullPath(), "Texture_VS");
+		GameEnginePixelShader::Load(Files[1].GetFullPath(), "Texture_PS");
 	}
 
 	{
@@ -254,6 +258,9 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.FrontCounterClockwise = FALSE;
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
+
+		// 테스트 ㅇㅇ
+		std::shared_ptr<GameEngineRasterizer> Res2 = GameEngineRasterizer::Create("2DTranslucent", Desc);
 	}
 	{
 		{
@@ -266,6 +273,19 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
+		}
+
+		// 테스트 
+		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTranslucentTexture");
+
+			Pipe->SetVertexBuffer("Rect");
+			Pipe->SetIndexBuffer("Rect");
+			Pipe->SetVertexShader("TranslucentShader.hlsl");
+			Pipe->SetRasterizer("2DTranslucent");
+			Pipe->SetPixelShader("TranslucentShader.hlsl");
 			Pipe->SetBlendState("AlphaBlend");
 			Pipe->SetDepthState("EngineDepth");
 		}

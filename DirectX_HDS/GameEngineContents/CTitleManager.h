@@ -56,5 +56,9 @@ private:
 	int m_CurIdx = 0;
 
 	// 투명박스 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_TransparencyBoxRender = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_MenuSelectBoxRender = nullptr;
+	float4 m_MenuMovePos = float4{ 0.0f, -50.0f };
+	float4 m_MenuStartPos = float4{ 0.0f , -160.0f };
+	float4 m_MenuMiddlePos = float4{ 0.0f , -210.0f };
+	float4 m_MenuEndPos = float4{ 0.0f, -260.0f };
 };

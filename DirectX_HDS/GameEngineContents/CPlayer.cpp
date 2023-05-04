@@ -33,6 +33,7 @@ void CPlayer::Start()
 	}
 
 	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
+
 	m_Renderer->SetPipeLine("2DTexture");
 	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
 	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
