@@ -65,18 +65,58 @@ void GameEngineTransform::TransformUpdate()
 		TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
 	}
 
+	WorldDecompose();
+	LocalDecompose();
+	// ParentWorldMatrix.Decompose(PScale, PRoatation, PPosition);
+}
+
+void GameEngineTransform::LocalDecompose()
+{
 	TransData.LocalWorldMatrix.Decompose(TransData.LocalScale, TransData.LocalQuaternion, TransData.LocalPosition);
 	TransData.LocalRotation = TransData.LocalQuaternion.QuaternionToEulerDeg();
+
+}
+void GameEngineTransform::WorldDecompose()
+{
 	TransData.WorldMatrix.Decompose(TransData.WorldScale, TransData.WorldQuaternion, TransData.WorldPosition);
 	TransData.WorldRotation = TransData.WorldQuaternion.QuaternionToEulerDeg();
-	// ParentWorldMatrix.Decompose(PScale, PRoatation, PPosition);
 
 }
 
 void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 {
+	if (IsDebug())
+	{
+		int a = 0;
+	}
+
 	Parent = _Parent;
 
+	// 월드 포지션은 달라지는게 없다.
+
+	// 내 WorldMatrix;
+	// 부모의 WorldMatrix;
+
+
+	//TransformData ParentData = Parent->TransData;
+	//TransformData ChildData = TransData;
+	//ParentData.WorldMatrix;
+	//ChildData.WorldMatrix;
+	//float4x4 NewWorld = ChildData.WorldMatrix * ParentData.WorldMatrix.InverseReturn();
+
+	TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+	LocalDecompose();
+
+	TransData.Position = TransData.LocalPosition;
+	TransData.Rotation = TransData.LocalRotation;
+	TransData.Scale = TransData.LocalScale;
+
+	TransformUpdate();
+
+	AbsoluteReset();
+
+	// 나의 로컬포지션 나의 로컬 이런것들이 있었는데.
+	// 나는 새로운 부모가 생겼고
 	// 내가 이미 다른 부모가 있다면
 
 	Parent->Child.push_back(this);
@@ -136,4 +176,11 @@ float4 GameEngineTransform::GetWorldScale()
 float4 GameEngineTransform::GetWorldRotation()
 {
 	return TransData.WorldRotation;
+}
+
+void GameEngineTransform::AbsoluteReset()
+{
+	AbsoluteScale = false;
+	AbsoluteRotation = false;
+	AbsolutePosition = false;
 }

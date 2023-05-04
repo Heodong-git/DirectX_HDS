@@ -87,6 +87,9 @@ void CTutorialLevel::ActorLoad()
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(ERENDERORDER::BOSS),"HeadHunter");
 	NewBoss->GetTransform()->SetLocalPosition({ 100 , -50 });
 	SetBoss(NewBoss);
+
+	// 트랜스폼 부모자식구조 테스트코드 
+	// NewBoss->GetTransform()->SetParent(NewPlayer->GetTransform());
 	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
 	SetCursor(NewCursor);
 }
