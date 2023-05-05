@@ -163,11 +163,11 @@ void CTitleManager::CreateRender()
 	
 	// OTexRender
 	m_ORender = CreateComponent<GameEngineSpriteRenderer>();
-	m_ORender->SetPipeLine("2DTexture");
-	m_ORender->SetTexture("spr_titlegraphic_big_2.png");
+	/*m_ORender->SetPipeLine("2DTexture");
+	m_ORender->SetTexture("spr_titlegraphic_big_2.png");*/
 	// 반투명텍스쳐사용시
-	//m_ORender->SetPipeLine("2DTranslucentTexture");
-	//m_ORender->GetShaderResHelper().SetTexture("TranslucentTex", "spr_titlegraphic_big_2.png");
+	m_ORender->SetPipeLine("2DBlinkTexture");
+	m_ORender->GetShaderResHelper().SetTexture("BlinkTex", "spr_titlegraphic_big_2.png");
 	m_ORender->GetTransform()->SetLocalScale(float4{ 130.0f , 200.0f });
 	m_ORender->GetTransform()->SetLocalPosition(float4{ 160.0f , 30.0f });
 	

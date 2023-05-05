@@ -201,7 +201,7 @@ void GameEngineCore::CoreResourcesInit()
 		// 인자로 입력한 폴더가 존재하는 디렉터리로 이동
 		NewDir.MoveParentToDirectory("katanazero_resources");
 		// 이동
-		NewDir.Move("katanazero_resources");
+		//NewDir.Move("katanazero_resources");
 		NewDir.Move("Shader");
 		// 임시변경
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
@@ -213,6 +213,9 @@ void GameEngineCore::CoreResourcesInit()
 		// 테스트 ㅇㅇ 
 		GameEngineVertexShader::Load(Files[1].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[1].GetFullPath(), "Texture_PS");
+
+		GameEngineVertexShader::Load(Files[2].GetFullPath(), "Texture_VS");
+		GameEnginePixelShader::Load(Files[2].GetFullPath(), "Texture_PS");
 	}
 
 	{
@@ -259,8 +262,10 @@ void GameEngineCore::CoreResourcesInit()
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 
-		// 테스트 ㅇㅇ
-		std::shared_ptr<GameEngineRasterizer> Res2 = GameEngineRasterizer::Create("2DTranslucent", Desc);
+		// 반투명
+		std::shared_ptr<GameEngineRasterizer> Res1 = GameEngineRasterizer::Create("2DTranslucent", Desc);
+		// 깜빡이 
+		std::shared_ptr<GameEngineRasterizer> Res2 = GameEngineRasterizer::Create("2DBlink", Desc);
 	}
 	{
 		{
@@ -286,6 +291,18 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TranslucentShader.hlsl");
 			Pipe->SetRasterizer("2DTranslucent");
 			Pipe->SetPixelShader("TranslucentShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
+		}
+
+		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DBlinkTexture");
+
+			Pipe->SetVertexBuffer("Rect");
+			Pipe->SetIndexBuffer("Rect");
+			Pipe->SetVertexShader("BlinkShader.hlsl");
+			Pipe->SetRasterizer("2DBlink");
+			Pipe->SetPixelShader("BlinkShader.hlsl");
 			Pipe->SetBlendState("AlphaBlend");
 			Pipe->SetDepthState("EngineDepth");
 		}

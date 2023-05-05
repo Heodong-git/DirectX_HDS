@@ -58,6 +58,15 @@
     <ClInclude Include="CRecordingManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CBattery.h">
+      <Filter>Player\Battery</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <Filter>Player\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="CInven.h">
+      <Filter>Player\Inven</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -116,6 +125,15 @@
     <ClCompile Include="CRecordingManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="CBattery.cpp">
+      <Filter>Player\Battery</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimer.cpp">
+      <Filter>Player\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="CInven.cpp">
+      <Filter>Player\Inven</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -141,6 +159,15 @@
     </Filter>
     <Filter Include="Cursor">
       <UniqueIdentifier>{2cb0de99-639b-450c-ba8b-298cce7c3b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\Battery">
+      <UniqueIdentifier>{cc9b5102-7e4b-44f6-a7d1-48d8cd82eaef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\Timer">
+      <UniqueIdentifier>{24221fc8-cbe0-4fc6-b165-a03536705af4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\Inven">
+      <UniqueIdentifier>{67d86845-5aa2-43f7-9149-fdc3f202b562}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

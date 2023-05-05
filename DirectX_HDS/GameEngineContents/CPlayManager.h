@@ -1,9 +1,6 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
-
-// 하나만있어도 될거같은데.. 어차피 다음레벨넘어가도.. 흠 
-// 설명 : 
 class CPlayManager : public CKatanaZero_Actor
 {
 public:
@@ -17,6 +14,21 @@ public:
 	CPlayManager& operator=(const CPlayManager& _Other) = delete;
 	CPlayManager& operator=(CPlayManager&& _Other) noexcept = delete;
 
+	void SetBattery(std::shared_ptr<class CBattery>& _Battery)
+	{
+		m_Battery = _Battery;
+	}
+
+	void SetInven(std::shared_ptr<class CInven>& _Inven)
+	{
+		m_Inven = _Inven;
+	}
+
+	void SetTimer(std::shared_ptr<class CTimer>& _Timer)
+	{
+		m_Timer = _Timer;
+	}
+	
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -25,21 +37,15 @@ protected:
 private:
 	void CreateRender();
 
-	// 몇개 안들고 있는데 전부 그냥 들고 있는게 맞는거같기도?? 
-	
-	// 얘는따로인게 맞는거같기도하고  
+	// 타이머
+	std::shared_ptr<class CTimer> m_Timer = nullptr;
+	// 배터리 
+	std::shared_ptr<class CBattery> m_Battery = nullptr;
+	// 인벤토리 
+	std::shared_ptr<class CInven> m_Inven = nullptr;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGroundRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_HUDRender = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_InvenRender = nullptr;
-	
-	// 부모자식구조가 업데이트 되면 게이지 렌더러를 추가로 달아서??  
-	std::shared_ptr<class GameEngineSpriteRenderer> m_TimerRender = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_TimerGageRender = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_BatteryRender = nullptr;
-
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MouseLRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MouseRRender = nullptr;
-
-	
-
 };

@@ -167,7 +167,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CBattery.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CBoss_HeadHunter.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CInven.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -225,6 +233,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CTitleLevel.h">
       <SubType>
       </SubType>
@@ -241,7 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBackGround.cpp" />
+    <ClCompile Include="CBattery.cpp" />
     <ClCompile Include="CBoss_HeadHunter.cpp" />
+    <ClCompile Include="CInven.cpp" />
     <ClCompile Include="CKatanaZero_Actor.cpp" />
     <ClCompile Include="CKatanaZero_Level.cpp" />
     <ClCompile Include="CMonster_Gangster.cpp" />
@@ -259,6 +273,7 @@
     <ClCompile Include="CStageLevel_01.cpp" />
     <ClCompile Include="CStageLevel_02.cpp" />
     <ClCompile Include="CTestLevel.cpp" />
+    <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CTitleLevel.cpp">
       <SubType>
       </SubType>

@@ -64,22 +64,22 @@ public:
 		return m_Player;
 	}
 
-	void SetPlayer(std::shared_ptr<class CPlayer> _Player)
+	void SetPlayer(std::shared_ptr<class CPlayer>& _Player)
 	{
 		m_Player = _Player;
 	}
 
-	void SetBoss(std::shared_ptr<class CBoss_HeadHunter> _Boss)
+	void SetBoss(std::shared_ptr<class CBoss_HeadHunter>& _Boss)
 	{
 		m_Boss = _Boss;
 	}
 
-	void SetCursor(std::shared_ptr<class CCursor> _Cursor)
+	void SetCursor(std::shared_ptr<class CCursor>& _Cursor)
 	{
 		m_Cursor = _Cursor;
 	}
 
-	std::shared_ptr<class CCursor> GetCursor()
+	std::shared_ptr<class CCursor>& GetCursor()
 	{
 		return m_Cursor;
 	}

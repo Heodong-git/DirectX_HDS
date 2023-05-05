@@ -11,6 +11,9 @@
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 #include "CCursor.h"
+#include "CBattery.h"
+#include "CInven.h"
+#include "CTimer.h"
 
 CTutorialLevel::CTutorialLevel()
 {
@@ -78,8 +81,15 @@ void CTutorialLevel::ResourcesLoad()
 void CTutorialLevel::ActorLoad()
 {
 	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
-	// test
+	std::shared_ptr<CBattery> Battery = CreateActor<CBattery>(static_cast<int>(ERENDERORDER::BASEUI), "Battery");
+	m_PlayManager->SetBattery(Battery);
+	std::shared_ptr<CInven> Inven = CreateActor<CInven>(static_cast<int>(ERENDERORDER::BASEUI),"Inven");
+	m_PlayManager->SetInven(Inven);
+	std::shared_ptr<CTimer> Timer = CreateActor<CTimer>(static_cast<int>(ERENDERORDER::BASEUI), "Timer");
+	m_PlayManager->SetTimer(Timer);
+	
 	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
+
 
 	// Setname 안하고있음
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
