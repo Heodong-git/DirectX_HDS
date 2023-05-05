@@ -35,6 +35,7 @@ protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
 	virtual void Render(float _DeltaTime) {}
+	virtual void Release() {}
 
 private:
 	float LiveTime = 0.0f;

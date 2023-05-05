@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CInven.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include "CKatanaZero_Level.h"
 
 CInven::CInven()
 {
@@ -21,6 +22,11 @@ void CInven::Start()
 
 void CInven::Update(float _DeltaTime)
 {
+	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
+	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
 }
 
 void CInven::Render(float _DeltaTime)

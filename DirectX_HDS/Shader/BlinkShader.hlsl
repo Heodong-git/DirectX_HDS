@@ -64,16 +64,10 @@ SamplerState CLAMPSAMPLER : register(s0);
 
 float4 Texture_PS(Output _Value) : SV_Target0
 {
-    float4 Color = BlinkTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
- 
+    float4 color = BlinkTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    // clip
     // 지정된 값이 0보다 작으면 현재 픽셀을 삭제한다.
     // 알파값이 0.1보다 작다면 -1, 크다면 
-  
-    Color.a = 0.4f;
-    //if (0.3f <= Color.a)
-    //{
-    //    clip(-1);
-    //}
-
-    return Color;
+    color.a = 0.3f;
+    return color;
 }

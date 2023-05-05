@@ -2,6 +2,7 @@
 #include "CBattery.h"
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include "CKatanaZero_Level.h"
 
 CBattery::CBattery()
 {
@@ -22,6 +23,11 @@ void CBattery::Start()
 
 void CBattery::Update(float _DeltaTime)
 {
+	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
+	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
 }
 
 void CBattery::Render(float _DeltaTime)

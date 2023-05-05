@@ -84,6 +84,10 @@ public:
 		return m_Cursor;
 	}
 
+	ELEVEL_STATE GetCurState()
+	{
+		return m_CurState;
+	}
 protected:
 	// 녹화하고 역재생 해야하는 레벨에서만 재정의한 Start에서 얘를 호출하면 되게 하려고 했는데
 	// 그냥 다호출하거나 오버라이딩으로 처리하고, recording == true 인 레벨에서만 녹화 

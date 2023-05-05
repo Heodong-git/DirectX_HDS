@@ -103,6 +103,8 @@ void GameEngineCore::EngineUpdate()
 		MainLevel->ActorRender(TimeDeltaTime);
 		GameEngineDevice::RenderEnd();
 	}
+
+	MainLevel->ActorRelease();
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
