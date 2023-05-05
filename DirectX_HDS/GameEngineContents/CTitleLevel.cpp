@@ -53,6 +53,7 @@ void CTitleLevel::LevelChangeStart()
 
 void CTitleLevel::LevelChangeEnd()
 {
+	SetState(ELEVEL_STATE::WAIT);
 }
 
 void CTitleLevel::ResourcesLoad()

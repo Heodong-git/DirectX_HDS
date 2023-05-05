@@ -2,6 +2,7 @@
 #include "CInven.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "CKatanaZero_Level.h"
+#include <GameEngineBase/GameEngineRandom.h>
 
 CInven::CInven()
 {
@@ -26,6 +27,16 @@ void CInven::Update(float _DeltaTime)
 	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
+	}
+
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	if (Random == 1)
+	{
+		m_CaseRender->Off();
+	}
+	else
+	{
+		m_CaseRender->On();
 	}
 }
 

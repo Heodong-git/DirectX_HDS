@@ -34,6 +34,7 @@ protected:
 private:
 	void MenuUpdate(float _DeltaTime);
 	void FenceRenderMove(float _DeltaTime);
+	void BlinkRender();
 
 	bool m_Arrive = false;
 	

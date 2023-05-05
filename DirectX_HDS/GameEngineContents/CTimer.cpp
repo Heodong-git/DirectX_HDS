@@ -1,7 +1,9 @@
 #include "PrecompileHeader.h"
 #include "CTimer.h"
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "CKatanaZero_Level.h"
+
 
 CTimer::CTimer()
 {
@@ -45,6 +47,16 @@ void CTimer::Update(float _DeltaTime)
 	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
+	}
+
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	if (Random == 1)
+	{
+		m_CaseRender->Off();
+	}
+	else
+	{
+		m_CaseRender->On();
 	}
 }
 
