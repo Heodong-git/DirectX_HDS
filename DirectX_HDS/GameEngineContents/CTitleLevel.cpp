@@ -54,6 +54,7 @@ void CTitleLevel::LevelChangeStart()
 void CTitleLevel::LevelChangeEnd()
 {
 	m_GUI->Off();
+	SetState(ELEVEL_STATE::WAIT);
 }
 
 void CTitleLevel::ResourcesLoad()
