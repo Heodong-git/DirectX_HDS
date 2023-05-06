@@ -29,8 +29,6 @@ public:
 	virtual void OnGUI(std::shared_ptr<class GameEngineLevel> _Level, float _DeltaTime) = 0;
 };
 
-
-
 class GameEngineGUI
 {
 public:

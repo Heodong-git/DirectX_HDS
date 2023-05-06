@@ -5,11 +5,12 @@
 
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
-#include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
+#include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
-// TEST
 #include "CTitleManager.h"
+#include "CGameEditer.h"
 #include "CBackGround.h"
 
 CTitleLevel::CTitleLevel()
@@ -33,7 +34,6 @@ CTitleLevel::~CTitleLevel()
 //	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
 //}
 
-// 부모함수를 재정의 했기 때문에 이녀석이 호출됨
 void CTitleLevel::Start()
 {
 	CKatanaZero_Level::Start();
@@ -48,11 +48,12 @@ void CTitleLevel::Update(float _DeltaTime)
 
 void CTitleLevel::LevelChangeStart()
 {
-	
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<CGameEditer>("Title_Editer");
 }
 
 void CTitleLevel::LevelChangeEnd()
 {
+	m_GUI->Off();
 }
 
 void CTitleLevel::ResourcesLoad()

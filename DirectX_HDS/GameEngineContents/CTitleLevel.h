@@ -27,5 +27,6 @@ protected:
 
 private:
 	std::shared_ptr<class CTitleManager> m_TitleManager = nullptr;
+	std::shared_ptr<class CGameEditer> m_GUI = nullptr;
 };
 

@@ -27,9 +27,9 @@ CTutorialLevel::~CTutorialLevel()
 void CTutorialLevel::Start()
 {
 	CKatanaZero_Level::Start();
-	if (false == GameEngineInput::IsKey("TestKey"))
+	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel"))
 	{
-		GameEngineInput::CreateKey("Testkey", VK_F1);
+		GameEngineInput::CreateKey("Stage01_ChangeLevel", VK_F1);
 	}
 
 	// 리소스로드 
@@ -40,9 +40,9 @@ void CTutorialLevel::Start()
 
 void CTutorialLevel::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("Testkey"))
+	if (GameEngineInput::IsDown("Stage01_ChangeLevel"))
 	{
-		GameEngineCore::ChangeLevel("TitleLevel");
+		GameEngineCore::ChangeLevel("StageLevel_01");
 		return;
 	}
 }
