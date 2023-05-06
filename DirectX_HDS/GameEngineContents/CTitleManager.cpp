@@ -7,6 +7,9 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCore.h>
 
+// 테스트
+#include <GameEngineBase/GameEngineRandom.h>
+
 CTitleManager::CTitleManager()
 {
 }
@@ -49,6 +52,8 @@ void CTitleManager::Update(float _DeltaTime)
 	{
 		MenuUpdate(_DeltaTime);
 	}
+
+	BlinkRender();
 }
 
 void CTitleManager::Render(float _DeltaTime)
@@ -143,6 +148,30 @@ void CTitleManager::FenceRenderMove(float _DeltaTime)
 	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 360 * _DeltaTime);
 }
 
+void CTitleManager::BlinkRender()
+{
+	// 그냥 간단하게. 
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 20);
+	if (Random == 1)
+	{
+		m_ORender->Off();
+	}
+	else
+	{
+		m_ORender->On();
+	}
+
+	Random = GameEngineRandom::MainRandom.RandomInt(1, 100);
+	if (Random == 1)
+	{
+		m_ZERRender->Off();
+	}
+	else
+	{
+		m_ZERRender->On();
+	}
+}
+
 void CTitleManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
@@ -163,11 +192,11 @@ void CTitleManager::CreateRender()
 	
 	// OTexRender
 	m_ORender = CreateComponent<GameEngineSpriteRenderer>();
-	/*m_ORender->SetPipeLine("2DTexture");
-	m_ORender->SetTexture("spr_titlegraphic_big_2.png");*/
+	m_ORender->SetPipeLine("2DTexture");
+	m_ORender->SetTexture("spr_titlegraphic_big_2.png");
 	// 반투명텍스쳐사용시
-	m_ORender->SetPipeLine("2DBlinkTexture");
-	m_ORender->GetShaderResHelper().SetTexture("BlinkTex", "spr_titlegraphic_big_2.png");
+	/*m_ORender->SetPipeLine("2DBlinkTexture");
+	m_ORender->GetShaderResHelper().SetTexture("BlinkTex", "spr_titlegraphic_big_2.png");*/
 	m_ORender->GetTransform()->SetLocalScale(float4{ 130.0f , 200.0f });
 	m_ORender->GetTransform()->SetLocalPosition(float4{ 160.0f , 30.0f });
 	

@@ -49,6 +49,11 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 	//// TimeEvent.AddEvent(3.0f, )
 }
 
+void CKatanaZero_Level::LevelChangeStart()
+{
+	
+}
+
 void CKatanaZero_Level::CameraLoad()
 {
 	// 카메라세팅

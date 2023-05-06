@@ -50,11 +50,13 @@ void CTutorialLevel::Update(float _DeltaTime)
 void CTutorialLevel::LevelChangeStart()
 {
 	//ShowCursor(false);
+	SetState(ELEVEL_STATE::PLAY);
 }
 
 void CTutorialLevel::LevelChangeEnd()
 {
 	//ShowCursor(true);
+	SetState(ELEVEL_STATE::WAIT);
 }
 
 void CTutorialLevel::ResourcesLoad()

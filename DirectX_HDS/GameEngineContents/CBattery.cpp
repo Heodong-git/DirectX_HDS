@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "CBattery.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "CKatanaZero_Level.h"
 
@@ -23,10 +24,19 @@ void CBattery::Start()
 
 void CBattery::Update(float _DeltaTime)
 {
-	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
 	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
+	}
+
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	if (Random == 1)
+	{
+		m_CaseRender->Off();
+	}
+	else
+	{
+		m_CaseRender->On();
 	}
 }
 
