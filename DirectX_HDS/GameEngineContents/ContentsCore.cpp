@@ -10,7 +10,7 @@
 #include "CTutorialLevel.h"
 #include "CStageLevel_01.h"
 #include "CStageLevel_02.h"
-#include "CGameEditer.h"
+#include "CTitleEditer.h"
 
 ContentsCore::ContentsCore()
 {
@@ -44,7 +44,7 @@ void ContentsCore::GameStart()
 
 
 	// gui
-	GameEngineGUI::GUIWindowCreate<CGameEditer>("Title_Editer");
+	GameEngineGUI::GUIWindowCreate<CTitleEditer>("Title_Editer");
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출

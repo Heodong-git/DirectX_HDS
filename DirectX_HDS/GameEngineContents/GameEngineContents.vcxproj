@@ -175,7 +175,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CGameEditer.h">
+    <ClInclude Include="CTitleEditer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -259,7 +259,7 @@
     <ClCompile Include="CBackGround.cpp" />
     <ClCompile Include="CBattery.cpp" />
     <ClCompile Include="CBoss_HeadHunter.cpp" />
-    <ClCompile Include="CGameEditer.cpp" />
+    <ClCompile Include="CTitleEditer.cpp" />
     <ClCompile Include="CInven.cpp" />
     <ClCompile Include="CKatanaZero_Actor.cpp" />
     <ClCompile Include="CKatanaZero_Level.cpp" />

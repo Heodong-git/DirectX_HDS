@@ -1,15 +1,15 @@
 #include "PrecompileHeader.h"
-#include "CGameEditer.h"
+#include "CTitleEditer.h"
 
-CGameEditer::CGameEditer()
+CTitleEditer::CTitleEditer()
 {
 }
 
-CGameEditer::~CGameEditer()
+CTitleEditer::~CTitleEditer()
 {
 }
 
-void CGameEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
+void CTitleEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	std::string Text = GameEngineString::AnsiToUTF8("Tutorial_Level");
 	if (ImGui::Button(Text.c_str()))

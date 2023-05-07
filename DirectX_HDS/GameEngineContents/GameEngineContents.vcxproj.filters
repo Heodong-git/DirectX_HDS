@@ -67,7 +67,7 @@
     <ClInclude Include="CInven.h">
       <Filter>Player\Inven</Filter>
     </ClInclude>
-    <ClInclude Include="CGameEditer.h">
+    <ClInclude Include="CTitleEditer.h">
       <Filter>Editer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -137,7 +137,7 @@
     <ClCompile Include="CInven.cpp">
       <Filter>Player\Inven</Filter>
     </ClCompile>
-    <ClCompile Include="CGameEditer.cpp">
+    <ClCompile Include="CTitleEditer.cpp">
       <Filter>Editer</Filter>
     </ClCompile>
   </ItemGroup>

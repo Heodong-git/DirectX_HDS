@@ -12,7 +12,7 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 #include "CTitleManager.h"
-#include "CGameEditer.h"
+#include "CTitleEditer.h"
 #include "CBackGround.h"
 
 CTitleLevel::CTitleLevel()
@@ -64,7 +64,7 @@ void CTitleLevel::Update(float _DeltaTime)
 
 void CTitleLevel::LevelChangeStart()
 {
-	m_GUI = GameEngineGUI::FindGUIWindowConvert<CGameEditer>("Title_Editer");
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
 }
 
 void CTitleLevel::LevelChangeEnd()
