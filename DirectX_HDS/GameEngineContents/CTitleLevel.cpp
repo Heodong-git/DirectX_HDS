@@ -2,12 +2,14 @@
 #include "CTitleLevel.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineTimeEvent.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #include "CTitleManager.h"
 #include "CGameEditer.h"
@@ -36,6 +38,11 @@ CTitleLevel::~CTitleLevel()
 
 void CTitleLevel::Start()
 {
+	if (false == GameEngineInput::IsKey("DebugChange_Tutorial"))
+	{
+		GameEngineInput::CreateKey("DebugChange_Tutorial", VK_F1);
+	}
+
 	CKatanaZero_Level::Start();
 	ResourcesLoad();
 	ActorLoad();
@@ -45,6 +52,13 @@ void CTitleLevel::Start()
 
 void CTitleLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
+	{
+		GameEngineCore::ChangeLevel("TutorialLevel");
+		return;
+	}
+
+	
 	CKatanaZero_Level::Update(_DeltaTime);
 }
 
