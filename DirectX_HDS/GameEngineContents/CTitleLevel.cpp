@@ -39,6 +39,8 @@ void CTitleLevel::Start()
 	CKatanaZero_Level::Start();
 	ResourcesLoad();
 	ActorLoad();
+
+	SetState(ELEVEL_STATE::WAIT);
 }
 
 void CTitleLevel::Update(float _DeltaTime)

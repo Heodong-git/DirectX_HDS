@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineContents/CKatanaZero_Actor.h>
 
-// 설명 :
+// 설명 : 타이틀에서만씀 
 class CBackGround : public CKatanaZero_Actor
 {
 public:

@@ -36,8 +36,6 @@ void CBackGround::Render(float _DeltaTime)
 }
 
 
-
-
 void CBackGround::CreateRender()
 {
 	m_BackGroundBlackRender = CreateComponent<GameEngineSpriteRenderer>();
