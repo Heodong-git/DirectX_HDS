@@ -44,6 +44,49 @@ void CTitleManager::Start()
 
 void CTitleManager::Update(float _DeltaTime)
 {
+	if (EMENU_TYPE::CHANGE == m_CurMenu)
+	{
+		m_BoxFlashingTime -= _DeltaTime;
+
+		// 애니메이션 추가전임시 
+		if (m_BoxFlashingTime >= 0.5f)
+		{
+			m_MenuSelectBoxRender->Off();
+		}
+
+		else if (m_BoxFlashingTime < 0.5f && m_BoxFlashingTime >= 0.4f)
+		{
+			m_MenuSelectBoxRender->On();
+		}
+
+		else if (m_BoxFlashingTime < 0.4f && m_BoxFlashingTime >= 0.3f)
+		{
+			m_MenuSelectBoxRender->Off();
+		}
+		
+		else if (m_BoxFlashingTime < 0.3f && m_BoxFlashingTime >= 0.2f)
+		{
+			m_MenuSelectBoxRender->On();
+		}
+
+		else if (m_BoxFlashingTime < 0.2f && m_BoxFlashingTime >= 0.1f)
+		{
+			m_MenuSelectBoxRender->Off();
+		}
+
+		else
+		{
+			m_MenuSelectBoxRender->On();
+		}
+
+		if (m_BoxFlashingTime < 0.0f)
+		{
+			GameEngineCore::ChangeLevel("TutorialLevel");
+			m_BoxFlashingTime = 0.0f; 
+		}
+
+	}
+	// 현재 메뉴가 뉴게임인상태에서 스페이스바가 눌렸다면 
 	if (ELEVEL_STATE::PLAY == GetReturnCastLevel()->GetCurState())
 	{
 		MenuUpdate(_DeltaTime);
@@ -97,7 +140,8 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 		switch (m_CurMenu)
 		{
 		case EMENU_TYPE::NEWGAME:
-			GameEngineCore::ChangeLevel("TutorialLevel");
+			m_CurMenu = EMENU_TYPE::CHANGE;
+			// GameEngineCore::ChangeLevel("TutorialLevel");
 			break;
 		case EMENU_TYPE::SETTING:
 			break;
@@ -258,7 +302,7 @@ void CTitleManager::BoxRenderMove(float _DeltaTime)
 	float4 movepos = RenderPos.LerpClamp(RenderPos, m_TranslucentBoxRenderPos, 1.0f);
 	movepos.x = 0.0f;
 	movepos.Normalize();
-	m_TranslucentBoxRender->GetTransform()->AddLocalPosition(-movepos * 400.0f * _DeltaTime);
+	m_TranslucentBoxRender->GetTransform()->AddLocalPosition(-movepos * 600.0f * _DeltaTime);
 }
 
 void CTitleManager::TextMove(float _DeltaTime)

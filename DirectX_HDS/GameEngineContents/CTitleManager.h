@@ -6,6 +6,7 @@ enum class EMENU_TYPE
 	NEWGAME,
 	SETTING,
 	EXIT,
+	CHANGE,
 	MAX,
 };
 
@@ -82,6 +83,9 @@ private:
 	// 투명박스 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MenuSelectBoxRender = nullptr;
 	
+	// 점멸테스트 
+	float m_BoxFlashingTime = 0.6f;
+
 	float4 m_MenuMovePos = float4{ 0.0f, -50.0f };
 	float4 m_MenuStartPos = float4{ 0.0f , -160.0f };
 	float4 m_MenuMiddlePos = float4{ 0.0f , -210.0f };
