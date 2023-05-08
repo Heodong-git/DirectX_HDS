@@ -73,6 +73,9 @@
     <ClInclude Include="CStageEditer.h">
       <Filter>Editer</Filter>
     </ClInclude>
+    <ClInclude Include="CFsm.h">
+      <Filter>Fsm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -146,6 +149,9 @@
     <ClCompile Include="CStageEditer.cpp">
       <Filter>Editer</Filter>
     </ClCompile>
+    <ClCompile Include="CFsm.cpp">
+      <Filter>Fsm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -183,6 +189,9 @@
     </Filter>
     <Filter Include="Editer">
       <UniqueIdentifier>{86567995-14fa-46db-8f87-07f0510ad721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fsm">
+      <UniqueIdentifier>{142ef6fd-d423-413a-96e5-111c12645b93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -67,7 +67,8 @@ void CTitleEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 			ImGui::EndMenu();
 			return;
 		}
-		
+
+		// 메뉴를 열었으면 반드시 닫아야 하는듯, 안닫으면  터짐
 		ImGui::EndMenu();
 	}
 }
