@@ -44,11 +44,10 @@ void CTitleLevel::Start()
 		GameEngineInput::CreateKey("DebugChange_Stage01", VK_F2);
 	}
 
-	CKatanaZero_Level::Start();
 	ResourcesLoad();
 	ActorLoad();
-
 	SetState(ELEVEL_STATE::WAIT);
+	CKatanaZero_Level::Start();
 }
 
 void CTitleLevel::Update(float _DeltaTime)
@@ -72,6 +71,13 @@ void CTitleLevel::Update(float _DeltaTime)
 void CTitleLevel::LevelChangeStart()
 {
 	m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
+	if (m_GUI == nullptr)
+	{
+		MsgAssert("GUI Window가 nullptr 입니다.");
+		return;
+	}
+
+	m_GUI->On();
 }
 
 void CTitleLevel::LevelChangeEnd()

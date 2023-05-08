@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "CPlayManager.h"
 #include "CRecordingManager.h"
@@ -14,6 +15,9 @@
 #include "CBattery.h"
 #include "CInven.h"
 #include "CTimer.h"
+
+#include "CTitleEditer.h"
+
 
 CTutorialLevel::CTutorialLevel()
 {
@@ -51,12 +55,20 @@ void CTutorialLevel::LevelChangeStart()
 {
 	//ShowCursor(false);
 	SetState(ELEVEL_STATE::PLAY);
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
+	if (m_GUI == nullptr)
+	{
+		MsgAssert("GUI Window가 nullptr 입니다.");
+		return;
+	}
+	m_GUI->On();
 }
 
 void CTutorialLevel::LevelChangeEnd()
 {
 	//ShowCursor(true);
 	SetState(ELEVEL_STATE::WAIT);
+	m_GUI->Off();
 }
 
 void CTutorialLevel::ResourcesLoad()
@@ -92,8 +104,6 @@ void CTutorialLevel::ActorLoad()
 	
 	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
 
-
-	// Setname 안하고있음
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(ERENDERORDER::BOSS),"HeadHunter");

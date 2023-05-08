@@ -16,7 +16,6 @@ public:
 	GameEngineCoreWindow& operator=(const GameEngineCoreWindow& _Other) = delete;
 	GameEngineCoreWindow& operator=(GameEngineCoreWindow&& _Other) noexcept = delete;
 
-
 	std::function<void()> Test;
 	std::function<void()> Test1;
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;

@@ -11,6 +11,7 @@
 #include "CStageLevel_01.h"
 #include "CStageLevel_02.h"
 #include "CTitleEditer.h"
+#include "CStageEditer.h"
 
 ContentsCore::ContentsCore()
 {
@@ -42,9 +43,15 @@ void ContentsCore::GameStart()
 	//GameEngineCore::CreateLevel<CTestLevel>();
 	GameEngineCore::ChangeLevel("TitleLevel");
 
-
 	// gui
-	GameEngineGUI::GUIWindowCreate<CTitleEditer>("Title_Editer");
+	{
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<CTitleEditer>("Title_Editer");
+		Window->Off();
+	}
+	{
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<CStageEditer>("Stage_Editer");
+		Window->Off();
+	}
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출

@@ -26,4 +26,5 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
+	std::shared_ptr<class CStageEditer> m_GUI = nullptr;
 };

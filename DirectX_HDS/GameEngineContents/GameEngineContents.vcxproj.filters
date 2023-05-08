@@ -70,6 +70,9 @@
     <ClInclude Include="CTitleEditer.h">
       <Filter>Editer</Filter>
     </ClInclude>
+    <ClInclude Include="CStageEditer.h">
+      <Filter>Editer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -138,6 +141,9 @@
       <Filter>Player\Inven</Filter>
     </ClCompile>
     <ClCompile Include="CTitleEditer.cpp">
+      <Filter>Editer</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageEditer.cpp">
       <Filter>Editer</Filter>
     </ClCompile>
   </ItemGroup>
