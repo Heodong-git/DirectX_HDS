@@ -10,6 +10,7 @@
 #include <GameEngineContents/CKatanaZero_Level.h>
 
 #include "CCursor.h"
+#include "CFsm.h"
 
 CPlayer::CPlayer()
 {
@@ -37,6 +38,9 @@ void CPlayer::Start()
 	m_Renderer->SetPipeLine("2DTexture");
 	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
 	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
+
+	// fsm Å×½ºÆ®
+	
 }
 
 void CPlayer::Update(float _DeltaTime)

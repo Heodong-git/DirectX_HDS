@@ -12,6 +12,7 @@ enum class PLAYERSTATE
 	SLASH,
 };
 
+class CFsm;
 class CPlayer : public CKatanaZero_Actor
 {
 public:
@@ -54,6 +55,7 @@ private:
 	
 	// ------------------------- state ----------------------------------
 private:
+	std::shared_ptr<CFsm> m_Fsm = nullptr;
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
