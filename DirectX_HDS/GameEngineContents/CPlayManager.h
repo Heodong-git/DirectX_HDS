@@ -43,6 +43,7 @@ private:
 	std::shared_ptr<class CBattery> m_Battery = nullptr;
 	// 인벤토리 
 	std::shared_ptr<class CInven> m_Inven = nullptr;
+	// HUD
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGroundRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_HUDRender = nullptr;
