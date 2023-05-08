@@ -110,7 +110,7 @@ private:
 	virtual void ActorLoad() {};
 
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
-	virtual void CameraLoad();
+	virtual void CameraSetting();
 
 	float4 m_CurMouseLocalPos = {};
 

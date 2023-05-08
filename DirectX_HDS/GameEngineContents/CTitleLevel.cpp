@@ -41,6 +41,7 @@ void CTitleLevel::Start()
 	if (false == GameEngineInput::IsKey("DebugChange_Tutorial"))
 	{
 		GameEngineInput::CreateKey("DebugChange_Tutorial", VK_F1);
+		GameEngineInput::CreateKey("DebugChange_Stage01", VK_F2);
 	}
 
 	CKatanaZero_Level::Start();
@@ -55,6 +56,12 @@ void CTitleLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
 	{
 		GameEngineCore::ChangeLevel("TutorialLevel");
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("DebugChange_Stage01"))
+	{
+		GameEngineCore::ChangeLevel("StageLevel_01");
 		return;
 	}
 

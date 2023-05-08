@@ -14,10 +14,7 @@ CKatanaZero_Level::~CKatanaZero_Level()
 
 void CKatanaZero_Level::Start()
 {
-	CameraLoad();
-	if (true == GetRecordUse())
-	{
-	}
+	CameraSetting();
 }
 
 void CKatanaZero_Level::Update(float _DeltaTime)
@@ -54,7 +51,7 @@ void CKatanaZero_Level::LevelChangeStart()
 	
 }
 
-void CKatanaZero_Level::CameraLoad()
+void CKatanaZero_Level::CameraSetting()
 {
 	// 카메라세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
