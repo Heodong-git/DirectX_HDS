@@ -30,7 +30,6 @@ CTutorialLevel::~CTutorialLevel()
 void CTutorialLevel::Start()
 {
 	// TimeEvent.AddEvent(3.0f, std::bind(&CTutorialLevel::TestTest, this));
-
 	CKatanaZero_Level::Start();
 	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel"))
 	{
@@ -70,6 +69,7 @@ void CTutorialLevel::LevelChangeEnd()
 	//ShowCursor(true);
 	SetState(ELEVEL_STATE::WAIT);
 	m_GUI->Off();
+
 }
 
 void CTutorialLevel::ResourcesLoad()
@@ -111,8 +111,6 @@ void CTutorialLevel::ActorLoad()
 	NewBoss->GetTransform()->SetLocalPosition({ 100 , -50 });
 	SetBoss(NewBoss);
 
-	// 트랜스폼 부모자식구조 테스트코드 
-	// NewBoss->GetTransform()->SetParent(NewPlayer->GetTransform());
 	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
 	SetCursor(NewCursor);
 }

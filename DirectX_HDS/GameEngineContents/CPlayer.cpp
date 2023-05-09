@@ -164,13 +164,13 @@ void CPlayer::IdleUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
-		// 공격애니메이션이 종료됐다면 return ㅇㅇ 
-		CKatanaZero_Level* CurLevel = GetReturnCastLevel();
+		//// 공격애니메이션이 종료됐다면 return ㅇㅇ 
+		//CKatanaZero_Level* CurLevel = GetReturnCastLevel();
 
-		// 눌렸을 때 마우스의 위치를 가져온다.
-		float4 cursorpos = CurLevel->GetCursor()->GetTransform()->GetLocalPosition();
-		GetTransform()->SetLocalPosition(cursorpos);
-		return;
+		//// 눌렸을 때 마우스의 위치를 가져온다.
+		//float4 cursorpos = CurLevel->GetCursor()->GetTransform()->GetLocalPosition();
+		//GetTransform()->SetLocalPosition(cursorpos);
+		//return;
 	}
 }
 

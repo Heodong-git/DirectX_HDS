@@ -25,7 +25,7 @@ protected:
 private:
 	void ResourcesLoad() override;
 	void ActorLoad() override;
-
+	
 	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
 	std::shared_ptr<class CTitleEditer> m_GUI = nullptr;
 	// test 
