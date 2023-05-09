@@ -16,7 +16,6 @@
 #include "CBattery.h"
 #include "CInven.h"
 #include "CTimer.h"
-
 #include "CTitleEditer.h"
 
 CTutorialLevel::CTutorialLevel()
@@ -95,7 +94,7 @@ void CTutorialLevel::ResourcesLoad()
 
 void CTutorialLevel::ActorLoad()
 {
-	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
+	/*m_PlayManager = CreateActor<CPlayManager>("PlayManager");
 	std::shared_ptr<CBattery> Battery = CreateActor<CBattery>(static_cast<int>(ERENDERORDER::BASEUI), "Battery");
 	m_PlayManager->SetBattery(Battery);
 	std::shared_ptr<CInven> Inven = CreateActor<CInven>(static_cast<int>(ERENDERORDER::BASEUI),"Inven");
@@ -103,8 +102,6 @@ void CTutorialLevel::ActorLoad()
 	std::shared_ptr<CTimer> Timer = CreateActor<CTimer>(static_cast<int>(ERENDERORDER::BASEUI), "Timer");
 	m_PlayManager->SetTimer(Timer);
 	
-	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
-
 	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER),"Player");
 	SetPlayer(NewPlayer);
 	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>(static_cast<int>(ERENDERORDER::BOSS),"HeadHunter");
@@ -112,5 +109,5 @@ void CTutorialLevel::ActorLoad()
 	SetBoss(NewBoss);
 
 	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
-	SetCursor(NewCursor);
+	SetCursor(NewCursor);*/
 }

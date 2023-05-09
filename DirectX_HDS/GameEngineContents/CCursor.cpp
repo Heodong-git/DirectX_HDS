@@ -23,6 +23,24 @@ CCursor::~CCursor()
 
 void CCursor::Start()
 {
+	{
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("Stage01Level");
+		NewDir.Move("Cursor");
+
+		// 파일 전체로드 
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
 	// 컴포넌트생성
 	m_Renderer = CreateComponent<GameEngineRenderer>();
 	// 파이프라인세팅 

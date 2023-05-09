@@ -40,7 +40,7 @@ void CTitleLevel::Start()
 {
 	if (false == GameEngineInput::IsKey("DebugChange_Tutorial"))
 	{
-		GameEngineInput::CreateKey("DebugChange_Tutorial", VK_F1);
+		// GameEngineInput::CreateKey("DebugChange_Tutorial", VK_F1);
 		GameEngineInput::CreateKey("DebugChange_Stage01", VK_F2);
 	}
 
@@ -52,11 +52,11 @@ void CTitleLevel::Start()
 
 void CTitleLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
+	/*if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
 	{
 		GameEngineCore::ChangeLevel("TutorialLevel");
 		return;
-	}
+	}*/
 
 	if (true == GameEngineInput::IsDown("DebugChange_Stage01"))
 	{
@@ -76,7 +76,7 @@ void CTitleLevel::LevelChangeStart()
 		MsgAssert("GUI Window가 nullptr 입니다.");
 		return;
 	}
-
+	
 	m_GUI->On();
 }
 

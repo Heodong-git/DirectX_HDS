@@ -22,6 +22,25 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
+	{
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("Stage01Level");
+		NewDir.Move("Player");
+
+		// 파일 전체로드 
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
+
 	if (false == GameEngineInput::IsKey("attack"))
 	{
 		GameEngineInput::CreateKey("player_slash", VK_LBUTTON);

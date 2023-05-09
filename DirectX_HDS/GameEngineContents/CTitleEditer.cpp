@@ -43,14 +43,14 @@ void CTitleEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		std::string Text = GameEngineString::AnsiToUTF8("LevelChange");
 		ImGui::Text(Text.c_str());
 
-		Text = GameEngineString::AnsiToUTF8("Tutorial_Level");
-		if (ImGui::Button(Text.c_str()))
-		{
-			// 그냥 호출해도 되지 않을까
-			GameEngineCore::ChangeLevel("TutorialLevel");
-			ImGui::EndMenu();
-			return;
-		}
+		//Text = GameEngineString::AnsiToUTF8("Tutorial_Level");
+		//if (ImGui::Button(Text.c_str()))
+		//{
+		//	// 그냥 호출해도 되지 않을까
+		//	GameEngineCore::ChangeLevel("TutorialLevel");
+		//	ImGui::EndMenu();
+		//	return;
+		//}
 
 		Text = GameEngineString::AnsiToUTF8("StageLevel_01");
 		if (ImGui::Button(Text.c_str()))

@@ -77,7 +77,10 @@
       <Filter>BackGround\Title</Filter>
     </ClInclude>
     <ClInclude Include="CMap.h">
-      <Filter>BackGround\Stage</Filter>
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CHud.h">
+      <Filter>HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +159,10 @@
       <Filter>BackGround\Title</Filter>
     </ClCompile>
     <ClCompile Include="CMap.cpp">
-      <Filter>BackGround\Stage</Filter>
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CHud.cpp">
+      <Filter>HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,7 +208,10 @@
     <Filter Include="BackGround\Title">
       <UniqueIdentifier>{56fa4388-4786-4824-aaa0-353da66895c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BackGround\Stage">
+    <Filter Include="HUD">
+      <UniqueIdentifier>{b56dcd9e-1a75-473b-a5d6-0c154893eddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
       <UniqueIdentifier>{f3db703a-6db1-4179-b930-5de988a38adc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

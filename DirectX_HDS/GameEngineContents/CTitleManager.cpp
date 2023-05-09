@@ -81,7 +81,8 @@ void CTitleManager::Update(float _DeltaTime)
 
 		if (m_BoxFlashingTime < 0.0f)
 		{
-			GameEngineCore::ChangeLevel("TutorialLevel");
+			GameEngineCore::ChangeLevel("StageLevel_01");
+			m_CurMenu = EMENU_TYPE::NEWGAME;
 			m_BoxFlashingTime = 0.0f; 
 		}
 

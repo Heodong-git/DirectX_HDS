@@ -47,15 +47,15 @@ void CTestLevel::ResourcesLoad()
 void CTestLevel::ActorLoad()
 {
 	// 매니저. static이 맞는거같은데ㅋㅋㅋ
-	m_PlayManager = CreateActor<CPlayManager>("PlayManager");
-	m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
+	//m_PlayManager = CreateActor<CPlayManager>("PlayManager");
+	//m_RecordingManager = CreateActor<CRecordingManager>("RecordingManager");
 
-	std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
-	SetPlayer(NewPlayer);
-	std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
-	SetBoss(NewBoss);
-	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>("Mouse");
-	SetCursor(NewCursor);
+	//std::shared_ptr<CPlayer> NewPlayer = CreateActor<CPlayer>("Player");
+	//SetPlayer(NewPlayer);
+	//std::shared_ptr<CBoss_HeadHunter> NewBoss = CreateActor<CBoss_HeadHunter>();
+	//SetBoss(NewBoss);
+	//std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>("Mouse");
+	//SetCursor(NewCursor);
 }
 
 
