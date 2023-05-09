@@ -30,8 +30,6 @@ public:
 	GameEngineDirectory& operator=(const GameEngineDirectory& _Other) = delete;
 	GameEngineDirectory& operator=(GameEngineDirectory&& _Other) noexcept = delete;
 
-	bool IsFile(const std::string_view& _FileName);
-	
 	// 상위디렉터리로 이동
 	bool MoveParent();
 	
