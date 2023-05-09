@@ -40,12 +40,23 @@ public:
 	{
 		m_Hud = _Hud;
 	}
+
+	static void SetPlayer(std::shared_ptr<class CPlayer>& _Player)
+	{
+		m_Player = _Player;
+	}
+
+	static std::shared_ptr<class CPlayer>& GetPlayer()
+	{
+		return m_Player;
+	}
 	
 	void CreateRender();
-	
+	void Update(float _DeltaTime);
 protected:
-private:
 
+
+private:
 	// 타이머
 	static std::shared_ptr<class CTimer> m_Timer;
 	// 배터리 
@@ -54,4 +65,6 @@ private:
 	static std::shared_ptr<class CInven> m_Inven;
 	// HUD
 	static std::shared_ptr<class CHud> m_Hud;
+
+	static std::shared_ptr<class CPlayer> m_Player;
 };

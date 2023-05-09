@@ -7,6 +7,8 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineSprite.h>
+
 #include <GameEngineContents/CKatanaZero_Level.h>
 
 #include "CCursor.h"
@@ -22,6 +24,25 @@ CPlayer::~CPlayer()
 
 void CPlayer::Start()
 {
+	{
+		//if (nullptr == GameEngineSprite::Find("player_idle"))
+		//{
+		//	GameEngineDirectory NewDir;
+		//	NewDir.MoveParentToDirectory("katanazero_resources");
+		//	NewDir.Move("katanazero_resources");
+		//	NewDir.Move("Texture");
+		//	NewDir.Move("Stage01Level");
+		//	NewDir.Move("Player");
+
+		//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("player_idle").GetFullPath());
+
+		//	// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+
+		//}
+		
+
+	}
 	{
 		GameEngineDirectory NewDir;
 		// 원하는 폴더를 가진 디렉터리로 이동

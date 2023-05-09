@@ -44,6 +44,17 @@ void CStageLevel_01::Start()
 
 void CStageLevel_01::Update(float _DeltaTime)
 {
+	// 얘먼저 돌려서 델타타임을 바꿔서 적용할지 그냥 적용할지 정해. 맞나?
+	CPlayManager::GetInst()->Update(_DeltaTime);
+
+	// 여기서 해봤자 소용이 없구나ㅋㅋㅋ 
+	bool Check = CPlayManager::GetInst()->GetPlayer()->IsSnail();
+	if (true == Check)
+	{
+		float Test = 0.5f;
+		_DeltaTime *= Test;
+	}
+	
 	if (true == GameEngineInput::IsDown("Stage01_ChangeLevel_Title"))
 	{
 		GameEngineCore::ChangeLevel("Titlelevel");
@@ -55,6 +66,7 @@ void CStageLevel_01::Update(float _DeltaTime)
 
 void CStageLevel_01::LevelChangeStart()
 {
+	// 레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
 	m_GUI = GameEngineGUI::FindGUIWindowConvert<CStageEditer>("Stage_Editer");
 	if (m_GUI == nullptr)
 	{
@@ -69,7 +81,11 @@ void CStageLevel_01::LevelChangeStart()
 void CStageLevel_01::LevelChangeEnd()
 {
 	SetState(ELEVEL_STATE::WAIT);
-	m_GUI->Off();
+
+	if (nullptr != m_GUI)
+	{
+		m_GUI->Off();
+	}
 }
 
 void CStageLevel_01::ResourcesLoad()
@@ -117,6 +133,7 @@ void CStageLevel_01::ActorLoad()
 	
 	std::shared_ptr<CPlayer> Player = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER), "Player");
 	SetPlayer(Player);
+	CPlayManager::GetInst()->SetPlayer(Player);
 
 	/*m_PlayManager = CreateActor<CPlayManager>("PlayManager");
 	m_PlayManager->CreateRender();

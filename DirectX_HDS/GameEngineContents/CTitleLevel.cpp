@@ -82,7 +82,10 @@ void CTitleLevel::LevelChangeStart()
 
 void CTitleLevel::LevelChangeEnd()
 {
-	m_GUI->Off();
+	if (m_GUI != nullptr)
+	{
+		m_GUI->Off();
+	}
 	SetState(ELEVEL_STATE::WAIT);
 }
 

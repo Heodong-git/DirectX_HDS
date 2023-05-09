@@ -6,12 +6,14 @@
 
 #include "CKatanaZero_Level.h"
 #include "CBattery.h"
+#include "CPlayer.h"
 
 CPlayManager* CPlayManager::m_Inst = nullptr;
 std::shared_ptr<class CTimer> CPlayManager::m_Timer = nullptr;
 std::shared_ptr<class CBattery> CPlayManager::m_Battery = nullptr;
 std::shared_ptr<class CInven> CPlayManager::m_Inven = nullptr;
 std::shared_ptr<class CHud> CPlayManager::m_Hud = nullptr;
+std::shared_ptr<class CPlayer> CPlayManager::m_Player = nullptr;
 
 CPlayManager::CPlayManager()
 {
@@ -59,4 +61,15 @@ void CPlayManager::CreateRender()
 	m_MouseRRender->SetTexture("spr_right_click_1.png");
 	m_MouseRRender->GetTransform()->SetLocalScale({ 25 , 25 });
 	m_MouseRRender->GetTransform()->SetLocalPosition({ 610 , 310 , -1 });*/
+}
+
+void CPlayManager::Update(float _DeltaTime)
+{
+	if (nullptr != m_Player)
+	{
+		if (true == m_Player->IsSnail())
+		{
+			
+		}
+	}
 }
