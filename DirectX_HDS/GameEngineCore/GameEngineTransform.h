@@ -48,8 +48,12 @@ public:
 };
 
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
+class GameEngineObject;
 class GameEngineTransform : public GameEngineObjectBase
 {
+	friend class GameEngineObject;
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineTransform();
@@ -266,6 +270,11 @@ public:
 
 	void SetParent(GameEngineTransform* _Parent);
 
+	GameEngineTransform* GetParent()
+	{
+		return Parent;
+	}
+
 	const TransformData& GetTransDataRef()
 	{
 		return TransData;
@@ -293,5 +302,26 @@ private:
 
 	GameEngineTransform* Parent = nullptr;
 	std::list<GameEngineTransform*> Child;
+
+
+private:
+	void AllAccTime(float _DeltaTime);
+
+	void AllUpdate(float _DeltaTime);
+
+	void AllRender(float _DeltaTime);
+
+	void AllRelease();
+
+	void ChildRelease();
+
+	void SetMaster(GameEngineObject* _Master);
+
+	GameEngineObject* GetMaster()
+	{
+		return Master;
+	}
+
+	GameEngineObject* Master = nullptr;
 };
 

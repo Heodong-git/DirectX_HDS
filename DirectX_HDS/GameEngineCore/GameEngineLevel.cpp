@@ -5,8 +5,6 @@
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
 
-// 한번더확인해야함 
-
 GameEngineLevel::GameEngineLevel()
 {
 	MainCamera = CreateActor<GameEngineCamera>();
@@ -37,16 +35,27 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
 
-			for (; ActorStart != ActorEnd; ++ActorStart)
+			for (; ActorStart != ActorEnd; )
 			{
 				std::shared_ptr<GameEngineActor> CheckActor = (*ActorStart);
+				GameEngineTransform* ParentTransform = CheckActor->GetTransform()->Parent;
 
-				if (true == CheckActor->IsUpdate())
+				if (ParentTransform != nullptr)
 				{
-					CheckActor->AccLiveTime(_DeltaTime);
+					GameEngineObject* Object = ParentTransform->GetMaster();
+
+					if (nullptr == Object)
+					{
+						MsgAssert("부모가 없는 트랜스폼을 Level에서 사용할수는 없습니다.");
+					}
+
+					// 자식을 이제부터 부모가 책임진다는 의미.
+					Object->Childs.push_back(CheckActor);
+					ActorStart = ActorList.erase(ActorStart);
+					continue;
 				}
 
-				// ActorStart = ActorList.erase(ActorStart);
+				++ActorStart;
 			}
 		}
 	}
@@ -77,8 +86,10 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 				{
 					continue;
 				}
-				Actor->Update(_DeltaTime);
-				Actor->ComponentsUpdate(_DeltaTime);
+
+				GameEngineTransform* Transform = Actor->GetTransform();
+				Transform->AllAccTime(_DeltaTime);
+				Transform->AllUpdate(_DeltaTime);
 			}
 		}
 	}
@@ -108,8 +119,8 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 				continue;
 			}
 
-			Actor->Render(_DeltaTime);
-			Actor->ComponentsRender(_DeltaTime);
+			GameEngineTransform* Transform = Actor->GetTransform();
+			Transform->AllRender(_DeltaTime);
 		}
 	}
 
@@ -135,7 +146,8 @@ void GameEngineLevel::ActorRelease()
 
 			if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
 			{
-				RelaseActor->ComponentsRelease();
+				GameEngineTransform* Transform = RelaseActor->GetTransform();
+				Transform->AllRelease();
 				++ActorStart;
 				continue;
 			}

@@ -167,10 +167,12 @@ void CPlayer::IdleUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
 		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("player_jump"))
 	{

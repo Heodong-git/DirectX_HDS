@@ -1,6 +1,12 @@
 #pragma once
 #include "GameEngineUpdateObject.h"
 
+// 5월9일자 업데이트로 인해 
+// 컴포넌트 리스트를 가지고 있지 않게 되었고
+// 리스트를 모두 업데이트하는 구조에서
+// 자식이 있다면 자식을 업데이트 해주는 구조로 변경
+
+
 // 설명 :
 class GameEngineActor : public GameEngineUpdateObject
 {
@@ -33,24 +39,12 @@ public:
 	}
 
 protected:
-	// virtual 로 선언함으로써 자식클래스들은 이 함수들을 구현해도 되고, 안해도 된다.
-	// 구현한다면 본인의 함수로, 구현하지 않는다면 부모클래스의 함수로 동작한다. 
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
 	virtual void Render(float _DeltaTime) {}
 
-	void AccLiveTime(float _LiveTime) override;
-
 private:
 	class GameEngineLevel* Level = nullptr;
-
-	// 이걸 컴포넌트 구조라고 합니다.
-	std::list<std::shared_ptr<class GameEngineComponent>> ComponentsList;
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component);
-
-	void ComponentsUpdate(float _DeltaTime);
-	void ComponentsRender(float _DeltaTime);
-
-	void ComponentsRelease();
 };
 

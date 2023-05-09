@@ -10,6 +10,7 @@ class GameEngineObject :
 	public GameEngineNameObject,
 	public std::enable_shared_from_this<GameEngineObject>
 {
+	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 public:
 	// constrcuter destructer
@@ -42,11 +43,37 @@ public:
 		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}
 
+	virtual void AccLiveTime(float _LiveTime)
+	{
+		LiveTime += _LiveTime;
+	}
+
+	void ResetLiveTime()
+	{
+		LiveTime = 0.0f;
+	}
+
+	float GetLiveTime()
+	{
+		return LiveTime;
+	}
+
+
 protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void Render(float _DeltaTime) {}
+	virtual void Release();
+
+	void PushChild(std::shared_ptr<GameEngineObject> _Child)
+	{
+		Childs.push_back(_Child);
+	}
+
 
 private:
-	
-	////////////////////////////////////////////////////////////// Transform 기하구조
-private:
+	float LiveTime = 0.0f;
 	GameEngineTransform Transform;
+
+	std::list<std::shared_ptr<GameEngineObject>> Childs;
 };
