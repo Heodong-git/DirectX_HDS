@@ -14,7 +14,7 @@ public:
 	CRecordingManager& operator=(const CRecordingManager& _Other) = delete;
 	CRecordingManager& operator=(CRecordingManager&& _Other) noexcept = delete;
 
-	void Save(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager);
+	void Save();
 	
 protected:
 	void Start() override;

@@ -6,6 +6,8 @@
 #include <GameEngineBase/GameEngineTimeEvent.h>
 #include <functional>
 
+#include "CKatanaZero_Level.h"
+
 CRecordingManager::CRecordingManager()
 {
 	m_vecTest.reserve(70);
@@ -15,14 +17,8 @@ CRecordingManager::~CRecordingManager()
 {
 }
 
-void Test(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-{
-	MsgAssert("들어오나?");
-}
-
-
 // 테스트 
-void CRecordingManager::Save(GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+void CRecordingManager::Save()
 {
 	MsgAssert("들어오나?");
 }
@@ -37,7 +33,7 @@ void CRecordingManager::Start()
 	}*/
 
 	// 지금 함수자체가 클래스멤버함수는 못넣음, 얘기해야할듯 
-	// CurLevel->TimeEvent.AddEvent(2.0f, Test, false);
+	// GetReturnCastLevel()->TimeEvent.AddEvent(2.0f, std::bind(&CRecordingManager::Save, this), true);
 }
 
 void CRecordingManager::Update(float _DeltaTime)

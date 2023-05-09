@@ -27,9 +27,10 @@ CTutorialLevel::~CTutorialLevel()
 {
 }
 
-
 void CTutorialLevel::Start()
 {
+	// TimeEvent.AddEvent(3.0f, std::bind(&CTutorialLevel::TestTest, this));
+
 	CKatanaZero_Level::Start();
 	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel"))
 	{

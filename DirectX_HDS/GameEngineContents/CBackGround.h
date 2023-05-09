@@ -15,6 +15,7 @@ public:
 	CBackGround& operator=(const CBackGround& _Other) = delete;
 	CBackGround& operator=(CBackGround&& _Other) noexcept = delete;
 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

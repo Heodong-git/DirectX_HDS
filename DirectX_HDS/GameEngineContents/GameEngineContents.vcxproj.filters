@@ -46,9 +46,6 @@
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
-    <ClInclude Include="CBackGround.h">
-      <Filter>BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="CPlayManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -75,6 +72,12 @@
     </ClInclude>
     <ClInclude Include="CFsm.h">
       <Filter>Fsm</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackGround.h">
+      <Filter>BackGround\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CMap.h">
+      <Filter>BackGround\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +125,6 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
-    <ClCompile Include="CBackGround.cpp">
-      <Filter>BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="CPlayManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -151,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="CFsm.cpp">
       <Filter>Fsm</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackGround.cpp">
+      <Filter>BackGround\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CMap.cpp">
+      <Filter>BackGround\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +198,12 @@
     </Filter>
     <Filter Include="Fsm">
       <UniqueIdentifier>{142ef6fd-d423-413a-96e5-111c12645b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround\Title">
+      <UniqueIdentifier>{56fa4388-4786-4824-aaa0-353da66895c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround\Stage">
+      <UniqueIdentifier>{f3db703a-6db1-4179-b930-5de988a38adc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

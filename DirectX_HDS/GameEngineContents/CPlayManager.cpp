@@ -36,10 +36,10 @@ void CPlayManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
 
-	m_BackGroundRender = CreateComponent<GameEngineSpriteRenderer>();
+	/*m_BackGroundRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_BackGroundRender->SetPipeLine("2DTexture");
 	m_BackGroundRender->SetTexture("BossStage1.png");
-	m_BackGroundRender->GetTransform()->SetLocalScale({ screensize.x, screensize.y});
+	m_BackGroundRender->GetTransform()->SetLocalScale({ screensize.x, screensize.y});*/
 
 	m_HUDRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_HUDRender->SetPipeLine("2DTexture");
