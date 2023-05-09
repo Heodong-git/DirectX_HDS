@@ -31,6 +31,11 @@ public:
 		return m_Snail;
 	}
 
+	std::shared_ptr<class GameEngineSpriteRenderer>& GetRender()
+	{
+		return m_Renderer;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

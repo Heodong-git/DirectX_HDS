@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "CPlayManager.h"
 #include "CRecordingManager.h"
@@ -17,7 +18,6 @@
 #include "CTimer.h"
 
 #include "CTitleEditer.h"
-
 
 CTutorialLevel::CTutorialLevel()
 {

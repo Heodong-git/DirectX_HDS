@@ -47,6 +47,7 @@ void GameEngineActor::ComponentsRender(float _DeltaTime)
 	}
 }
 
+
 void GameEngineActor::AccLiveTime(float _LiveTime)
 {
 	GameEngineUpdateObject::AccLiveTime(_LiveTime);
@@ -54,5 +55,26 @@ void GameEngineActor::AccLiveTime(float _LiveTime)
 	for (std::shared_ptr<class GameEngineComponent>& Component : ComponentsList)
 	{
 		Component->AccLiveTime(_LiveTime);
+	}
+}
+
+// 컴포넌트 릴리즈
+// 현재 구조상의 문제, 렌더러를 만들고, 그 렌더러의 자식을 추가하게 되면 문제. 
+void GameEngineActor::ComponentsRelease()
+{
+	std::list<std::shared_ptr<class GameEngineComponent>>::iterator ComStartIter = ComponentsList.begin();
+	std::list<std::shared_ptr<class GameEngineComponent>>::iterator ComEndIter = ComponentsList.end();
+
+	for (; ComStartIter != ComEndIter; )
+	{
+		std::shared_ptr<class GameEngineComponent>& ComPtr = *ComStartIter;
+
+		if (false == ComPtr->IsDeath())
+		{
+			++ComStartIter;
+			continue;
+		}
+
+		ComStartIter = ComponentsList.erase(ComStartIter);
 	}
 }

@@ -50,5 +50,7 @@ private:
 
 	void ComponentsUpdate(float _DeltaTime);
 	void ComponentsRender(float _DeltaTime);
+
+	void ComponentsRelease();
 };
 
