@@ -65,6 +65,19 @@ public:
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
 
+	// 문제있음
+	void SetLocalPositiveScaleX()
+	{
+		TransData.Scale.x = abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
+
+	void SetLocalNegativeScaleX()
+	{
+		TransData.Scale.x = -abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
+
 	void SetWorldScale(const float4& _Value)
 	{
 		AbsoluteScale = true;

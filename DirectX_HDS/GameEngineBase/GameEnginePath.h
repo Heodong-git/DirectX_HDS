@@ -37,6 +37,8 @@ public:
 	bool IsExists();
 	bool IsExistsToPlusString(const std::string_view& _String);
 
+	bool IsDirectory() const;
+
 	// 디렉터리 체크
 	bool IsRoot();
 	bool Move(const std::string_view& _Path);

@@ -12,7 +12,7 @@ public:
 	GameEngineDirectory();
 	~GameEngineDirectory();
 
-	GameEngineDirectory(std::string_view& _Path)
+	GameEngineDirectory(const std::string_view& _Path)
 		: Path(_Path)
 	{
 
@@ -46,6 +46,11 @@ public:
 
 	// 하위는 돌지 않고 그 디렉토리에 해당하는 모든 파일만 반환해준다.
 	std::vector<GameEngineFile> GetAllFile(std::vector<std::string_view> _Ext);
+
+	const GameEnginePath& GetPath()
+	{
+		return Path;
+	}
 
 protected:
 
