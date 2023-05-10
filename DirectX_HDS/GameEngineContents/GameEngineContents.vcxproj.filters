@@ -10,9 +10,6 @@
     <ClInclude Include="CStageLevel_01.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="CTestLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CStageLevel_02.h">
       <Filter>Level</Filter>
@@ -91,9 +88,6 @@
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="CStageLevel_01.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="CStageLevel_02.cpp">

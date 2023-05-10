@@ -4,7 +4,6 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-
 #include <GameEngineContents/CKatanaZero_Level.h>
 #include "CPlayer.h"
 #include "CPlayManager.h"

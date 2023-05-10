@@ -112,7 +112,6 @@ void CTitleLevel::ActorLoad()
 {
 	// background 생성, 검은색깔개 + 뒷배경
 	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
-
 	// Title 의 모든 UI 
 	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
 	m_TitleManager->CreateRender();

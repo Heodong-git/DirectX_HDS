@@ -24,6 +24,7 @@
     <ProjectGuid>{d79b8e17-a0e5-4ee8-91fc-1dab54da5625}</ProjectGuid>
     <RootNamespace>GameEngineContents</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GameContents</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -249,10 +250,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="CTimer.h">
       <SubType>
       </SubType>
@@ -297,7 +294,6 @@
     <ClCompile Include="CRecordingManager.cpp" />
     <ClCompile Include="CStageLevel_01.cpp" />
     <ClCompile Include="CStageLevel_02.cpp" />
-    <ClCompile Include="CTestLevel.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CTitleLevel.cpp">
       <SubType>

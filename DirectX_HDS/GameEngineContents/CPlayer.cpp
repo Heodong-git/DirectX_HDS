@@ -189,9 +189,13 @@ void CPlayer::ChangeState(PLAYERSTATE _State)
 	}
 }
 
-
 void CPlayer::Gravity(float _DeltaTime)
 {
+	if (true == IsBlackPixel(GetPixelColor(GetTransform()->GetLocalPosition())))
+	{
+		return;
+	}
+	
 	GetTransform()->AddLocalPosition(float4::Down * 100.0f * _DeltaTime);
 }
 
