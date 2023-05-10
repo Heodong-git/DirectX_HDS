@@ -27,7 +27,6 @@
     <ClInclude Include="Inven.h" />
     <ClInclude Include="CTimer.h" />
     <ClInclude Include="CPlayer.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -55,6 +54,5 @@
     <ClCompile Include="Inven.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CPlayer.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
 </Project>
