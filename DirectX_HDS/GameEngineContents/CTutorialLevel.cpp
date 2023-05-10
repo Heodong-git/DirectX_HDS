@@ -8,14 +8,13 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-#include "CPlayManager.h"
-#include "CRecordingManager.h"
+#include "PlayManager.h"
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 #include "Cursor.h"
 #include "Battery.h"
 #include "Inven.h"
-#include "CTimer.h"
+#include "Timer.h"
 #include "TitleEditer.h"
 
 CTutorialLevel::CTutorialLevel()
@@ -29,7 +28,7 @@ CTutorialLevel::~CTutorialLevel()
 void CTutorialLevel::Start()
 {
 	// TimeEvent.AddEvent(3.0f, std::bind(&CTutorialLevel::TestTest, this));
-	CKatanaZero_Level::Start();
+	BaseLevel::Start();
 	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel"))
 	{
 		GameEngineInput::CreateKey("Stage01_ChangeLevel", VK_F1);
@@ -53,7 +52,7 @@ void CTutorialLevel::Update(float _DeltaTime)
 void CTutorialLevel::LevelChangeStart()
 {
 	//ShowCursor(false);
-	SetState(ELEVEL_STATE::PLAY);
+	SetState(BaseLevel::LevelState::PLAY);
 	m_GUI = GameEngineGUI::FindGUIWindowConvert<TitleEditer>("Title_Editer");
 	if (m_GUI == nullptr)
 	{
@@ -66,7 +65,7 @@ void CTutorialLevel::LevelChangeStart()
 void CTutorialLevel::LevelChangeEnd()
 {
 	//ShowCursor(true);
-	SetState(ELEVEL_STATE::WAIT);
+	SetState(BaseLevel::LevelState::WAIT);
 	m_GUI->Off();
 
 }

@@ -1,19 +1,19 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 // º≥∏Ì : ∏ ø°º≠ ∞À¿∫ªˆ µﬁπË∞Ê ∑ª¥ı∑Ø ±Ú∞Ì Ω√¿€. 
-class CMap : public CKatanaZero_Actor
+class Map : public BaseActor
 {
 public:
 	// constrcuter destructer
-	CMap();
-	~CMap();
+	Map();
+	~Map();
 
 	// delete Function
-	CMap(const CMap& _Other) = delete;
-	CMap(CMap&& _Other) noexcept = delete;
-	CMap& operator=(const CMap& _Other) = delete;
-	CMap& operator=(CMap&& _Other) noexcept = delete;
+	Map(const Map& _Other) = delete;
+	Map(Map&& _Other) noexcept = delete;
+	Map& operator=(const Map& _Other) = delete;
+	Map& operator=(Map&& _Other) noexcept = delete;
 
 	std::shared_ptr<class GameEngineSpriteRenderer>& GetRender()
 	{

@@ -1,34 +1,34 @@
 #include "PrecompileHeader.h"
-#include "CPlayManager.h"
+#include "PlayManager.h"
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 #include "Battery.h"
 #include "CPlayer.h"
 
-CPlayManager* CPlayManager::m_Inst = nullptr;
-std::shared_ptr<class CTimer> CPlayManager::m_Timer = nullptr;
-std::shared_ptr<class Battery> CPlayManager::m_Battery = nullptr;
-std::shared_ptr<class Inven> CPlayManager::m_Inven = nullptr;
-std::shared_ptr<class Hud> CPlayManager::m_Hud = nullptr;
-std::shared_ptr<class CPlayer> CPlayManager::m_Player = nullptr;
-CPlayManager::LEVELTYPE CPlayManager::m_LevelType = CPlayManager::LEVELTYPE::NONE;
+PlayManager* PlayManager::m_Inst = nullptr;
+std::shared_ptr<class Timer> PlayManager::m_Timer = nullptr;
+std::shared_ptr<class Battery> PlayManager::m_Battery = nullptr;
+std::shared_ptr<class Inven> PlayManager::m_Inven = nullptr;
+std::shared_ptr<class Hud> PlayManager::m_Hud = nullptr;
+std::shared_ptr<class Player> PlayManager::m_Player = nullptr;
+PlayManager::LevelName PlayManager::m_LevelName = PlayManager::LevelName::NONE;
 
-CPlayManager::CPlayManager()
+PlayManager::PlayManager()
 {
 	CreateRender();
 }
 
-CPlayManager::~CPlayManager()
+PlayManager::~PlayManager()
 {
 	
 }
 
 
-void CPlayManager::CreateRender()
+void PlayManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
 
@@ -56,7 +56,7 @@ void CPlayManager::CreateRender()
 	m_MouseRRender->GetTransform()->SetLocalPosition({ 610 , 310 , -1 });*/
 }
 
-void CPlayManager::Update(float _DeltaTime)
+void PlayManager::Update(float _DeltaTime)
 {
 	if (nullptr != m_Player)
 	{
@@ -67,20 +67,20 @@ void CPlayManager::Update(float _DeltaTime)
 	}
 }
 
-void CPlayManager::CameraSetting()
+void PlayManager::CameraSetting()
 {
 
-	switch (m_LevelType)
+	switch (m_LevelName)
 	{
-	case CPlayManager::LEVELTYPE::NONE:
+	case PlayManager::LevelName::NONE:
 		break;
-	case CPlayManager::LEVELTYPE::STAGE_01:
+	case PlayManager::LevelName::CLUB:
 	{
 		m_CameraPivot = { -360, 34 , 0 };
 		m_Player->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
 	}
 		break;
-	case CPlayManager::LEVELTYPE::STAGE_02:
+	case PlayManager::LevelName::CLUBBOSS:
 		break;
 	default:
 		break;

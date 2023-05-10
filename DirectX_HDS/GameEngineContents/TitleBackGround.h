@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineContents/CKatanaZero_Actor.h>
+#include "BaseActor.h"
 
 // 설명 : 타이틀에서만씀 
-class TitleBackGround : public CKatanaZero_Actor
+class TitleBackGround : public BaseActor
 {
 public:
 	// constrcuter destructer

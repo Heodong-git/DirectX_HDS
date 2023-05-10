@@ -1,24 +1,24 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
-enum class ELEVEL_STATE
-{
-	WAIT,
-	PLAY,
-};
-
-class CKatanaZero_Level : public GameEngineLevel
+class BaseLevel : public GameEngineLevel
 {
 public:
+	enum class LevelState
+	{
+		WAIT,
+		PLAY,
+	};
+public:
 	// constrcuter destructer
-	CKatanaZero_Level();
-	~CKatanaZero_Level();
+	BaseLevel();
+	~BaseLevel();
 
 	// delete Function
-	CKatanaZero_Level(const CKatanaZero_Level& _Other) = delete;
-	CKatanaZero_Level(CKatanaZero_Level&& _Other) noexcept = delete;
-	CKatanaZero_Level& operator=(const CKatanaZero_Level& _Other) = delete;
-	CKatanaZero_Level& operator=(CKatanaZero_Level&& _Other) noexcept = delete;
+	BaseLevel(const BaseLevel& _Other) = delete;
+	BaseLevel(BaseLevel&& _Other) noexcept = delete;
+	BaseLevel& operator=(const BaseLevel& _Other) = delete;
+	BaseLevel& operator=(BaseLevel&& _Other) noexcept = delete;
 
 	// 제한시간 
 	inline void SetTimeLimit(float _Time)
@@ -54,17 +54,12 @@ public:
 		return m_TimeOver;
 	}
 
-	std::shared_ptr<class CBoss_HeadHunter> GetBoss()
-	{
-		return m_Boss;
-	}
-
-	inline std::shared_ptr<class CPlayer> GetPlayer()
+	inline std::shared_ptr<class Player> GetPlayer()
 	{
 		return m_Player;
 	}
 
-	inline void SetPlayer(std::shared_ptr<class CPlayer>& _Player)
+	inline void SetPlayer(std::shared_ptr<class Player>& _Player)
 	{
 		m_Player = _Player;
 	}
@@ -84,12 +79,12 @@ public:
 		return m_Cursor;
 	}
 
-	inline ELEVEL_STATE GetCurState() const
+	inline BaseLevel::LevelState GetCurState() const
 	{
 		return m_CurState;
 	}
 
-	void SetState(ELEVEL_STATE _State)
+	void SetState(BaseLevel::LevelState _State)
 	{
 		m_CurState = _State;
 	}
@@ -104,7 +99,7 @@ protected:
 
 	
 
-	ELEVEL_STATE m_CurState = ELEVEL_STATE::WAIT;
+	BaseLevel::LevelState m_CurState = BaseLevel::LevelState::WAIT;
 private:
 	virtual void ResourcesLoad() {};
 	virtual void ActorLoad() {};
@@ -114,7 +109,7 @@ private:
 
 	float4 m_CurMouseLocalPos = {};
 
-	std::shared_ptr<class CPlayer> m_Player = nullptr;
+	std::shared_ptr<class Player> m_Player = nullptr;
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
 	std::shared_ptr<class Cursor> m_Cursor = nullptr;
 

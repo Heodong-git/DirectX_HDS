@@ -1,29 +1,29 @@
 #include "PrecompileHeader.h"
-#include "CRecordingManager.h"
+#include "RecordingManager.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineBase/GameEngineTimeEvent.h>
 #include <functional>
 
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
-CRecordingManager::CRecordingManager()
+RecordingManager::RecordingManager()
 {
-	m_vecTest.reserve(70);
+	m_vecTest.resize(70);
 }
 
-CRecordingManager::~CRecordingManager()
+RecordingManager::~RecordingManager()
 {
 }
 
 // 테스트 
-void CRecordingManager::Save()
+void RecordingManager::Save()
 {
 	MsgAssert("들어오나?");
 }
 
-void CRecordingManager::Start()
+void RecordingManager::Start()
 {
 	/*GameEngineLevel* CurLevel = GetLevel();
 	if (nullptr == CurLevel)
@@ -33,10 +33,10 @@ void CRecordingManager::Start()
 	}*/
 }
 
-void CRecordingManager::Update(float _DeltaTime)
+void RecordingManager::Update(float _DeltaTime)
 {
 }
 
-void CRecordingManager::Render(float _DeltaTime)
+void RecordingManager::Render(float _DeltaTime)
 {
 }

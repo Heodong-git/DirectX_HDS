@@ -1,8 +1,8 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 // º¸½º 
-class CBoss_HeadHunter : public CKatanaZero_Actor
+class CBoss_HeadHunter : public BaseActor
 {
 public:
 	// constrcuter destructer

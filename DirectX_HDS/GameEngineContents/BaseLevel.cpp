@@ -1,23 +1,23 @@
 #include "PrecompileHeader.h"
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 #include "Cursor.h"
 #include <GameEngineCore/GameEngineCamera.h>
 
 
-CKatanaZero_Level::CKatanaZero_Level()
+BaseLevel::BaseLevel()
 {
 }
 
-CKatanaZero_Level::~CKatanaZero_Level()
+BaseLevel::~BaseLevel()
 {
 }
 
-void CKatanaZero_Level::Start()
+void BaseLevel::Start()
 {
 	CameraSetting();
 }
 
-void CKatanaZero_Level::Update(float _DeltaTime)
+void BaseLevel::Update(float _DeltaTime)
 {
 	// 현재 커서가 nullptr 이 아니라면 
 	// 받아와서 로컬포지션을 저장
@@ -32,12 +32,12 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 
 }
 
-void CKatanaZero_Level::LevelChangeStart()
+void BaseLevel::LevelChangeStart()
 {
 	
 }
 
-void CKatanaZero_Level::CameraSetting()
+void BaseLevel::CameraSetting()
 {
 	// 카메라세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);

@@ -3,56 +3,220 @@
   <ItemGroup>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="ContentsCore.h" />
-    <ClInclude Include="TitleBackGround.h" />
-    <ClInclude Include="CKatanaZero_Actor.h" />
-    <ClInclude Include="CKatanaZero_Level.h" />
-    <ClInclude Include="Cursor.h" />
-    <ClInclude Include="StageEditer.h" />
-    <ClInclude Include="TitleEditer.h" />
-    <ClInclude Include="Hud.h" />
-    <ClInclude Include="CStageLevel_01.h" />
-    <ClInclude Include="CStageLevel_02.h" />
-    <ClInclude Include="CTitleLevel.h" />
-    <ClInclude Include="CTutorialLevel.h" />
-    <ClInclude Include="CPlayManager.h" />
-    <ClInclude Include="CRecordingManager.h" />
-    <ClInclude Include="CTitleManager.h" />
-    <ClInclude Include="CMap.h" />
-    <ClInclude Include="CMonster_Gangster.h" />
-    <ClInclude Include="CMonster_Grunt.h" />
-    <ClInclude Include="CMonster_Pomp.h" />
-    <ClInclude Include="CMonster_Shotgun.h" />
-    <ClInclude Include="Battery.h" />
-    <ClInclude Include="Inven.h" />
-    <ClInclude Include="CTimer.h" />
-    <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="ContentsCore.h">
+      <Filter>00.Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLevel.h">
+      <Filter>01.Level\00.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseActor.h">
+      <Filter>02.Actor\00.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>02.Actor\01.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CTutorialLevel.h">
+      <Filter>01.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>01.Level\01.Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Gangster.h">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Grunt.h">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Pomp.h">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Shotgun.h">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>02.Actor\04.Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>02.Actor\06.Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayManager.h">
+      <Filter>03.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleManager.h">
+      <Filter>03.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditer.h">
+      <Filter>04.Editer</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleEditer.h">
+      <Filter>04.Editer</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordingManager.h">
+      <Filter>03.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Battery.h">
+      <Filter>02.Actor\05.UI\00.Battery</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02.Actor\05.UI\01.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Inven.h">
+      <Filter>02.Actor\05.UI\02.Inven</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>02.Actor\05.UI\03.Hud</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubLevel.h">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubBossLevel.h">
+      <Filter>01.Level\02.Club\01.Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBackGround.h">
+      <Filter>02.Actor\07.BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
-    <ClCompile Include="ContentsCore.cpp" />
-    <ClCompile Include="TitleBackGround.cpp" />
-    <ClCompile Include="CKatanaZero_Actor.cpp" />
-    <ClCompile Include="CKatanaZero_Level.cpp" />
-    <ClCompile Include="Cursor.cpp" />
-    <ClCompile Include="StageEditer.cpp" />
-    <ClCompile Include="TitleEditer.cpp" />
-    <ClCompile Include="Hud.cpp" />
-    <ClCompile Include="CStageLevel_01.cpp" />
-    <ClCompile Include="CStageLevel_02.cpp" />
-    <ClCompile Include="CTitleLevel.cpp" />
-    <ClCompile Include="CTutorialLevel.cpp" />
-    <ClCompile Include="CPlayManager.cpp" />
-    <ClCompile Include="CRecordingManager.cpp" />
-    <ClCompile Include="CTitleManager.cpp" />
-    <ClCompile Include="CMap.cpp" />
-    <ClCompile Include="CMonster_Gangster.cpp" />
-    <ClCompile Include="CMonster_Grunt.cpp" />
-    <ClCompile Include="CMonster_Pomp.cpp" />
-    <ClCompile Include="CMonster_Shotgun.cpp" />
-    <ClCompile Include="Battery.cpp" />
-    <ClCompile Include="Inven.cpp" />
-    <ClCompile Include="CTimer.cpp" />
-    <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="ContentsCore.cpp">
+      <Filter>00.Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLevel.cpp">
+      <Filter>01.Level\00.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseActor.cpp">
+      <Filter>02.Actor\00.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>02.Actor\01.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CTutorialLevel.cpp">
+      <Filter>01.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>01.Level\01.Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Gangster.cpp">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Grunt.cpp">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Pomp.cpp">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Shotgun.cpp">
+      <Filter>02.Actor\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>02.Actor\04.Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>02.Actor\06.Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayManager.cpp">
+      <Filter>03.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleManager.cpp">
+      <Filter>03.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditer.cpp">
+      <Filter>04.Editer</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleEditer.cpp">
+      <Filter>04.Editer</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordingManager.cpp">
+      <Filter>03.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Battery.cpp">
+      <Filter>02.Actor\05.UI\00.Battery</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02.Actor\05.UI\01.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Inven.cpp">
+      <Filter>02.Actor\05.UI\02.Inven</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>02.Actor\05.UI\03.Hud</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubLevel.cpp">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubBossLevel.cpp">
+      <Filter>01.Level\02.Club\01.Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBackGround.cpp">
+      <Filter>02.Actor\07.BackGround</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="00.Core">
+      <UniqueIdentifier>{30b0f37c-2932-4677-9cb5-9a2f35d82fac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level">
+      <UniqueIdentifier>{2fa20e9a-b17a-441b-9639-cd6a2ac4484e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\00.Base">
+      <UniqueIdentifier>{76b273dc-da6e-4533-8c0e-3372084ceb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor">
+      <UniqueIdentifier>{3afb66bf-912c-455e-a932-07495fb22594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\00.Base">
+      <UniqueIdentifier>{45b357cb-675f-4dcd-940c-8b12d2e2df3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\01.Player">
+      <UniqueIdentifier>{7cff0e03-af09-4b1d-ae01-c90333e5dd2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\01.Title">
+      <UniqueIdentifier>{dc19fd41-b740-4606-8178-0508f7451d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\02.Club">
+      <UniqueIdentifier>{72b4ffd0-f2bb-40f4-bc24-2813356317a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster">
+      <UniqueIdentifier>{b700c74d-96c6-48f8-abba-1056a9a02ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss">
+      <UniqueIdentifier>{1c31f202-0bfd-4755-9603-42145bc47a09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\04.Map">
+      <UniqueIdentifier>{c2d4b908-1ee2-4927-aa0a-187a37110c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI">
+      <UniqueIdentifier>{8335167f-cff8-4d80-9ece-f46f79ba7e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\06.Cursor">
+      <UniqueIdentifier>{d7d4d786-2bfc-4e5b-af60-2a920f9df4ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager">
+      <UniqueIdentifier>{aa07edcc-a9f9-43a0-abf7-d2daae654b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Editer">
+      <UniqueIdentifier>{99fb7e21-f887-46ab-a9a4-7d10ae4eff7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI\00.Battery">
+      <UniqueIdentifier>{01d3b50c-b0e8-4b4d-8d93-408c26402ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI\01.Timer">
+      <UniqueIdentifier>{26ae92e9-cf5a-4b4b-82e8-0675948ee33d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI\02.Inven">
+      <UniqueIdentifier>{925bd433-4534-41e3-b60e-3fe62f412fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI\03.Hud">
+      <UniqueIdentifier>{437c6375-5adc-4d66-b1b0-b18238e2f9fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\02.Club\00.Basic">
+      <UniqueIdentifier>{b95c2bee-e57f-4b97-bbd0-6a2dc7410818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\02.Club\01.Boss">
+      <UniqueIdentifier>{bf99a7d4-9b34-4a62-95e3-aed7501a9c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\07.BackGround">
+      <UniqueIdentifier>{8ebb710d-9c39-493b-9569-e3a9887b4aaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

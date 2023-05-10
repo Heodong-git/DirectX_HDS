@@ -3,7 +3,7 @@
 
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
 Battery::Battery()
 {
@@ -44,7 +44,7 @@ void Battery::Start()
 
 void Battery::Update(float _DeltaTime)
 {
-	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
 	}

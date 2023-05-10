@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CPlayer.h"
+#include "Player.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 
@@ -15,15 +15,15 @@
 #include "Cursor.h"
 #include "CFsm.h"
 
-CPlayer::CPlayer()
+Player::Player()
 {
 }
 
-CPlayer::~CPlayer()
+Player::~Player()
 {
 }
 
-void CPlayer::Start()
+void Player::Start()
 {
 	{
 		//if (nullptr == GameEngineSprite::Find("player_idle"))
@@ -84,7 +84,7 @@ void CPlayer::Start()
 	
 }
 
-void CPlayer::Update(float _DeltaTime)
+void Player::Update(float _DeltaTime)
 {
 	// 픽셀테스트용 코드 , 일단 잘댐
 	/*std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
@@ -107,12 +107,12 @@ void CPlayer::Update(float _DeltaTime)
 }
 
 // 디버그용으로 사용
-void CPlayer::Render(float _Delta)
+void Player::Render(float _Delta)
 {
 }
 
 // ---------------------------------------- state ------------------------------------------ 
-void CPlayer::UpdateState(float _DeltaTime)
+void Player::UpdateState(float _DeltaTime)
 {
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
@@ -133,7 +133,7 @@ void CPlayer::UpdateState(float _DeltaTime)
 }
 
 // state 변경, 변경될 상태의 start, 이전 상태의 end 수행
-void CPlayer::ChangeState(PLAYERSTATE _State)
+void Player::ChangeState(PLAYERSTATE _State)
 {
 	m_NextState = _State;
 	m_PrevState = m_CurState;
@@ -174,7 +174,7 @@ void CPlayer::ChangeState(PLAYERSTATE _State)
 	}
 }
 
-void CPlayer::Gravity(float _DeltaTime)
+void Player::Gravity(float _DeltaTime)
 {
 	if (true == IsBlackPixel(GetPixelColor(GetTransform()->GetLocalPosition())))
 	{
@@ -184,7 +184,7 @@ void CPlayer::Gravity(float _DeltaTime)
 	GetTransform()->AddLocalPosition(float4::Down * 100.0f * _DeltaTime);
 }
 
-GameEnginePixelColor CPlayer::GetPixelColor(float4 _Pos)
+GameEnginePixelColor Player::GetPixelColor(float4 _Pos)
 {
 	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
 	float4 CheckPos = GetTransform()->GetLocalPosition();
@@ -208,11 +208,11 @@ GameEnginePixelColor CPlayer::GetPixelColor(float4 _Pos)
 	return Color;
 }
 
-void CPlayer::IdleStart()
+void Player::IdleStart()
 {
 }
 
-void CPlayer::IdleUpdate(float _DeltaTime)
+void Player::IdleUpdate(float _DeltaTime)
 {
 	// 임시무브 
 	if (true == GameEngineInput::IsPress("player_left_Move"))
@@ -246,28 +246,28 @@ void CPlayer::IdleUpdate(float _DeltaTime)
 	}
 }
 
-void CPlayer::IdleEnd()
+void Player::IdleEnd()
 {
 }
 
-void CPlayer::MoveStart()
+void Player::MoveStart()
 {
 }
 
-void CPlayer::MoveUpdate(float _DeltaTime)
+void Player::MoveUpdate(float _DeltaTime)
 {
 }
 
-void CPlayer::MoveEnd()
+void Player::MoveEnd()
 {
 }
 
 // 공격
-void CPlayer::SlashStart()
+void Player::SlashStart()
 {
 }
 
-void CPlayer::SlashUpdate(float _DeltaTime)
+void Player::SlashUpdate(float _DeltaTime)
 {
 	//// 공격애니메이션이 종료됐다면 return ㅇㅇ 
 	//CKatanaZero_Level* CurLevel = dynamic_cast<CKatanaZero_Level*>(GetLevel());
@@ -290,19 +290,19 @@ void CPlayer::SlashUpdate(float _DeltaTime)
 	//GetTransform()->AddLocalPosition(movedir * m_MoveSpeed * _DeltaTime);
 }
 
-void CPlayer::SlashEnd()
+void Player::SlashEnd()
 {
 }
 
-void CPlayer::JumpStart()
+void Player::JumpStart()
 {
 }
 
-void CPlayer::JumpUpdate(float _DeltaTime)
+void Player::JumpUpdate(float _DeltaTime)
 {
 }
 
-void CPlayer::JumpEnd()
+void Player::JumpEnd()
 {
 }
 

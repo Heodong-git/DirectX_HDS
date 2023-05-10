@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ERENDERORDER
+enum class RenderOrder
 {
 	BACKGROUND,
 	OBJECT,

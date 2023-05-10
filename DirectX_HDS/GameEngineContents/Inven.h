@@ -1,8 +1,8 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 // Ό³Έν :
-class Inven : public CKatanaZero_Actor
+class Inven : public BaseActor
 {
 public:
 	// constrcuter destructer

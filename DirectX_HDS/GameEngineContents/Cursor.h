@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineContents/CKatanaZero_Actor.h>
+#include "BaseActor.h"
 
 // Ό³Έν :
-class Cursor : public CKatanaZero_Actor
+class Cursor : public BaseActor
 {
 public:
 	// constrcuter destructer

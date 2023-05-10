@@ -1,19 +1,19 @@
 #include "PrecompileHeader.h"
-#include "CTimer.h"
+#include "Timer.h"
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
 
-CTimer::CTimer()
+Timer::Timer()
 {
 }
 
-CTimer::~CTimer()
+Timer::~Timer()
 {
 }
 
-void CTimer::Start()
+void Timer::Start()
 {
 	{
 		GameEngineDirectory NewDir;
@@ -59,10 +59,10 @@ void CTimer::Start()
 	m_CaseRender->GetTransform()->SetLocalPosition({ -10.0f , 338.0f });*/
 }
 
-void CTimer::Update(float _DeltaTime)
+void Timer::Update(float _DeltaTime)
 {
 	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
-	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
 	}
@@ -78,6 +78,6 @@ void CTimer::Update(float _DeltaTime)
 	}
 }
 
-void CTimer::Render(float _DeltaTime)
+void Timer::Render(float _DeltaTime)
 {
 }

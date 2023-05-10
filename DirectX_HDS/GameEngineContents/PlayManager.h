@@ -1,25 +1,25 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
-class CPlayManager
+class PlayManager
 {
 public:
-	enum class LEVELTYPE
+	enum class LevelName
 	{
 		NONE,
-		STAGE_01,
-		STAGE_02,
+		CLUB,
+		CLUBBOSS,
 	};
 
 public:
-	static CPlayManager* m_Inst;
+	static PlayManager* m_Inst;
 
 	// 사실 할필요 없는거같은데?
-	static CPlayManager* GetInst()
+	static PlayManager* GetInst()
 	{
 		if (nullptr == m_Inst)
 		{
-			m_Inst = new CPlayManager();
+			m_Inst = new PlayManager();
 		}
 
 		return m_Inst;
@@ -35,14 +35,14 @@ public:
 	}
 public:
 	// constrcuter destructer
-	CPlayManager();
-	~CPlayManager();
+	PlayManager();
+	~PlayManager();
 
 	// delete Function
-	CPlayManager(const CPlayManager& _Other) = delete;
-	CPlayManager(CPlayManager&& _Other) noexcept = delete;
-	CPlayManager& operator=(const CPlayManager& _Other) = delete;
-	CPlayManager& operator=(CPlayManager&& _Other) noexcept = delete;
+	PlayManager(const PlayManager& _Other) = delete;
+	PlayManager(PlayManager&& _Other) noexcept = delete;
+	PlayManager& operator=(const PlayManager& _Other) = delete;
+	PlayManager& operator=(PlayManager&& _Other) noexcept = delete;
 
 	static void SetBattery(std::shared_ptr<class Battery>& _Battery)
 	{
@@ -54,7 +54,7 @@ public:
 		m_Inven = _Inven;
 	}
 
-	static void SetTimer(std::shared_ptr<class CTimer>& _Timer)
+	static void SetTimer(std::shared_ptr<class Timer>& _Timer)
 	{
 		m_Timer = _Timer;
 	}
@@ -64,24 +64,24 @@ public:
 		m_Hud = _Hud;
 	}
 
-	static void SetPlayer(std::shared_ptr<class CPlayer>& _Player)
+	static void SetPlayer(std::shared_ptr<class Player>& _Player)
 	{
 		m_Player = _Player;
 	}
 
-	static std::shared_ptr<class CPlayer>& GetPlayer()
+	static std::shared_ptr<class Player>& GetPlayer()
 	{
 		return m_Player;
 	}
 	
-	static void SetLevelType(LEVELTYPE _Type)
+	static void SetLevelType(LevelName _Name)
 	{
-		m_LevelType = _Type;
+		m_LevelName = _Name;
 	}
 
-	static LEVELTYPE GetLevelType()
+	static LevelName GetLevelName()
 	{
-		return m_LevelType;
+		return m_LevelName;
 	}
 
 	static void CreateRender();
@@ -97,10 +97,10 @@ protected:
 
 private:
 	float4 m_CameraPivot = {};
-	static LEVELTYPE m_LevelType;
-	static std::shared_ptr<class CTimer> m_Timer;
+	static LevelName m_LevelName;
+	static std::shared_ptr<class Timer> m_Timer;
 	static std::shared_ptr<class Battery> m_Battery;
 	static std::shared_ptr<class Inven> m_Inven;
 	static std::shared_ptr<class Hud> m_Hud;
-	static std::shared_ptr<class CPlayer> m_Player;
+	static std::shared_ptr<class Player> m_Player;
 };

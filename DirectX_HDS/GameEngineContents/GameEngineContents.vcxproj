@@ -176,7 +176,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMap.h">
+    <ClInclude Include="Map.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -192,27 +192,27 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CKatanaZero_Actor.h">
+    <ClInclude Include="BaseActor.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CKatanaZero_Level.h">
+    <ClInclude Include="BaseLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMonster_Gangster.h">
+    <ClInclude Include="Monster_Gangster.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMonster_Grunt.h">
+    <ClInclude Include="Monster_Grunt.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMonster_Pomp.h">
+    <ClInclude Include="Monster_Pomp.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CMonster_Shotgun.h">
+    <ClInclude Include="Monster_Shotgun.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -225,32 +225,32 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
-    <ClInclude Include="CPlayer.h">
+    <ClInclude Include="Player.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CPlayManager.h">
+    <ClInclude Include="PlayManager.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CRecordingManager.h" />
-    <ClInclude Include="CStageLevel_01.h">
+    <ClInclude Include="RecordingManager.h" />
+    <ClInclude Include="ClubLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CStageLevel_02.h">
+    <ClInclude Include="ClubBossLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTimer.h">
+    <ClInclude Include="Timer.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTitleLevel.h">
+    <ClInclude Include="TitleLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTitleManager.h">
+    <ClInclude Include="TitleManager.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -264,32 +264,32 @@
     <ClCompile Include="TitleBackGround.cpp" />
     <ClCompile Include="Battery.cpp" />
     <ClCompile Include="Hud.cpp" />
-    <ClCompile Include="CMap.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="StageEditer.cpp" />
     <ClCompile Include="TitleEditer.cpp" />
     <ClCompile Include="Inven.cpp" />
-    <ClCompile Include="CKatanaZero_Actor.cpp" />
-    <ClCompile Include="CKatanaZero_Level.cpp" />
-    <ClCompile Include="CMonster_Gangster.cpp" />
-    <ClCompile Include="CMonster_Grunt.cpp" />
-    <ClCompile Include="CMonster_Pomp.cpp" />
-    <ClCompile Include="CMonster_Shotgun.cpp" />
+    <ClCompile Include="BaseActor.cpp" />
+    <ClCompile Include="BaseLevel.cpp" />
+    <ClCompile Include="Monster_Gangster.cpp" />
+    <ClCompile Include="Monster_Grunt.cpp" />
+    <ClCompile Include="Monster_Pomp.cpp" />
+    <ClCompile Include="Monster_Shotgun.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="ContentsCore.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="CPlayer.cpp" />
-    <ClCompile Include="CPlayManager.cpp" />
-    <ClCompile Include="CRecordingManager.cpp" />
-    <ClCompile Include="CStageLevel_01.cpp" />
-    <ClCompile Include="CStageLevel_02.cpp" />
-    <ClCompile Include="CTimer.cpp" />
-    <ClCompile Include="CTitleLevel.cpp">
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayManager.cpp" />
+    <ClCompile Include="RecordingManager.cpp" />
+    <ClCompile Include="ClubLevel.cpp" />
+    <ClCompile Include="ClubBossLevel.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="CTitleManager.cpp" />
+    <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="CTutorialLevel.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

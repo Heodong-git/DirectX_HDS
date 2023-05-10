@@ -1,17 +1,17 @@
 #include "PrecompileHeader.h"
-#include "CMap.h"
+#include "Map.h"
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-CMap::CMap()
+Map::Map()
 {
 }
 
-CMap::~CMap()
+Map::~Map()
 {
 }
 
-void CMap::Start()
+void Map::Start()
 {
 	{
 		GameEngineDirectory NewDir;

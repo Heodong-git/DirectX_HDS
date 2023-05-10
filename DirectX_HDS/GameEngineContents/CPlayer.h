@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <GameEngineBase/GameEngineSerializer.h>
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 #include <GameEngineCore/GameEngineTexture.h>
 
@@ -14,18 +14,18 @@ enum class PLAYERSTATE
 	SLASH,
 };
 
-class CPlayer : public CKatanaZero_Actor
+class Player : public BaseActor
 {
 public:
 	// constrcuter destructer
-	CPlayer();
-	~CPlayer();
+	Player();
+	~Player();
 
 	// delete Function
-	CPlayer(const CPlayer& _Other) = delete;
-	CPlayer(CPlayer&& _Other) noexcept = delete;
-	CPlayer& operator=(const CPlayer& _Other) = delete;
-	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
+	Player(const Player& _Other) = delete;
+	Player(Player&& _Other) noexcept = delete;
+	Player& operator=(const Player& _Other) = delete;
+	Player& operator=(Player&& _Other) noexcept = delete;
 
 	inline bool IsSnail() const
 	{

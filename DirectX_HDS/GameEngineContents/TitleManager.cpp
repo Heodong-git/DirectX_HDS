@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CTitleManager.h"
+#include "TitleManager.h"
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -9,18 +9,18 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 #include <GameEngineCore/GameEngineLevel.h>
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
-CTitleManager::CTitleManager()
+TitleManager::TitleManager()
 {
 }
 
-CTitleManager::~CTitleManager()
+TitleManager::~TitleManager()
 {
 	
 }
 
-void CTitleManager::Start()
+void TitleManager::Start()
 {
 	if (false == GameEngineInput::IsKey("TitleMenu_Up"))
 	{
@@ -42,7 +42,7 @@ void CTitleManager::Start()
 	m_CurMenu = m_vecMenu[m_CurIdx];
 }
 
-void CTitleManager::Update(float _DeltaTime)
+void TitleManager::Update(float _DeltaTime)
 {
 	if (EMENU_TYPE::CHANGE == m_CurMenu)
 	{
@@ -81,14 +81,14 @@ void CTitleManager::Update(float _DeltaTime)
 
 		if (m_BoxFlashingTime < 0.0f)
 		{
-			GameEngineCore::ChangeLevel("Stage01Level");
+			GameEngineCore::ChangeLevel("ClubLevel");
 			m_CurMenu = EMENU_TYPE::NEWGAME;
 			m_BoxFlashingTime = 0.0f; 
 		}
 
 	}
 	// 현재 메뉴가 뉴게임인상태에서 스페이스바가 눌렸다면 
-	if (ELEVEL_STATE::PLAY == GetReturnCastLevel()->GetCurState())
+	if (BaseLevel::LevelState::PLAY == GetReturnCastLevel()->GetCurState())
 	{
 		MenuUpdate(_DeltaTime);
 		BlinkRender();
@@ -101,7 +101,7 @@ void CTitleManager::Update(float _DeltaTime)
 		if (false == m_AllRenderArrive)
 		{
 			m_AllRenderArrive = true;
-			GetReturnCastLevel()->SetState(ELEVEL_STATE::PLAY);
+			GetReturnCastLevel()->SetState(BaseLevel::LevelState::PLAY);
 			return;
 		}
 	}
@@ -135,11 +135,11 @@ void CTitleManager::Update(float _DeltaTime)
 	BlinkRender();
 }
 
-void CTitleManager::Render(float _DeltaTime)
+void TitleManager::Render(float _DeltaTime)
 {
 }
 
-void CTitleManager::MenuUpdate(float _DeltaTime)
+void TitleManager::MenuUpdate(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("TitleMenu_Select") ||
 		true == GameEngineInput::IsDown("TitleMenu_Select_Enter"))
@@ -209,7 +209,7 @@ void CTitleManager::MenuUpdate(float _DeltaTime)
 	}
 }
 
-void CTitleManager::FenceRenderMove(float _DeltaTime)
+void TitleManager::FenceRenderMove(float _DeltaTime)
 {
 	float4 StartPoint = { 0 , 350 };
 	float4 renderpos = m_FenceRender->GetTransform()->GetLocalPosition();
@@ -228,7 +228,7 @@ void CTitleManager::FenceRenderMove(float _DeltaTime)
 	m_FenceRender->GetTransform()->AddLocalPosition(movepos * 360 * _DeltaTime);
 }
 
-void CTitleManager::KatanaRenderMove(float _DeltaTime)
+void TitleManager::KatanaRenderMove(float _DeltaTime)
 {
 	float4 CurKatanaRenderPos = m_KatanaRender->GetTransform()->GetLocalPosition();
 	// 지정위치를 넘어섰다면
@@ -248,7 +248,7 @@ void CTitleManager::KatanaRenderMove(float _DeltaTime)
 	m_KatanaRender->GetTransform()->AddLocalPosition(movepos * 150.0f * _DeltaTime);
 }
 
-void CTitleManager::ZERRenderMove(float _DeltaTime)
+void TitleManager::ZERRenderMove(float _DeltaTime)
 {
 	float4 RenderPos = m_ZERRender->GetTransform()->GetLocalPosition();
 	if (RenderPos.y >= m_ZERRenderPos.y)
@@ -269,7 +269,7 @@ void CTitleManager::ZERRenderMove(float _DeltaTime)
 	m_ZERRender->GetTransform()->AddLocalPosition(movepos * 150.0f * _DeltaTime);
 }
 
-void CTitleManager::ORenderMove(float _DeltaTime)
+void TitleManager::ORenderMove(float _DeltaTime)
 {
 	float4 RenderPos = m_ORender->GetTransform()->GetLocalPosition();
 	if (RenderPos.y >= m_ORenderPos.y)
@@ -290,7 +290,7 @@ void CTitleManager::ORenderMove(float _DeltaTime)
 	m_ORender->GetTransform()->AddLocalPosition(movepos * 150.0f * _DeltaTime);
 }
 
-void CTitleManager::BoxRenderMove(float _DeltaTime)
+void TitleManager::BoxRenderMove(float _DeltaTime)
 {
 	float4 RenderPos = m_TranslucentBoxRender->GetTransform()->GetLocalPosition();
 	if (RenderPos.y >= m_TranslucentBoxRenderPos.y)
@@ -312,7 +312,7 @@ void CTitleManager::BoxRenderMove(float _DeltaTime)
 	m_TranslucentBoxRender->GetTransform()->AddLocalPosition(-movepos * 600.0f * _DeltaTime);
 }
 
-void CTitleManager::TextMove(float _DeltaTime)
+void TitleManager::TextMove(float _DeltaTime)
 {
 	if (false == m_FenceArrive)
 	{
@@ -335,7 +335,7 @@ void CTitleManager::TextMove(float _DeltaTime)
 	}
 }
 
-void CTitleManager::TextMenuOn()
+void TitleManager::TextMenuOn()
 {
 	m_NewGameTextRender->On();
 	m_SettingTextRender->On();
@@ -343,7 +343,7 @@ void CTitleManager::TextMenuOn()
 	m_MenuSelectBoxRender->On();
 }
 
-void CTitleManager::BlinkRender()
+void TitleManager::BlinkRender()
 {
 	// 그냥 간단하게. 
 	int Random = GameEngineRandom::MainRandom.RandomInt(1, 20);
@@ -367,7 +367,7 @@ void CTitleManager::BlinkRender()
 	}
 }
 
-void CTitleManager::CreateRender()
+void TitleManager::CreateRender()
 {
 	float4 screensize = GameEngineWindow::GetScreenSize();
 	

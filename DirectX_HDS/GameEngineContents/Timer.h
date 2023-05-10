@@ -1,19 +1,19 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 // Ό³Έν :
-class CTimer : public CKatanaZero_Actor
+class Timer : public BaseActor
 {
 public:
 	// constrcuter destructer
-	CTimer();
-	~CTimer();
+	Timer();
+	~Timer();
 
 	// delete Function
-	CTimer(const CTimer& _Other) = delete;
-	CTimer(CTimer&& _Other) noexcept = delete;
-	CTimer& operator=(const CTimer& _Other) = delete;
-	CTimer& operator=(CTimer&& _Other) noexcept = delete;
+	Timer(const Timer& _Other) = delete;
+	Timer(Timer&& _Other) noexcept = delete;
+	Timer& operator=(const Timer& _Other) = delete;
+	Timer& operator=(Timer&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

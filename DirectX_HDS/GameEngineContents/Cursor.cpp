@@ -4,9 +4,9 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-#include <GameEngineContents/CKatanaZero_Level.h>
+#include "BaseLevel.h"
 #include "CPlayer.h"
-#include "CPlayManager.h"
+#include "PlayManager.h"
 
 Cursor::Cursor()
 {
@@ -59,14 +59,14 @@ void Cursor::Render(float _DeltaTime)
 
 void Cursor::FollowCursor()
 {
-	CKatanaZero_Level* Level = GetReturnCastLevel();
+	BaseLevel* Level = GetReturnCastLevel();
 
 	// 현재 카메라 위치 가져오고
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	float4 CameraMovePivot = CPlayManager::GetInst()->GetCameraPivot();
+	float4 CameraMovePivot = PlayManager::GetInst()->GetCameraPivot();
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 
-	float4 PlayerPos = CPlayManager::GetPlayer()->GetTransform()->GetLocalPosition();
+	float4 PlayerPos = PlayManager::GetPlayer()->GetTransform()->GetLocalPosition();
 
 	// y축 값이 0보다 크다면 
 	if (0.0f < OriginMousePos.y)

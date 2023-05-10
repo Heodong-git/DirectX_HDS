@@ -5,7 +5,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
 Hud::Hud()
 {

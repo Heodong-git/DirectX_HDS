@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Inven.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
 Inven::Inven()
@@ -41,7 +41,7 @@ void Inven::Start()
 void Inven::Update(float _DeltaTime)
 {
 	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
-	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
 	}

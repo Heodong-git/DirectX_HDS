@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CTitleLevel.h"
+#include "TitleLevel.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineTimeEvent.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -11,15 +11,15 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineCore.h>
 
-#include "CTitleManager.h"
+#include "TitleManager.h"
 #include "TitleEditer.h"
 #include "TitleBackGround.h"
 
-CTitleLevel::CTitleLevel()
+TitleLevel::TitleLevel()
 {
 }
 
-CTitleLevel::~CTitleLevel()
+TitleLevel::~TitleLevel()
 {
 }
 
@@ -36,15 +36,15 @@ CTitleLevel::~CTitleLevel()
 //	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
 //}
 
-void CTitleLevel::Start()
+void TitleLevel::Start()
 {
 	ResourcesLoad();
 	ActorLoad();
-	SetState(ELEVEL_STATE::WAIT);
-	CKatanaZero_Level::Start();
+	SetState(BaseLevel::LevelState::WAIT);
+	BaseLevel::Start();
 }
 
-void CTitleLevel::Update(float _DeltaTime)
+void TitleLevel::Update(float _DeltaTime)
 {
 	/*if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
 	{
@@ -52,10 +52,10 @@ void CTitleLevel::Update(float _DeltaTime)
 		return;
 	}*/
 
-	CKatanaZero_Level::Update(_DeltaTime);
+	BaseLevel::Update(_DeltaTime);
 }
 
-void CTitleLevel::LevelChangeStart()
+void TitleLevel::LevelChangeStart()
 {
 	/*m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
 	if (m_GUI == nullptr)
@@ -67,16 +67,16 @@ void CTitleLevel::LevelChangeStart()
 	m_GUI->On();*/
 }
 
-void CTitleLevel::LevelChangeEnd()
+void TitleLevel::LevelChangeEnd()
 {
 	if (m_GUI != nullptr)
 	{
 		m_GUI->Off();
 	}
-	SetState(ELEVEL_STATE::WAIT);
+	SetState(BaseLevel::LevelState::WAIT);
 }
 
-void CTitleLevel::ResourcesLoad()
+void TitleLevel::ResourcesLoad()
 {
 	// 디렉토리 클래스생성
 	GameEngineDirectory NewDir;
@@ -95,12 +95,12 @@ void CTitleLevel::ResourcesLoad()
 	}
 }
 
-void CTitleLevel::ActorLoad()
+void TitleLevel::ActorLoad()
 {
 	// background 생성, 검은색깔개 + 뒷배경
 	std::shared_ptr<TitleBackGround> NewBackGround = CreateActor<TitleBackGround>();
 	// Title 의 모든 UI 
-	m_TitleManager = CreateActor<CTitleManager>("TitleUIManager");
+	m_TitleManager = CreateActor<TitleManager>("TitleManager");
 	m_TitleManager->CreateRender();
 }
 

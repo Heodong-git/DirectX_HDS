@@ -1,8 +1,8 @@
 #pragma once
-#include "CKatanaZero_Level.h"
+#include "BaseLevel.h"
 
 // Ό³Έν :
-class CTutorialLevel : public CKatanaZero_Level
+class CTutorialLevel : public BaseLevel
 {
 public:
 	// constrcuter destructer

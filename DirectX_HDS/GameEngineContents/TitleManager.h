@@ -1,5 +1,5 @@
 #pragma once
-#include "CKatanaZero_Actor.h"
+#include "BaseActor.h"
 
 enum class EMENU_TYPE
 {
@@ -12,18 +12,18 @@ enum class EMENU_TYPE
 
 // 설명 : 타이틀레벨에서 사용하는 모든 UI를 관리
 class GameEngineRenderer;
-class CTitleManager : public CKatanaZero_Actor
+class TitleManager : public BaseActor
 {
 public:
 	// constrcuter destructer
-	CTitleManager();
-	~CTitleManager();
+	TitleManager();
+	~TitleManager();
 
 	// delete Function
-	CTitleManager(const CTitleManager& _Other) = delete;
-	CTitleManager(CTitleManager&& _Other) noexcept = delete;
-	CTitleManager& operator=(const CTitleManager& _Other) = delete;
-	CTitleManager& operator=(CTitleManager&& _Other) noexcept = delete;
+	TitleManager(const TitleManager& _Other) = delete;
+	TitleManager(TitleManager&& _Other) noexcept = delete;
+	TitleManager& operator=(const TitleManager& _Other) = delete;
+	TitleManager& operator=(TitleManager&& _Other) noexcept = delete;
 	
 	void CreateRender();
 	
