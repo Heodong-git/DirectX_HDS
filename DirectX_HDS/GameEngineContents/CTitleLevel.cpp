@@ -38,12 +38,6 @@ CTitleLevel::~CTitleLevel()
 
 void CTitleLevel::Start()
 {
-	if (false == GameEngineInput::IsKey("DebugChange_Tutorial"))
-	{
-		// GameEngineInput::CreateKey("DebugChange_Tutorial", VK_F1);
-		GameEngineInput::CreateKey("DebugChange_Stage01", VK_F2);
-	}
-
 	ResourcesLoad();
 	ActorLoad();
 	SetState(ELEVEL_STATE::WAIT);
@@ -58,13 +52,6 @@ void CTitleLevel::Update(float _DeltaTime)
 		return;
 	}*/
 
-	if (true == GameEngineInput::IsDown("DebugChange_Stage01"))
-	{
-		GameEngineCore::ChangeLevel("StageLevel_01");
-		return;
-	}
-
-	
 	CKatanaZero_Level::Update(_DeltaTime);
 }
 

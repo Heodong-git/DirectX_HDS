@@ -73,6 +73,9 @@
     <ClInclude Include="CHud.h">
       <Filter>HUD</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTitleLevel.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="CHud.cpp">
       <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

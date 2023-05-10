@@ -89,33 +89,18 @@ void CPlayer::Update(float _DeltaTime)
 	// 픽셀테스트용 코드 , 일단 잘댐
 	/*std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
 	GameEnginePixelColor Pixel = Ptr->GetPixel(359, 92);*/
-
-	// 크로노스 사용시 
-	if (true == GameEngineInput::IsPress("player_snail"))
-	{
-		m_Snail = true;
-	}
-	else if (false == GameEngineInput::IsPress("player_snail"))
-	{
-		m_Snail = false;
-	}
 	
-	if (true == GameEngineInput::IsDown("player_right_Move"))
-	{
-		// GetTransform()->SetLocalPositiveScaleX();
-	}
-
 	float4 CheckPos = GetTransform()->GetLocalPosition();
 	GameEnginePixelColor CheckColor = GetPixelColor(CheckPos);
 	if (true == IsBlackPixel(CheckColor))
 	{
-		//GetTransform()->AddLocalPosition({ 0, +1 });
+		GetTransform()->AddLocalPosition({ 0, +1 });
 	}
 
 	else if (IsWhitePixel(CheckColor))
 	{
 		// 내 색상이 화이트라면 계속해서 -1 , 중력
-		Gravity(_DeltaTime);
+		//Gravity(_DeltaTime);
 	}
 
 	UpdateState(_DeltaTime);

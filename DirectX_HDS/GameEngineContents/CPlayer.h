@@ -60,7 +60,7 @@ private:
 	void Gravity(float _DeltaTime);
 
 	GameEnginePixelColor GetPixelColor(float4 _Pos);
-	GameEnginePixelColor m_Black = { static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(0) };
+	GameEnginePixelColor m_Black = { static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(160) };
 	GameEnginePixelColor m_White = { static_cast<char>(255), static_cast<char>(255), static_cast<char>(255), static_cast<char>(255) };
 	
 	bool IsBlackPixel(GameEnginePixelColor _Pixel)

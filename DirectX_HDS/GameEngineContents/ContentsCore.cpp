@@ -38,8 +38,8 @@ void ContentsCore::GameStart()
 	// 클래스 이름과 동일한 이름으로 레벨 생성
 	GameEngineCore::CreateLevel<CTitleLevel>("TitleLevel");
 	// GameEngineCore::CreateLevel<CTutorialLevel>("TutorialLevel");
-	GameEngineCore::CreateLevel<CStageLevel_01>("StageLevel_01");
-	GameEngineCore::CreateLevel<CStageLevel_02>("StageLevel_02");
+	GameEngineCore::CreateLevel<CStageLevel_01>("Stage01Level");
+	GameEngineCore::CreateLevel<CStageLevel_02>("Stage02Level");
 
 	//GameEngineCore::CreateLevel<CTestLevel>();
 	GameEngineCore::ChangeLevel("TitleLevel");

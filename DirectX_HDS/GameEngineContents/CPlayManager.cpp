@@ -69,13 +69,20 @@ void CPlayManager::Update(float _DeltaTime)
 
 void CPlayManager::CameraSetting()
 {
-	if (CPlayManager::LEVELTYPE::STAGE_01 == CPlayManager::GetInst()->GetLevelType())
+
+	switch (m_LevelType)
 	{
-		if (nullptr != m_Player)
-		{
-			// -360    34 
-			m_CameraPivot = { -360, 34 , 0 };
-			m_Player->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
-		}
+	case CPlayManager::LEVELTYPE::NONE:
+		break;
+	case CPlayManager::LEVELTYPE::STAGE_01:
+	{
+		m_CameraPivot = { -360, 34 , 0 };
+		m_Player->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
+	}
+		break;
+	case CPlayManager::LEVELTYPE::STAGE_02:
+		break;
+	default:
+		break;
 	}
 }

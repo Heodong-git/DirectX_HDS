@@ -31,9 +31,6 @@ void CRecordingManager::Start()
 		MsgAssert("현재 레벨이 nullptr 입니다.");
 		return;
 	}*/
-
-	// 지금 함수자체가 클래스멤버함수는 못넣음, 얘기해야할듯 
-	// GetReturnCastLevel()->TimeEvent.AddEvent(2.0f, std::bind(&CRecordingManager::Save, this), true);
 }
 
 void CRecordingManager::Update(float _DeltaTime)

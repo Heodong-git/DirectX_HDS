@@ -81,7 +81,7 @@ void CTitleManager::Update(float _DeltaTime)
 
 		if (m_BoxFlashingTime < 0.0f)
 		{
-			GameEngineCore::ChangeLevel("StageLevel_01");
+			GameEngineCore::ChangeLevel("Stage01Level");
 			m_CurMenu = EMENU_TYPE::NEWGAME;
 			m_BoxFlashingTime = 0.0f; 
 		}
@@ -124,6 +124,12 @@ void CTitleManager::Update(float _DeltaTime)
 	if (false == m_BoxMoveArrive && true == m_TextMoveArrive)
 	{
 		BoxRenderMove(_DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
+	{
+		GameEngineCore::ChangeLevel("Stage01Level");
+		return;
 	}
 
 	BlinkRender();

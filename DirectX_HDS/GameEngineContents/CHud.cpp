@@ -36,11 +36,10 @@ void CHud::Start()
 	}
 
 	float4 screensize = GameEngineWindow::GetScreenSize();
-
-	float4 CameraPivot = GetReturnCastLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+	
 	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
 	m_Renderer->SetPipeLine("2DTexture");
 	m_Renderer->SetTexture("HUD.png");
 	m_Renderer->GetTransform()->SetLocalScale({ screensize.x , 50.0f } );
-	m_Renderer->GetTransform()->SetLocalPosition({ 0 + CameraPivot.x , 338.0f + CameraPivot.y });
+	m_Renderer->GetTransform()->SetLocalPosition({ 0 , 0 });
 }

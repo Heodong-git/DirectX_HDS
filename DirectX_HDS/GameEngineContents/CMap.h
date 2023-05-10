@@ -1,7 +1,7 @@
 #pragma once
 #include "CKatanaZero_Actor.h"
 
-// 설명 :
+// 설명 : 맵에서 검은색 뒷배경 렌더러 깔고 시작. 
 class CMap : public CKatanaZero_Actor
 {
 public:
