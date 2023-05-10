@@ -17,7 +17,10 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _DeltaTime);
 
+	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
 
 private:
 	virtual void ResourcesLoad() override;

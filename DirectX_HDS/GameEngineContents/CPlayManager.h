@@ -4,11 +4,34 @@
 class CPlayManager
 {
 public:
+	enum class LEVELTYPE
+	{
+		NONE,
+		STAGE_01,
+		STAGE_02,
+	};
+
+public:
 	static CPlayManager* m_Inst;
 
+	// 사실 할필요 없는거같은데?
 	static CPlayManager* GetInst()
 	{
+		if (nullptr == m_Inst)
+		{
+			m_Inst = new CPlayManager();
+		}
+
 		return m_Inst;
+	}
+
+	static void DestroyInst()
+	{
+		if (nullptr != m_Inst)
+		{
+			delete m_Inst;
+			m_Inst = nullptr;
+		}
 	}
 public:
 	// constrcuter destructer
@@ -51,20 +74,33 @@ public:
 		return m_Player;
 	}
 	
-	void CreateRender();
-	void Update(float _DeltaTime);
+	static void SetLevelType(LEVELTYPE _Type)
+	{
+		m_LevelType = _Type;
+	}
+
+	static LEVELTYPE GetLevelType()
+	{
+		return m_LevelType;
+	}
+
+	static void CreateRender();
+	static void Update(float _DeltaTime);
+	void CameraSetting();
+
+	float4 GetCameraPivot()
+	{
+		return m_CameraPivot;
+	}
 protected:
 
 
 private:
-	// 타이머
+	float4 m_CameraPivot = {};
+	static LEVELTYPE m_LevelType;
 	static std::shared_ptr<class CTimer> m_Timer;
-	// 배터리 
 	static std::shared_ptr<class CBattery> m_Battery;
-	// 인벤토리 
 	static std::shared_ptr<class CInven> m_Inven;
-	// HUD
 	static std::shared_ptr<class CHud> m_Hud;
-
 	static std::shared_ptr<class CPlayer> m_Player;
 };

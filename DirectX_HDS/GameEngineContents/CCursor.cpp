@@ -7,6 +7,7 @@
 
 #include <GameEngineContents/CKatanaZero_Level.h>
 #include "CPlayer.h"
+#include "CPlayManager.h"
 
 CCursor::CCursor()
 {
@@ -76,20 +77,30 @@ void CCursor::Render(float _DeltaTime)
 void CCursor::FollowCursor()
 {
 	CKatanaZero_Level* Level = GetReturnCastLevel();
+
+	// 현재 카메라 위치 가져오고. 
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+	float4 CameraMovePivot = CPlayManager::GetInst()->GetCameraPivot();
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
+
+	float4 PlayerPos = CPlayManager::GetPlayer()->GetTransform()->GetLocalPosition();
+
 
 	// y축 값이 0보다 크다면 
 	if (0.0f < OriginMousePos.y)
 	{
 		OriginMousePos.y = -OriginMousePos.y;
 	}
+
 	// x축은 스크린 x절반 빼면 맞는거같고 
-	float4 WorldMousePos = { OriginMousePos.x - GameEngineWindow::GetScreenSize().hx() ,
-					   OriginMousePos.y + GameEngineWindow::GetScreenSize().hy() };
+	float4 WorldMousePos = { OriginMousePos.x - GameEngineWindow::GetScreenSize().hx(), 
+							 OriginMousePos.y + GameEngineWindow::GetScreenSize().hy()};
+
+	// ?? 왜되는데??????????????????????? 
+	WorldMousePos.y += CameraMovePivot.y*2;
 
 	GetTransform()->SetLocalPosition(WorldMousePos);
-	
+
 	// 단순 값 체크용 변수 
 	float4 check = GetTransform()->GetLocalPosition();
 }

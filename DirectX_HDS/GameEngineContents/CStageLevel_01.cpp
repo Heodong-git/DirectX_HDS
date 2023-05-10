@@ -33,9 +33,10 @@ void CStageLevel_01::Start()
 {
 	CKatanaZero_Level::Start();
 
-	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel_Title"))
+	// 스테이지01의 레벨체인지라는 의미.
+	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel_Stage02"))
 	{
-		GameEngineInput::CreateKey("Stage01_ChangeLevel_Title", VK_F1);
+		GameEngineInput::CreateKey("Stage01_ChangeLevel_Stage02", VK_F1);
 	}
 
 	ResourcesLoad();
@@ -46,18 +47,10 @@ void CStageLevel_01::Update(float _DeltaTime)
 {
 	// 얘먼저 돌려서 델타타임을 바꿔서 적용할지 그냥 적용할지 정해. 맞나?
 	CPlayManager::GetInst()->Update(_DeltaTime);
-
-	// 여기서 해봤자 소용이 없구나ㅋㅋㅋ 
-	bool Check = CPlayManager::GetInst()->GetPlayer()->IsSnail();
-	if (true == Check)
-	{
-		float Test = 0.5f;
-		_DeltaTime *= Test;
-	}
 	
-	if (true == GameEngineInput::IsDown("Stage01_ChangeLevel_Title"))
+	if (true == GameEngineInput::IsDown("Stage01_ChangeLevel_Stage02"))
 	{
-		GameEngineCore::ChangeLevel("Titlelevel");
+		GameEngineCore::ChangeLevel("StageLevel_02");
 		return;
 	}
 
@@ -67,15 +60,17 @@ void CStageLevel_01::Update(float _DeltaTime)
 void CStageLevel_01::LevelChangeStart()
 {
 	// 레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
-	m_GUI = GameEngineGUI::FindGUIWindowConvert<CStageEditer>("Stage_Editer");
-	if (m_GUI == nullptr)
-	{
-		MsgAssert("GUI Window가 nullptr 입니다.");
-		return;
-	}
-	m_GUI->On();
+	//m_GUI = GameEngineGUI::FindGUIWindowConvert<CStageEditer>("Stage_Editer");
+	//if (m_GUI == nullptr)
+	//{
+	//	MsgAssert("GUI Window가 nullptr 입니다.");
+	//	return;
+	//}
+	//m_GUI->On();
 
 	SetState(ELEVEL_STATE::PLAY);
+	CPlayManager::GetInst()->SetLevelType(CPlayManager::LEVELTYPE::STAGE_01);
+	CPlayManager::GetInst()->CameraSetting();
 }
 
 void CStageLevel_01::LevelChangeEnd()
@@ -112,8 +107,8 @@ void CStageLevel_01::ActorLoad()
 	// 맵 생성, 
 	m_Map = CreateActor<CMap>();
 	m_Map->GetRender()->SetPipeLine("2DTexture");
-	m_Map->GetRender()->SetScaleToTexture("Club_0.png");
-	m_Map->GetTransform()->SetLocalPosition(float4{ 300, -31 });
+	m_Map->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
+	//m_Map->GetTransform()->SetLocalPosition(float4{ 300, -31 });
 
 	// 이게 댕글링포인터가 되지않..나? 
 	std::shared_ptr<CHud> Hud = CreateActor<CHud>(static_cast<int>(ERENDERORDER::BASEUI), "HUD");
@@ -133,6 +128,7 @@ void CStageLevel_01::ActorLoad()
 	
 	std::shared_ptr<CPlayer> Player = CreateActor<CPlayer>(static_cast<int>(ERENDERORDER::PLAYER), "Player");
 	SetPlayer(Player);
+	Player->GetTransform()->AddLocalPosition(float4{ -850 , 0 , 0 });
 	CPlayManager::GetInst()->SetPlayer(Player);
 
 	/*m_PlayManager = CreateActor<CPlayManager>("PlayManager");

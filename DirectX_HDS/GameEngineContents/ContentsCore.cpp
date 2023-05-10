@@ -12,6 +12,7 @@
 #include "CStageLevel_02.h"
 #include "CTitleEditer.h"
 #include "CStageEditer.h"
+#include "CPlayManager.h"
 
 ContentsCore::ContentsCore()
 {
@@ -57,5 +58,5 @@ void ContentsCore::GameStart()
 // 게임이 종료되면 동작해야할 함수를 호출
 void ContentsCore::GameEnd()
 {
-
+	CPlayManager::DestroyInst();
 }

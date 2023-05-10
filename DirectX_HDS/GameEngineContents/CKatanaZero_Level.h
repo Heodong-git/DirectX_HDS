@@ -118,10 +118,6 @@ private:
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
 	std::shared_ptr<class CCursor> m_Cursor = nullptr;
 
-
-	// 타임오버	
-	void TimeOver();
-
 	bool m_Recording = true;
 	bool m_TimeOver = false;
 

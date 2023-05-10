@@ -8,6 +8,7 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineSprite.h>
+#include <GameEngineCore/GameEngineResource.h>
 
 #include <GameEngineContents/CKatanaZero_Level.h>
 
@@ -104,6 +105,19 @@ void CPlayer::Update(float _DeltaTime)
 		// GetTransform()->SetLocalPositiveScaleX();
 	}
 
+	float4 CheckPos = GetTransform()->GetLocalPosition();
+	GameEnginePixelColor CheckColor = GetPixelColor(CheckPos);
+	if (true == IsBlackPixel(CheckColor))
+	{
+		//GetTransform()->AddLocalPosition({ 0, +1 });
+	}
+
+	else if (IsWhitePixel(CheckColor))
+	{
+		// 내 색상이 화이트라면 계속해서 -1 , 중력
+		Gravity(_DeltaTime);
+	}
+
 	UpdateState(_DeltaTime);
 }
 
@@ -111,8 +125,6 @@ void CPlayer::Update(float _DeltaTime)
 void CPlayer::Render(float _Delta)
 {
 }
-
-
 
 // ---------------------------------------- state ------------------------------------------ 
 void CPlayer::UpdateState(float _DeltaTime)
@@ -178,6 +190,35 @@ void CPlayer::ChangeState(PLAYERSTATE _State)
 }
 
 
+void CPlayer::Gravity(float _DeltaTime)
+{
+	GetTransform()->AddLocalPosition(float4::Down * 100.0f * _DeltaTime);
+}
+
+GameEnginePixelColor CPlayer::GetPixelColor(float4 _Pos)
+{
+	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
+	float4 CheckPos = GetTransform()->GetLocalPosition();
+
+	// 상수는 안쓰는게 좋다. <-- 인지하고
+	// 충돌맵이 없다면 assert 
+	std::shared_ptr<GameEngineTexture> ColMap = GameEngineTexture::Find("Club_0_ColMap.png");
+	if (nullptr == ColMap)
+	{
+		MsgAssert("충돌용 맵 이미지가 없습니다.");
+		return GameEnginePixelColor{ 0 , 0 , 0 , 0 };
+	}
+
+	float WidthHalf = static_cast<float>(ColMap->GetWidth() / 2);
+	float HeightHalf = static_cast<float>(ColMap->GetHeight() / 2);
+
+	CheckPos += { WidthHalf , HeightHalf };
+
+	GameEnginePixelColor Color = ColMap->GetPixel(static_cast<int>(CheckPos.x),static_cast<int>(CheckPos.y));
+
+	return Color;
+}
+
 void CPlayer::IdleStart()
 {
 }
@@ -188,12 +229,12 @@ void CPlayer::IdleUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
 		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("player_jump"))
 	{

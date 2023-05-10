@@ -3,6 +3,8 @@
 #include <GameEngineBase/GameEngineSerializer.h>
 #include "CKatanaZero_Actor.h"
 
+#include <GameEngineCore/GameEngineTexture.h>
+
 enum class PLAYERSTATE
 {
 	NONE,
@@ -12,7 +14,6 @@ enum class PLAYERSTATE
 	SLASH,
 };
 
-class CFsm;
 class CPlayer : public CKatanaZero_Actor
 {
 public:
@@ -53,14 +54,27 @@ private:
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
 
-	// 이걸 곱해주는게 맞나
-	float  m_SlashMoveRange = 10.0f;
 	bool   m_Snail = false;
-
 	
+	// Pixel Collider 
+	void Gravity(float _DeltaTime);
+
+	GameEnginePixelColor GetPixelColor(float4 _Pos);
+	GameEnginePixelColor m_Black = { static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(0) };
+	GameEnginePixelColor m_White = { static_cast<char>(255), static_cast<char>(255), static_cast<char>(255), static_cast<char>(255) };
+	
+	bool IsBlackPixel(GameEnginePixelColor _Pixel)
+	{
+		return m_Black == _Pixel;
+	}
+
+	bool IsWhitePixel(GameEnginePixelColor _Pixel)
+	{
+		return m_White == _Pixel;
+	}
+
 	// ------------------------- state ----------------------------------
 private:
-	std::shared_ptr<CFsm> m_Fsm = nullptr;
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();

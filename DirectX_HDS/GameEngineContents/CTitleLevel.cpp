@@ -70,14 +70,14 @@ void CTitleLevel::Update(float _DeltaTime)
 
 void CTitleLevel::LevelChangeStart()
 {
-	m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
+	/*m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
 	if (m_GUI == nullptr)
 	{
 		MsgAssert("GUI Window가 nullptr 입니다.");
 		return;
 	}
 	
-	m_GUI->On();
+	m_GUI->On();*/
 }
 
 void CTitleLevel::LevelChangeEnd()

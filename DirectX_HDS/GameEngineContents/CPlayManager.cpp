@@ -3,6 +3,7 @@
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCamera.h>
 
 #include "CKatanaZero_Level.h"
 #include "CBattery.h"
@@ -14,24 +15,16 @@ std::shared_ptr<class CBattery> CPlayManager::m_Battery = nullptr;
 std::shared_ptr<class CInven> CPlayManager::m_Inven = nullptr;
 std::shared_ptr<class CHud> CPlayManager::m_Hud = nullptr;
 std::shared_ptr<class CPlayer> CPlayManager::m_Player = nullptr;
+CPlayManager::LEVELTYPE CPlayManager::m_LevelType = CPlayManager::LEVELTYPE::NONE;
 
 CPlayManager::CPlayManager()
 {
-	if (nullptr == m_Inst)
-	{
-		m_Inst = new CPlayManager;
-	}
-
 	CreateRender();
 }
 
 CPlayManager::~CPlayManager()
 {
-	if (nullptr != m_Inst)
-	{
-		delete m_Inst;
-		m_Inst = nullptr;
-	}
+	
 }
 
 
@@ -70,6 +63,19 @@ void CPlayManager::Update(float _DeltaTime)
 		if (true == m_Player->IsSnail())
 		{
 			
+		}
+	}
+}
+
+void CPlayManager::CameraSetting()
+{
+	if (CPlayManager::LEVELTYPE::STAGE_01 == CPlayManager::GetInst()->GetLevelType())
+	{
+		if (nullptr != m_Player)
+		{
+			// -360    34 
+			m_CameraPivot = { -360, 34 , 0 };
+			m_Player->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
 		}
 	}
 }
