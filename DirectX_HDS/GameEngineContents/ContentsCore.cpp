@@ -39,7 +39,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TitleLevel>("TitleLevel");
 	// GameEngineCore::CreateLevel<CTutorialLevel>("TutorialLevel");
 	GameEngineCore::CreateLevel<ClubLevel>("ClubLevel");
-	GameEngineCore::CreateLevel<ClubBossLevel>("Stage02Level");
+	GameEngineCore::CreateLevel<ClubBossLevel>("ClubBossLevel");
 
 	//GameEngineCore::CreateLevel<CTestLevel>();
 	GameEngineCore::ChangeLevel("TitleLevel");

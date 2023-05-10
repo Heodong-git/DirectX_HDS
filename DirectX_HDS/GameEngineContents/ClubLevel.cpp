@@ -31,9 +31,9 @@ ClubLevel::~ClubLevel()
 void ClubLevel::Start()
 {
 	BaseLevel::Start();
-	if (false == GameEngineInput::IsKey("Stage01_ChangeLevel_Stage02"))
+	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubBossLevel"))
 	{
-		GameEngineInput::CreateKey("Stage01_ChangeLevel_Stage02", VK_F1);
+		GameEngineInput::CreateKey("ClubLevel_ChangeLevel_ClubBossLevel", VK_F1);
 	}
 
 	ResourcesLoad();
@@ -42,9 +42,9 @@ void ClubLevel::Start()
 
 void ClubLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("Stage01_ChangeLevel_Stage02"))
+	if (true == GameEngineInput::IsDown("ClubLevel_ChangeLevel_ClubBossLevel"))
 	{
-		GameEngineCore::ChangeLevel("StageLevel_02");
+		GameEngineCore::ChangeLevel("ClubBossLevel");
 		return;
 	}
 

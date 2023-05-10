@@ -44,6 +44,12 @@ void TitleManager::Start()
 
 void TitleManager::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
+	{
+		GameEngineCore::ChangeLevel("ClubLevel");
+		return;
+	}
+
 	if (EMENU_TYPE::CHANGE == m_CurMenu)
 	{
 		m_BoxFlashingTime -= _DeltaTime;
@@ -124,12 +130,6 @@ void TitleManager::Update(float _DeltaTime)
 	if (false == m_BoxMoveArrive && true == m_TextMoveArrive)
 	{
 		BoxRenderMove(_DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
-	{
-		GameEngineCore::ChangeLevel("Stage01Level");
-		return;
 	}
 
 	BlinkRender();

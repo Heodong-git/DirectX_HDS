@@ -5,7 +5,7 @@
 
 #include <GameEngineCore/GameEngineTexture.h>
 
-enum class PLAYERSTATE
+enum class PlayerState
 {
 	NONE,
 	IDLE,
@@ -43,12 +43,12 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	void ChangeState(PLAYERSTATE _State);
+	void ChangeState(PlayerState _State);
 	void UpdateState(float _DeltaTime);
 
-	PLAYERSTATE m_CurState = PLAYERSTATE::IDLE;
-	PLAYERSTATE m_PrevState = PLAYERSTATE::NONE;
-	PLAYERSTATE m_NextState = PLAYERSTATE::NONE;
+	PlayerState m_CurState = PlayerState::IDLE;
+	PlayerState m_PrevState = PlayerState::NONE;
+	PlayerState m_NextState = PlayerState::NONE;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer;
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };

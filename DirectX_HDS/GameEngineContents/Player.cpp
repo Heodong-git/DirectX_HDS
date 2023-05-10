@@ -116,23 +116,23 @@ void Player::UpdateState(float _DeltaTime)
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
 	{
-	case PLAYERSTATE::IDLE:
+	case PlayerState::IDLE:
 		IdleUpdate(_DeltaTime);
 		break;
-	case PLAYERSTATE::MOVE:
+	case PlayerState::MOVE:
 		MoveUpdate(_DeltaTime);
 		break;
-	case PLAYERSTATE::JUMP:
+	case PlayerState::JUMP:
 		JumpUpdate(_DeltaTime);
 		break;
-	case PLAYERSTATE::SLASH:
+	case PlayerState::SLASH:
 		SlashUpdate(_DeltaTime);
 		break;
 	}
 }
 
 // state 변경, 변경될 상태의 start, 이전 상태의 end 수행
-void Player::ChangeState(PLAYERSTATE _State)
+void Player::ChangeState(PlayerState _State)
 {
 	m_NextState = _State;
 	m_PrevState = m_CurState;
@@ -141,16 +141,16 @@ void Player::ChangeState(PLAYERSTATE _State)
 	// start 
 	switch (m_NextState)
 	{
-	case PLAYERSTATE::IDLE:
+	case PlayerState::IDLE:
 		IdleStart();
 		break;
-	case PLAYERSTATE::MOVE:
+	case PlayerState::MOVE:
 		MoveStart();
 		break;
-	case PLAYERSTATE::JUMP:
+	case PlayerState::JUMP:
 		JumpStart();
 		break;
-	case PLAYERSTATE::SLASH:
+	case PlayerState::SLASH:
 		SlashStart();
 		break;
 	}
@@ -158,16 +158,16 @@ void Player::ChangeState(PLAYERSTATE _State)
 	// 이전 state의 end 
 	switch (m_PrevState)
 	{
-	case PLAYERSTATE::IDLE:
+	case PlayerState::IDLE:
 		IdleEnd();
 		break;
-	case PLAYERSTATE::MOVE:
+	case PlayerState::MOVE:
 		MoveEnd();
 		break;
-	case PLAYERSTATE::JUMP:
+	case PlayerState::JUMP:
 		JumpEnd();
 		break;
-	case PLAYERSTATE::SLASH:
+	case PlayerState::SLASH:
 		SlashEnd();
 		break;
 	}
