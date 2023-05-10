@@ -32,9 +32,6 @@
     <ClInclude Include="CKatanaZero_Actor.h">
       <Filter>ContentsObject</Filter>
     </ClInclude>
-    <ClInclude Include="CBoss_HeadHunter.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="CCursor.h">
       <Filter>Cursor</Filter>
@@ -66,9 +63,6 @@
     </ClInclude>
     <ClInclude Include="CStageEditer.h">
       <Filter>Editer</Filter>
-    </ClInclude>
-    <ClInclude Include="CFsm.h">
-      <Filter>Fsm</Filter>
     </ClInclude>
     <ClInclude Include="CBackGround.h">
       <Filter>BackGround\Title</Filter>
@@ -111,9 +105,6 @@
     <ClCompile Include="CKatanaZero_Actor.cpp">
       <Filter>ContentsObject</Filter>
     </ClCompile>
-    <ClCompile Include="CBoss_HeadHunter.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="CCursor.cpp">
       <Filter>Cursor</Filter>
@@ -145,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="CStageEditer.cpp">
       <Filter>Editer</Filter>
-    </ClCompile>
-    <ClCompile Include="CFsm.cpp">
-      <Filter>Fsm</Filter>
     </ClCompile>
     <ClCompile Include="CBackGround.cpp">
       <Filter>BackGround\Title</Filter>
@@ -195,9 +183,6 @@
     </Filter>
     <Filter Include="Editer">
       <UniqueIdentifier>{86567995-14fa-46db-8f87-07f0510ad721}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fsm">
-      <UniqueIdentifier>{142ef6fd-d423-413a-96e5-111c12645b93}</UniqueIdentifier>
     </Filter>
     <Filter Include="BackGround\Title">
       <UniqueIdentifier>{56fa4388-4786-4824-aaa0-353da66895c0}</UniqueIdentifier>

@@ -24,7 +24,7 @@
     <ProjectGuid>{d79b8e17-a0e5-4ee8-91fc-1dab54da5625}</ProjectGuid>
     <RootNamespace>GameEngineContents</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>GameContents</ProjectName>
+    <ProjectName>GameEngineContents</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -172,14 +172,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CBoss_HeadHunter.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="CFsm.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="CHud.h">
       <SubType>
       </SubType>
@@ -271,8 +263,6 @@
   <ItemGroup>
     <ClCompile Include="CBackGround.cpp" />
     <ClCompile Include="CBattery.cpp" />
-    <ClCompile Include="CBoss_HeadHunter.cpp" />
-    <ClCompile Include="CFsm.cpp" />
     <ClCompile Include="CHud.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CStageEditer.cpp" />
