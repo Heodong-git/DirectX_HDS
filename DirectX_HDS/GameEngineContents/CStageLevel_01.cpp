@@ -10,15 +10,15 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 // 컨텐츠
-#include "CStageEditer.h"
+#include "StageEditer.h"
 #include "CPlayManager.h"
 #include "CPlayer.h"
-#include "CCursor.h"
-#include "CBattery.h"
-#include "CInven.h"
+#include "Cursor.h"
+#include "Battery.h"
+#include "Inven.h"
 #include "CTimer.h"
 #include "CMap.h"
-#include "CHud.h"
+#include "Hud.h"
 
 CStageLevel_01::CStageLevel_01()
 {
@@ -92,18 +92,18 @@ void CStageLevel_01::ActorLoad()
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	// 이게 댕글링포인터가 되지않..나? 
-	std::shared_ptr<CHud> Hud = CreateActor<CHud>(static_cast<int>(ERENDERORDER::BASEUI), "HUD");
-	CPlayManager::GetInst()->SetHud(Hud);
-	Hud->GetTransform()->AddLocalPosition({ -ScreenSize.hx(), ScreenSize.hy() });
+	std::shared_ptr<Hud> NewHud = CreateActor<Hud>(static_cast<int>(ERENDERORDER::BASEUI), "HUD");
+	CPlayManager::GetInst()->SetHud(NewHud);
+	NewHud->GetTransform()->AddLocalPosition({ -ScreenSize.hx(), ScreenSize.hy() });
 
-	std::shared_ptr<CCursor> NewCursor = CreateActor<CCursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
+	std::shared_ptr<Cursor> NewCursor = CreateActor<Cursor>(static_cast<int>(ERENDERORDER::CURSOR), "Cursor");
 	SetCursor(NewCursor);
 	
-	std::shared_ptr<CBattery> Battery = CreateActor<CBattery>(static_cast<int>(ERENDERORDER::BASEUI), "Battery");
-	CPlayManager::GetInst()->SetBattery(Battery);
+	std::shared_ptr<Battery> NewBattery = CreateActor<Battery>(static_cast<int>(ERENDERORDER::BASEUI), "Battery");
+	CPlayManager::GetInst()->SetBattery(NewBattery);
 	
-	std::shared_ptr<CInven> Inven = CreateActor<CInven>(static_cast<int>(ERENDERORDER::BASEUI), "Inven");
-	CPlayManager::GetInst()->SetInven(Inven);
+	std::shared_ptr<Inven> NewInven = CreateActor<Inven>(static_cast<int>(ERENDERORDER::BASEUI), "Inven");
+	CPlayManager::GetInst()->SetInven(NewInven);
 	
 	std::shared_ptr<CTimer> Timer = CreateActor<CTimer>(static_cast<int>(ERENDERORDER::BASEUI), "Timer");
 	CPlayManager::GetInst()->SetTimer(Timer);

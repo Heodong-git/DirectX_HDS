@@ -10,8 +10,8 @@
 #include "CTutorialLevel.h"
 #include "CStageLevel_01.h"
 #include "CStageLevel_02.h"
-#include "CTitleEditer.h"
-#include "CStageEditer.h"
+#include "TitleEditer.h"
+#include "StageEditer.h"
 #include "CPlayManager.h"
 
 ContentsCore::ContentsCore()
@@ -46,11 +46,11 @@ void ContentsCore::GameStart()
 
 	// gui
 	{
-		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<CTitleEditer>("Title_Editer");
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<TitleEditer>("Title_Editer");
 		Window->Off();
 	}
 	{
-		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<CStageEditer>("Stage_Editer");
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<StageEditer>("Stage_Editer");
 		Window->Off();
 	}
 }

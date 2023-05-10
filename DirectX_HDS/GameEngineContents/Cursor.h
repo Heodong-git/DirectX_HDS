@@ -2,18 +2,18 @@
 #include <GameEngineContents/CKatanaZero_Actor.h>
 
 // Ό³Έν :
-class CCursor : public CKatanaZero_Actor
+class Cursor : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CCursor();
-	~CCursor();
+	Cursor();
+	~Cursor();
 
 	// delete Function
-	CCursor(const CCursor& _Other) = delete;
-	CCursor(CCursor&& _Other) noexcept = delete;
-	CCursor& operator=(const CCursor& _Other) = delete;
-	CCursor& operator=(CCursor&& _Other) noexcept = delete;
+	Cursor(const Cursor& _Other) = delete;
+	Cursor(Cursor&& _Other) noexcept = delete;
+	Cursor& operator=(const Cursor& _Other) = delete;
+	Cursor& operator=(Cursor&& _Other) noexcept = delete;
 
 	float4 TestColor;
 

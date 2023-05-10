@@ -1,23 +1,23 @@
 #include "PrecompileHeader.h"
-#include "CBackGround.h"
+#include "TitleBackGround.h"
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-CBackGround::CBackGround()
+TitleBackGround::TitleBackGround()
 {
 }
 
-CBackGround::~CBackGround()
+TitleBackGround::~TitleBackGround()
 {
 }
 
-void CBackGround::Start()
+void TitleBackGround::Start()
 {
 	CreateRender();
 }
 
-void CBackGround::Update(float _DeltaTime)
+void TitleBackGround::Update(float _DeltaTime)
 {
 	float4 renderpos = m_BackGroundRender->GetTransform()->GetLocalPosition();
 	if (renderpos.y >= m_StartPoint.y)
@@ -31,12 +31,12 @@ void CBackGround::Update(float _DeltaTime)
 	m_BackGroundRender->GetTransform()->AddLocalPosition(movepos * m_MoveSpeed * _DeltaTime);
 }
 
-void CBackGround::Render(float _DeltaTime)
+void TitleBackGround::Render(float _DeltaTime)
 {
 }
 
 
-void CBackGround::CreateRender()
+void TitleBackGround::CreateRender()
 {
 	m_BackGroundBlackRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_BackGroundBlackRender->SetPipeLine("2DTexture");

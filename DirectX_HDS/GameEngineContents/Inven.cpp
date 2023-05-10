@@ -1,19 +1,18 @@
 #include "PrecompileHeader.h"
-#include "CBattery.h"
-
-#include <GameEngineBase/GameEngineRandom.h>
+#include "Inven.h"
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "CKatanaZero_Level.h"
+#include <GameEngineBase/GameEngineRandom.h>
 
-CBattery::CBattery()
+Inven::Inven()
 {
 }
 
-CBattery::~CBattery()
+Inven::~Inven()
 {
 }
 
-void CBattery::Start()
+void Inven::Start()
 {
 	{
 		GameEngineDirectory NewDir;
@@ -23,7 +22,7 @@ void CBattery::Start()
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
 		NewDir.Move("Stage01Level");
-		NewDir.Move("Battery");
+		NewDir.Move("Inven");
 
 		// 파일 전체로드 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
@@ -32,18 +31,16 @@ void CBattery::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-
 	m_CaseRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_CaseRender->SetPipeLine("2DTexture");
-	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Battery_09.png");
-	/*m_CaseRender->SetPipeLine("2DBlinkTexture");
-	m_CaseRender->GetShaderResHelper().SetTexture("BlinkTex", "Battery_09.png");*/
-	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 });
-	m_CaseRender->GetTransform()->SetLocalPosition({ -560 , 335 });
+	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Inven_0.png");
+	m_CaseRender->GetTransform()->SetLocalScale({ 115, 45 });
+	m_CaseRender->GetTransform()->SetLocalPosition({ 564 , 335 });
 }
 
-void CBattery::Update(float _DeltaTime)
+void Inven::Update(float _DeltaTime)
 {
+	// 레벨이 play 상태가 아니라면 업데이트하지 않음 
 	if (ELEVEL_STATE::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
@@ -60,6 +57,6 @@ void CBattery::Update(float _DeltaTime)
 	}
 }
 
-void CBattery::Render(float _DeltaTime)
+void Inven::Render(float _DeltaTime)
 {
 }

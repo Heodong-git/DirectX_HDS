@@ -1,17 +1,17 @@
 #include "PrecompileHeader.h"
-#include "CTitleEditer.h"
+#include "TitleEditer.h"
 
 #include <GameEngineCore/GameEngineCore.h>
 
-CTitleEditer::CTitleEditer()
+TitleEditer::TitleEditer()
 {
 }
 
-CTitleEditer::~CTitleEditer()
+TitleEditer::~TitleEditer()
 {
 }
 
-void CTitleEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
+void TitleEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	//std::string Text = GameEngineString::AnsiToUTF8("LevelChange");
 	//ImGui::Text(Text.c_str());

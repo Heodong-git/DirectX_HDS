@@ -12,11 +12,11 @@
 #include "CRecordingManager.h"
 #include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
-#include "CCursor.h"
-#include "CBattery.h"
-#include "CInven.h"
+#include "Cursor.h"
+#include "Battery.h"
+#include "Inven.h"
 #include "CTimer.h"
-#include "CTitleEditer.h"
+#include "TitleEditer.h"
 
 CTutorialLevel::CTutorialLevel()
 {
@@ -54,7 +54,7 @@ void CTutorialLevel::LevelChangeStart()
 {
 	//ShowCursor(false);
 	SetState(ELEVEL_STATE::PLAY);
-	m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<TitleEditer>("Title_Editer");
 	if (m_GUI == nullptr)
 	{
 		MsgAssert("GUI Window가 nullptr 입니다.");

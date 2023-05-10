@@ -2,18 +2,18 @@
 #include <GameEngineContents/CKatanaZero_Actor.h>
 
 // 설명 : 타이틀에서만씀 
-class CBackGround : public CKatanaZero_Actor
+class TitleBackGround : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CBackGround();
-	~CBackGround();
+	TitleBackGround();
+	~TitleBackGround();
 
 	// delete Function
-	CBackGround(const CBackGround& _Other) = delete;
-	CBackGround(CBackGround&& _Other) noexcept = delete;
-	CBackGround& operator=(const CBackGround& _Other) = delete;
-	CBackGround& operator=(CBackGround&& _Other) noexcept = delete;
+	TitleBackGround(const TitleBackGround& _Other) = delete;
+	TitleBackGround(TitleBackGround&& _Other) noexcept = delete;
+	TitleBackGround& operator=(const TitleBackGround& _Other) = delete;
+	TitleBackGround& operator=(TitleBackGround&& _Other) noexcept = delete;
 
 
 protected:

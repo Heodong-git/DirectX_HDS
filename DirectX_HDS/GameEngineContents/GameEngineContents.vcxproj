@@ -164,15 +164,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CBackGround.h">
+    <ClInclude Include="TitleBackGround.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CBattery.h">
+    <ClInclude Include="Battery.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CHud.h">
+    <ClInclude Include="Hud.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -180,15 +180,15 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CStageEditer.h">
+    <ClInclude Include="StageEditer.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CTitleEditer.h">
+    <ClInclude Include="TitleEditer.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CInven.h">
+    <ClInclude Include="Inven.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -216,7 +216,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CCursor.h">
+    <ClInclude Include="Cursor.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -262,20 +262,20 @@
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CBackGround.cpp" />
-    <ClCompile Include="CBattery.cpp" />
-    <ClCompile Include="CHud.cpp" />
+    <ClCompile Include="TitleBackGround.cpp" />
+    <ClCompile Include="Battery.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="CMap.cpp" />
-    <ClCompile Include="CStageEditer.cpp" />
-    <ClCompile Include="CTitleEditer.cpp" />
-    <ClCompile Include="CInven.cpp" />
+    <ClCompile Include="StageEditer.cpp" />
+    <ClCompile Include="TitleEditer.cpp" />
+    <ClCompile Include="Inven.cpp" />
     <ClCompile Include="CKatanaZero_Actor.cpp" />
     <ClCompile Include="CKatanaZero_Level.cpp" />
     <ClCompile Include="CMonster_Gangster.cpp" />
     <ClCompile Include="CMonster_Grunt.cpp" />
     <ClCompile Include="CMonster_Pomp.cpp" />
     <ClCompile Include="CMonster_Shotgun.cpp" />
-    <ClCompile Include="CCursor.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="ContentsCore.cpp">
       <SubType>
       </SubType>

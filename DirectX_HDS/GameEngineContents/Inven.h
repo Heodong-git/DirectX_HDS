@@ -2,18 +2,18 @@
 #include "CKatanaZero_Actor.h"
 
 // Ό³Έν :
-class CBattery : public CKatanaZero_Actor
+class Inven : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CBattery();
-	~CBattery();
+	Inven();
+	~Inven();
 
 	// delete Function
-	CBattery(const CBattery& _Other) = delete;
-	CBattery(CBattery&& _Other) noexcept = delete;
-	CBattery& operator=(const CBattery& _Other) = delete;
-	CBattery& operator=(CBattery&& _Other) noexcept = delete;
+	Inven(const Inven& _Other) = delete;
+	Inven(Inven&& _Other) noexcept = delete;
+	Inven& operator=(const Inven& _Other) = delete;
+	Inven& operator=(Inven&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

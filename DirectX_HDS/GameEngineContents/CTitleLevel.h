@@ -27,6 +27,6 @@ protected:
 
 private:
 	std::shared_ptr<class CTitleManager> m_TitleManager = nullptr;
-	std::shared_ptr<class CTitleEditer> m_GUI = nullptr;
+	std::shared_ptr<class TitleEditer> m_GUI = nullptr;
 };
 

@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "CKatanaZero_Level.h"
-#include "CCursor.h"
+#include "Cursor.h"
 #include <GameEngineCore/GameEngineCamera.h>
 
 
@@ -21,7 +21,7 @@ void CKatanaZero_Level::Update(float _DeltaTime)
 {
 	// 현재 커서가 nullptr 이 아니라면 
 	// 받아와서 로컬포지션을 저장
-	std::shared_ptr<CCursor> Cursor = GetCursor();
+	std::shared_ptr<Cursor> Cursor = GetCursor();
 	if (nullptr != Cursor)
 	{
 		m_CurMouseLocalPos = Cursor->GetTransform()->GetLocalPosition();

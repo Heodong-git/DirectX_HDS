@@ -26,7 +26,7 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
-	std::shared_ptr<class CStageEditer> m_GUI = nullptr;
+	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
 	std::shared_ptr<class CMap> m_Map_01 = nullptr;
 	

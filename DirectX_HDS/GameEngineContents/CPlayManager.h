@@ -44,12 +44,12 @@ public:
 	CPlayManager& operator=(const CPlayManager& _Other) = delete;
 	CPlayManager& operator=(CPlayManager&& _Other) noexcept = delete;
 
-	static void SetBattery(std::shared_ptr<class CBattery>& _Battery)
+	static void SetBattery(std::shared_ptr<class Battery>& _Battery)
 	{
  		m_Battery = _Battery;
 	}
 
-	static void SetInven(std::shared_ptr<class CInven>& _Inven)
+	static void SetInven(std::shared_ptr<class Inven>& _Inven)
 	{
 		m_Inven = _Inven;
 	}
@@ -59,7 +59,7 @@ public:
 		m_Timer = _Timer;
 	}
 
-	static void SetHud(std::shared_ptr<class CHud>& _Hud)
+	static void SetHud(std::shared_ptr<class Hud>& _Hud)
 	{
 		m_Hud = _Hud;
 	}
@@ -99,8 +99,8 @@ private:
 	float4 m_CameraPivot = {};
 	static LEVELTYPE m_LevelType;
 	static std::shared_ptr<class CTimer> m_Timer;
-	static std::shared_ptr<class CBattery> m_Battery;
-	static std::shared_ptr<class CInven> m_Inven;
-	static std::shared_ptr<class CHud> m_Hud;
+	static std::shared_ptr<class Battery> m_Battery;
+	static std::shared_ptr<class Inven> m_Inven;
+	static std::shared_ptr<class Hud> m_Hud;
 	static std::shared_ptr<class CPlayer> m_Player;
 };

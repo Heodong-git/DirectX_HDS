@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "CHud.h"
+#include "Hud.h"
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -7,15 +7,15 @@
 
 #include "CKatanaZero_Level.h"
 
-CHud::CHud()
+Hud::Hud()
 {
 }
 
-CHud::~CHud()
+Hud::~Hud()
 {	
 }
 
-void CHud::Start()
+void Hud::Start()
 {
 	{
 		GameEngineDirectory NewDir;

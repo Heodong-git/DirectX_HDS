@@ -27,7 +27,7 @@ private:
 	void ActorLoad() override;
 	
 	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
-	std::shared_ptr<class CTitleEditer> m_GUI = nullptr;
+	std::shared_ptr<class TitleEditer> m_GUI = nullptr;
 	// test 
 	std::shared_ptr<class CRecordingManager> m_RecordingManager = nullptr;
 };

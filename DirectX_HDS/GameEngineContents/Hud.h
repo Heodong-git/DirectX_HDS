@@ -2,18 +2,18 @@
 #include "CKatanaZero_Actor.h"
 
 // Ό³Έν :
-class CHud : public CKatanaZero_Actor
+class Hud : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CHud();
-	~CHud();
+	Hud();
+	~Hud();
 
 	// delete Function
-	CHud(const CHud& _Other) = delete;
-	CHud(CHud&& _Other) noexcept = delete;
-	CHud& operator=(const CHud& _Other) = delete;
-	CHud& operator=(CHud&& _Other) noexcept = delete;
+	Hud(const Hud& _Other) = delete;
+	Hud(Hud&& _Other) noexcept = delete;
+	Hud& operator=(const Hud& _Other) = delete;
+	Hud& operator=(Hud&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

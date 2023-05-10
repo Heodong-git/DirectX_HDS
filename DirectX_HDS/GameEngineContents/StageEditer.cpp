@@ -1,17 +1,17 @@
 #include "PrecompileHeader.h"
-#include "CStageEditer.h"
+#include "StageEditer.h"
 
 #include <GameEngineCore/GameEngineCore.h>
 
-CStageEditer::CStageEditer()
+StageEditer::StageEditer()
 {
 }
 
-CStageEditer::~CStageEditer()
+StageEditer::~StageEditer()
 {
 }
 
-void CStageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
+void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	if (ImGui::BeginMenu("LevelChange"))
 	{

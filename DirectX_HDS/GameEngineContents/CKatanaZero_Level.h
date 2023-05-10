@@ -74,12 +74,12 @@ public:
 		m_Boss = _Boss;
 	}
 
-	inline void SetCursor(std::shared_ptr<class CCursor>& _Cursor)
+	inline void SetCursor(std::shared_ptr<class Cursor>& _Cursor)
 	{
 		m_Cursor = _Cursor;
 	}
 
-	inline std::shared_ptr<class CCursor>& GetCursor()
+	inline std::shared_ptr<class Cursor>& GetCursor()
 	{
 		return m_Cursor;
 	}
@@ -116,7 +116,7 @@ private:
 
 	std::shared_ptr<class CPlayer> m_Player = nullptr;
 	std::shared_ptr<class CBoss_HeadHunter> m_Boss = nullptr;
-	std::shared_ptr<class CCursor> m_Cursor = nullptr;
+	std::shared_ptr<class Cursor> m_Cursor = nullptr;
 
 	bool m_Recording = true;
 	bool m_TimeOver = false;

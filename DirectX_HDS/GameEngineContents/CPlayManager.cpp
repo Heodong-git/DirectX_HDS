@@ -6,14 +6,14 @@
 #include <GameEngineCore/GameEngineCamera.h>
 
 #include "CKatanaZero_Level.h"
-#include "CBattery.h"
+#include "Battery.h"
 #include "CPlayer.h"
 
 CPlayManager* CPlayManager::m_Inst = nullptr;
 std::shared_ptr<class CTimer> CPlayManager::m_Timer = nullptr;
-std::shared_ptr<class CBattery> CPlayManager::m_Battery = nullptr;
-std::shared_ptr<class CInven> CPlayManager::m_Inven = nullptr;
-std::shared_ptr<class CHud> CPlayManager::m_Hud = nullptr;
+std::shared_ptr<class Battery> CPlayManager::m_Battery = nullptr;
+std::shared_ptr<class Inven> CPlayManager::m_Inven = nullptr;
+std::shared_ptr<class Hud> CPlayManager::m_Hud = nullptr;
 std::shared_ptr<class CPlayer> CPlayManager::m_Player = nullptr;
 CPlayManager::LEVELTYPE CPlayManager::m_LevelType = CPlayManager::LEVELTYPE::NONE;
 

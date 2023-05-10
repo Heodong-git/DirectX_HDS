@@ -2,18 +2,18 @@
 #include "CKatanaZero_Actor.h"
 
 // Ό³Έν :
-class CInven : public CKatanaZero_Actor
+class Battery : public CKatanaZero_Actor
 {
 public:
 	// constrcuter destructer
-	CInven();
-	~CInven();
+	Battery();
+	~Battery();
 
 	// delete Function
-	CInven(const CInven& _Other) = delete;
-	CInven(CInven&& _Other) noexcept = delete;
-	CInven& operator=(const CInven& _Other) = delete;
-	CInven& operator=(CInven&& _Other) noexcept = delete;
+	Battery(const Battery& _Other) = delete;
+	Battery(Battery&& _Other) noexcept = delete;
+	Battery& operator=(const Battery& _Other) = delete;
+	Battery& operator=(Battery&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

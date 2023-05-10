@@ -12,7 +12,7 @@
 
 #include <GameEngineContents/CKatanaZero_Level.h>
 
-#include "CCursor.h"
+#include "Cursor.h"
 #include "CFsm.h"
 
 CPlayer::CPlayer()
