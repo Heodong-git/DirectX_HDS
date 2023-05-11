@@ -209,3 +209,31 @@ void GameEngineShaderResHelper::SetTexture(const std::string_view& _SettingName,
 		Setter.Res = FindTex;
 	}
 }
+
+void GameEngineShaderResHelper::SetTexture(const std::string_view& _SettingName, std::shared_ptr<GameEngineTexture> _Texture)
+{
+	if (nullptr == _Texture)
+	{
+		MsgAssert("nullptr인 텍스처를 세팅하려고 했습니다." + std::string(_SettingName));
+		return;
+	}
+
+	std::string UpperName = GameEngineString::ToUpper(_SettingName);
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator FindIter = TextureSetters.find(UpperName);
+
+	if (TextureSetters.end() == FindIter)
+	{
+		MsgAssert("쉐이더에서 이런 이름의 텍스처 세팅를 사용하지 않았습니다." + UpperName);
+		return;
+	}
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameStartIter = TextureSetters.lower_bound(UpperName);
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameEndIter = TextureSetters.upper_bound(UpperName);
+
+	for (; NameStartIter != NameEndIter; ++NameStartIter)
+	{
+		GameEngineTextureSetter& Setter = NameStartIter->second;
+		Setter.Res = _Texture;
+	}
+}

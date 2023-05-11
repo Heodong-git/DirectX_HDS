@@ -41,5 +41,5 @@ void BaseLevel::CameraSetting()
 {
 	// 카메라세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000 });
 }

@@ -27,38 +27,17 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
-	inline bool IsSnail() const
-	{
-		return m_Snail;
-	}
-
-	std::shared_ptr<class GameEngineSpriteRenderer>& GetRender()
-	{
-		return m_Renderer;
-	}
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	void ChangeState(PlayerState _State);
-	void UpdateState(float _DeltaTime);
-
-	PlayerState m_CurState = PlayerState::IDLE;
-	PlayerState m_PrevState = PlayerState::NONE;
-	PlayerState m_NextState = PlayerState::NONE;
-
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer = nullptr;
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
 
-	bool   m_Snail = false;
-	
-	// Pixel Collider 
-	void Gravity(float _DeltaTime);
-
+	// º¸·ù 
 	GameEnginePixelColor GetPixelColor(float4 _Pos);
 	GameEnginePixelColor m_Black = { static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(160) };
 	GameEnginePixelColor m_White = { static_cast<char>(255), static_cast<char>(255), static_cast<char>(255), static_cast<char>(255) };
@@ -73,8 +52,26 @@ private:
 		return m_White == _Pixel;
 	}
 
+	// -------------------------Debug ----------------------------------
+	bool m_IsDebug = false;
+	inline void DebugSwitch()
+	{
+		m_IsDebug = !m_IsDebug;
+	}
+
+	void DebugUpdate();
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
+
+
 	// ------------------------- state ----------------------------------
 private:
+	void ChangeState(PlayerState _State);
+	void UpdateState(float _DeltaTime);
+
+	PlayerState m_CurState = PlayerState::IDLE;
+	PlayerState m_PrevState = PlayerState::NONE;
+	PlayerState m_NextState = PlayerState::NONE;
+
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();

@@ -1,17 +1,17 @@
 #pragma once
 #include "GameEngineTexture.h"
 
+// 스프라이트 정보 
+class SpriteInfo
+{
+public:
+	std::shared_ptr<GameEngineTexture> Texture = nullptr;
+	float4 CutData = {};
+};
 
-// 텍스쳐가 로드되지 않았다면 로드도 처리해줌, 무조건 한개 이상의 이미지 정보가 들어있어야함. 
+// 설명 : 스프라이트는 무조건 1개 이상의 이미지 정보가 들어가있어야함. 
 class GameEngineSprite : public GameEngineResource<GameEngineSprite>
 {
-private:
-	class SpriteInfo
-	{
-		std::shared_ptr<GameEngineTexture> Sprite;
-		float4 CutData;
-	};
-
 public:
 	// constrcuter destructer
 	GameEngineSprite();
@@ -22,21 +22,55 @@ public:
 	GameEngineSprite(GameEngineSprite&& _Other) noexcept = delete;
 	GameEngineSprite& operator=(const GameEngineSprite& _Other) = delete;
 	GameEngineSprite& operator=(GameEngineSprite&& _Other) noexcept = delete;
+	
+	// 폴더전체로드 
+	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path)
+	{
+		GameEnginePath NewPath = std::string(_Path);
 
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(NewPath.GetFileName());
+		NewTexture->ResLoadFolder(_Path);
+		return NewTexture;
+	}
 
-	static std::shared_ptr<GameEngineSprite> LoadFolder(const std::string_view& _Path);
+	// 아틀라스이미지로드 , 사용할려나? 
+	static std::shared_ptr<GameEngineSprite> LoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
+	{
+		GameEnginePath NewPath = std::string(_Path);
 
-	//// 텍스처를 기반으로 생성되고 
-	//static std::shared_ptr<GameEngineTexture> CreateTexture(const std::string_view& _TexureName, int X, int Y)
-	//{
-	//	return;
-	//}
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(NewPath.GetFileName());
+		NewTexture->ResLoadSheet(_Path, _X, _Y);
+		return NewTexture;
+	}
 
+	size_t GetSpriteCount()
+	{
+		return Sprites.size();
+	}
+
+	// 해당 인덱스의 스프라이트정보 반환 
+	const SpriteInfo& GetSpriteInfo(size_t _Index)
+	{
+		if (_Index < 0)
+		{
+			MsgAssert("0이하의 스프라이트 인덱스 입니다.");
+		}
+
+		if (_Index >= Sprites.size())
+		{
+			MsgAssert("스프라이트의 인덱스를 오버했습니다.");
+		}
+
+		return Sprites[_Index];
+	}
 
 protected:
 
 private:
-	std::vector<SpriteInfo> Sprites;
+	void ResLoadFolder(const std::string_view& _Path);
+	void ResLoadSheet(const std::string_view& _Path, size_t _X, size_t _Y);
+
+	std::vector<SpriteInfo> Sprites = std::vector<SpriteInfo>();
 
 };
 

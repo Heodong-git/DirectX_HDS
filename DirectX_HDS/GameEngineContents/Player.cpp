@@ -23,48 +23,42 @@ Player::~Player()
 
 void Player::Start()
 {
+	// 파일로드 기본인터페이스 
 	{
-		//if (nullptr == GameEngineSprite::Find("player_idle"))
-		//{
-		//	GameEngineDirectory NewDir;
-		//	NewDir.MoveParentToDirectory("katanazero_resources");
-		//	NewDir.Move("katanazero_resources");
-		//	NewDir.Move("Texture");
-		//	NewDir.Move("Stage01Level");
-		//	NewDir.Move("Player");
+		if (nullptr == GameEngineSprite::Find("player_idle"))
+		{
+			GameEngineDirectory Dir;
+			Dir.MoveParentToDirectory("katanazero_resources");
+			Dir.Move("katanazero_resources");
+			Dir.Move("Texture");
+			Dir.Move("ClubLevel");
+			Dir.Move("player");
 
-		//	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("player_idle").GetFullPath());
-
-		//	// std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
-		//}
-		
-
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_idle").GetFullPath());
+			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+		}
 	}
-	{
+	
+
+	/*{
 		GameEngineDirectory NewDir;
-		// 원하는 폴더를 가진 디렉터리로 이동
 		NewDir.MoveParentToDirectory("katanazero_resources");
-		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Player");
-
-		// 파일 전체로드 
+ 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
-	}
+	}*/
 
-
-	if (false == GameEngineInput::IsKey("attack"))
+	if (false == GameEngineInput::IsKey("player_slash"))
 	{
+		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("player_slash", VK_LBUTTON);
-		// GameEngineInput::CreateKey("test", VK_RBUTTON);
 		GameEngineInput::CreateKey("player_snail", VK_LSHIFT);
 		GameEngineInput::CreateKey("player_left_Move", 'A');
 		GameEngineInput::CreateKey("player_right_Move", 'D');
@@ -73,41 +67,48 @@ void Player::Start()
 	}
 
 	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
-
 	m_Renderer->SetPipeLine("2DTexture");
 	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
+	m_Renderer->SetScaleToTexture("player_idle_0.png");
 	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
+	m_Renderer->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
+	m_Renderer->CreateAnimation("player_idle", "player_idle", 0.1f, 0 , 10);	
+	m_Renderer->ChangeAnimation("player_idle");
 
-	// fsm 테스트
-	
+	// 디버그 렌더러0
+	// 플레이어 위치 그대로 출력 
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender0->SetPipeLine("2DTexture");
+	m_DebugRender0->GetTransform()->SetLocalScale({ 3  , 3 });
+	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
+	m_DebugRender0->Off();
 }
 
 void Player::Update(float _DeltaTime)
 {
-	// 픽셀테스트용 코드 , 일단 잘댐
-	/*std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
-	GameEnginePixelColor Pixel = Ptr->GetPixel(359, 92);*/
-	
-	float4 CheckPos = GetTransform()->GetLocalPosition();
-	GameEnginePixelColor CheckColor = GetPixelColor(CheckPos);
-	if (true == IsBlackPixel(CheckColor))
-	{
-		GetTransform()->AddLocalPosition({ 0, +1 });
-	}
-
-	else if (IsWhitePixel(CheckColor))
-	{
-		// 내 색상이 화이트라면 계속해서 -1 , 중력
-		//Gravity(_DeltaTime);
-	}
-
 	UpdateState(_DeltaTime);
+	DebugUpdate();
 }
 
-// 디버그용으로 사용
-void Player::Render(float _Delta)
+void Player::Render(float _DeltaTime)
 {
 }
+
+// ---------------------------------------- Debug -----------------------------------------
+void Player::DebugUpdate()
+{
+	if (true == m_IsDebug)
+	{
+		m_DebugRender0->On();
+	}
+
+	else if (false == m_IsDebug)
+	{
+		m_DebugRender0->Off();
+	}
+}
+
 
 // ---------------------------------------- state ------------------------------------------ 
 void Player::UpdateState(float _DeltaTime)
@@ -172,16 +173,7 @@ void Player::ChangeState(PlayerState _State)
 	}
 }
 
-void Player::Gravity(float _DeltaTime)
-{
-	if (true == IsBlackPixel(GetPixelColor(GetTransform()->GetLocalPosition())))
-	{
-		return;
-	}
-	
-	GetTransform()->AddLocalPosition(float4::Down * 100.0f * _DeltaTime);
-}
-
+// 보류
 GameEnginePixelColor Player::GetPixelColor(float4 _Pos)
 {
 	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
@@ -212,6 +204,11 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("player_debugswitch"))
+	{
+		DebugSwitch();
+	}
+
 	// 임시무브 
 	if (true == GameEngineInput::IsDown("player_left_move"))
 	{
@@ -270,7 +267,6 @@ void Player::MoveEnd()
 {
 }
 
-// 공격
 void Player::SlashStart()
 {
 }

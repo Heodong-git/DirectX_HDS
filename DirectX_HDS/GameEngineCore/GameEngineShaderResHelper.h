@@ -86,6 +86,8 @@ public:
 
 	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
 
+	void SetTexture(const std::string_view& _SettingName, std::shared_ptr<GameEngineTexture> _Texture);
+
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
 
 	void Setting();

@@ -20,7 +20,7 @@ void Map::Start()
 		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Map");
 
 		// 파일 전체로드 
