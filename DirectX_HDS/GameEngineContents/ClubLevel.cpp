@@ -85,8 +85,8 @@ void ClubLevel::ResourcesLoad()
 void ClubLevel::ActorLoad()
 {
 	m_Map_01 = CreateActor<Map>();
-	m_Map_01->GetRender()->SetPipeLine("2DTexture");
 	m_Map_01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
+	//m_Map_01->GetRender()->SetAtlasConstantBuffer();
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	

@@ -21,7 +21,6 @@ GameEngineConstantBuffer::~GameEngineConstantBuffer()
 
 void GameEngineConstantBuffer::ChangeData(const void* _Data, UINT _Size)
 {
-	// 머티리얼들은 상수버퍼나 이런걸 통일해 놓은 것이다.
 	if (nullptr == _Data)
 	{
 		std::string Name = GetName().data();

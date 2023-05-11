@@ -35,6 +35,8 @@ void GameEngineRenderer::Render(float _Delta)
 
 	Pipe->RenderingPipeLineSetting();
 
+
+	GameEngineActor* check = GetActor();
 	// 쉐이더가 어떤 텍스쳐, 어떤 상수버퍼를 사용할 것인지 여기서 세팅한다.
 	ShaderResHelper.Setting();
 

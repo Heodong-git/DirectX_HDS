@@ -40,12 +40,14 @@ void TitleBackGround::CreateRender()
 {
 	m_BackGroundBlackRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_BackGroundBlackRender->SetPipeLine("2DTexture");
+	m_BackGroundBlackRender->SetAtlasConstantBuffer();
 	m_BackGroundBlackRender->SetTexture("background_black.png");
 	float4 screensize = GameEngineWindow::GetScreenSize();
 	m_BackGroundBlackRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y * 2.0f });
 
 	m_BackGroundRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_BackGroundRender->SetPipeLine("2DTexture");
+	m_BackGroundRender->SetAtlasConstantBuffer();
 	m_BackGroundRender->SetTexture("spr_title_background.png");
 	m_BackGroundRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y * 2.0f });
 }

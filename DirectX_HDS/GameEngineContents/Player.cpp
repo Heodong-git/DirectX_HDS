@@ -57,8 +57,9 @@ void Player::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetPipeLine("2DTexture");
-	m_Render->GetTransform()->SetLocalScale(m_LocalScale);
-	m_Render->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
+	//m_Render->GetTransform()->SetLocalScale(m_LocalScale);
+	//m_Render->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
+	m_Render->SetAtlasConstantBuffer();
 
 
 	// 디버그 렌더러0
@@ -66,9 +67,10 @@ void Player::Start()
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender0->SetPipeLine("2DTexture");
+	m_DebugRender0->SetAtlasConstantBuffer();
 	m_DebugRender0->GetTransform()->SetLocalScale({ 3  , 3 });
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
-	m_DebugRender0->Off();
+	//m_DebugRender0->Off();
 
 	// 애니메이션 생성
 	CreateAnimation();
@@ -87,12 +89,21 @@ void Player::Render(float _DeltaTime)
 
 void Player::CreateAnimation()
 {
-	m_Render->CreateAnimation("player_idle", "player_idle", 0.1f, 0, 10, true, true);
-	m_Render->CreateAnimation("player_attack", "player_attack", 0.1f, 0, 6, false, true);
-	m_Render->CreateAnimation("player_idle_to_run", "player_idle_to_run", 0.1f, 0, 3, true, true);
-	m_Render->CreateAnimation("player_run", "player_run", 0.05f, 0, 9 , true , true);
-	m_Render->CreateAnimation("player_crouch", "player_crouch", 0.01f , 0, 0 , false , true);
-	m_Render->GetTransform()->SetLocalScale(m_LocalScale);
+	m_Render->CreateAnimation({ .AnimationName = "player_idle", .SpriteName = "player_idle", .Start = 0, .End = 10 ,
+									  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true});
+
+	m_Render->CreateAnimation({ .AnimationName = "player_attack", .SpriteName = "player_attack", .Start = 0, .End = 6 ,
+									  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+
+	m_Render->CreateAnimation({ .AnimationName = "player_idle_to_run", .SpriteName = "player_idle_to_run", .Start = 0, .End = 3 ,
+								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+
+	m_Render->CreateAnimation({ .AnimationName = "player_run", .SpriteName = "player_run", .Start = 0, .End = 9 ,
+								  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true });
+
+	m_Render->CreateAnimation({ .AnimationName = "player_crouch", .SpriteName = "player_crouch", .Start = 0, .End = 0 ,
+							  .FrameInter = 0.01f , .Loop = false , .ScaleToTexture = true });
+
 	m_Render->ChangeAnimation("player_idle");
 }
 
@@ -356,6 +367,13 @@ void Player::SlashUpdate(float _DeltaTime)
 
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
+		// 공중상태도 고려해야함 일단 임시로 
+		if (true == GameEngineInput::IsPress("player_left_move") || true == GameEngineInput::IsPress("player_right_move"))
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
+
 		ChangeState(PlayerState::IDLE);
 		return;
 	}

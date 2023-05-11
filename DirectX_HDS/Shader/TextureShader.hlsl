@@ -52,6 +52,15 @@ struct Output
     float4 UV : TEXCOORD;
 };
 
+cbuffer AtlasData : register(b1)
+{
+    // 0.0 0.5
+    float2 FramePos;
+    // 0.5 0.5 
+    float2 FrameScale;
+    // float4 AtlasUV;
+}
+
 // 버텍스셰이더에서 계산되어 반환되는 값이 Output struct
 // 이 구조체에 저장된 값을 픽셀셰이더에 넘겨준다. 
 Output Texture_VS(Input _Value)
@@ -62,7 +71,8 @@ Output Texture_VS(Input _Value)
     // 월드뷰프로젝션 곱 : mul 함수 사용
     OutputValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     //OutPutValue.Pos = _Value.Pos;
-    OutputValue.UV = _Value.UV;
+    OutputValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    OutputValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
 
     return OutputValue;
 }

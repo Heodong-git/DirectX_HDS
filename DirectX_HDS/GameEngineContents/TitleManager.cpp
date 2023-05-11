@@ -374,6 +374,7 @@ void TitleManager::CreateRender()
 	// ZERTextRender 
 	m_ZERRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_ZERRender->SetPipeLine("2DTexture");
+	m_ZERRender->SetAtlasConstantBuffer();
 	m_ZERRender->SetTexture("spr_titlegraphic_big_1.png");
 	m_ZERRender->GetTransform()->SetLocalScale(float4{ 350.0f , 200.0f });
 	m_ZERRender->GetTransform()->SetLocalPosition(float4{ m_ZERRenderPos.x , m_ZERRenderPos.y - 150.0f });
@@ -381,6 +382,7 @@ void TitleManager::CreateRender()
 	// KatanaTexRender 
 	m_KatanaRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_KatanaRender->SetPipeLine("2DTexture");
+	m_KatanaRender->SetAtlasConstantBuffer();
 	m_KatanaRender->SetTexture("spr_titlegraphic_big2_0.png");
 	m_KatanaRender->GetTransform()->SetLocalScale(float4{ 350.0f , 170.0f });
 	m_KatanaRender->GetTransform()->SetLocalPosition(float4{ m_KatanaRenderPos.x , m_KatanaRenderPos.y - 150.0f });
@@ -388,6 +390,7 @@ void TitleManager::CreateRender()
 	// OTexRender
 	m_ORender = CreateComponent<GameEngineSpriteRenderer>();
 	m_ORender->SetPipeLine("2DTexture");
+	m_ORender->SetAtlasConstantBuffer();
 	m_ORender->SetTexture("spr_titlegraphic_big_2.png");
 	// 반투명텍스쳐사용시
 	/*m_ORender->SetPipeLine("2DBlinkTexture");
@@ -398,26 +401,31 @@ void TitleManager::CreateRender()
 
 	m_FenceRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_FenceRender->SetPipeLine("2DTexture");
+	m_FenceRender->SetAtlasConstantBuffer();
 	m_FenceRender->SetTexture("spr_title_fence_0.png");
 	m_FenceRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y * 2.0f });
 
 	m_PlantsRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_PlantsRender->SetPipeLine("2DTexture");
+	m_PlantsRender->SetAtlasConstantBuffer();
 	m_PlantsRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y / 1.5f});
 
 	float plantsrenderYmove = -(screensize.y / 6.0f);
 	m_PlantsRender->GetTransform()->SetLocalPosition({ 0 , plantsrenderYmove });
-	m_PlantsRender->CreateAnimation("Plants_Anim", "Plants_Anim", 0.12f, 0, 11);
+	m_PlantsRender->CreateAnimation({ .AnimationName = "Plants_Anim", .SpriteName = "Plants_Anim", .Start = 0, .End = 11 ,
+									  .FrameInter = 0.15f , .Loop = true});
 	m_PlantsRender->ChangeAnimation("Plants_Anim");
 
 	m_TranslucentBoxRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_TranslucentBoxRender->SetPipeLine("2DTranslucentTexture");
 	m_TranslucentBoxRender->GetShaderResHelper().SetTexture("TranslucentTex", "background_black.png");
+	m_TranslucentBoxRender->SetAtlasConstantBuffer();
 	m_TranslucentBoxRender->GetTransform()->SetLocalScale({ screensize.x / 2.5f , screensize.y / 4.0f });
 	m_TranslucentBoxRender->GetTransform()->SetLocalPosition(float4{ m_TranslucentBoxRenderPos.x, m_TranslucentBoxRenderPos.y - 270.0f });
 
 	m_NewGameTextRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_NewGameTextRender->SetPipeLine("2DTexture");
+	m_NewGameTextRender->SetAtlasConstantBuffer();
 	m_NewGameTextRender->SetTexture("newgame_text.png");
 	m_NewGameTextRender->GetTransform()->SetLocalScale({ 150 , 25 });
 	m_NewGameTextRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos);
@@ -425,6 +433,7 @@ void TitleManager::CreateRender()
 
 	m_SettingTextRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_SettingTextRender->SetPipeLine("2DTexture");
+	m_SettingTextRender->SetAtlasConstantBuffer();
 	m_SettingTextRender->SetTexture("setting_text.png");
 	m_SettingTextRender->GetTransform()->SetLocalScale({ 50 , 25 });
 	m_SettingTextRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4 { 0, -50});
@@ -432,6 +441,7 @@ void TitleManager::CreateRender()
 
 	m_ExitTextRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_ExitTextRender->SetPipeLine("2DTexture");
+	m_ExitTextRender->SetAtlasConstantBuffer();
 	m_ExitTextRender->SetTexture("exit_text.png");
 	m_ExitTextRender->GetTransform()->SetLocalScale({ 50 , 27 });
 	m_ExitTextRender->GetTransform()->SetLocalPosition(m_TextRenderOriginPos + float4 { 0, -100});
@@ -440,6 +450,7 @@ void TitleManager::CreateRender()
 	m_MenuSelectBoxRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_MenuSelectBoxRender->SetPipeLine("2DTranslucentTexture");
 	m_MenuSelectBoxRender->GetShaderResHelper().SetTexture("TranslucentTex", "menu_white_bar.png");
+	m_MenuSelectBoxRender->SetAtlasConstantBuffer();
 	m_MenuSelectBoxRender->GetTransform()->SetLocalScale({450, 30});
 	m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(float4 { 0 , -160});
 	m_MenuSelectBoxRender->Off();

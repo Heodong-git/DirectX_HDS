@@ -61,7 +61,7 @@ private:
 	}
 
 	// -------------------------Debug ----------------------------------
-	bool m_IsDebug = false;
+	bool m_IsDebug = true;
 	inline void DebugSwitch()
 	{
 		m_IsDebug = !m_IsDebug;

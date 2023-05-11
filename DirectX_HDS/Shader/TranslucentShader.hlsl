@@ -49,6 +49,16 @@ struct PixelInputType
     float4 UV : TEXCOORD;
 };
 
+cbuffer AtlasData : register(b1)
+{
+    // 0.0 0.5
+    float2 FramePos;
+    // 0.5 0.5 
+    float2 FrameScale;
+    // float4 AtlasUV;
+}
+
+
 PixelInputType Texture_VS(VertexInputType _Value)
 {
     PixelInputType PixelInputValue = (PixelInputType) 0;
@@ -57,7 +67,8 @@ PixelInputType Texture_VS(VertexInputType _Value)
     // 월드매트릭스 곱 : mul 함수를 사용하여 가능
     PixelInputValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     //OutPutValue.Pos = _Value.Pos;
-    PixelInputValue.UV = _Value.UV;
+    PixelInputValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    PixelInputValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
 	
 	// 다음단계에서 사용할 정보들.
     // _Value.Pos *= 월드뷰프로젝션;

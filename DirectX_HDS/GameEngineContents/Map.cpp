@@ -40,5 +40,7 @@ void Map::Start()
 	m_BackGround->GetTransform()->SetLocalScale({ screensize.x * 2.0f , screensize.y * 2.0f });*/
 
 	m_MapRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_MapRender->SetPipeLine("2DTexture");
+	m_MapRender->SetAtlasConstantBuffer();
 }
 
