@@ -88,7 +88,7 @@ void Player::Render(float _DeltaTime)
 void Player::CreateAnimation()
 {
 	m_Render->CreateAnimation("player_idle", "player_idle", 0.1f, 0, 10);
-	m_Render->CreateAnimation("player_attack", "player_attack", 0.05f, 0, 6);
+	m_Render->CreateAnimation("player_attack", "player_attack", 0.1f, 0, 6);
 	m_Render->CreateAnimation("player_idle_to_run", "player_idle_to_run", 0.1f, 0, 3);
 	m_Render->CreateAnimation("player_run", "player_run", 0.05f, 0, 9);
 	m_Render->CreateAnimation("player_crouch", "player_crouch", 0.01f , 0, 0);
@@ -262,6 +262,18 @@ void Player::IdleUpdate(float _DeltaTime)
 }
 
 void Player::IdleEnd()
+{
+}
+
+void Player::IdleToRunStart()
+{
+}
+
+void Player::IdleToRunUpdate(float _DeltaTime)
+{
+}
+
+void Player::IdleToRunEnd()
 {
 }
 

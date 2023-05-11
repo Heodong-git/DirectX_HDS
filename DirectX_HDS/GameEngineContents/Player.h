@@ -8,6 +8,7 @@
 enum class PlayerState
 {
 	NONE,
+	ILDETORUN,
 	IDLE,
 	MOVE,
 	JUMP,
@@ -82,6 +83,11 @@ private:
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
+
+	void IdleToRunStart();
+	void IdleToRunUpdate(float _DeltaTime);
+	void IdleToRunEnd();
+
 
 	void MoveStart();
 	void MoveUpdate(float _DeltaTime);
