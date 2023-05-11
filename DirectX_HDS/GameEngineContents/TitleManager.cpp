@@ -403,11 +403,12 @@ void TitleManager::CreateRender()
 
 	m_PlantsRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_PlantsRender->SetPipeLine("2DTexture");
-	m_PlantsRender->SetTexture("spr_title_plants_0.png");
 	m_PlantsRender->GetTransform()->SetLocalScale({ screensize.x , screensize.y / 1.5f});
 
 	float plantsrenderYmove = -(screensize.y / 6.0f);
 	m_PlantsRender->GetTransform()->SetLocalPosition({ 0 , plantsrenderYmove });
+	m_PlantsRender->CreateAnimation("Plants_Anim", "Plants_Anim", 0.12f, 0, 11);
+	m_PlantsRender->ChangeAnimation("Plants_Anim");
 
 	m_TranslucentBoxRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_TranslucentBoxRender->SetPipeLine("2DTranslucentTexture");

@@ -10,6 +10,7 @@
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineSprite.h>
 
 #include "TitleManager.h"
 #include "TitleEditer.h"
@@ -92,6 +93,18 @@ void TitleLevel::ResourcesLoad()
 	for (size_t i = 0; i < File.size(); i++)
 	{
 		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+
+	if (nullptr == GameEngineSprite::Find("player_idle"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("katanazero_resources");
+		Dir.Move("katanazero_resources");
+		Dir.Move("Texture");
+		Dir.Move("TitleSub");
+
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("Plants_Anim").GetFullPath());
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 }
 
