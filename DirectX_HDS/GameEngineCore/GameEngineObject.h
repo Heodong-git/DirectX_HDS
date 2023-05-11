@@ -76,4 +76,10 @@ private:
 	GameEngineTransform Transform;
 
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
+
+	// 재귀함수로 구현하여 자식이 있다면 자식들의 업데이트,렌더 등을 진행해준다. 
+	void AllAccTime(float _DeltaTime);
+	void AllUpdate(float _DeltaTime);
+	void AllRender(float _DeltaTime);
+	void AllRelease();
 };

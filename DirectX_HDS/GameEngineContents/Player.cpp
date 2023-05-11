@@ -11,7 +11,6 @@
 #include <GameEngineCore/GameEngineResource.h>
 
 #include "BaseLevel.h"
-
 #include "Cursor.h"
 
 Player::Player()
@@ -214,6 +213,16 @@ void Player::IdleStart()
 void Player::IdleUpdate(float _DeltaTime)
 {
 	// 임시무브 
+	if (true == GameEngineInput::IsDown("player_left_move"))
+	{
+		m_Renderer->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else if (true == GameEngineInput::IsDown("player_right_move"))
+	{
+		m_Renderer->GetTransform()->SetLocalPositiveScaleX();
+	}
+
+
 	if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);

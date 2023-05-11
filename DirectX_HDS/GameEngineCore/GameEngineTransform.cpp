@@ -30,44 +30,51 @@ void GameEngineTransform::TransformUpdate()
 	}
 	else // 차이
 	{
-		float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-		float4 PScale, PRotation, PPosition;
-		ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
-
-
-		if (true == AbsoluteScale)
-		{
-			// 부모쪽 행렬의 스케일을 1
-			PScale = float4::One;
-		}
-		if (true == AbsoluteRotation)
-		{
-			// 부모의 회전 
-			PRotation = float4::Zero;
-			PRotation.EulerDegToQuaternion();
-		}
-		if (true == AbsolutePosition)
-		{
-			PPosition = float4::Zero;
-		}
-
-		float4x4 MatScale, MatRot, MatPos;
-
-		//scale
-		MatScale.Scale(PScale);
-
-		//rot
-		MatRot = PRotation.QuaternionToRotationMatrix();
-
-		//pos
-		MatPos.Pos(PPosition);
-
-		TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
+		WorldCalculation();
 	}
 
 	WorldDecompose();
+
 	LocalDecompose();
 	// ParentWorldMatrix.Decompose(PScale, PRoatation, PPosition);
+
+}
+
+void GameEngineTransform::WorldCalculation()
+{
+	float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
+	float4 PScale, PRotation, PPosition;
+	ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
+
+
+	if (true == AbsoluteScale)
+	{
+		// 부모쪽 행렬의 스케일을 1
+		PScale = float4::One;
+	}
+	if (true == AbsoluteRotation)
+	{
+		// 부모의 회전 
+		PRotation = float4::Zero;
+		PRotation.EulerDegToQuaternion();
+	}
+	if (true == AbsolutePosition)
+	{
+		PPosition = float4::Zero;
+	}
+
+	float4x4 MatScale, MatRot, MatPos;
+
+	//scale
+	MatScale.Scale(PScale);
+
+	//rot
+	MatRot = PRotation.QuaternionToRotationMatrix();
+
+	//pos
+	MatPos.Pos(PPosition);
+
+	TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
 }
 
 void GameEngineTransform::LocalDecompose()
@@ -129,20 +136,8 @@ void GameEngineTransform::CalChild()
 {
 	for (GameEngineTransform* ChildTrans : Child)
 	{
-		if (false == ChildTrans->AbsoluteScale)
-		{
-			ChildTrans->SetLocalScale(ChildTrans->GetLocalScale());
-		}
-
-		if (false == ChildTrans->AbsoluteRotation)
-		{
-			ChildTrans->SetLocalRotation(ChildTrans->GetLocalRotation());
-		}
-
-		if (false == ChildTrans->AbsolutePosition)
-		{
-			ChildTrans->SetLocalPosition(ChildTrans->GetLocalPosition());
-		}
+		ChildTrans->WorldCalculation();
+		ChildTrans->CalChild();
 	}
 }
 

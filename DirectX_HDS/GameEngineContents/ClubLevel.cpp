@@ -84,29 +84,11 @@ void ClubLevel::ResourcesLoad()
 
 void ClubLevel::ActorLoad()
 {
-	// 맵 로드 , 맵은 그대로 깔고, 카메라를 움직인다. 
 	m_Map_01 = CreateActor<Map>();
 	m_Map_01->GetRender()->SetPipeLine("2DTexture");
 	m_Map_01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
 
-
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
-	// 이게 댕글링포인터가 되지않..나? 
-	std::shared_ptr<Hud> NewHud = CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "HUD");
-	PlayManager::GetInst()->SetHud(NewHud);
-	NewHud->GetTransform()->AddLocalPosition({ -ScreenSize.hx(), ScreenSize.hy() });
-
-	std::shared_ptr<Cursor> NewCursor = CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
-	SetCursor(NewCursor);
-	
-	std::shared_ptr<Battery> NewBattery = CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
-	PlayManager::GetInst()->SetBattery(NewBattery);
-	
-	std::shared_ptr<Inven> NewInven = CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
-	PlayManager::GetInst()->SetInven(NewInven);
-	
-	std::shared_ptr<Timer> NewTimer = CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
-	PlayManager::GetInst()->SetTimer(NewTimer);
 	
 	std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	SetPlayer(NewPlayer);
