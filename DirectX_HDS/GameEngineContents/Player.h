@@ -12,6 +12,7 @@ enum class PlayerState
 	MOVE,
 	JUMP,
 	SLASH,
+	CROUCH,
 };
 
 class Player : public BaseActor
@@ -33,9 +34,15 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer = nullptr;
+	void CreateAnimation();
+
+	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
+
+	// true = 오른쪽
+	bool   m_Direction = true; 
+	void DirCheck();
 
 	// 보류 
 	GameEnginePixelColor GetPixelColor(float4 _Pos);
@@ -87,6 +94,10 @@ private:
 	void JumpStart();
 	void JumpUpdate(float _DeltaTime);
 	void JumpEnd();
+
+	void CrouchStart();
+	void CrouchUpdate(float _DeltaTime);
+	void CrouchEnd();
 };
 
 // 파일입출력이 필수다. 

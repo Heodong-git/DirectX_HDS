@@ -35,26 +35,15 @@ void Player::Start()
 			Dir.Move("player");
 
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_idle").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_attack").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_idle_to_run").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_run").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_crouch").GetFullPath());
+
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
 	}
 	
-
-	/*{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("katanazero_resources");
-		NewDir.Move("katanazero_resources");
-		NewDir.Move("Texture");
-		NewDir.Move("ClubLevel");
-		NewDir.Move("Player");
- 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}*/
-
 	if (false == GameEngineInput::IsKey("player_slash"))
 	{
 		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
@@ -66,14 +55,11 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
 
-	m_Renderer = CreateComponent<GameEngineSpriteRenderer>();
-	m_Renderer->SetPipeLine("2DTexture");
-	m_Renderer->GetShaderResHelper().SetTexture("DiffuseTex", "player_idle_0.png");
-	m_Renderer->SetScaleToTexture("player_idle_0.png");
-	m_Renderer->GetTransform()->SetLocalScale(m_LocalScale);
-	m_Renderer->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
-	m_Renderer->CreateAnimation("player_idle", "player_idle", 0.1f, 0 , 10);	
-	m_Renderer->ChangeAnimation("player_idle");
+	m_Render = CreateComponent<GameEngineSpriteRenderer>();
+	m_Render->SetPipeLine("2DTexture");
+	m_Render->GetTransform()->SetLocalScale(m_LocalScale);
+	m_Render->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
+
 
 	// 디버그 렌더러0
 	// 플레이어 위치 그대로 출력 
@@ -83,16 +69,43 @@ void Player::Start()
 	m_DebugRender0->GetTransform()->SetLocalScale({ 3  , 3 });
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
 	m_DebugRender0->Off();
+
+	// 애니메이션 생성
+	CreateAnimation();
 }
 
 void Player::Update(float _DeltaTime)
 {
+	DirCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
 
 void Player::Render(float _DeltaTime)
 {
+}
+
+void Player::CreateAnimation()
+{
+	m_Render->CreateAnimation("player_idle", "player_idle", 0.1f, 0, 10);
+	m_Render->CreateAnimation("player_attack", "player_attack", 0.05f, 0, 6);
+	m_Render->CreateAnimation("player_idle_to_run", "player_idle_to_run", 0.1f, 0, 3);
+	m_Render->CreateAnimation("player_run", "player_run", 0.05f, 0, 9);
+	m_Render->CreateAnimation("player_crouch", "player_crouch", 0.01f , 0, 0);
+	m_Render->ChangeAnimation("player_idle");
+}
+
+void Player::DirCheck()
+{
+	if (true == GameEngineInput::IsPress("player_left_move"))
+	{
+		m_Direction = false;
+	}
+
+	if (true == GameEngineInput::IsPress("player_right_move"))
+	{
+		m_Direction = true;
+	}
 }
 
 // ---------------------------------------- Debug -----------------------------------------
@@ -127,6 +140,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::SLASH:
 		SlashUpdate(_DeltaTime);
+		break; 
+	case PlayerState::CROUCH:
+		CrouchUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -153,6 +169,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::SLASH:
 		SlashStart();
 		break;
+	case PlayerState::CROUCH:
+		CrouchStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -170,8 +189,13 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::SLASH:
 		SlashEnd();
 		break;
+	case PlayerState::CROUCH:
+		CrouchEnd();
+		break;
 	}
 }
+
+
 
 // 보류
 GameEnginePixelColor Player::GetPixelColor(float4 _Pos)
@@ -200,6 +224,7 @@ GameEnginePixelColor Player::GetPixelColor(float4 _Pos)
 
 void Player::IdleStart()
 {
+	m_Render->ChangeAnimation("player_idle");
 }
 
 void Player::IdleUpdate(float _DeltaTime)
@@ -209,46 +234,31 @@ void Player::IdleUpdate(float _DeltaTime)
 		DebugSwitch();
 	}
 
+	if (true == GameEngineInput::IsDown("player_crouch"))
+	{
+		ChangeState(PlayerState::CROUCH);
+		return;
+	}
+
 	// 임시무브 
-	if (true == GameEngineInput::IsDown("player_left_move"))
+	if (true == GameEngineInput::IsDown("player_right_move"))
 	{
-		m_Renderer->GetTransform()->SetLocalNegativeScaleX();
+		ChangeState(PlayerState::MOVE);
+		return;
 	}
-	else if (true == GameEngineInput::IsDown("player_right_move"))
+	else if (true == GameEngineInput::IsDown("player_left_move"))
 	{
-		m_Renderer->GetTransform()->SetLocalPositiveScaleX();
-	}
-
-
-	if (true == GameEngineInput::IsPress("player_left_Move"))
-	{
-		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("player_right_Move"))
-	{
-		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("player_jump"))
-	{
-		GetTransform()->AddLocalPosition(float4::Up * m_MoveSpeed * _DeltaTime);
-	}
-	if (true == GameEngineInput::IsPress("player_crouch"))
-	{
-		GetTransform()->AddLocalPosition(float4::Down * m_MoveSpeed * _DeltaTime);
+		
+		ChangeState(PlayerState::MOVE);
+		return;
 	}
 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
-		//// 공격애니메이션이 종료됐다면 return ㅇㅇ 
-		//CKatanaZero_Level* CurLevel = GetReturnCastLevel();
-
-		//// 눌렸을 때 마우스의 위치를 가져온다.
-		//float4 cursorpos = CurLevel->GetCursor()->GetTransform()->GetLocalPosition();
-		//GetTransform()->SetLocalPosition(cursorpos);
-		//return;
+		ChangeState(PlayerState::SLASH);
+		return;
 	}
+
 }
 
 void Player::IdleEnd()
@@ -257,10 +267,47 @@ void Player::IdleEnd()
 
 void Player::MoveStart()
 {
+	m_Render->ChangeAnimation("player_run");
 }
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("player_crouch"))
+	{
+		ChangeState(PlayerState::CROUCH);
+		return;
+	}
+
+	if (false == GameEngineInput::IsPress("player_left_move") && 
+		false == GameEngineInput::IsPress("player_right_move"))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+
+	if (true == GameEngineInput::IsPress("player_right_Move"))
+	{
+		m_Direction = true;
+		m_Render->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	{
+	
+		m_Direction = false;
+		m_Render->GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+	}
 }
 
 void Player::MoveEnd()
@@ -269,12 +316,13 @@ void Player::MoveEnd()
 
 void Player::SlashStart()
 {
+	m_Render->ChangeAnimation("player_attack");
 }
 
 void Player::SlashUpdate(float _DeltaTime)
 {
 	//// 공격애니메이션이 종료됐다면 return ㅇㅇ 
-	//CKatanaZero_Level* CurLevel = dynamic_cast<CKatanaZero_Level*>(GetLevel());
+	//BaseLevel* CurLevel = dynamic_cast<BaseLevel*>(GetLevel());
 	//if (nullptr == CurLevel)
 	//{
 	//	MsgAssert("Level 의 dynamic_cast에 실패 했습니다.");
@@ -292,6 +340,12 @@ void Player::SlashUpdate(float _DeltaTime)
 	////movedir *= m_SlashMoveRange;
 
 	//GetTransform()->AddLocalPosition(movedir * m_MoveSpeed * _DeltaTime);
+
+	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
 }
 
 void Player::SlashEnd()
@@ -307,6 +361,24 @@ void Player::JumpUpdate(float _DeltaTime)
 }
 
 void Player::JumpEnd()
+{
+}
+
+void Player::CrouchStart()
+{
+	m_Render->ChangeAnimation("player_crouch");
+}
+
+void Player::CrouchUpdate(float _DeltaTime)
+{
+	if (false == GameEngineInput::IsPress("player_crouch"))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+}
+
+void Player::CrouchEnd()
 {
 }
 
