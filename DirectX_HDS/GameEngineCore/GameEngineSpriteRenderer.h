@@ -28,8 +28,23 @@ public:
 	float CurTime = 0.0f;		// 
 	float Inter = 0.1f;			// 
 	bool Loop = true;			// 반복여부 
+	bool ScaleToImage = false;	// 이미지의 크기로 세팅할 것인지에 대한 여부 
 
 	bool IsEnd();				// 애니메이션이 종료되었다면 
+};
+
+// 
+class AnimationParameter
+{
+public:
+	std::string_view AnimationName = "";
+	std::string_view SpriteName = "";
+	float FrameInter = 0.1f;
+	int Start = -1;
+	int End = -1;
+	bool Loop = true;
+	bool ScaleToImage = false;
+
 };
 
 // 설명 :
@@ -60,7 +75,20 @@ public:
 		float _FrameInter = 0.1f,			   // 프레임당 간격 
 		int _Start = -1,
 		int _End = -1,
-		bool _Loop = true);
+		bool _Loop = true,
+		bool _ScaleToImage = false);
+
+	// 파라미터를 인자로 넣어줄 경우 넣어준 구조체의 값으로 CreateAnimation 
+	std::shared_ptr<AnimationInfo> CreateAnimation(const AnimationParameter& _Paramter)
+	{
+		return CreateAnimation(_Paramter.AnimationName,
+			_Paramter.SpriteName,
+			_Paramter.FrameInter,
+			_Paramter.Start,
+			_Paramter.End,
+			_Paramter.Loop,
+			_Paramter.ScaleToImage);
+	}
 
 	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
 	{

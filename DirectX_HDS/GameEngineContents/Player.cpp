@@ -87,11 +87,12 @@ void Player::Render(float _DeltaTime)
 
 void Player::CreateAnimation()
 {
-	m_Render->CreateAnimation("player_idle", "player_idle", 0.1f, 0, 10);
-	m_Render->CreateAnimation("player_attack", "player_attack", 0.1f, 0, 6);
-	m_Render->CreateAnimation("player_idle_to_run", "player_idle_to_run", 0.1f, 0, 3);
-	m_Render->CreateAnimation("player_run", "player_run", 0.05f, 0, 9);
-	m_Render->CreateAnimation("player_crouch", "player_crouch", 0.01f , 0, 0);
+	m_Render->CreateAnimation("player_idle", "player_idle", 0.1f, 0, 10, true, true);
+	m_Render->CreateAnimation("player_attack", "player_attack", 0.1f, 0, 6, false, true);
+	m_Render->CreateAnimation("player_idle_to_run", "player_idle_to_run", 0.1f, 0, 3, true, true);
+	m_Render->CreateAnimation("player_run", "player_run", 0.05f, 0, 9 , true , true);
+	m_Render->CreateAnimation("player_crouch", "player_crouch", 0.01f , 0, 0 , false , true);
+	m_Render->GetTransform()->SetLocalScale(m_LocalScale);
 	m_Render->ChangeAnimation("player_idle");
 }
 
@@ -307,7 +308,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
 		m_Direction = true;
-		m_Render->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalPositiveScaleX();
 		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
@@ -316,7 +317,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	{
 	
 		m_Direction = false;
-		m_Render->GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->SetLocalNegativeScaleX();
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
