@@ -73,12 +73,9 @@ void Player::Start()
 	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender0->SetPipeLine("2DTexture");
 	m_DebugRender0->SetAtlasConstantBuffer();
-	m_DebugRender0->GetTransform()->SetLocalScale({ 3  , 3 });
+	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
 	//m_DebugRender0->Off();
-
-	//임시
-	GetTransform()->SetLocalScale({ 2, 2 });
 
 	// 애니메이션 생성
 	CreateAnimation();
