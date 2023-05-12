@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "Player.h"
 #include "BaseLevel.h"
 #include "Battery.h"
 #include "CPlayer.h"
@@ -14,7 +15,6 @@ std::shared_ptr<class Timer> PlayManager::m_Timer = nullptr;
 std::shared_ptr<class Battery> PlayManager::m_Battery = nullptr;
 std::shared_ptr<class Inven> PlayManager::m_Inven = nullptr;
 std::shared_ptr<class Hud> PlayManager::m_Hud = nullptr;
-std::shared_ptr<class Player> PlayManager::m_Player = nullptr;
 PlayManager::LevelName PlayManager::m_LevelName = PlayManager::LevelName::NONE;
 
 PlayManager::PlayManager()
@@ -58,13 +58,6 @@ void PlayManager::CreateRender()
 
 void PlayManager::Update(float _DeltaTime)
 {
-	if (nullptr != m_Player)
-	{
-		if (true == m_Player->IsSnail())
-		{
-			
-		}
-	}
 }
 
 void PlayManager::CameraSetting()
@@ -77,7 +70,11 @@ void PlayManager::CameraSetting()
 	case PlayManager::LevelName::CLUB:
 	{
 		m_CameraPivot = { -360, 34 , 0 };
-		m_Player->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
+		if (nullptr != Player::MainPlayer)
+		{
+			Player::MainPlayer->GetReturnCastLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivot);
+		}
+		
 	}
 		break;
 	case PlayManager::LevelName::CLUBBOSS:

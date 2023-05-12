@@ -60,20 +60,20 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
 
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetPipeLine("2DTexture");
 	//m_Render->GetTransform()->SetLocalScale(m_LocalScale);
-	//m_Render->GetTransform()->SetLocalPosition({ 0, m_LocalScale.y / 2 });
+	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
 	m_Render->SetAtlasConstantBuffer();
-
+	m_Render->SetScaleRatio(2.0f);
 
 	// 디버그 렌더러0
 	// 플레이어 위치 그대로 출력 
-	float4 PlayerPos = GetTransform()->GetLocalPosition();
 	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender0->SetPipeLine("2DTexture");
 	m_DebugRender0->SetAtlasConstantBuffer();
-	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender0->GetTransform()->SetLocalScale({ 4  , 4 });
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
 	//m_DebugRender0->Off();
 

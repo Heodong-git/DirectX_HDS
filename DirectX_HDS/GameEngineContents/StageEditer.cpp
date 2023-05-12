@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 
 #include "Player.h"
+#include "Cursor.h"
 
 StageEditer::StageEditer()
 {
@@ -24,8 +25,14 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 		PlayerState CurState = Player::MainPlayer->GetCurState();
 
 		std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
+        if (nullptr == CurLevel)
+        {
+            MsgAssert("레벨이 nullptr 입니다. ");
+            return;
+        }
+
 		float4 CameraPos = CurLevel->GetMainCamera()->GetTransform()->GetLocalPosition();
-		
+
         if (ImGui::Begin("Debug"))
         {
             // 플레이어 위치 정보
@@ -117,6 +124,47 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::Text("Flip");
                 break;
             }
+
+            if (nullptr != Cursor::MainCursor)
+            {
+                float4 CursorPos = Cursor::MainCursor->GetGameCursorPos();
+                
+                ImGui::Text("Mouse Position:");
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(ImGui::GetWindowWidth() * 0.5f);
+                ImGui::Text("Mouse Delta:");
+                ImGui::Separator();
+
+                ImGui::Columns(4, nullptr, true);
+                ImGui::SetColumnWidth(0, 60);
+                ImGui::SetColumnWidth(1, 80);
+                ImGui::SetColumnWidth(2, 60);
+                ImGui::SetColumnWidth(3, 80);
+
+                ImGui::Text("X:");
+                ImGui::NextColumn();
+                ImGui::Text("%.2f", CursorPos.x);
+                ImGui::NextColumn();
+                ImGui::Text("X:");
+                ImGui::NextColumn();
+              /*  ImGui::Text("%.2f", MouseDelta.x);
+                ImGui::NextColumn();*/
+
+                ImGui::Text("Y:");
+                ImGui::NextColumn();
+                ImGui::Text("%.2f", CursorPos.y);
+                ImGui::NextColumn();
+                ImGui::Text("Y:");
+                ImGui::NextColumn();
+                /*ImGui::Text("%.2f", MouseDelta.y);
+                ImGui::NextColumn();*/
+
+                ImGui::Columns(1);
+                ImGui::Separator();
+            }
+
+            
+                
             ImGui::End();
         }
 

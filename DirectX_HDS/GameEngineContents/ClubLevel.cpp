@@ -90,8 +90,8 @@ void ClubLevel::ActorLoad()
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	SetPlayer(NewPlayer);
-	NewPlayer->GetTransform()->AddLocalPosition(float4{ -850 , 0 , 0 });
-	PlayManager::GetInst()->SetPlayer(NewPlayer);
+	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
+	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , 0 , 0 });
+
+	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 }
