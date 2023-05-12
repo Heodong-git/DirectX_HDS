@@ -91,36 +91,23 @@ void Cursor::DebugUpdate()
 
 void Cursor::FollowCursor()
 {
-	float4 ScreenSize = GameEngineWindow::GetScreenSize();
+	// 현재 카메라 위치 가져오고
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+	float4 CameraMovePivot = PlayManager::GetInst()->GetCameraPivot();
+	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 
-	float4 CursorPos = GameEngineWindow::GetMousePosition();
+	// y축 값이 0보다 크다면 
+	if (0.0f < OriginMousePos.y)
+	{
+		OriginMousePos.y = -OriginMousePos.y;
+	}
 
+	float4 WorldMousePos = { OriginMousePos.x - GameEngineWindow::GetScreenSize().hx(),
+							 OriginMousePos.y + GameEngineWindow::GetScreenSize().hy() };
 
-	float x = static_cast<float>(CursorPos.x) - ScreenSize.hx();
-	float y = ScreenSize.hy() - static_cast<float>(CursorPos.y);
+	// ?? 왜되는데??????????????????????? 모름 왜돼 
+	WorldMousePos.y += CameraMovePivot.y * 2;
 
-	float4x4 ViewProjection = GetTransform()->GetWorldViewProjectionMatrix();
-
-	// 화면의 깊이가 0 인 점을 구하기 위해 projection matrix 와 view matrix 를 곱한 뒤,
-	// 그 결과에 inverse matrix 를 곱해줍니다.
-	float4 cursorPos3D = DirectX::XMVectorSet(x, y, 0.0f, 1.0f);
-	float4x4 invViewProj = DirectX::XMMatrixInverse(nullptr, ViewProjection);
-	cursorPos3D = DirectX::XMVector4Transform(cursorPos3D, invViewProj);
-
-	// 마우스 위치에 해당하는 점을 카메라가 바라보는 방향으로 끌어당기기 위해
-	// 카메라의 위치에서 마우스 위치에 해당하는 점을 지나는 직선의 방향벡터를 구합니다.
-	float4 cameraPos = DirectX::XMVectorSet(CameraPos.x, CameraPos.y, CameraPos.z, CameraPos.w);
-	float4 rayDir = static_cast<float4>(DirectX::XMVector3Normalize(cursorPos3D - cameraPos));
-
-	// 마우스 위치에 해당하는 점이 바닥면과 교차하는 지점을 계산합니다.
-	// 이 지점은 카메라에서 바닥면을 향해 쏜 광선과 바닥면의 교점이기 때문에,
-	// 카메라에서 이 교점까지의 거리를 계산하여 이를 이용해 카메라가 바라보는
-	// 지점을 이동시킬 수 있습니다.
-	float distanceToGround = DirectX::XMVectorGetY(cameraPos) / DirectX::XMVectorGetY(rayDir);
-	float4 groundPos = cameraPos + (rayDir * distanceToGround);
-
-	m_GameCursorPos = groundPos;
-
-	GetTransform()->SetLocalPosition(m_GameCursorPos);
+	GetTransform()->SetLocalPosition(WorldMousePos);
+	m_GameCursorPos = WorldMousePos;
 };

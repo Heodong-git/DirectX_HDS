@@ -2,6 +2,9 @@
 #include "GameEngineSpriteRenderer.h"
 #include "GameEngineSprite.h"
 
+// 테스트
+#include <GameEngineCore/GameEngineObject.h>
+
 const SpriteInfo& AnimationInfo::CurSpriteInfo()
 {
 	const SpriteInfo& Info = Sprite->GetSpriteInfo(CurFrame);
@@ -63,7 +66,7 @@ GameEngineSpriteRenderer::~GameEngineSpriteRenderer()
 void GameEngineSpriteRenderer::Start()
 {
 	// 디버깅용 임시
-	GameEngineActor* check = GetActor();
+	GameEngineObject* Ptr = this;
 
 	GameEngineRenderer::Start();
 

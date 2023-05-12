@@ -39,8 +39,6 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스버퍼의 내용과 인풋레이아웃의 내용이 더 중요. 
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
-
-	//새로운 무언가를 만든다면 이런형태로 정보를 넘겨주어야함. 
 	//GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	//typedef struct D3D11_INPUT_ELEMENT_DESC

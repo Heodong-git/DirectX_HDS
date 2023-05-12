@@ -147,17 +147,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::NextColumn();
                 ImGui::Text("X:");
                 ImGui::NextColumn();
-              /*  ImGui::Text("%.2f", MouseDelta.x);
-                ImGui::NextColumn();*/
 
+                ImGui::NextColumn();
                 ImGui::Text("Y:");
                 ImGui::NextColumn();
                 ImGui::Text("%.2f", CursorPos.y);
                 ImGui::NextColumn();
-                ImGui::Text("Y:");
-                ImGui::NextColumn();
-                /*ImGui::Text("%.2f", MouseDelta.y);
-                ImGui::NextColumn();*/
+                
 
                 ImGui::Columns(1);
                 ImGui::Separator();
