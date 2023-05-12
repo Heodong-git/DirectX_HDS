@@ -72,6 +72,11 @@ public:
 
 	static void ChangeLevel(const std::string_view& _Name);
 
+	static std::shared_ptr<GameEngineLevel> GetCurLevel()
+	{
+		return MainLevel;
+	}
+
 protected:
 
 private:

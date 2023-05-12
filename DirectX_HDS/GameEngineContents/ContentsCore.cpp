@@ -42,7 +42,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubBossLevel>("ClubBossLevel");
 
 	//GameEngineCore::CreateLevel<CTestLevel>();
-	GameEngineCore::ChangeLevel("TitleLevel");
+	GameEngineCore::ChangeLevel("ClubLevel");
 
 	// gui
 	{
@@ -50,7 +50,7 @@ void ContentsCore::GameStart()
 		Window->Off();
 	}
 	{
-		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<StageEditer>("Stage_Editer");
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<StageEditer>("Debug_State");
 		Window->Off();
 	}
 }

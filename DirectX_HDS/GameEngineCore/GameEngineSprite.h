@@ -33,6 +33,14 @@ public:
 		return NewTexture;
 	}
 
+	// 스프라이트 이름으로 폴더로드
+	static std::shared_ptr<GameEngineSprite> LoadFolder(std::string _Spritename, const std::string_view& _Path)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource::Create(_Spritename);
+		NewTexture->ResLoadFolder(_Path);
+		return NewTexture;
+	}
+
 	// 아틀라스이미지로드 , 사용할려나? 
 	static std::shared_ptr<GameEngineSprite> LoadSheet(const std::string_view& _Path, size_t _X, size_t _Y)
 	{

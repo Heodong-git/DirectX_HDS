@@ -10,6 +10,10 @@ class GameEngineObject :
 	public GameEngineNameObject,
 	public std::enable_shared_from_this<GameEngineObject>
 {
+	// 
+	friend class GameEngineComponent;
+	friend class GameEngineActor;
+
 	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 public:

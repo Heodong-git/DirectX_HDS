@@ -16,7 +16,7 @@ bool AnimationInfo::IsEnd()
 void AnimationInfo::Reset()
 {
 	CurFrame = StartFrame;
-	CurTime = 0.0f;
+	CurTime = Inter;
 	IsEndValue = false;
 }
 
@@ -28,7 +28,7 @@ void AnimationInfo::Update(float _DeltaTime)
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
-		CurTime = Inter;
+		CurTime += Inter;
 
 		// 0 ~ 9
 

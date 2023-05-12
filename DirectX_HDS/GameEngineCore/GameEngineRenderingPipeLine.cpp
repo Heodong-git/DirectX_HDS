@@ -239,7 +239,7 @@ void GameEngineRenderingPipeLine::SetDepthState(const std::string_view& _Value)
 
 	if (nullptr == DepthStatePtr)
 	{
-		MsgAssert("존재하지 않는 블랜드를 세팅하려고 했습니다.");
+		MsgAssert("존재하지 않는 깊이버퍼 스테이트를 세팅하려고 했습니다.");
 		return;
 	}
 }

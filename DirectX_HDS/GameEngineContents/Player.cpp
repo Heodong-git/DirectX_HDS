@@ -13,8 +13,12 @@
 #include "BaseLevel.h"
 #include "Cursor.h"
 
+Player* Player::MainPlayer = nullptr;
+
 Player::Player()
 {
+	// 플레이어는 어차피 하나 
+	MainPlayer = this;
 }
 
 Player::~Player()
@@ -39,6 +43,7 @@ void Player::Start()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_idle_to_run").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_run").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_crouch").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_flip").GetFullPath());
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -72,6 +77,9 @@ void Player::Start()
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
 	//m_DebugRender0->Off();
 
+	//임시
+	GetTransform()->SetLocalScale({ 2, 2 });
+
 	// 애니메이션 생성
 	CreateAnimation();
 }
@@ -90,7 +98,7 @@ void Player::Render(float _DeltaTime)
 void Player::CreateAnimation()
 {
 	m_Render->CreateAnimation({ .AnimationName = "player_idle", .SpriteName = "player_idle", .Start = 0, .End = 10 ,
-									  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true});
+									  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true});
 
 	m_Render->CreateAnimation({ .AnimationName = "player_attack", .SpriteName = "player_attack", .Start = 0, .End = 6 ,
 									  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
@@ -103,6 +111,9 @@ void Player::CreateAnimation()
 
 	m_Render->CreateAnimation({ .AnimationName = "player_crouch", .SpriteName = "player_crouch", .Start = 0, .End = 0 ,
 							  .FrameInter = 0.01f , .Loop = false , .ScaleToTexture = true });
+
+	m_Render->CreateAnimation({ .AnimationName = "player_flip", .SpriteName = "player_flip", .Start = 0, .End = 10,
+						  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->ChangeAnimation("player_idle");
 }
@@ -156,6 +167,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::CROUCH:
 		CrouchUpdate(_DeltaTime);
 		break;
+	case PlayerState::FLIP:
+		FlipUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -184,6 +198,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::CROUCH:
 		CrouchStart();
 		break;
+	case PlayerState::FLIP:
+		FlipStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -203,6 +220,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::CROUCH:
 		CrouchEnd();
+		break;
+	case PlayerState::FLIP:
+		FlipEnd();
 		break;
 	}
 }
@@ -407,9 +427,60 @@ void Player::CrouchUpdate(float _DeltaTime)
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
+	
+	if (true == GameEngineInput::IsDown("player_right_move"))
+	{
+		ChangeState(PlayerState::FLIP);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("player_left_move"))
+	{
+		ChangeState(PlayerState::FLIP);
+		return;
+	}
 }
 
 void Player::CrouchEnd()
 {
+}
+
+void Player::FlipStart()
+{
+	m_Render->ChangeAnimation("player_flip");
+}
+
+void Player::FlipUpdate(float _DeltaTime)
+{
+	if (true == m_Direction)
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	else if (false == m_Direction)
+	{
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+
+	if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+	{
+		ChangeState(PlayerState::CROUCH);
+		return;
+	}
+}
+
+void Player::FlipEnd()
+{
+	if (true != GameEngineInput::IsPress("player_crouch"))
+	{
+		if (true == GameEngineInput::IsPress("player_right_move") || true == GameEngineInput::IsPress("player_left_move"))
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
+	}
+
+
 }
 

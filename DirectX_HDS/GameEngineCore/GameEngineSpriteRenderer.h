@@ -38,8 +38,8 @@ class AnimationParameter
 public:
 	std::string_view AnimationName = "";
 	std::string_view SpriteName = "";
-	int Start = -1;
-	int End = -1;
+	size_t Start = static_cast<size_t>(-1);
+	size_t End = static_cast<size_t>(-1);
 	float FrameInter = 0.1f;
 	bool Loop = true;
 	bool ScaleToTexture = false;

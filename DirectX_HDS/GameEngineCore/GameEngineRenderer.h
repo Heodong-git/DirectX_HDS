@@ -30,6 +30,6 @@ protected:
 
 private:
 	// 파이프라인과 쉐이더리소스헬퍼가 합쳐져야 렌더링이 되는 방식으로 구현
-	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
+	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe = nullptr;
 	GameEngineShaderResHelper ShaderResHelper;
 };

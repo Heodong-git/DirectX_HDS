@@ -53,14 +53,14 @@ void ClubLevel::Update(float _DeltaTime)
 
 void ClubLevel::LevelChangeStart()
 {
-	// 레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
-	//m_GUI = GameEngineGUI::FindGUIWindowConvert<CStageEditer>("Stage_Editer");
-	//if (m_GUI == nullptr)
-	//{
-	//	MsgAssert("GUI Window가 nullptr 입니다.");
-	//	return;
-	//}
-	//m_GUI->On();
+	//레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<StageEditer>("Debug_State");
+	if (m_GUI == nullptr)
+	{
+		MsgAssert("GUI Window가 nullptr 입니다.");
+		return;
+	}
+	m_GUI->On();
 
 	PlayManager::GetInst()->SetLevelType(PlayManager::LevelName::CLUB);
 	PlayManager::GetInst()->CameraSetting();

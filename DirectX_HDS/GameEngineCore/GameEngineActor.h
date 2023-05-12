@@ -23,11 +23,6 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
-	inline class GameEngineLevel* GetLevel() const
-	{
-		return Level;
-	}
-
 	template<typename ComponentType>
 	std::shared_ptr<ComponentType> CreateComponent()
 	{
@@ -44,7 +39,6 @@ protected:
 	virtual void Render(float _DeltaTime) {}
 
 private:
-	class GameEngineLevel* Level = nullptr;
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component);
 };
 

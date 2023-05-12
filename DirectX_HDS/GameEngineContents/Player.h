@@ -14,10 +14,14 @@ enum class PlayerState
 	JUMP,
 	SLASH,
 	CROUCH,
+	FLIP,
 };
 
 class Player : public BaseActor
 {
+public:
+	static Player* MainPlayer;
+
 public:
 	// constrcuter destructer
 	Player();
@@ -29,6 +33,10 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
+	PlayerState GetCurState()
+	{
+		return m_CurState;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -104,6 +112,10 @@ private:
 	void CrouchStart();
 	void CrouchUpdate(float _DeltaTime);
 	void CrouchEnd();
+
+	void FlipStart();
+	void FlipUpdate(float _DeltaTime);
+	void FlipEnd();
 };
 
 // 파일입출력이 필수다. 

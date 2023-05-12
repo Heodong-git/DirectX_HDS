@@ -22,11 +22,6 @@ public:
 		return Actor;
 	}
 
-	class GameEngineLevel* GetLevel()
-	{
-		// 예외처리?? 
-		return Actor->GetLevel();
-	}
 protected:
 
 private:
