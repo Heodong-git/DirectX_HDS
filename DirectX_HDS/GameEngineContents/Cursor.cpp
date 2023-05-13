@@ -52,7 +52,8 @@ void Cursor::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetPipeLine("2DTexture");
-	m_Render->GetShaderResHelper().SetTexture("DiffuseTex", "cursor_0.png");
+	m_Render->SetScaleToTexture("cursor_0.png");
+	// m_Render->GetShaderResHelper().SetTexture("DiffuseTex", "cursor_0.png");
 	m_Render->SetAtlasConstantBuffer();
 	m_Render->GetTransform()->SetLocalScale(m_Scale);
 

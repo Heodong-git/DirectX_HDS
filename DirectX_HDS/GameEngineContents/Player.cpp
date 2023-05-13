@@ -73,7 +73,7 @@ void Player::Start()
 	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender0->SetPipeLine("2DTexture");
 	m_DebugRender0->SetAtlasConstantBuffer();
-	m_DebugRender0->GetTransform()->SetLocalScale({ 4  , 4 });
+	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
 	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
 	//m_DebugRender0->Off();
 
@@ -83,6 +83,11 @@ void Player::Start()
 
 void Player::Update(float _DeltaTime)
 {
+	if (m_DebugRender0->GetTransform()->Collision({ Cursor::MainCursor->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
+	{
+		m_DebugRender0->GetTransform()->SetParent(Cursor::MainCursor->GetRender()->GetTransform());
+	}
+
 	DirCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
@@ -94,11 +99,11 @@ void Player::Render(float _DeltaTime)
 
 void Player::CreateAnimation()
 {
-	m_Render->CreateAnimation({ .AnimationName = "player_idle", .SpriteName = "player_idle", .Start = 0, .End = 10 ,
-									  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true});
+	m_Render->CreateAnimation({ .AnimationName = "player_idle", .SpriteName = "player_idle", .Start = 2, .End = 10 ,
+									  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true});
 
 	m_Render->CreateAnimation({ .AnimationName = "player_attack", .SpriteName = "player_attack", .Start = 0, .End = 6 ,
-									  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+									  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_idle_to_run", .SpriteName = "player_idle_to_run", .Start = 0, .End = 3 ,
 								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });

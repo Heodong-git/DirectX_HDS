@@ -87,6 +87,17 @@ public:
 
 	void SetAtlasConstantBuffer();
 
+	// 애니메이션의 출력이 종료되었는지 ( 마지막 프레임에 도달 했는지 ) 
+	bool IsAnimationEnd()
+	{
+		return CurAnimation->IsEnd();
+	}
+
+	size_t GetCurrentFrame()
+	{
+		return CurAnimation->CurFrame;
+	}
+
 protected:
 
 private:

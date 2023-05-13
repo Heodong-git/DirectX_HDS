@@ -23,6 +23,11 @@ public:
 		return m_GameCursorPos;
 	}
 
+	std::shared_ptr<class GameEngineSpriteRenderer> GetRender() const
+	{
+		return m_Render;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
