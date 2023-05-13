@@ -70,11 +70,6 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	bool m_IsDebug = true;
-	inline void DebugSwitch()
-	{
-		m_IsDebug = !m_IsDebug;
-	}
-
 	void DebugUpdate();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
 

@@ -67,7 +67,7 @@ void Cursor::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("cursor_DebugSwitch"))
 	{
-		m_Debug = !m_Debug;
+		DebugSwitch();
 	}
 
 	DebugUpdate();
@@ -80,11 +80,12 @@ void Cursor::Render(float _DeltaTime)
 
 void Cursor::DebugUpdate()
 {
-	if (true == m_Debug)
+	if (true == IsDebug())
 	{
 		m_DebugRender->On();
 	}
-	else if (false == m_Debug)
+
+	else if (false == IsDebug())
 	{
 		m_DebugRender->Off();
 	}

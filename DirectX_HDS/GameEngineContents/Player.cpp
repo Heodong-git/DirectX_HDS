@@ -136,12 +136,17 @@ void Player::DirCheck()
 // ---------------------------------------- Debug -----------------------------------------
 void Player::DebugUpdate()
 {
-	if (true == m_IsDebug)
+	if (true == GameEngineInput::IsDown("player_debugswitch"))
+	{
+		DebugSwitch();
+	}
+
+	if (true == IsDebug())
 	{
 		m_DebugRender0->On();
 	}
 
-	else if (false == m_IsDebug)
+	else if (false == IsDebug())
 	{
 		m_DebugRender0->Off();
 	}
@@ -263,10 +268,7 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("player_debugswitch"))
-	{
-		DebugSwitch();
-	}
+	
 
 	if (true == GameEngineInput::IsDown("player_crouch"))
 	{

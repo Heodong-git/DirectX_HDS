@@ -27,6 +27,8 @@ public:
 	{
 		return m_Render;
 	}
+	
+
 
 protected:
 	void Start() override;
@@ -40,7 +42,8 @@ private:
 	void FollowCursor();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
-	bool m_Debug = true;
 	float4 m_Scale = { 50.0f, 50.0f, 50.0f };
 	float4 m_GameCursorPos = {};
+
+	// ---------------------------- Debug ---------------------------
 };

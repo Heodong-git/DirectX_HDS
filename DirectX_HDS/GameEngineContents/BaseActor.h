@@ -19,7 +19,22 @@ public:
 protected:
 	void Update(float _DeltaTime) override;
 
+	virtual void DebugSwitch()
+	{
+		if (true == IsDebug())
+		{
+			DebugOff();
+		}
+
+		else if (false == IsDebug())
+		{
+			DebugOn();
+		}
+	}
+
 private:
+
+	
 	// -------------------------recording info-------------------------------
 	// 역재생에 필요한 녹화될 정보들을 아래 부분에 작성하고, 함수를 그 정보들을 저장하고, 로드하는 함수를 구현? 
 };
