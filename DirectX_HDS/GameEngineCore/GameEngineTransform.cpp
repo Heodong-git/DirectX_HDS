@@ -6,6 +6,7 @@
 
 std::function<bool(GameEngineTransform*, GameEngineTransform*)> GameEngineTransform::ArrColFunction[static_cast<int>(ColType::MAX)][static_cast<int>(ColType::MAX)];
 
+// 콜리전함수 초기화용 클래스
 class InitColFunction
 {
 public:
@@ -38,6 +39,8 @@ public:
 	}
 };
 
+// 이렇게 전역으로 구현해두게 되면 프로그램 실행시 데이터영역에 메모리를 생성하기 때문에
+// 해당 클래스의 생성자가 호출되고, 생성자에서 함수들의 초기화를 진행해준다. 
 InitColFunction InitFunction;
 
 bool GameEngineTransform::SphereToSpehre(GameEngineTransform* _Left, GameEngineTransform* _Right)
