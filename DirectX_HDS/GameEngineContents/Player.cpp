@@ -12,6 +12,7 @@
 
 #include "BaseLevel.h"
 #include "Cursor.h"
+#include "PixelCollider.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -57,25 +58,14 @@ void Player::Start()
 
 	// 애니메이션 생성
 	FindAndCreateAnimation();
+	m_PixelCollider = std::make_shared<PixelCollider>();
+	m_PixelCollider->Start();
 }
 
 void Player::Update(float _DeltaTime)
 {
-	/*if (m_Render->GetTransform()->Collision({ Player::MainPlayer->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
-	{
-		while (true)
-		{
-			m_Render->GetTransform()->AddLocalPosition({ 0 , 1 });
-
-			if (m_Render->GetTransform()->Collision({ Player::MainPlayer->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
-			{
-				break;
-			}
-		}
-	}*/
-
 	DirCheck();
-	//AddGravity(_DeltaTime);
+	PixelCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
@@ -205,6 +195,14 @@ void Player::DebugUpdate()
 	}
 }
 
+void Player::PixelCheck()
+{
+	if (nullptr != m_PixelCollider)
+	{
+		m_PixelCollider->PixelCollision(GetTransform());
+	}
+}
+
 
 // ---------------------------------------- state ------------------------------------------ 
 void Player::UpdateState(float _DeltaTime)
@@ -309,7 +307,7 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("player_crouch"))
+	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
 		ChangeState(PlayerState::CROUCH);
 		return;
@@ -410,9 +408,9 @@ void Player::MoveEnd()
 void Player::SlashStart()
 {
 	m_Render->ChangeAnimation("player_attack");
-	float4 cursorpos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+	/*float4 cursorpos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	float4 Camerapos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	GetTransform()->SetLocalPosition(cursorpos);
+	GetTransform()->SetLocalPosition(cursorpos);*/
 }
 
 void Player::SlashUpdate(float _DeltaTime)
@@ -459,7 +457,7 @@ void Player::JumpUpdate(float _DeltaTime)
 	{
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
-		GetTransform()->AddLocalPosition(float4::Right * (m_MoveSpeed / 2.0f) * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
 
@@ -468,13 +466,12 @@ void Player::JumpUpdate(float _DeltaTime)
 
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
-		GetTransform()->AddLocalPosition(float4::Left * (m_MoveSpeed / 2.0f) * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
 		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 
-	// 바닥에 닿았다면
-	// 이건 다시 손봐야함 
-	if (Pos.y <= 0.0f)
+	// 나중에 내가 땅일경우, 조건 충족시켜서 변경
+	if (Pos.y <= -94.0f)
 	{
 		m_IsJumping = false;
 		m_CurrentVerticalVelocity = 0.0f;

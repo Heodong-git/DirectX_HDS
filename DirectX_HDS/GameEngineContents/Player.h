@@ -62,6 +62,7 @@ private:
 	// 점프관련
 	bool m_IsJumping = false;
 	float m_JumpPower = 500.0f;
+	float m_JumpMoveSpeed = 400.0f;
 	float m_CurrentVerticalVelocity = 0.0f;
 
 	// 중력 
@@ -95,7 +96,9 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
+	void PixelCheck();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
+	std::shared_ptr<class PixelCollider> m_PixelCollider = nullptr;
 
 
 	// ------------------------- state ----------------------------------

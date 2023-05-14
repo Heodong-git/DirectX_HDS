@@ -75,8 +75,8 @@
     <ClInclude Include="TitleBackGround.h">
       <Filter>02.Actor\07.BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>02.Actor\08.Platform</Filter>
+    <ClInclude Include="PixelCollider.h">
+      <Filter>05.Debug\00.PixelCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,8 +153,8 @@
     <ClCompile Include="TitleBackGround.cpp">
       <Filter>02.Actor\07.BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>02.Actor\08.Platform</Filter>
+    <ClCompile Include="PixelCollider.cpp">
+      <Filter>05.Debug\00.PixelCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,8 +224,11 @@
     <Filter Include="02.Actor\07.BackGround">
       <UniqueIdentifier>{8ebb710d-9c39-493b-9569-e3a9887b4aaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\08.Platform">
-      <UniqueIdentifier>{84bb785c-42b9-4917-85eb-b8db6ed9d47a}</UniqueIdentifier>
+    <Filter Include="05.Debug">
+      <UniqueIdentifier>{443eb99a-6799-4086-8213-29e729c950af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Debug\00.PixelCollider">
+      <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

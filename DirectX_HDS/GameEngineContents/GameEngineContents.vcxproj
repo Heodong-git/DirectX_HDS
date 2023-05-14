@@ -164,7 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Platform.h">
+    <ClInclude Include="PixelCollider.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -265,7 +265,7 @@
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="TitleBackGround.cpp" />
     <ClCompile Include="Battery.cpp" />
     <ClCompile Include="Hud.cpp" />

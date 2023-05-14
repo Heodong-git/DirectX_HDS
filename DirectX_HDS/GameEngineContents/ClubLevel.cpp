@@ -19,7 +19,6 @@
 #include "Timer.h"
 #include "Map.h"
 #include "Hud.h"
-#include "Platform.h"
 
 ClubLevel::ClubLevel()
 {
@@ -101,15 +100,11 @@ void ClubLevel::ActorLoad()
 	
 	// ÇÃ·¹ÀÌ¾î
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , 0 , 0 });
+	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , -94 });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ 0 ,0 });
 
 	// Ä¿¼­ 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
-
-	// ÇÃ·§Æû
-	/*std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>();
-	NewPlatform->GetTransform()->SetLocalScale({ 1280 , 50 });
-	NewPlatform->GetTransform()->SetLocalPosition({ -300, 0 });*/
 }
 
 void ClubLevel::DebugUpdate()
