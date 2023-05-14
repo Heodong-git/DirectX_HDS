@@ -8,7 +8,6 @@
 #include "Player.h"
 #include "BaseLevel.h"
 #include "Battery.h"
-#include "CPlayer.h"
 
 PlayManager* PlayManager::m_Inst = nullptr;
 std::shared_ptr<class Timer> PlayManager::m_Timer = nullptr;

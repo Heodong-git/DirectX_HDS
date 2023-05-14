@@ -31,4 +31,5 @@ private:
 	std::shared_ptr<class Map> m_Map_01 = nullptr;
 	
 	std::shared_ptr<class CPlayer> m_Player = nullptr;
+	void DebugUpdate();
 };

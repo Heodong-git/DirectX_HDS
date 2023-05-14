@@ -15,6 +15,7 @@ enum class PlayerState
 	SLASH,
 	CROUCH,
 	FLIP,
+	FALL,
 };
 
 class Player : public BaseActor
@@ -37,13 +38,18 @@ public:
 	{
 		return m_CurState;
 	}
+
+	std::shared_ptr<class GameEngineSpriteRenderer> GetRender() const
+	{
+		return m_Render;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	void CreateAnimation();
+	void FindAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	float4 m_LocalScale = { 100.0f , 75.0f , 0.0f };
@@ -53,23 +59,41 @@ private:
 	bool   m_Direction = true; 
 	void DirCheck();
 
-	// 보류 
-	GameEnginePixelColor GetPixelColor(float4 _Pos);
-	GameEnginePixelColor m_Black = { static_cast<char>(0), static_cast<char>(0), static_cast<char>(0), static_cast<char>(160) };
-	GameEnginePixelColor m_White = { static_cast<char>(255), static_cast<char>(255), static_cast<char>(255), static_cast<char>(255) };
-	
-	bool IsBlackPixel(GameEnginePixelColor _Pixel)
-	{
-		return m_Black == _Pixel;
-	}
+	// 점프관련
+	bool m_IsJumping = false;
+	float m_JumpPower = 500.0f;
+	float m_CurrentVerticalVelocity = 0.0f;
 
-	bool IsWhitePixel(GameEnginePixelColor _Pixel)
+	// 중력 
+	const float m_GravityPower = 1000.0f;
+	void AddGravity(float _DeltaTime)
 	{
-		return m_White == _Pixel;
+		switch (m_CurState)
+		{
+		case PlayerState::ILDETORUN:
+			break;
+		case PlayerState::IDLE:
+			break;
+		case PlayerState::MOVE:
+			break;
+		case PlayerState::JUMP:
+			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+			break;
+		case PlayerState::SLASH:
+			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+			break;
+		case PlayerState::CROUCH:
+			break;
+		case PlayerState::FLIP:
+			break;
+		case PlayerState::FALL:
+			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+			break;
+		}
 	}
+	
 
 	// -------------------------Debug ----------------------------------
-	bool m_IsDebug = true;
 	void DebugUpdate();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
 
@@ -111,6 +135,10 @@ private:
 	void FlipStart();
 	void FlipUpdate(float _DeltaTime);
 	void FlipEnd();
+
+	void FallStart();
+	void FallUpdate(float _DeltaTime);
+	void FallEnd();
 };
 
 // 파일입출력이 필수다. 

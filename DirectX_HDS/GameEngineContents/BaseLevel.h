@@ -74,10 +74,6 @@ public:
 		m_Cursor = _Cursor;
 	}
 
-	inline std::shared_ptr<class Cursor>& GetCursor()
-	{
-		return m_Cursor;
-	}
 
 	inline BaseLevel::LevelState GetCurState() const
 	{
@@ -97,9 +93,21 @@ protected:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override {};
 
-	
-
 	BaseLevel::LevelState m_CurState = BaseLevel::LevelState::WAIT;
+
+	virtual void DebugSwitch()
+	{
+		if (true == IsDebug())
+		{
+			DebugOff();
+		}
+
+		else if (false == IsDebug())
+		{
+			DebugOn();
+		}
+	}
+
 private:
 	virtual void ResourcesLoad() {};
 	virtual void ActorLoad() {};

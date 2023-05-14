@@ -9,7 +9,6 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "PlayManager.h"
-#include "CPlayer.h"
 #include "CBoss_HeadHunter.h"
 #include "Cursor.h"
 #include "Battery.h"

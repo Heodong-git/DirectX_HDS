@@ -21,10 +21,9 @@ void BaseLevel::Update(float _DeltaTime)
 {
 	// 현재 커서가 nullptr 이 아니라면 
 	// 받아와서 로컬포지션을 저장
-	std::shared_ptr<Cursor> Cursor = GetCursor();
-	if (nullptr != Cursor)
+	if (nullptr != Cursor::MainCursor)
 	{
-		m_CurMouseLocalPos = Cursor->GetTransform()->GetLocalPosition();
+		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
 
 	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제

@@ -56,17 +56,26 @@ void Player::Start()
 	//m_DebugRender0->Off();
 
 	// 애니메이션 생성
-	CreateAnimation();
+	FindAndCreateAnimation();
 }
 
 void Player::Update(float _DeltaTime)
 {
-	if (m_DebugRender0->GetTransform()->Collision({ Cursor::MainCursor->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
+	/*if (m_Render->GetTransform()->Collision({ Player::MainPlayer->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
 	{
-		m_DebugRender0->GetTransform()->SetParent(Cursor::MainCursor->GetRender()->GetTransform());
-	}
+		while (true)
+		{
+			m_Render->GetTransform()->AddLocalPosition({ 0 , 1 });
+
+			if (m_Render->GetTransform()->Collision({ Player::MainPlayer->GetRender()->GetTransform() , ColType::OBBBOX3D, ColType::OBBBOX3D }))
+			{
+				break;
+			}
+		}
+	}*/
 
 	DirCheck();
+	//AddGravity(_DeltaTime);
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
@@ -75,7 +84,7 @@ void Player::Render(float _DeltaTime)
 {
 }
 
-void Player::CreateAnimation()
+void Player::FindAndCreateAnimation()
 {
 	// 파일로드 기본인터페이스 
 	{
@@ -221,6 +230,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::FLIP:
 		FlipUpdate(_DeltaTime);
 		break;
+	case PlayerState::FALL:
+		FallUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -252,6 +264,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::FLIP:
 		FlipStart();
 		break;
+	case PlayerState::FALL:
+		FallStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -275,34 +290,10 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::FLIP:
 		FlipEnd();
 		break;
+	case PlayerState::FALL:
+		FallEnd();
+		break;
 	}
-}
-
-
-
-// 보류
-GameEnginePixelColor Player::GetPixelColor(float4 _Pos)
-{
-	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
-	float4 CheckPos = GetTransform()->GetLocalPosition();
-
-	// 상수는 안쓰는게 좋다. <-- 인지하고
-	// 충돌맵이 없다면 assert 
-	std::shared_ptr<GameEngineTexture> ColMap = GameEngineTexture::Find("Club_0_ColMap.png");
-	if (nullptr == ColMap)
-	{
-		MsgAssert("충돌용 맵 이미지가 없습니다.");
-		return GameEnginePixelColor{ 0 , 0 , 0 , 0 };
-	}
-
-	float WidthHalf = static_cast<float>(ColMap->GetWidth() / 2);
-	float HeightHalf = static_cast<float>(ColMap->GetHeight() / 2);
-
-	CheckPos += { WidthHalf , HeightHalf };
-
-	GameEnginePixelColor Color = ColMap->GetPixel(static_cast<int>(CheckPos.x),static_cast<int>(CheckPos.y));
-
-	return Color;
 }
 
 void Player::IdleStart()
@@ -312,7 +303,11 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
-	
+	if (true == GameEngineInput::IsDown("player_jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
 
 	if (true == GameEngineInput::IsDown("player_crouch"))
 	{
@@ -321,12 +316,12 @@ void Player::IdleUpdate(float _DeltaTime)
 	}
 
 	// 임시무브 
-	if (true == GameEngineInput::IsDown("player_right_move"))
+	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		ChangeState(PlayerState::MOVE);
 		return;
 	}
-	else if (true == GameEngineInput::IsDown("player_left_move"))
+	else if (true == GameEngineInput::IsPress("player_left_move"))
 	{
 		
 		ChangeState(PlayerState::MOVE);
@@ -370,6 +365,12 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("player_jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("player_crouch"))
 	{
 		ChangeState(PlayerState::CROUCH);
@@ -409,30 +410,13 @@ void Player::MoveEnd()
 void Player::SlashStart()
 {
 	m_Render->ChangeAnimation("player_attack");
+	float4 cursorpos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+	float4 Camerapos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
+	GetTransform()->SetLocalPosition(cursorpos);
 }
 
 void Player::SlashUpdate(float _DeltaTime)
 {
-	//// 공격애니메이션이 종료됐다면 return ㅇㅇ 
-	//BaseLevel* CurLevel = dynamic_cast<BaseLevel*>(GetLevel());
-	//if (nullptr == CurLevel)
-	//{
-	//	MsgAssert("Level 의 dynamic_cast에 실패 했습니다.");
-	//	return;
-	//}
-
-	//// 눌렸을 때 마우스의 위치를 가져온다.
-	//float4 cursorpos = CurLevel->GetCursor()->GetTransform()->GetLocalPosition();
-
-	//// 내위치 
-	//float4 pos = GetTransform()->GetLocalPosition();
-	//// 이동방향은 마우스방향
-	//float4 movedir = cursorpos - pos;
-	//movedir.Normalize();
-	////movedir *= m_SlashMoveRange;
-
-	//GetTransform()->AddLocalPosition(movedir * m_MoveSpeed * _DeltaTime);
-
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
 		// 공중상태도 고려해야함 일단 임시로 
@@ -453,10 +437,50 @@ void Player::SlashEnd()
 
 void Player::JumpStart()
 {
+	if (false == m_IsJumping)
+	{
+		m_IsJumping = true;
+		m_CurrentVerticalVelocity = m_JumpPower;
+	}
+
+	m_Render->ChangeAnimation("player_jump");
 }
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	// 중력적용
+	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
+	
+	// 이동
+	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+	float4 Pos = GetTransform()->GetLocalPosition();
+
+	if (true == GameEngineInput::IsPress("player_right_Move"))
+	{
+		m_Direction = true;
+		GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->AddLocalPosition(float4::Right * (m_MoveSpeed / 2.0f) * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	{
+
+		m_Direction = false;
+		GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->AddLocalPosition(float4::Left * (m_MoveSpeed / 2.0f) * _DeltaTime);
+		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+	}
+
+	// 바닥에 닿았다면
+	// 이건 다시 손봐야함 
+	if (Pos.y <= 0.0f)
+	{
+		m_IsJumping = false;
+		m_CurrentVerticalVelocity = 0.0f;
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
 }
 
 void Player::JumpEnd()
@@ -530,5 +554,23 @@ void Player::FlipEnd()
 	}
 
 
+}
+
+void Player::FallStart()
+{
+	m_Render->ChangeAnimation("player_fall");
+}
+
+void Player::FallUpdate(float _DeltaTime)
+{
+	//if (true == m_Ground)
+	//{
+	//	ChangeState(PlayerState::IDLE);
+	//	return;
+	//}
+}
+
+void Player::FallEnd()
+{
 }
 

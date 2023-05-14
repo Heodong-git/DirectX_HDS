@@ -19,6 +19,7 @@
 #include "Timer.h"
 #include "Map.h"
 #include "Hud.h"
+#include "Platform.h"
 
 ClubLevel::ClubLevel()
 {
@@ -34,6 +35,7 @@ void ClubLevel::Start()
 	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubBossLevel"))
 	{
 		GameEngineInput::CreateKey("ClubLevel_ChangeLevel_ClubBossLevel", VK_F1);
+		GameEngineInput::CreateKey("ClubLevel_DebugSwitch", 'Q');
 	}
 
 	ResourcesLoad();
@@ -48,6 +50,12 @@ void ClubLevel::Update(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsDown("ClubLevel_DebugSwitch"))
+	{
+		DebugSwitch();
+	}
+
+	DebugUpdate();
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -84,14 +92,36 @@ void ClubLevel::ResourcesLoad()
 
 void ClubLevel::ActorLoad()
 {
+	// 맵 
 	m_Map_01 = CreateActor<Map>();
 	m_Map_01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
 	//m_Map_01->GetRender()->SetAtlasConstantBuffer();
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	
+	// 플레이어
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , 0 , 0 });
 
+	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
+
+	// 플랫폼
+	/*std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>();
+	NewPlatform->GetTransform()->SetLocalScale({ 1280 , 50 });
+	NewPlatform->GetTransform()->SetLocalPosition({ -300, 0 });*/
+}
+
+void ClubLevel::DebugUpdate()
+{
+	// 일단 임시 픽셀충돌 사용하지 않을 수도 있음
+	if (true == IsDebug())
+	{
+		m_Map_01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
+	}
+
+	else if (false == IsDebug())
+	{
+		m_Map_01->GetRender()->SetScaleToTexture("Club_0.png");
+	}
 }
