@@ -2,12 +2,12 @@
 #include "GameEngineSpriteRenderer.h"
 #include "GameEngineSprite.h"
 
-// 테스트
-#include <GameEngineCore/GameEngineObject.h>
+
 
 const SpriteInfo& AnimationInfo::CurSpriteInfo()
 {
-	const SpriteInfo& Info = Sprite->GetSpriteInfo(CurFrame);
+	// 스프라이트인포 클래스 변수에 스프라이트의 현재프레임의 정보를 담아서 반환한다. 
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(FrameIndex[CurFrame]);
 	return Info;
 }
 
@@ -16,43 +16,58 @@ bool AnimationInfo::IsEnd()
 	return IsEndValue;
 }
 
+// 애니메이션 정보를 초기화
 void AnimationInfo::Reset()
 {
-	CurFrame = StartFrame;
-	CurTime = Inter;
-	IsEndValue = false;
+	CurFrame = 0;				// 현재프레임 초기화
+	CurTime = FrameTime[0];		// 현재프레임의 진행시간 초기화
+	IsEndValue = false;			// 애니메이션 종료 여부 false 
 }
 
+// 애니메이션 정보의 업데이트
 void AnimationInfo::Update(float _DeltaTime)
 {
+	// 종료여부 = false; 
 	IsEndValue = false;
+
+	// 프레임 사이 간격 시간 감소 
 	CurTime -= _DeltaTime;
 
+	// 시간값이 0보다 작거나 같아졌다면
 	if (0.0f >= CurTime)
 	{
+		// 다음 프레임으로 변경
 		++CurFrame;
-		CurTime += Inter;
 
-		// 0 ~ 9
-
-		// 9
-		if (CurFrame > EndFrame)
+		// 프레임인덱스를 저장하는 배열의 크기가 현재프레임값과 같거나 작아졌다면
+		if (FrameIndex.size() <= CurFrame)
 		{
+			// 애니메이션 종료여부 알림 
 			IsEndValue = true;
 
+			// 만약 애니메이션의 반복여부가 true라면 프레임 값을 0으로 초기화 
 			if (true == Loop)
 			{
-				CurFrame = StartFrame;
+				CurFrame = 0;
 			}
+			// 그게 아니라면 마지막프레임에서 유지시켜서 애니메이션을 마지막 프레임으로 고정시킨다. 
 			else
 			{
 				--CurFrame;
 			}
 		}
+
+		// 현재프레임을 몇초동안 유지할지에 대한 값을 Curtime 변수에 추가시켜준다. 
+		// ex) 1.3초라면 , 1.3초가 추가되고 델타타임에 의해 값이 깎여나가고 0 이하가 되면 다음프레임으로 변경된다. 
+		CurTime += FrameTime[CurFrame];
 	}
 }
 
-// SpriteRenderer
+
+
+
+
+// ----------------------------------SpriteRenderer-------------------------------------
 
 GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 {
@@ -65,9 +80,6 @@ GameEngineSpriteRenderer::~GameEngineSpriteRenderer()
 
 void GameEngineSpriteRenderer::Start()
 {
-	// 디버깅용 임시
-	GameEngineObject* Ptr = this;
-
 	GameEngineRenderer::Start();
 
 	SetPipeLine("2DTexture");
@@ -87,6 +99,7 @@ void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
 }
 
+// X , Y 축 뒤집기 
 void GameEngineSpriteRenderer::SetFlipX()
 {
 	float4 LocalScale = GetTransform()->GetLocalScale();
@@ -114,6 +127,26 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 
 	float4 Scale = float4(static_cast<float>(FindTex->GetWidth()), static_cast<float>(FindTex->GetHeight()), 1);
 	GetTransform()->SetLocalScale(Scale);
+}
+
+// 아틀라스 이미지
+void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
+{
+	Sprite = GameEngineSprite::Find(_SpriteName);
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
+void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
+{
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
 }
 
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std::string_view& _Name)
@@ -144,48 +177,100 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		return nullptr;
 	}
 
+	// 애니메이션인포 변수 생성 shared ptr 
 	std::shared_ptr<AnimationInfo> NewAnimation = std::make_shared<AnimationInfo>();
+	
+	// SpriteRenderer 의 맵에 애니메이션인포를
+	// 인자로 들어온 파라미터의 애니메이션네임 문자열로 저장
+	// 데이터가 이미 있다면 그 데이터를 반환하고, 없다면 만들어서 저장하는 map 의 문법
 	Animations[_Paramter.AnimationName.data()] = NewAnimation;
 
-	if (-1 != _Paramter.Start)
+	// 프레임인덱스 vector가 0이 아닐 경우
+	if (0 != _Paramter.FrameIndex.size())
 	{
-		if (_Paramter.Start < 0)
-		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
-			return nullptr;
-		}
-
-		NewAnimation->StartFrame = _Paramter.Start;
+		// 프레임 인덱스 입력시
+		NewAnimation->FrameIndex = _Paramter.FrameIndex;
 	}
 	else
 	{
-		NewAnimation->StartFrame = 0;
-	}
+		// 프레임 인덱스 미 입력시
 
-	if (-1 != _Paramter.End)
-	{
-		if (_Paramter.End >= Sprite->GetSpriteCount())
+		// 시작 프레임 지정
+		if (-1 != _Paramter.Start)
 		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+			// 파라미터의 시작인덱스값이 0보다 작다면 
+			if (_Paramter.Start < 0)
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 만들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			// 제대로 들어왔다면 생성한 애니메이션의 시작프레임값은 파라미터의 start 값 
+			NewAnimation->StartFrame = _Paramter.Start;
+		}
+		else
+		{
+			// -1 입력시 시작프레임 0
+			NewAnimation->StartFrame = 0;
+		}
+
+		// 끝 프레임 지정
+		if (-1 != _Paramter.End)
+		{
+			if (_Paramter.End >= Sprite->GetSpriteCount())
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			NewAnimation->EndFrame = _Paramter.End;
+		}
+		else
+		{
+			// -1 입력시 끝프레임은 마지막
+			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
+		}
+
+		// 시작프레임값이 엔드프레임값보다 크다면
+		if (NewAnimation->EndFrame < NewAnimation->StartFrame)
+		{
+			MsgAssert("애니메이션을 생성할때 End가 Start보다 클 수 없습니다");
 			return nullptr;
 		}
 
-		NewAnimation->EndFrame = _Paramter.End;
+		NewAnimation->FrameIndex.reserve(NewAnimation->EndFrame - NewAnimation->StartFrame + 1);
+
+		// StartFrame 부터 EndFrame까지 순서대로 FrameIndex에 푸시
+		for (size_t i = NewAnimation->StartFrame; i <= NewAnimation->EndFrame; ++i)
+		{
+			NewAnimation->FrameIndex.push_back(i);
+		}
 	}
+
+	// 만약 인자에 FrameTime 을 입력해주었다면
+	if (0 != _Paramter.FrameTime.size())
+	{
+		// 그대로 받아주고, 
+		NewAnimation->FrameTime = _Paramter.FrameTime;
+
+	}
+	// 그게 아니라면 
 	else
 	{
-		NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
+		// 애니메이션 정보에 저장되어 있는 값을 푸쉬백
+		for (size_t i = 0; i < NewAnimation->FrameIndex.size(); ++i)
+		{
+			NewAnimation->FrameTime.push_back(_Paramter.FrameInter);
+		}
 	}
 
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
-	NewAnimation->Inter = _Paramter.FrameInter;
 	NewAnimation->ScaleToTexture = _Paramter.ScaleToTexture;
 
 	return NewAnimation;
 }
-
 
 void GameEngineSpriteRenderer::SetAtlasConstantBuffer()
 {
@@ -194,28 +279,22 @@ void GameEngineSpriteRenderer::SetAtlasConstantBuffer()
 
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
-	// 애니메이션 정보를 찾아온다. 
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
 
-	// 애니메이션이 없다면
 	if (nullptr == Find)
 	{
 		MsgAssert("이러한 이름의 애니메이션은 존재하지 않습니다" + std::string(_Name));
 		return;
 	}
 
-	// 현재 애니메이션과 찾아온 애니메이션이 같고, force가 false라면 return 
 	if (CurAnimation == Find && false == _Force)
 	{
 		return;
 	}
 
-	// 현재 애니메이션은 찾아온 애니메이션이 되고
 	CurAnimation = FindAnimation(_Name);
-	// 한번 초기화해준다. 
 	CurAnimation->Reset();
 
-	// 인자로들어온 프레임이 -1이 아니라면 현재프레임은 ~ 
 	if (_Frame != -1)
 	{
 		CurAnimation->CurFrame = _Frame;
@@ -249,6 +328,5 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 		}
 
 	}
-
 	GameEngineRenderer::Render(_Delta);
 }
