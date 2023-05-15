@@ -405,33 +405,42 @@ void Player::SlashStart()
 {
 	m_Render->ChangeAnimation("player_attack");
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+
 }
 
 void Player::SlashUpdate(float _DeltaTime)
 {
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
+		if (true == m_PixelCollider->GroundCheck(this))
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+
 		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+	// 아래로 모션은 나와야함 음 일단 임시로, 맵밖,범위밖으로 공격했을 경우 
+	if (true == m_PixelCollider->GroundCheck(this))
+	{
+		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
 	// 만약 마우스의 x축이 나보다 크면 정방향 , x 축이 나보다 작으면 역방향
 	float4 MyPos = GetTransform()->GetLocalPosition();
-	if (MyPos.x < m_AttackPos.x)
+	if (MyPos.x <= m_AttackPos.x)
 	{
+		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	else if (MyPos.x > m_AttackPos.x)
 	{
+		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
-	}
-
-	// 아래로 모션은 나와야함 음 일단 임시로
-	if (true == m_PixelCollider->GroundCheck(this))
-	{
-		ChangeState(PlayerState::IDLE);
-		return;
 	}
 
 	float4 MoveDir = m_AttackPos - MyPos;
@@ -462,6 +471,15 @@ void Player::JumpUpdate(float _DeltaTime)
 		m_IsJumping = false;
 		m_CurrentVerticalVelocity = 0.0f;
 		ChangeState(PlayerState::IDLE);
+		return;
+	}
+	
+	// 테스트
+	if (true == GameEngineInput::IsPress("player_slash"))
+	{
+		m_IsJumping = false;
+		m_CurrentVerticalVelocity = 0.0f;
+		ChangeState(PlayerState::SLASH);
 		return;
 	}
 

@@ -123,6 +123,10 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::SameLine();
                 ImGui::Text("Flip");
                 break;
+            case PlayerState::FALL:
+                ImGui::SameLine();
+                ImGui::Text("Fall");
+                break;
             }
 
             if (nullptr != Cursor::MainCursor)
