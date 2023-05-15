@@ -14,6 +14,9 @@
 #include "Cursor.h"
 #include "PixelCollider.h"
 
+// 임시
+#include <algorithm>
+
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
@@ -65,7 +68,6 @@ void Player::Start()
 void Player::Update(float _DeltaTime)
 {
 	DirCheck();
-	PixelCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
@@ -113,7 +115,7 @@ void Player::FindAndCreateAnimation()
 									  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true});
 
 	m_Render->CreateAnimation({ .AnimationName = "player_attack", .SpriteName = "player_attack", .Start = 0, .End = 6 ,
-									  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
+									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_idle_to_run", .SpriteName = "player_idle_to_run", .Start = 0, .End = 3 ,
 								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
@@ -195,18 +197,12 @@ void Player::DebugUpdate()
 	}
 }
 
-void Player::PixelCheck()
-{
-	if (nullptr != m_PixelCollider)
-	{
-		m_PixelCollider->PixelCollision(GetTransform());
-	}
-}
-
-
 // ---------------------------------------- state ------------------------------------------ 
 void Player::UpdateState(float _DeltaTime)
 {
+	// 맞나.
+	// AddGravity(_DeltaTime);
+
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
 	{
@@ -408,29 +404,37 @@ void Player::MoveEnd()
 void Player::SlashStart()
 {
 	m_Render->ChangeAnimation("player_attack");
-	/*float4 cursorpos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
-	float4 Camerapos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	GetTransform()->SetLocalPosition(cursorpos);*/
+	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 }
 
 void Player::SlashUpdate(float _DeltaTime)
 {
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
-		// 공중상태도 고려해야함 일단 임시로 
-		if (true == GameEngineInput::IsPress("player_left_move") || true == GameEngineInput::IsPress("player_right_move"))
-		{
-			ChangeState(PlayerState::MOVE);
-			return;
-		}
-
-		ChangeState(PlayerState::IDLE);
+		ChangeState(PlayerState::FALL);
 		return;
 	}
+
+	// 만약 마우스의 x축이 나보다 크면 정방향 , x 축이 나보다 작으면 역방향
+	float4 MyPos = GetTransform()->GetLocalPosition();
+	if (MyPos.x < m_AttackPos.x)
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	else if (MyPos.x > m_AttackPos.x)
+	{
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	float4 MoveDir = m_AttackPos - MyPos;
+	MoveDir.Normalize();
+	GetTransform()->AddLocalPosition(MoveDir * m_MoveSpeed * _DeltaTime);
 }
 
 void Player::SlashEnd()
 {
+	m_AttackPos = { 0 , 0 };
 }
 
 void Player::JumpStart()
@@ -446,32 +450,29 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
-	// 중력적용
+	//// 중력적용
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
 	
-	// 이동
+	// 점프 
 	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
 	float4 Pos = GetTransform()->GetLocalPosition();
 
+	// 좌우 이동
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 		GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 
-	// 나중에 내가 땅일경우, 조건 충족시켜서 변경
-	if (Pos.y <= -94.0f)
+	if (true == m_PixelCollider->GroundCheck(this))
 	{
 		m_IsJumping = false;
 		m_CurrentVerticalVelocity = 0.0f;
@@ -560,11 +561,36 @@ void Player::FallStart()
 
 void Player::FallUpdate(float _DeltaTime)
 {
-	//if (true == m_Ground)
-	//{
-	//	ChangeState(PlayerState::IDLE);
-	//	return;
-	//}
+	if (true == GameEngineInput::IsPress("player_right_Move"))
+	{
+		m_Direction = true;
+		GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	{
+
+		m_Direction = false;
+		GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+	}
+
+	// 현재 땅이라면
+	if (true == m_PixelCollider->GroundCheck(this))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	// 땅이아니라면
+	else if (false == m_PixelCollider->GroundCheck(this))
+	{
+		GetTransform()->AddLocalPosition(float4{ 0 , -1 } * 500.0f * _DeltaTime);
+		return;
+	}
+
+	
 }
 
 void Player::FallEnd()

@@ -1,6 +1,11 @@
 #pragma once
 #include "BaseActor.h"
 
+// 보류 
+#include <GameEngineCore/GameEngineComponent.h>
+
+#include <GameEngineCore/GameEngineTexture.h>
+
 // 설명 :
 class PixelCollider : public BaseActor
 {
@@ -22,10 +27,21 @@ public:
 	}
 
 	void Start();
-	bool PixelCollision(class GameEngineTransform* _Transform);
+	bool PixelCollision(class GameEngineObject* _Object);
+
+	// 내가 현재 땅에 있는지 
+	bool GroundCheck(class GameEngineObject* _Object);
+
 protected:
 
 private:
 	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
-	
+
+	// 땅
+	GameEnginePixelColor m_BlackPixel = { static_cast<char>(0), static_cast<char>(0) , static_cast<char>(0) ,
+										static_cast<char>(255) };
+	GameEnginePixelColor m_WhitePixel = { static_cast<char>(255), static_cast<char>(255) , static_cast<char>(255) ,
+										static_cast<char>(255) };
+	GameEnginePixelColor m_GreenPixel = { static_cast<char>(0), static_cast<char>(255) , static_cast<char>(0) ,
+										static_cast<char>(255) };
 };

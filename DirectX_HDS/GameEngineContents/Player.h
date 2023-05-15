@@ -43,6 +43,7 @@ public:
 	{
 		return m_Render;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -54,6 +55,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	float4 m_LocalScale = { 100.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
+
+	// 마우스를 클릭했을 때의 좌표를 저장
+	float4 m_AttackPos = {};
 
 	// true = 오른쪽
 	bool   m_Direction = true; 
@@ -96,7 +100,6 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-	void PixelCheck();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
 	std::shared_ptr<class PixelCollider> m_PixelCollider = nullptr;
 

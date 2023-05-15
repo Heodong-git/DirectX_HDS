@@ -101,7 +101,6 @@ void ClubLevel::ActorLoad()
 	// 플레이어
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , -94 });
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ 0 ,0 });
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
