@@ -65,7 +65,7 @@ private:
 
 	// 점프관련
 	bool m_IsJumping = false;
-	float m_JumpPower = 500.0f;
+	float m_JumpPower = 450.0f;
 	float m_JumpMoveSpeed = 400.0f;
 	float m_CurrentVerticalVelocity = 0.0f;
 
@@ -100,7 +100,14 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
+	// bottom 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
+
+	// bottom left, right 
+	// 이게 있어야할듯 
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
+
 	std::shared_ptr<class PixelCollider> m_PixelCollider = nullptr;
 
 

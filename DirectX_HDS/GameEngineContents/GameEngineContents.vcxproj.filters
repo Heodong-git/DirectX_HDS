@@ -78,6 +78,9 @@
     <ClInclude Include="PixelCollider.h">
       <Filter>05.Debug\00.PixelCollider</Filter>
     </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>02.Actor\08.Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -156,6 +159,9 @@
     <ClCompile Include="PixelCollider.cpp">
       <Filter>05.Debug\00.PixelCollider</Filter>
     </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
+      <Filter>02.Actor\08.Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -229,6 +235,9 @@
     </Filter>
     <Filter Include="05.Debug\00.PixelCollider">
       <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.Effect">
+      <UniqueIdentifier>{777e7068-da3d-43fa-8c35-0b9e0d0120ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

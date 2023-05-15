@@ -5,6 +5,9 @@
 class Battery : public BaseActor
 {
 public:
+	static Battery* MainBattery;
+
+public:
 	// constrcuter destructer
 	Battery();
 	~Battery();

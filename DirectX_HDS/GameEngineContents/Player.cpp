@@ -427,9 +427,16 @@ void Player::SlashUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
+	// 아래로 모션은 나와야함 음 일단 임시로
+	if (true == m_PixelCollider->GroundCheck(this))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
 	float4 MoveDir = m_AttackPos - MyPos;
 	MoveDir.Normalize();
-	GetTransform()->AddLocalPosition(MoveDir * m_MoveSpeed * _DeltaTime);
+	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
 }
 
 void Player::SlashEnd()

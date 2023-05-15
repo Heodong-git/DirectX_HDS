@@ -49,6 +49,13 @@ bool PixelCollider::PixelCollision(class GameEngineObject* _Object)
 
 }
 
+bool PixelCollider::ColMapSetting()
+{
+	// 여기서 현재레벨의 구역에 따라서 검사할 충돌맵을 변경함
+
+	return false;
+}
+
 bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 {
 	if (nullptr == m_CurColMap)
@@ -92,6 +99,16 @@ bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 				_Object->GetTransform()->AddLocalPosition({ 0 , static_cast<float>(UpCount) });
 			}
 		}
+
+		// 빠져나왔을 때 빠져나온 픽셀위치의 아랫 픽셀이 검은색이라면 현재 땅에 위치한것
+	/*	float4 Pos = _Object->GetTransform()->GetLocalPosition();
+		float4 GroundPos = { Pos.x , Pos.y - 1.0f };
+		GameEnginePixelColor GroundPixel = m_CurColMap->GetPixel(static_cast<int>(GroundPos.x), static_cast<int>(GroundPos.y));
+		
+		if (m_BlackPixel == GroundPixel)
+		{
+			return true;
+		}*/
 
 		return true;
 	}

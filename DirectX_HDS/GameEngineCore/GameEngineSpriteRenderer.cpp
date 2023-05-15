@@ -194,22 +194,28 @@ void GameEngineSpriteRenderer::SetAtlasConstantBuffer()
 
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
+	// 애니메이션 정보를 찾아온다. 
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
 
+	// 애니메이션이 없다면
 	if (nullptr == Find)
 	{
 		MsgAssert("이러한 이름의 애니메이션은 존재하지 않습니다" + std::string(_Name));
 		return;
 	}
 
+	// 현재 애니메이션과 찾아온 애니메이션이 같고, force가 false라면 return 
 	if (CurAnimation == Find && false == _Force)
 	{
 		return;
 	}
 
+	// 현재 애니메이션은 찾아온 애니메이션이 되고
 	CurAnimation = FindAnimation(_Name);
+	// 한번 초기화해준다. 
 	CurAnimation->Reset();
 
+	// 인자로들어온 프레임이 -1이 아니라면 현재프레임은 ~ 
 	if (_Frame != -1)
 	{
 		CurAnimation->CurFrame = _Frame;

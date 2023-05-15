@@ -102,6 +102,9 @@ void ClubLevel::ActorLoad()
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , -94 });
 
+	// 플레이어 배터리 
+	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
+
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 }

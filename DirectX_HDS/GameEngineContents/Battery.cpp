@@ -5,8 +5,11 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "BaseLevel.h"
 
+Battery* Battery::MainBattery = nullptr;
+
 Battery::Battery()
 {
+	MainBattery = this;
 }
 
 Battery::~Battery()
@@ -22,7 +25,7 @@ void Battery::Start()
 		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Battery");
 
 		// 파일 전체로드 
@@ -36,6 +39,7 @@ void Battery::Start()
 	m_CaseRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_CaseRender->SetPipeLine("2DTexture");
 	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Battery_09.png");
+	m_CaseRender->SetAtlasConstantBuffer();
 	/*m_CaseRender->SetPipeLine("2DBlinkTexture");
 	m_CaseRender->GetShaderResHelper().SetTexture("BlinkTex", "Battery_09.png");*/
 	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 });

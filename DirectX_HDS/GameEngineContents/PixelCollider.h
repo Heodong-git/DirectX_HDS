@@ -29,6 +29,8 @@ public:
 	void Start();
 	bool PixelCollision(class GameEngineObject* _Object);
 
+	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
+	bool ColMapSetting();
 	// 내가 현재 땅에 있는지 
 	bool GroundCheck(class GameEngineObject* _Object);
 
