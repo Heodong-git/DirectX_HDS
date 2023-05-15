@@ -457,6 +457,18 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (true == m_PixelCollider->GroundCheck(this))
+	{
+		m_IsJumping = false;
+		m_CurrentVerticalVelocity = 0.0f;
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("player_crouch"))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
+	}
 	//// 중력적용
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
 	
@@ -477,14 +489,6 @@ void Player::JumpUpdate(float _DeltaTime)
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 		GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
-	}
-
-	if (true == m_PixelCollider->GroundCheck(this))
-	{
-		m_IsJumping = false;
-		m_CurrentVerticalVelocity = 0.0f;
-		ChangeState(PlayerState::IDLE);
-		return;
 	}
 }
 

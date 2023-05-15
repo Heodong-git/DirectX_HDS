@@ -81,6 +81,12 @@
     <ClInclude Include="SlashEffect.h">
       <Filter>02.Actor\08.Effect</Filter>
     </ClInclude>
+    <ClInclude Include="ClubDoor.h">
+      <Filter>02.Actor\09.Door</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalDoor.h">
+      <Filter>02.Actor\09.Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -162,6 +168,10 @@
     <ClCompile Include="SlashEffect.cpp">
       <Filter>02.Actor\08.Effect</Filter>
     </ClCompile>
+    <ClCompile Include="ClubDoor.cpp">
+      <Filter>02.Actor\09.Door</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -238,6 +248,9 @@
     </Filter>
     <Filter Include="02.Actor\08.Effect">
       <UniqueIdentifier>{777e7068-da3d-43fa-8c35-0b9e0d0120ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\09.Door">
+      <UniqueIdentifier>{69f8e230-090e-4f3b-bd1f-2e671831beac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

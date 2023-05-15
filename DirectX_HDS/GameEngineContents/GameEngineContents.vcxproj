@@ -164,6 +164,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClubDoor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NormalDoor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PixelCollider.h">
       <SubType>
       </SubType>
@@ -269,6 +277,8 @@
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClubDoor.cpp" />
+    <ClCompile Include="NormalDoor.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="SlashEffect.cpp" />
     <ClCompile Include="TitleBackGround.cpp" />

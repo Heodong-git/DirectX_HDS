@@ -68,9 +68,12 @@ private:
 	float m_JumpPower = 450.0f;
 	float m_JumpMoveSpeed = 400.0f;
 	float m_CurrentVerticalVelocity = 0.0f;
+	float m_FallPower = 800.0f;
 
 	// 중력 
 	const float m_GravityPower = 1000.0f;
+
+	// 얘는 필요없을것 같다. 
 	void AddGravity(float _DeltaTime)
 	{
 		switch (m_CurState)
