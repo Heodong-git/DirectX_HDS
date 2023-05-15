@@ -468,7 +468,6 @@ void Player::JumpUpdate(float _DeltaTime)
 {
 	if (true == m_PixelCollider->GroundCheck(this))
 	{
-		m_IsJumping = false;
 		m_CurrentVerticalVelocity = 0.0f;
 		ChangeState(PlayerState::IDLE);
 		return;
@@ -477,7 +476,6 @@ void Player::JumpUpdate(float _DeltaTime)
 	// 테스트
 	if (true == GameEngineInput::IsPress("player_slash"))
 	{
-		m_IsJumping = false;
 		m_CurrentVerticalVelocity = 0.0f;
 		ChangeState(PlayerState::SLASH);
 		return;
@@ -485,7 +483,9 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
-		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
+		m_CurrentVerticalVelocity = 0.0f;
+		ChangeState(PlayerState::FALL);
+		return;
 	}
 	//// 중력적용
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
@@ -512,6 +512,7 @@ void Player::JumpUpdate(float _DeltaTime)
 
 void Player::JumpEnd()
 {
+	m_IsJumping = false;
 }
 
 void Player::CrouchStart()
@@ -619,7 +620,10 @@ void Player::FallUpdate(float _DeltaTime)
 		return;
 	}
 
-	
+	if (true == GameEngineInput::IsPress("player_crouch"))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
+	}
 }
 
 void Player::FallEnd()
