@@ -63,6 +63,11 @@ void Player::Start()
 	FindAndCreateAnimation();
 	m_PixelCollider = std::make_shared<PixelCollider>();
 	m_PixelCollider->Start();
+
+	m_Render->SetAnimationStartEvent("player_idle", 2, []
+		{
+			int a = 0;
+		});
 }
 
 void Player::Update(float _DeltaTime)
