@@ -436,6 +436,11 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		// true 이면 맵 밖인걸로
 		if (false == m_PixelCollider->RightPixelCheck())
 		{
+			if (false == m_PixelCollider->GroundCheck(this))
+			{
+				GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+			}
+
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 		}
@@ -446,6 +451,10 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 	{
 		if (false == m_PixelCollider->LeftPixelCheck())
 		{
+			if (false == m_PixelCollider->GroundCheck(this))
+			{
+				GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+			}
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
 		}
@@ -465,6 +474,12 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+	if (false == m_PixelCollider->GroundCheck(this))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+	}
+	
+
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -706,6 +721,11 @@ void Player::FlipStart()
 
 void Player::FlipUpdate(float _DeltaTime)
 {
+	if (false == m_PixelCollider->GroundCheck(this))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+	}
+
 	// 방향보정 
 	if (true == m_Direction)
 	{

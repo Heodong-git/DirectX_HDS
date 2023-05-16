@@ -136,7 +136,7 @@ bool PixelCollider::RightPixelCheck()
 
 	// 검사할 위치의 픽셀값을 받아온다.
 	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
-
+	
 	// 충돌 검사
 	if (m_BlackPixel == ColPixel)
 	{

@@ -140,7 +140,7 @@ private:
 	// top
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
-	float4 m_DebugRenderScale = { 1, 1 };
+	float4 m_DebugRenderScale = { 4, 4 };
 
 	// -------------------------------------------------------------------
 
