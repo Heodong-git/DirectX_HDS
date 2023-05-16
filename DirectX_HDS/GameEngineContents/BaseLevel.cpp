@@ -28,7 +28,6 @@ void BaseLevel::Update(float _DeltaTime)
 
 	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
 	GameEngineLevel::Update(_DeltaTime);
-
 }
 
 void BaseLevel::LevelChangeStart()

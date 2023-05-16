@@ -1,14 +1,14 @@
 #include "PrecompileHeader.h"
 #include "TitleManager.h"
+
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCore.h>
-
 #include <GameEngineCore/GameEngineLevel.h>
+
 #include "BaseLevel.h"
 
 TitleManager::TitleManager()

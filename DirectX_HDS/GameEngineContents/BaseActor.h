@@ -14,11 +14,13 @@ public:
 	BaseActor& operator=(const BaseActor& _Other) = delete;
 	BaseActor& operator=(BaseActor&& _Other) noexcept = delete;
 
+	// 필요한가..? ㅇㅇ 필요함 
 	class BaseLevel* GetReturnCastLevel() const;
 
 protected:
 	void Update(float _DeltaTime) override;
 
+	// 디버그 스위치
 	virtual void DebugSwitch()
 	{
 		if (true == IsDebug())

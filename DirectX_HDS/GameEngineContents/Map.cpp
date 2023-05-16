@@ -31,8 +31,6 @@ void Map::Start()
 		}
 	}
 
-
-
 	/*m_BackGround = CreateComponent<GameEngineSpriteRenderer>();
 	m_BackGround->SetPipeLine("2DTexture");
 	m_BackGround->SetTexture("background_black.png");

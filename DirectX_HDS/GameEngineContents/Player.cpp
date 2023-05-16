@@ -1,11 +1,11 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
+
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-#include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineResource.h>
@@ -14,9 +14,6 @@
 #include "BaseLevel.h"
 #include "Cursor.h"
 #include "PixelCollider.h"
-
-// 임시
-#include <algorithm>
 
 Player* Player::MainPlayer = nullptr;
 
@@ -32,6 +29,8 @@ Player::~Player()
 
 void Player::Start()
 {
+	// 액터 스타트 기본인터페이스 구성
+	// 키생성
 	if (false == GameEngineInput::IsKey("player_slash"))
 	{
 		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
@@ -43,53 +42,13 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
 
-	// 플레이어 메인렌더러 세팅
-	float4 PlayerPos = GetTransform()->GetLocalPosition();
-	m_Render = CreateComponent<GameEngineSpriteRenderer>();
-	m_Render->SetPipeLine("2DTexture");
-	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
-	m_Render->SetAtlasConstantBuffer();
-	m_Render->SetScaleRatio(2.0f);
-
-	// 디버그 렌더러 생성
-	// 플레이어 바텀 위치
-	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender0->SetPipeLine("2DTexture");
-	m_DebugRender0->SetAtlasConstantBuffer();
-	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
-
-	// 픽셀컬라이더 생성
-	m_PixelCollider = std::make_shared<PixelCollider>();
-	// 현재 여기서 맵세팅중, 추후 수정 예정
-	m_PixelCollider->Start();
-
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
-	m_Collision->GetTransform()->SetLocalScale( { 75, 75 });
-	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
-
-	// 애니메이션 생성
-	FindAndCreateAnimation();
+	// 컴포넌트 세팅
+	ComponentSetting();
+	// 필요한 리소스 로드및 애니메이션 생성
+	LoadAndCreateAnimation();
 }
 
-void Player::Update(float _DeltaTime)
-{
-	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
-	//// 충돌테스트코드 잘된다 
-	//if (m_Collision->CollisionAll(2, ColType::AABBBOX3D, ColType::AABBBOX3D, TestVector))
-	//{
-	//	int a = 0;
-	//}
-
-	DirCheck();
-	UpdateState(_DeltaTime);
-	DebugUpdate();
-}
-
-void Player::Render(float _DeltaTime)
-{
-}
-
-void Player::FindAndCreateAnimation()
+void Player::LoadAndCreateAnimation()
 {
 	// 파일로드 기본인터페이스 
 	{
@@ -125,7 +84,7 @@ void Player::FindAndCreateAnimation()
 	}
 
 	m_Render->CreateAnimation({ .AnimationName = "player_idle", .SpriteName = "player_idle", .Start = 2, .End = 10 ,
-									  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true});
+									  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_attack", .SpriteName = "player_attack", .Start = 0, .End = 6 ,
 									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
@@ -178,6 +137,71 @@ void Player::FindAndCreateAnimation()
 	m_Render->ChangeAnimation("player_idle");
 }
 
+void Player::Update(float _DeltaTime)
+{
+	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
+	//// 충돌테스트코드 잘된다 
+	//if (m_Collision->CollisionAll(2, ColType::AABBBOX3D, ColType::AABBBOX3D, TestVector))
+	//{
+	//	int a = 0;
+	//}
+
+	// 현재방향체크 
+	DirCheck();
+
+	// 상태업데이트
+	UpdateState(_DeltaTime);
+
+	// 디버그 업데이트
+	DebugUpdate();
+}
+
+void Player::Render(float _DeltaTime)
+{
+}
+
+void Player::ComponentSetting()
+{
+	// 플레이어 메인렌더
+	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	m_Render = CreateComponent<GameEngineSpriteRenderer>();
+	m_Render->SetPipeLine("2DTexture");
+	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
+	m_Render->SetAtlasConstantBuffer();
+	m_Render->SetScaleRatio(2.0f);
+
+	// 콜리전 생성
+	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
+	m_Collision->GetTransform()->SetLocalScale(m_LocalScale);
+	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
+
+
+	// 픽셀컬라이더 생성
+	m_PixelCollider = std::make_shared<PixelCollider>();
+	// 현재 여기서 맵세팅중, 추후 수정
+	m_PixelCollider->Start();
+
+	// --------------------------- Debug Render ------------------------------
+
+	// bottom 
+	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender0->SetPipeLine("2DTexture");
+	m_DebugRender0->SetAtlasConstantBuffer();
+	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
+
+	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Left->SetPipeLine("2DTexture");
+	m_DebugRender_Left->SetAtlasConstantBuffer();
+	m_DebugRender_Left->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Left->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
+
+	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Right->SetPipeLine("2DTexture");
+	m_DebugRender_Right->SetAtlasConstantBuffer();
+	m_DebugRender_Right->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Right->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
+}
+
 void Player::DirCheck()
 {
 	if (true == GameEngineInput::IsPress("player_left_move"))
@@ -202,20 +226,21 @@ void Player::DebugUpdate()
 	if (true == IsDebug())
 	{
 		m_DebugRender0->On();
+		m_DebugRender_Left->On();
+		m_DebugRender_Right->On();
 	}
 
 	else if (false == IsDebug())
 	{
 		m_DebugRender0->Off();
+		m_DebugRender_Left->Off();
+		m_DebugRender_Right->Off();
 	}
 }
 
 // ---------------------------------------- state ------------------------------------------ 
 void Player::UpdateState(float _DeltaTime)
 {
-	// 맞나.
-	// AddGravity(_DeltaTime);
-
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
 	{
@@ -310,37 +335,40 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
+	// 점프키 , w
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
 		ChangeState(PlayerState::JUMP);
 		return;
 	}
 
+	// 크라우치 , s
 	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
 		ChangeState(PlayerState::CROUCH);
 		return;
 	}
 
-	// 임시무브 
+	// 우측이동 , d
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		ChangeState(PlayerState::MOVE);
 		return;
 	}
+
+	// 좌측이동 , a 
 	else if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		
 		ChangeState(PlayerState::MOVE);
 		return;
 	}
 
+	// 공격, 마우스 좌클릭 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
 		return;
 	}
-
 }
 
 void Player::IdleEnd()
@@ -349,10 +377,14 @@ void Player::IdleEnd()
 
 void Player::IdleToRunStart()
 {
+	m_Render->ChangeAnimation("player_idle_to_run");
 }
 
 void Player::IdleToRunUpdate(float _DeltaTime)
 {
+	// 애니메이션이 종료되면 Move로 전환하는데. 
+	// 만약 종료된 시점에 키가 눌려있지 않고 내가 땅에 있다면 아이들로 다시 전환. 
+
 }
 
 void Player::IdleToRunEnd()
@@ -417,24 +449,26 @@ void Player::MoveEnd()
 void Player::SlashStart()
 {
 	m_Render->ChangeAnimation("player_attack");
+	// 공격시작시 현재 공격지점을 받아둔다. 
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
-
 }
 
 void Player::SlashUpdate(float _DeltaTime)
 {
+	// 공격 애니메이션 재생이 끝났을 때 
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
+		// 위치가 땅이라면 아이들로 변경
 		if (true == m_PixelCollider->GroundCheck(this))
 		{
 			ChangeState(PlayerState::IDLE);
 			return;
 		}
 
+		// 땅이 아닐 경우 fall 상태로 변경
 		ChangeState(PlayerState::FALL);
 		return;
 	}
-
 
 	// 아래로 모션은 나와야함 음 일단 임시로, 맵밖,범위밖으로 공격했을 경우 
 	if (true == m_PixelCollider->GroundCheck(this))
@@ -442,7 +476,8 @@ void Player::SlashUpdate(float _DeltaTime)
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
-
+	
+	// 공격로직인데.. 
 	// 만약 마우스의 x축이 나보다 크면 정방향 , x 축이 나보다 작으면 역방향
 	float4 MyPos = GetTransform()->GetLocalPosition();
 	if (MyPos.x <= m_AttackPos.x)
@@ -462,15 +497,19 @@ void Player::SlashUpdate(float _DeltaTime)
 	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
 }
 
+// 공격이 종료되면 공격위치를 초기화 
 void Player::SlashEnd()
 {
 	m_AttackPos = { 0 , 0 };
 }
 
+
 void Player::JumpStart()
 {
+	// 점프 상태가 false 일 경우 
 	if (false == m_IsJumping)
 	{
+		// true 로 만들어준다. 
 		m_IsJumping = true;
 		m_CurrentVerticalVelocity = m_JumpPower;
 	}
@@ -480,8 +519,10 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	// 만약 점프 상태일 때 내가 땅이라면
 	if (true == m_PixelCollider->GroundCheck(this))
 	{
+		// 값 초기화 후 아이들로 변경
 		m_CurrentVerticalVelocity = 0.0f;
 		ChangeState(PlayerState::IDLE);
 		return;
@@ -501,16 +542,19 @@ void Player::JumpUpdate(float _DeltaTime)
 		ChangeState(PlayerState::FALL);
 		return;
 	}
-	//// 중력적용
+	// 점프의 힘에 중력을 더해준다. 
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
 	
 	// 점프 
 	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+
+	// 위치체크용 변수 
 	float4 Pos = GetTransform()->GetLocalPosition();
 
-	// 좌우 이동
+	// 점프중 좌우 이동시 동작할 코드 
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
+		// 애니메이션 방향보정
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
@@ -566,6 +610,7 @@ void Player::FlipStart()
 
 void Player::FlipUpdate(float _DeltaTime)
 {
+	// 방향보정 
 	if (true == m_Direction)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
@@ -576,16 +621,91 @@ void Player::FlipUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
+	// 플립 로직 , 픽셀충돌 관련내용 추가해야함 
+	// 우측 플립이 true 라면 
+	if (true == m_RightFlip)
+	{
+		// 플립 애니메이션이 종료 되었다면
+		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+		{
+			// 내위치가 땅이라면 
+			if (true == m_PixelCollider->GroundCheck(this))
+			{
+				// 땅인데 아래키가 눌려있다면 
+				if (true == GameEngineInput::IsPress("player_crouch"))
+				{
+					ChangeState(PlayerState::CROUCH);
+					return;
+				}
 
+				// 그게 아니라면 아이들 
+				ChangeState(PlayerState::IDLE);
+				return;
+			}
+		}
+
+		GetTransform()->AddLocalPosition(float4::Right * m_FlipSpeed * _DeltaTime);
+	}
+
+	else if (true == m_LeftFlip)
+	{
+		// 플립 애니메이션이 종료 되었다면
+		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+		{
+			// 내위치가 땅이라면 
+			if (true == m_PixelCollider->GroundCheck(this))
+			{
+				// 땅인데 아래키가 눌려있다면 
+				if (true == GameEngineInput::IsPress("player_crouch"))
+				{
+					ChangeState(PlayerState::CROUCH);
+					return;
+				}
+
+				// 그게 아니라면 아이들 
+				ChangeState(PlayerState::IDLE);
+				return;
+			}
+		}
+
+		GetTransform()->AddLocalPosition(float4::Left * m_FlipSpeed * _DeltaTime);
+	}
+
+	// 애니메이션이 종료되면 
 	if (true == m_Render->FindAnimation("player_flip")->IsEnd())
 	{
-		ChangeState(PlayerState::CROUCH);
+		if (true == GameEngineInput::IsPress("player_crouch"))
+		{
+			ChangeState(PlayerState::CROUCH);
+			return;
+		}
+
+		ChangeState(PlayerState::IDLE);
 		return;
+	}
+
+	// 점프중 좌우 이동시 동작할 코드 
+	if (true == GameEngineInput::IsPress("player_right_Move"))
+	{
+		// 애니메이션 방향보정
+		m_Direction = true;
+		GetTransform()->SetLocalPositiveScaleX();
+		m_RightFlip = true;
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	{
+		m_Direction = false;
+		GetTransform()->SetLocalNegativeScaleX();
+		m_LeftFlip = true;
 	}
 }
 
 void Player::FlipEnd()
 {
+	m_RightFlip = false;
+	m_LeftFlip = false;
+
 	if (true != GameEngineInput::IsPress("player_crouch"))
 	{
 		if (true == GameEngineInput::IsPress("player_right_move") || true == GameEngineInput::IsPress("player_left_move"))
@@ -594,8 +714,6 @@ void Player::FlipEnd()
 			return;
 		}
 	}
-
-
 }
 
 void Player::FallStart()

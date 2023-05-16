@@ -103,7 +103,7 @@ void Cursor::FollowCursor()
 {
 	// 현재 카메라 위치 가져오고
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	float4 CameraMovePivot = PlayManager::GetInst()->GetCameraPivot();
+	float4 CameraMovePivot = PlayManager::MainManager->GetCameraPivot();
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 
 	// y축 값이 0보다 크다면 

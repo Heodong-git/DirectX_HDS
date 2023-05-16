@@ -27,9 +27,7 @@ protected:
 
 private:
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-	std::shared_ptr<class CPlayManager> m_PlayManager = nullptr;
-	std::shared_ptr<class Map> m_Map_01 = nullptr;
-	
-	std::shared_ptr<class CPlayer> m_Player = nullptr;
+	std::shared_ptr<class Map> m_Map_Club01 = nullptr;
+
 	void DebugUpdate();
 };

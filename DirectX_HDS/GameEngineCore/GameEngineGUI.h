@@ -102,3 +102,10 @@ private:
 	// GUI를 사용하여 생성하는 윈도우창을 저장할 자료구조 
 	static std::map<std::string, std::shared_ptr<GameEngineGUIWindow>> AllWindow;
 };
+
+// imgui 버튼생성 인터페이스 , 어. 
+// 1. 실행할 클래스멤버함수를 생성
+// 2. 코어윈도우를 상속받은 클래스를 만들어서 아래처럼 함수포인터를 넘겨준다. 
+// std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+// Window->Test = std::bind(&CTitleLevel::TestFunction, this);
+// Window->Test1 = std::bind(&CTitleLevel::TestFunction, this);

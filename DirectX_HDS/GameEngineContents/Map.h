@@ -24,6 +24,9 @@ protected:
 	void Start() override;
 
 private:
+	// 메인맵 렌더러 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MapRender = nullptr;
+
+	// 뒤에 깔릴 검은색배경, 백그라운드 렌더러
 	std::shared_ptr<class GameEngineSpriteRenderer> m_BackGround = nullptr;
 };

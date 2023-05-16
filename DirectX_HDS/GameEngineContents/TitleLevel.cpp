@@ -24,19 +24,6 @@ TitleLevel::~TitleLevel()
 {
 }
 
-// imgui 버튼생성 인터페이스 , 어. 
-// 1. 실행할 클래스멤버함수를 생성
-// 2. 코어윈도우를 상속받은 클래스를 만들어서 아래처럼 함수포인터를 넘겨준다. 
-// std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
-// Window->Test = std::bind(&CTitleLevel::TestFunction, this);
-// Window->Test1 = std::bind(&CTitleLevel::TestFunction, this);
-
-// imgui 테스트용
-//void CTitleLevel::TestFunction()
-//{
-//	std::shared_ptr<CBackGround> NewBackGround = CreateActor<CBackGround>();
-//}
-
 void TitleLevel::Start()
 {
 	ResourcesLoad();
@@ -74,6 +61,7 @@ void TitleLevel::LevelChangeEnd()
 	{
 		m_GUI->Off();
 	}
+
 	SetState(BaseLevel::LevelState::WAIT);
 }
 
@@ -112,7 +100,8 @@ void TitleLevel::ActorLoad()
 {
 	// background 생성, 검은색깔개 + 뒷배경
 	std::shared_ptr<TitleBackGround> NewBackGround = CreateActor<TitleBackGround>();
-	// Title 의 모든 UI 
+
+	// Title 의 모든 UI 와 연산 사실상 얘가 다하는걸로
 	m_TitleManager = CreateActor<TitleManager>("TitleManager");
 	m_TitleManager->CreateRender();
 }
