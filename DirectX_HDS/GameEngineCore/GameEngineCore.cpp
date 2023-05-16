@@ -88,6 +88,7 @@ void GameEngineCore::EngineUpdate()
 	GameEngineSound::SoundUpdate();
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
+	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 

@@ -50,6 +50,10 @@ void GameEngineCamera::Start()
 	Height = ViewPortData.Height;
 }
 
+void GameEngineCamera::RenderRelease()
+{
+}
+
 void GameEngineCamera::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("ProjectionModeChange"))

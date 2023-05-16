@@ -13,3 +13,13 @@ enum class RenderOrder
 	EFFECT,
 	CURSOR,
 };
+
+enum class ColOrder
+{
+	NONE,
+	PLAYER,
+	PLAYER_ATTACK,
+	MONSTER,
+	MONSTER_ATTACK,
+	CURSOR,
+};

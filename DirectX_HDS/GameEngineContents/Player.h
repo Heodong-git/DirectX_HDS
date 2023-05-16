@@ -53,6 +53,7 @@ private:
 	void FindAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	float4 m_LocalScale = { 100.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
 

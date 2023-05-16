@@ -6,10 +6,13 @@
 
 class GameEngineActor;
 class GameEngineCamera;
+class GameEngineCollision;
 class GameEngineLevel : public GameEngineUpdateObject
 {
+	friend class GameEngineCollision;
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
+	friend class GameEngineActor;
 
 public:
 	GameEngineTimeEvent TimeEvent;
@@ -62,7 +65,7 @@ public:
 	{
 		// GameEngineLevel의 shared_ptr type를 반환하는데 
 		// 너무길어서 조금더 간단하게 사용하기 위해 작성
-		return Shared_This_dynamic_pointer<GameEngineLevel>();
+		return DynamicThis<GameEngineLevel>();
 	}
 
 protected:
@@ -79,6 +82,11 @@ private:
 	std::shared_ptr<GameEngineCamera> UICamera;
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
+
+	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
+
+	void PushCollision(std::shared_ptr<GameEngineCollision> _Collision);
+
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 
 	void ActorUpdate(float _DeltaTime);

@@ -24,15 +24,18 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	// 컴포넌트 생성, 생성시 오더입력
 	template<typename ComponentType>
-	std::shared_ptr<ComponentType> CreateComponent()
+	std::shared_ptr<ComponentType> CreateComponent(int _Order = 0)
 	{
 		std::shared_ptr<class GameEngineComponent> NewComponent = std::make_shared<ComponentType>();
 
-		ComponentInit(NewComponent);
+		ComponentInit(NewComponent, _Order);
 
 		return std::dynamic_pointer_cast<ComponentType>(NewComponent);
 	}
+
+	void SetOrder(int _Order) override;
 
 protected:
 	virtual void Start() {}
@@ -40,6 +43,6 @@ protected:
 	virtual void Render(float _DeltaTime) {}
 
 private:
-	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component);
+	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order = 0);
 };
 

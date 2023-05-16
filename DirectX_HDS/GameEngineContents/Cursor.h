@@ -38,6 +38,8 @@ protected:
 	void DebugUpdate();
 
 private:
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+
 	// 마우스커서 쫓아가기
 	void FollowCursor();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;

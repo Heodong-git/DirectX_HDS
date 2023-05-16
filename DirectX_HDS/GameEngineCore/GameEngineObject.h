@@ -42,7 +42,7 @@ public:
 	// 게임엔진오브젝트를 상속받은 클래스가 shared ptr을 사용하려고 할 때 
 	// 객체에서 호출하게 되면 shared ptr 을 dynamic cast 로 해당하는 클래스로 형변환 하여 반환
 	template<typename PtrType>
-	std::shared_ptr<PtrType> Shared_This_dynamic_pointer()
+	std::shared_ptr<PtrType> DynamicThis()
 	{
 		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}

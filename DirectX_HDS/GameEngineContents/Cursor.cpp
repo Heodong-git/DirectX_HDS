@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineCollision.h>
+
 #include "BaseLevel.h"
 #include "Player.h"
 #include "PlayManager.h"
@@ -50,17 +52,23 @@ void Cursor::Start()
 		GameEngineInput::CreateKey("cursor_DebugSwitch", 'Q');
 	}
 
+	// 메인렌더러 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetPipeLine("2DTexture");
 	m_Render->SetScaleToTexture("cursor_0.png");
-	// m_Render->GetShaderResHelper().SetTexture("DiffuseTex", "cursor_0.png");
 	m_Render->SetAtlasConstantBuffer();
 	m_Render->GetTransform()->SetLocalScale(m_Scale);
 
+	// 렌더러 정중앙의 디버그 렌더러 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender->SetPipeLine("2DTexture");
 	m_DebugRender->SetAtlasConstantBuffer();
 	m_DebugRender->GetTransform()->SetLocalScale( { 2, 2 });
+
+	// 테스트용, 오더 2번지정
+	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::CURSOR));
+	m_Collision->GetTransform()->SetLocalScale(m_Scale);
+	
 }
 
 void Cursor::Update(float _DeltaTime)

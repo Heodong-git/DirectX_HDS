@@ -9,6 +9,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineResource.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "BaseLevel.h"
 #include "Cursor.h"
@@ -42,36 +43,43 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
 
+	// 플레이어 메인렌더러 세팅
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetPipeLine("2DTexture");
-	//m_Render->GetTransform()->SetLocalScale(m_LocalScale);
 	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
 	m_Render->SetAtlasConstantBuffer();
 	m_Render->SetScaleRatio(2.0f);
 
-	// 디버그 렌더러0
-	// 플레이어 위치 그대로 출력 
+	// 디버그 렌더러 생성
+	// 플레이어 바텀 위치
 	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender0->SetPipeLine("2DTexture");
 	m_DebugRender0->SetAtlasConstantBuffer();
 	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
-	//m_DebugRender0->GetTransform()->SetLocalPosition({ 0, PlayerPos.y - 36.0f });
-	//m_DebugRender0->Off();
+
+	// 픽셀컬라이더 생성
+	m_PixelCollider = std::make_shared<PixelCollider>();
+	// 현재 여기서 맵세팅중, 추후 수정 예정
+	m_PixelCollider->Start();
+
+	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
+	m_Collision->GetTransform()->SetLocalScale( { 75, 75 });
+	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
 
 	// 애니메이션 생성
 	FindAndCreateAnimation();
-	m_PixelCollider = std::make_shared<PixelCollider>();
-	m_PixelCollider->Start();
-
-	m_Render->SetAnimationStartEvent("player_idle", 2, []
-		{
-			int a = 0;
-		});
 }
 
 void Player::Update(float _DeltaTime)
 {
+	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
+	//// 충돌테스트코드 잘된다 
+	//if (m_Collision->CollisionAll(2, ColType::AABBBOX3D, ColType::AABBBOX3D, TestVector))
+	//{
+	//	int a = 0;
+	//}
+
 	DirCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
@@ -426,6 +434,7 @@ void Player::SlashUpdate(float _DeltaTime)
 		ChangeState(PlayerState::FALL);
 		return;
 	}
+
 
 	// 아래로 모션은 나와야함 음 일단 임시로, 맵밖,범위밖으로 공격했을 경우 
 	if (true == m_PixelCollider->GroundCheck(this))
