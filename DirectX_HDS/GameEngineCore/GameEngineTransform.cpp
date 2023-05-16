@@ -275,7 +275,7 @@ void GameEngineTransform::WorldDecompose()
 }
 
 // 트랜스폼의 부모세팅 구조 
-void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
+void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParentWorld /*= true*/)
 {
 	if (IsDebug())
 	{
@@ -326,11 +326,14 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 
 	Parent = _Parent;
 
-	// 현재 부모가 없다면
+	// 현재 부모가 있는 상태라면 
 	if (nullptr != Parent)
 	{
-		// 역행렬을 받아온다. 
-		TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+		if (true == _IsParentWorld)
+		{
+			// 역행렬을 받아온다. 
+			TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();	
+		}
 
 		// 변환행렬을 분해하여 위치,회전,크기값을 저장한다. 
 		LocalDecompose();
