@@ -21,6 +21,8 @@ enum class PlayerState
 
 class Player : public BaseActor
 {
+	friend class PixelCollider;
+
 public:
 	static Player* MainPlayer;
 
@@ -51,6 +53,7 @@ public:
 	{
 		return m_Direction;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -123,11 +126,10 @@ private:
 			break;
 		}
 	}
-	
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-	
+
 	// bottom 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
 
@@ -137,8 +139,10 @@ private:
 
 	// top
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
-	
-	float4 m_DebugRenderScale = { 4, 4 };
+
+	float4 m_DebugRenderScale = { 1, 1 };
+
+	// -------------------------------------------------------------------
 
 	// ------------------------- state ----------------------------------
 private:

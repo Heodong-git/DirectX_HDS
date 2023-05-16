@@ -31,8 +31,19 @@ public:
 
 	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
 	bool ColMapSetting();
-	// 내가 현재 땅에 있는지 
+
+	// 내가 현재 땅에 있는지
+	// 진짜 땅만 체크. 
 	bool GroundCheck(class GameEngineObject* _Object);
+
+	// 오른쪽 체크 
+	bool RightPixelCheck();
+
+	// 왼쪽 체크 
+	bool LeftPixelCheck();
+
+	// 위 체크 
+	bool TopPixelCheck();
 
 protected:
 

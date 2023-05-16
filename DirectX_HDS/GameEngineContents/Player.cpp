@@ -193,13 +193,13 @@ void Player::ComponentSetting()
 	m_DebugRender_Left->SetPipeLine("2DTexture");
 	m_DebugRender_Left->SetAtlasConstantBuffer();
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Left->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
+	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Right->SetPipeLine("2DTexture");
 	m_DebugRender_Right->SetAtlasConstantBuffer();
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Right->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
+	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->SetPipeLine("2DTexture");
@@ -433,15 +433,22 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 	// 수정할수도
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		DirCheck();
-		GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+		// true 이면 맵 밖인걸로
+		if (false == m_PixelCollider->RightPixelCheck())
+		{
+			DirCheck();
+			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+		}
 		return;
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		DirCheck();
-		GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+		if (false == m_PixelCollider->LeftPixelCheck())
+		{
+			DirCheck();
+			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+		}
 		return;
 	}
 	
@@ -486,29 +493,29 @@ void Player::MoveUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
-		m_Direction = true;
-		GetTransform()->SetLocalPositiveScaleX();
-		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+	
+		// true 이면 맵 밖인걸로
+		if (false == m_PixelCollider->RightPixelCheck())
+		{
+			m_Direction = true;
+			GetTransform()->SetLocalPositiveScaleX();
+			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+		
+		return;
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-		// 테스트코드 
-		// 겟픽셀 해서 왼쪽 디버그렌더러 위치가 흰색이아니면 이동하지마라 . 라는 식의 코드 작성하면 될거가타~ 
-		std::shared_ptr<GameEngineTexture> Texture = m_PixelCollider->GetColMap();
-		float4 TextureScale = Texture->GetScale().half();
-
-		m_Direction = false;
-		GetTransform()->SetLocalNegativeScaleX();
-
-		float4 CheckPos = m_DebugRender_Left->GetTransform()->GetWorldPosition();
-
-		if (CheckPos.x < -TextureScale.x)
+		// true 이면 맵 밖인걸로
+		if (false == m_PixelCollider->LeftPixelCheck())
 		{
-			return;
+			m_Direction = false;
+			GetTransform()->SetLocalNegativeScaleX();
+			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
-
-		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+		
+		return;
 	}
 }
 
@@ -547,8 +554,7 @@ void Player::SlashUpdate(float _DeltaTime)
 		return;
 	}
 	
-	// 공격로직인데.. 
-	// 만약 마우스의 x축이 나보다 크면 정방향 , x 축이 나보다 작으면 역방향
+	// 내위치
 	float4 MyPos = GetTransform()->GetLocalPosition();
 	if (MyPos.x <= m_AttackPos.x)
 	{
@@ -562,8 +568,16 @@ void Player::SlashUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
+
 	float4 MoveDir = m_AttackPos - MyPos;
 	MoveDir.Normalize();
+
+	// 수정해야 될 수도.
+	if (true == m_PixelCollider->TopPixelCheck())
+	{
+		MoveDir.y = 0.0f;
+	}
+
 	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
 }
 
@@ -589,6 +603,11 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	if (true == m_PixelCollider->TopPixelCheck())
+	{
+		m_CurrentVerticalVelocity /= 4.0f;
+	}
+
 	// 만약 점프 상태일 때 내가 땅이라면
 	if (true == m_PixelCollider->GroundCheck(this))
 	{
@@ -612,6 +631,7 @@ void Player::JumpUpdate(float _DeltaTime)
 		ChangeState(PlayerState::FALL);
 		return;
 	}
+
 	// 점프의 힘에 중력을 더해준다. 
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
 	
