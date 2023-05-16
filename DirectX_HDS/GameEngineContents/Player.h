@@ -9,7 +9,7 @@
 enum class PlayerState
 {
 	NONE,			// None
-	ILDETORUN,		// 아이들 -> 무브 전환 
+	IDLETORUN,		// 아이들 -> 무브 전환 
 	IDLE,			// 아이들
 	MOVE,			// 무브 
 	JUMP,			// 점프
@@ -65,6 +65,7 @@ private:
 	// 로컬에서의 크기 (임시) 
 	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
+	float  m_StartMoveSpeed = 400.0f;
 
 	// 렌더러 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
@@ -97,7 +98,7 @@ private:
 	{
 		switch (m_CurState)
 		{
-		case PlayerState::ILDETORUN:
+		case PlayerState::IDLETORUN:
 			break;
 		case PlayerState::IDLE:
 			break;
@@ -124,11 +125,14 @@ private:
 	void DebugUpdate();
 	
 	// bottom 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender0 = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
 
-	// bottom left, right 
+	// left, right 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
+
+	// top
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
 	// ------------------------- state ----------------------------------
 private:

@@ -95,7 +95,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::SameLine();
                 ImGui::Text("NONE ?");
                 break;
-            case PlayerState::ILDETORUN:
+            case PlayerState::IDLETORUN:
                 ImGui::SameLine();
                 ImGui::Text("Idle_to_run");
                 break;

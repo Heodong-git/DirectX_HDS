@@ -90,7 +90,7 @@ void Player::LoadAndCreateAnimation()
 									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_idle_to_run", .SpriteName = "player_idle_to_run", .Start = 0, .End = 3 ,
-								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+								  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_run", .SpriteName = "player_run", .Start = 0, .End = 9 ,
 								  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true });
@@ -184,10 +184,10 @@ void Player::ComponentSetting()
 	// --------------------------- Debug Render ------------------------------
 
 	// bottom 
-	m_DebugRender0 = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender0->SetPipeLine("2DTexture");
-	m_DebugRender0->SetAtlasConstantBuffer();
-	m_DebugRender0->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Bottom->SetPipeLine("2DTexture");
+	m_DebugRender_Bottom->SetAtlasConstantBuffer();
+	m_DebugRender_Bottom->GetTransform()->SetLocalScale({ 2  , 2 });
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Left->SetPipeLine("2DTexture");
@@ -200,19 +200,28 @@ void Player::ComponentSetting()
 	m_DebugRender_Right->SetAtlasConstantBuffer();
 	m_DebugRender_Right->GetTransform()->SetLocalScale({ 2  , 2 });
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
+
+	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Top->SetPipeLine("2DTexture");
+	m_DebugRender_Top->SetAtlasConstantBuffer();
+	m_DebugRender_Top->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
 }
 
 void Player::DirCheck()
 {
-	if (true == GameEngineInput::IsPress("player_left_move"))
-	{
-		m_Direction = false;
-	}
-
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		m_Direction = true;
+		GetTransform()->SetLocalPositiveScaleX();
 	}
+
+	if (true == GameEngineInput::IsPress("player_left_move"))
+	{
+		m_Direction = false;
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
 }
 
 // ---------------------------------------- Debug -----------------------------------------
@@ -225,16 +234,18 @@ void Player::DebugUpdate()
 
 	if (true == IsDebug())
 	{
-		m_DebugRender0->On();
+		m_DebugRender_Bottom->On();
 		m_DebugRender_Left->On();
 		m_DebugRender_Right->On();
+		m_DebugRender_Top->On();
 	}
 
 	else if (false == IsDebug())
 	{
-		m_DebugRender0->Off();
+		m_DebugRender_Bottom->Off();
 		m_DebugRender_Left->Off();
 		m_DebugRender_Right->Off();
+		m_DebugRender_Top->Off();
 	}
 }
 
@@ -246,6 +257,9 @@ void Player::UpdateState(float _DeltaTime)
 	{
 	case PlayerState::IDLE:
 		IdleUpdate(_DeltaTime);
+		break;
+	case PlayerState::IDLETORUN:
+		IdleToRunUpdate(_DeltaTime);
 		break;
 	case PlayerState::MOVE:
 		MoveUpdate(_DeltaTime);
@@ -281,6 +295,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::IDLE:
 		IdleStart();
 		break;
+	case PlayerState::IDLETORUN:
+		IdleToRunStart();
+		break;
 	case PlayerState::MOVE:
 		MoveStart();
 		break;
@@ -306,6 +323,9 @@ void Player::ChangeState(PlayerState _State)
 	{
 	case PlayerState::IDLE:
 		IdleEnd();
+		break;
+	case PlayerState::IDLETORUN:
+		IdleToRunEnd();
 		break;
 	case PlayerState::MOVE:
 		MoveEnd();
@@ -352,14 +372,14 @@ void Player::IdleUpdate(float _DeltaTime)
 	// 우측이동 , d
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		ChangeState(PlayerState::MOVE);
+		ChangeState(PlayerState::IDLETORUN);
 		return;
 	}
 
 	// 좌측이동 , a 
 	else if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		ChangeState(PlayerState::MOVE);
+		ChangeState(PlayerState::IDLETORUN);
 		return;
 	}
 
@@ -384,7 +404,47 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 {
 	// 애니메이션이 종료되면 Move로 전환하는데. 
 	// 만약 종료된 시점에 키가 눌려있지 않고 내가 땅에 있다면 아이들로 다시 전환. 
+	if (true == m_Render->IsAnimationEnd())
+	{
+		if (true == GameEngineInput::IsPress("player_right_move") ||
+			true == GameEngineInput::IsPress("player_left_move"))
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
 
+		// 그게 아니라면 
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("player_jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
+	// 수정할수도
+	if (true == GameEngineInput::IsPress("player_right_move"))
+	{
+		DirCheck();
+		GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+		return;
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_move"))
+	{
+		DirCheck();
+		GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+		return;
+	}
+	
 }
 
 void Player::IdleToRunEnd()
