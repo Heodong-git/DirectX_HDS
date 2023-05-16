@@ -187,24 +187,24 @@ void Player::ComponentSetting()
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Bottom->SetPipeLine("2DTexture");
 	m_DebugRender_Bottom->SetAtlasConstantBuffer();
-	m_DebugRender_Bottom->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Left->SetPipeLine("2DTexture");
 	m_DebugRender_Left->SetAtlasConstantBuffer();
-	m_DebugRender_Left->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Right->SetPipeLine("2DTexture");
 	m_DebugRender_Right->SetAtlasConstantBuffer();
-	m_DebugRender_Right->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->SetPipeLine("2DTexture");
 	m_DebugRender_Top->SetAtlasConstantBuffer();
-	m_DebugRender_Top->GetTransform()->SetLocalScale({ 2  , 2 });
+	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
 }
 
@@ -489,16 +489,26 @@ void Player::MoveUpdate(float _DeltaTime)
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-	
+		// 테스트코드 
+		// 겟픽셀 해서 왼쪽 디버그렌더러 위치가 흰색이아니면 이동하지마라 . 라는 식의 코드 작성하면 될거가타~ 
+		std::shared_ptr<GameEngineTexture> Texture = m_PixelCollider->GetColMap();
+		float4 TextureScale = Texture->GetScale().half();
+
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
+
+		float4 CheckPos = m_DebugRender_Left->GetTransform()->GetWorldPosition();
+
+		if (CheckPos.x < -TextureScale.x)
+		{
+			return;
+		}
+
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-		//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 }
 
@@ -643,6 +653,12 @@ void Player::CrouchUpdate(float _DeltaTime)
 	if (false == GameEngineInput::IsPress("player_crouch"))
 	{
 		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
 		return;
 	}
 	
