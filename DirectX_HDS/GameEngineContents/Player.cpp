@@ -808,7 +808,7 @@ void Player::FallUpdate(float _DeltaTime)
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-
+		//dsafdfdsf
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
