@@ -23,6 +23,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 	{
 		float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 		PlayerState CurState = Player::MainPlayer->GetCurState();
+        bool PlayerDir = Player::MainPlayer->GetDir();
 
 		std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
         if (nullptr == CurLevel)
@@ -129,14 +130,18 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 break;
             }
 
+            ImGui::Text("Dir : ");
+            ImGui::SameLine();
+            ImGui::Text(PlayerDir ? "Right" : "Left");
+
             if (nullptr != Cursor::MainCursor)
             {
                 float4 CursorPos = Cursor::MainCursor->GetGameCursorPos();
-                
+
                 ImGui::Text("Mouse Position:");
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetWindowWidth() * 0.5f);
-                
+
                 ImGui::Separator();
 
                 ImGui::Columns(4, nullptr, true);
@@ -149,7 +154,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::NextColumn();
                 ImGui::Text("%.2f", CursorPos.x);
                 ImGui::NextColumn();
-                
+
                 ImGui::NextColumn();
 
                 ImGui::NextColumn();
@@ -157,14 +162,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::NextColumn();
                 ImGui::Text("%.2f", CursorPos.y);
                 ImGui::NextColumn();
-                
+
 
                 ImGui::Columns(1);
                 ImGui::Separator();
             }
 
-            
-                
+        
             ImGui::End();
         }
 

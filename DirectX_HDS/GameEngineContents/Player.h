@@ -47,6 +47,10 @@ public:
 		return m_Render;
 	}
 
+	const bool GetDir() const
+	{
+		return m_Direction;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
