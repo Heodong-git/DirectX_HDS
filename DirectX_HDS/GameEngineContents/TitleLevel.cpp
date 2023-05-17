@@ -102,7 +102,7 @@ void TitleLevel::ActorLoad()
 	std::shared_ptr<TitleBackGround> NewBackGround = CreateActor<TitleBackGround>();
 
 	// Title 의 모든 UI 와 연산 사실상 얘가 다하는걸로
-	m_TitleManager = CreateActor<TitleManager>("TitleManager");
+	m_TitleManager = CreateActor<TitleManager>();
 	m_TitleManager->CreateRender();
 }
 

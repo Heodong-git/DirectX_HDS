@@ -137,6 +137,12 @@
       <Filter>Resources\Texture</Filter>
     </ClInclude>
     <ClInclude Include="EngineContentsRenderingStruct.h" />
+    <ClInclude Include="GameEngineTileMapRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h">
+      <Filter>ContentPattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -270,6 +276,12 @@
     <ClCompile Include="GameEngineSprite.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineTileMapRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp">
+      <Filter>ContentPattern</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -340,6 +352,9 @@
     </Filter>
     <Filter Include="UI\SubWindow">
       <UniqueIdentifier>{7b5fbd23-2c0f-471c-ac35-4b8a570e2ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ContentPattern">
+      <UniqueIdentifier>{0c37ff06-d2b9-44e3-9961-f8f2fa642c75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
