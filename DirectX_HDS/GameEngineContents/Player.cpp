@@ -174,11 +174,10 @@ void Player::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_LocalScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
 
+	// 컴포넌트상속받는걸로 변경 ㄱㄱ
 	// 픽셀컬라이더 생성
-	m_PixelCollider = std::make_shared<PixelCollider>();
-	// 현재 여기서 맵세팅중, 추후 수정
-	m_PixelCollider->Start();
-
+	m_PixelCollider = CreateComponent<PixelCollider>();
+	
 	// --------------------------- Debug Render ------------------------------
 
 	// bottom 

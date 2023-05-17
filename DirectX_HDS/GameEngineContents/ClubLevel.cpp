@@ -40,12 +40,17 @@ void ClubLevel::Start()
 	{
 		GameEngineInput::CreateKey("ClubLevel_ChangeLevel_ClubBossLevel", VK_F1);
 		GameEngineInput::CreateKey("ClubLevel_DebugSwitch", 'Q');
+		GameEngineInput::CreateKey("ClubLevel_ChangeColMap", '1');
+		GameEngineInput::CreateKey("ClubLevel_ChangeMap", '2');
 	}
 
 	// 필요한 리소스 로드
 	ResourcesLoad();
 	// 액터 로드 
 	ActorLoad();
+
+	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
+	SetMapName(MapName::CLUBMAP0);
 }
 
 void ClubLevel::Update(float _DeltaTime)
@@ -59,9 +64,20 @@ void ClubLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("ClubLevel_DebugSwitch"))
 	{
 		DebugSwitch();
+
+		if (true == IsDebug())
+		{
+			ChangeColMap();
+			return;
+		}
+
+		if (false == IsDebug())
+		{
+			ChangeMap();
+			return;
+		}
 	}
 
-	DebugUpdate();
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -109,9 +125,8 @@ void ClubLevel::ResourcesLoad()
 void ClubLevel::ActorLoad()
 {
 	// 맵 
-	m_Map_Club01 = CreateActor<Map>(-10);
-	m_Map_Club01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
-	//m_Map_01->GetRender()->SetAtlasConstantBuffer();
+	m_Club_Map = CreateActor<Map>(-10);
+	m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_00.png");
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	
@@ -128,14 +143,73 @@ void ClubLevel::ActorLoad()
 
 void ClubLevel::DebugUpdate()
 {
-	// 일단 임시 픽셀충돌 사용하지 않을 수도 있음
-	if (true == IsDebug())
+
+}
+
+void ClubLevel::ChangeMap()
+{
+	if (nullptr == m_Club_Map)
 	{
-		m_Map_Club01->GetRender()->SetScaleToTexture("Club_0_ColMap.png");
+		MsgAssert("현재 맵이 nullptr 입니다.");
+		return;
 	}
 
-	else if (false == IsDebug())
+	switch (m_CurMapName)
 	{
-		m_Map_Club01->GetRender()->SetScaleToTexture("Club_0.png");
+	case MapName::CLUBMAP0:
+		m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_00.png");
+		break;
+	case MapName::CLUBMAP1:
+		m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_01.png");
+		break;
+	case MapName::CLUBMAP2:
+		m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_02.png");
+		break;
+	case MapName::CLUBMAP3:
+		m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_03.png");
+		break;
+	case MapName::CLUBMAP4:
+		m_Club_Map->GetRender()->SetScaleToTexture("ClubMap_04.png");
+		break;
+	case MapName::NONE:
+	{
+		MsgAssert("현재 맵의 이름이 NONE 입니다. 이름을 세팅하세요.");
+		return;
+	}
+	break;
+	}
+}
+
+void ClubLevel::ChangeColMap()
+{
+	if (nullptr == m_Club_Map)
+	{
+		MsgAssert("현재 맵이 nullptr 입니다.");
+		return;
+	}
+
+	switch (m_CurMapName)
+	{
+	case MapName::CLUBMAP0:
+		m_Club_Map->GetRender()->SetScaleToTexture("Club_ColMap_00.png");
+		break;
+	case MapName::CLUBMAP1:
+		m_Club_Map->GetRender()->SetScaleToTexture("Club_ColMap_01.png");
+		break;
+	case MapName::CLUBMAP2:
+		m_Club_Map->GetRender()->SetScaleToTexture("Club_ColMap_02.png");
+		break;
+	case MapName::CLUBMAP3:
+		m_Club_Map->GetRender()->SetScaleToTexture("Club_ColMap_03.png");
+		break;
+	case MapName::CLUBMAP4:
+		m_Club_Map->GetRender()->SetScaleToTexture("Club_ColMap_04.png");
+		break;
+	case MapName::NONE:
+	{
+		MsgAssert("현재 맵의 이름이 NONE 입니다. 이름을 세팅하세요.");
+		return;
+	}
+		break;
 	}
 }

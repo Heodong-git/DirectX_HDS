@@ -1,13 +1,20 @@
 #pragma once
 #include "BaseActor.h"
 
-// 보류 
 #include <GameEngineCore/GameEngineComponent.h>
-
 #include <GameEngineCore/GameEngineTexture.h>
 
+enum class ColMapName
+{
+	COLMAP0,
+	COLMAP1,
+	COLMAP2,
+	COLMAP3,
+	COLMAP4,
+};
+
 // 설명 :
-class PixelCollider : public BaseActor
+class PixelCollider : public GameEngineComponent
 {
 public:
 	// constrcuter destructer
@@ -26,7 +33,7 @@ public:
 		return m_CurColMap;
 	}
 
-	void Start();
+	void Start() override;
 	bool PixelCollision(class GameEngineObject* _Object);
 
 	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
@@ -45,12 +52,18 @@ public:
 	// 위 체크 
 	bool TopPixelCheck();
 
+	// 맵에서 find 함수 만들기 
+	
 protected:
 
 private:
 	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
+	ColMapName m_CurColMapName = ColMapName::COLMAP0;
 
-	// 땅
+	// 문자열로 충돌맵저장
+	std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
+
+	
 	GameEnginePixelColor m_BlackPixel = { static_cast<char>(0), static_cast<char>(0) , static_cast<char>(0) ,
 										static_cast<char>(255) };
 	GameEnginePixelColor m_WhitePixel = { static_cast<char>(255), static_cast<char>(255) , static_cast<char>(255) ,

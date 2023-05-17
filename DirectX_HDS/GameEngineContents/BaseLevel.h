@@ -1,6 +1,19 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
+enum class MapName
+{
+	CLUBMAP0,
+	CLUBMAP1,
+	CLUBMAP2,
+	CLUBMAP3,
+	CLUBMAP4,
+
+
+
+	NONE = 99,
+};
+
 class BaseLevel : public GameEngineLevel
 {
 public:
@@ -32,6 +45,16 @@ public:
 		m_CurState = _State;
 	}
 
+	MapName GetMapName()
+	{
+		return m_CurMapName;
+	}
+
+	void SetMapName(const MapName& _Name)
+	{
+		m_CurMapName = _Name;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -39,8 +62,13 @@ protected:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override {};
 
+	// 현재 맵 상태 
 	BaseLevel::LevelState m_CurState = BaseLevel::LevelState::WAIT;
 
+	// 현재 맵이름
+	MapName m_CurMapName = MapName::NONE;
+
+	// 디버그 
 	virtual void DebugSwitch()
 	{
 		if (true == IsDebug())

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngineRenderer.h"
 #include "GameEngineSprite.h"
+#include "EngineContentsRenderingStruct.h"
 #include <map>
 
 
@@ -78,12 +79,6 @@ public:
 	bool ScaleToTexture = false;					 // 크기를 텍스쳐와 동일하게 할건지?
 	std::vector<size_t> FrameIndex = std::vector<size_t>();
 	std::vector<float>  FrameTime = std::vector<float>();
-};
-
-struct ColorOption
-{
-	float4 MulColor = {};
-	float4 PlusColor = {};
 };
 
 // 설명 :

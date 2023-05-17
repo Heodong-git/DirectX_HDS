@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EngineContentsRenderingStruct.h" />
     <ClInclude Include="GameEngineActor.h">
       <SubType>
       </SubType>

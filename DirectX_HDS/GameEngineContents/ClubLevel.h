@@ -15,6 +15,7 @@ public:
 	ClubLevel& operator=(const ClubLevel& _Other) = delete;
 	ClubLevel& operator=(ClubLevel&& _Other) noexcept = delete;
 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -27,7 +28,10 @@ protected:
 
 private:
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-	std::shared_ptr<class Map> m_Map_Club01 = nullptr;
+	std::shared_ptr<class Map> m_Club_Map = nullptr;
 
+	// 디버그용 
 	void DebugUpdate();
+	void ChangeMap();
+	void ChangeColMap();
 };

@@ -3,6 +3,7 @@
 enum class RenderOrder
 {
 	BACKGROUND,
+	MAP,
 	OBJECT,
 	MONSTER,
 	BOSS,

@@ -15,7 +15,8 @@ enum class PlayerState
 	JUMP,			// 점프
 	SLASH,			// 공격 
 	CROUCH,			// 크라우치 (웅크리기)
-	FLIP,			// 회전회오리
+	FLIP,			// 지상 구르기
+	WALLFLIP,		// 벽타고 구르기 ㄷㄷ 
 	FALL,			// 낙하 
 };
 
@@ -52,6 +53,11 @@ public:
 	const bool GetDir() const
 	{
 		return m_Direction;
+	}
+
+	inline std::shared_ptr<PixelCollider> GetPixelCollider() const
+	{
+		return m_PixelCollider;
 	}
 
 protected:
