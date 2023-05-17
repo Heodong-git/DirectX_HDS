@@ -10,7 +10,6 @@
 #include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
 #include "GameEngineDepthState.h"
-#include "GameEngineVertex.h"
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEngineConstantBuffer.h"
@@ -39,7 +38,7 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스버퍼의 내용과 인풋레이아웃의 내용이 더 중요. 
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
-	//GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	//typedef struct D3D11_INPUT_ELEMENT_DESC
 	//{

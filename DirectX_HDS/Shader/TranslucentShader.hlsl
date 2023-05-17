@@ -76,9 +76,10 @@ PixelInputType Texture_VS(VertexInputType _Value)
     return PixelInputValue;
 }
  
-cbuffer OutPixelColor : register(b0)
+cbuffer ColorOption : register(b0)
 {
-    float4 OutColor;
+    float4 MulColor;
+    float4 PlusColor;
 }
 
 // 텍스쳐를 사용하려면 

@@ -168,6 +168,7 @@ void Player::ComponentSetting()
 	m_Render->SetPipeLine("2DTexture");
 	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
 	m_Render->SetAtlasConstantBuffer();
+	m_Render->SetColorConstantBuffer();
 	m_Render->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
@@ -187,23 +188,27 @@ void Player::ComponentSetting()
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Bottom->SetPipeLine("2DTexture");
 	m_DebugRender_Bottom->SetAtlasConstantBuffer();
+	m_DebugRender_Bottom->SetColorConstantBuffer();
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Left->SetPipeLine("2DTexture");
 	m_DebugRender_Left->SetAtlasConstantBuffer();
+	m_DebugRender_Left->SetColorConstantBuffer();
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Right->SetPipeLine("2DTexture");
 	m_DebugRender_Right->SetAtlasConstantBuffer();
+	m_DebugRender_Right->SetColorConstantBuffer();
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->SetPipeLine("2DTexture");
 	m_DebugRender_Top->SetAtlasConstantBuffer();
+	m_DebugRender_Top->SetColorConstantBuffer();
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
 }
@@ -221,7 +226,6 @@ void Player::DirCheck()
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-
 }
 
 // ---------------------------------------- Debug -----------------------------------------
@@ -438,7 +442,7 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		{
 			if (false == m_PixelCollider->GroundCheck(this))
 			{
-				GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 			}
 
 			DirCheck();
@@ -453,7 +457,7 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		{
 			if (false == m_PixelCollider->GroundCheck(this))
 			{
-				GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 			}
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
@@ -476,7 +480,7 @@ void Player::MoveUpdate(float _DeltaTime)
 {
 	if (false == m_PixelCollider->GroundCheck(this))
 	{
-		GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 	}
 	
 
@@ -723,7 +727,7 @@ void Player::FlipUpdate(float _DeltaTime)
 {
 	if (false == m_PixelCollider->GroundCheck(this))
 	{
-		GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
+		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 	}
 
 	// 방향보정 

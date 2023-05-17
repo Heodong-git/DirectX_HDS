@@ -237,3 +237,45 @@ void GameEngineShaderResHelper::SetTexture(const std::string_view& _SettingName,
 		Setter.Res = _Texture;
 	}
 }
+
+// 해당 키값의 제일 앞쪽 텍스쳐세터 반환 
+GameEngineTextureSetter* GameEngineShaderResHelper::GetTextureSetter(const std::string_view& _View)
+{
+	std::string UpperName = GameEngineString::ToUpper(_View);
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator FindIter = TextureSetters.find(UpperName);
+
+	if (FindIter == TextureSetters.end())
+	{
+		return nullptr;
+	}
+
+	return &(FindIter->second);
+
+}
+
+// 맵에저장되어있는 텍스쳐세터 전체를 벡터에 담아서 반환
+std::vector<GameEngineTextureSetter*> GameEngineShaderResHelper::GetTextureSetters(const std::string_view& _View)
+{
+	std::string UpperName = GameEngineString::ToUpper(_View);
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator FindIter = TextureSetters.find(UpperName);
+
+	std::vector<GameEngineTextureSetter*> Result;
+
+	if (FindIter == TextureSetters.end())
+	{
+		return Result;
+	}
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameStartIter = TextureSetters.lower_bound(UpperName);
+	std::multimap<std::string, GameEngineTextureSetter>::iterator NameEndIter = TextureSetters.upper_bound(UpperName);
+
+	for (; NameStartIter != NameEndIter; ++NameStartIter)
+	{
+		Result.push_back(&NameStartIter->second);
+	}
+
+	return Result;
+
+}

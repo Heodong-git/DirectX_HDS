@@ -77,9 +77,10 @@ Output Texture_VS(Input _Value)
     return OutputValue;
 }
  
-cbuffer OutPixelColor : register(b0)
+cbuffer ColorOption : register(b0)
 {
-    float4 OutColor;
+    float4 MulColor;
+    float4 PlusColor;
 }
 
 // 텍스쳐를 사용하려면 
@@ -99,10 +100,9 @@ float4 Texture_PS(Output _Value) : SV_Target0
     // float4.xyz == float3 
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
   
-    Color.r += 0.1f;
-    Color.g += 0.1f;
-    Color.b += 0.11f;
-    Color.a;
+    Color *= MulColor;
+    Color += PlusColor;
+    
     return Color;
 }
 // clip <-- 한번확인해볼것 

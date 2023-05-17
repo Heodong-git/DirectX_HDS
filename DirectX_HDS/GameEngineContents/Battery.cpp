@@ -40,6 +40,7 @@ void Battery::Start()
 	m_CaseRender->SetPipeLine("2DTexture");
 	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Battery_09.png");
 	m_CaseRender->SetAtlasConstantBuffer();
+	m_CaseRender->SetColorConstantBuffer();
 	/*m_CaseRender->SetPipeLine("2DBlinkTexture");
 	m_CaseRender->GetShaderResHelper().SetTexture("BlinkTex", "Battery_09.png");*/
 	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 });

@@ -64,10 +64,11 @@ Output Texture_VS(Input _Value)
     return OutputValue;
 }
  
-cbuffer OutPixelColor : register(b0)
+cbuffer ColorOption : register(b0)
 {
-    float4 OutColor;
-} 
+    float4 MulColor;
+    float4 PlusColor;
+}
 
 Texture2D BlinkTex : register(t2);
 

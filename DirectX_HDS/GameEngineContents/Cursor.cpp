@@ -57,12 +57,14 @@ void Cursor::Start()
 	m_Render->SetPipeLine("2DTexture");
 	m_Render->SetScaleToTexture("cursor_0.png");
 	m_Render->SetAtlasConstantBuffer();
+	m_Render->SetColorConstantBuffer();
 	m_Render->GetTransform()->SetLocalScale(m_Scale);
 
 	// 렌더러 정중앙의 디버그 렌더러 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender->SetPipeLine("2DTexture");
 	m_DebugRender->SetAtlasConstantBuffer();
+	m_DebugRender->SetColorConstantBuffer();
 	m_DebugRender->GetTransform()->SetLocalScale( { 2, 2 });
 
 	// 테스트용, 오더 2번지정

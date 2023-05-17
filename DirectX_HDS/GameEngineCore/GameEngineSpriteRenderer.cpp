@@ -2,8 +2,6 @@
 #include "GameEngineSpriteRenderer.h"
 #include "GameEngineSprite.h"
 
-
-
 const SpriteInfo& AnimationInfo::CurSpriteInfo()
 {
 	// 스프라이트인포 클래스 변수에 스프라이트의 현재프레임의 정보를 담아서 반환한다. 
@@ -107,14 +105,18 @@ void GameEngineSpriteRenderer::Start()
 
 	SetPipeLine("2DTexture");
 
+	// 아틀라스 데이터값 초기화
 	AtlasData.x = 0.0f;
 	AtlasData.y = 0.0f;
 	AtlasData.z = 1.0f;
 	AtlasData.w = 1.0f;
 
-	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	// 컬러 구조체 초기화 
+	ColorOptionValue.MulColor = float4::One;
+	ColorOptionValue.PlusColor = float4::Null;
 
-	// AtlasData
+	/*GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);*/
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
@@ -300,6 +302,12 @@ void GameEngineSpriteRenderer::SetAtlasConstantBuffer()
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 }
 
+void GameEngineSpriteRenderer::SetColorConstantBuffer()
+{
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+}
+
+
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
@@ -384,4 +392,11 @@ void GameEngineSpriteRenderer::SetAnimationStartEvent(const std::string_view& _A
 	}
 
 	Info->StartEventFunction[_Frame] = _Event;
+}
+
+std::string GameEngineSpriteRenderer::GetTexName()
+{
+	GameEngineTextureSetter* Tex = GetShaderResHelper().GetTextureSetter("DiffuseTex");
+	std::string Name = Tex->Res->GetNameToString();
+	return Name;
 }

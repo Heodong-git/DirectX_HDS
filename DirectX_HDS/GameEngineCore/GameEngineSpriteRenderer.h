@@ -80,6 +80,11 @@ public:
 	std::vector<float>  FrameTime = std::vector<float>();
 };
 
+struct ColorOption
+{
+	float4 MulColor = {};
+	float4 PlusColor = {};
+};
 
 // 설명 :
 class GameEngineSpriteRenderer : public GameEngineRenderer
@@ -130,6 +135,8 @@ public:
 
 	void SetAtlasConstantBuffer();
 
+	void SetColorConstantBuffer();
+
 	// 애니메이션의 출력이 종료되었는지 ( 마지막 프레임에 도달 했는지 ) 
 	bool IsAnimationEnd()
 	{
@@ -160,11 +167,16 @@ public:
 		CurAnimation->PauseOff();
 	}
 
+	ColorOption ColorOptionValue = {};
+
 	// 애니메이션에 업데이트해야하는 함수 추가 
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	// 애니메이션의 원하는 프레임에 한번만 호출되는 함수추가
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+
+	// 머지 얘는 헤더에없는데
+	std::string GetTexName();
 
 protected:
 
