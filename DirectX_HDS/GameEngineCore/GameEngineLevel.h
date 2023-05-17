@@ -1,5 +1,5 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineObject.h"
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
@@ -7,7 +7,7 @@
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineCollision;
-class GameEngineLevel : public GameEngineUpdateObject
+class GameEngineLevel : public GameEngineObject
 {
 	friend class GameEngineCollision;
 	friend class GameEngineTransform;

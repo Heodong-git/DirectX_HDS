@@ -64,6 +64,11 @@ bool GameEngineCollision::CollisionAll(int _TargetGroup, ColType _ThisColType, C
 	// 충돌을 진행할 리스트를 받아온다.
 	std::list<std::shared_ptr<GameEngineCollision>>& Group = GetLevel()->Collisions[_TargetGroup];
 
+	if (0 == Group.size())
+	{
+		return false;
+	}
+
 	for (std::shared_ptr<GameEngineCollision>& _OtherCol : Group)
 	{
 		if (false == _OtherCol->IsUpdate())

@@ -1,5 +1,5 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineObject.h"
 
 // 5월9일자 업데이트로 인해 
 // 컴포넌트 리스트를 가지고 있지 않게 되었고
@@ -9,7 +9,7 @@
 
 
 // 설명 :
-class GameEngineActor : public GameEngineUpdateObject
+class GameEngineActor : public GameEngineObject
 {
 	friend class GameEngineLevel;
 

@@ -292,10 +292,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameEngineUpdateObject.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="GameEngineVertex.h">
       <SubType>
       </SubType>
@@ -363,7 +359,6 @@
     <ClCompile Include="GameEngineSpriteRenderer.cpp" />
     <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
-    <ClCompile Include="GameEngineUpdateObject.cpp" />
     <ClCompile Include="GameEngineVertex.cpp" />
     <ClCompile Include="GameEngineVertexBuffer.cpp" />
     <ClCompile Include="GameEngineVertexShader.cpp" />

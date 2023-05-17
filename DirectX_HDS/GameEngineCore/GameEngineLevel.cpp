@@ -118,12 +118,10 @@ void GameEngineLevel::ActorRelease()
 
 				if (nullptr != RelaseObject && false == RelaseObject->IsDeath())
 				{
-					RelaseObject->AllRelease();
 					++ObjectStart;
 					continue;
 				}
 
-				RelaseObject->Release();
 				ObjectStart = ObjectList.erase(ObjectStart);
 			}
 		}

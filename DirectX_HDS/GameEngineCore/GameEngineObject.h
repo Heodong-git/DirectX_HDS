@@ -67,6 +67,9 @@ public:
 		return Level;
 	}
 
+	bool IsDeath() override;
+	bool IsUpdate() override;
+
 protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
@@ -84,7 +87,7 @@ private:
 	GameEngineTransform Transform;
 
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
-	class GameEngineLevel* Level;
+	class GameEngineLevel* Level = nullptr;
 
 	// 재귀함수로 구현하여 자식이 있다면 자식들의 업데이트,렌더 등을 진행해준다. 
 	void AllAccTime(float _DeltaTime);

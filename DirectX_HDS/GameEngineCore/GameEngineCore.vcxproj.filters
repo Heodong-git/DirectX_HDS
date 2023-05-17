@@ -23,9 +23,6 @@
     <ClInclude Include="GameEngineCamera.h">
       <Filter>Object\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineUpdateObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineRenderer.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
@@ -162,9 +159,6 @@
     </ClCompile>
     <ClCompile Include="GameEngineCamera.cpp">
       <Filter>Object\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineUpdateObject.cpp">
-      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineCollision.cpp">
       <Filter>Object\Collision</Filter>
