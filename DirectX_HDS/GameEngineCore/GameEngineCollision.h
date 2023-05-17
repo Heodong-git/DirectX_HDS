@@ -25,6 +25,13 @@ public:
 	// 충돌을 진행할 타겟그룹, 충돌시킬타입을 넣어주고 충돌진행
 	std::shared_ptr<GameEngineCollision> Collision(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype);
 
+
+	template<typename EnumType>
+	bool CollisionAll(EnumType _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col)
+	{
+		return CollisionAll(static_cast<int>(_TargetGroup), _ThisColType, _OtherColtype, _Col);
+	}
+
 	// 충돌된 모든 콜리전을 벡터에 담아서 반환, 반환된 벡터에 저장되어 있는 콜리전을 활용할 수 있다. 
 	bool CollisionAll(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col);
 

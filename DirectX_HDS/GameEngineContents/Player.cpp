@@ -44,6 +44,7 @@ void Player::Start()
 
 	// 컴포넌트 세팅
 	ComponentSetting();
+
 	// 필요한 리소스 로드및 애니메이션 생성
 	LoadAndCreateAnimation();
 }
@@ -165,17 +166,13 @@ void Player::ComponentSetting()
 	// 플레이어 메인렌더
 	float4 PlayerPos = GetTransform()->GetLocalPosition();
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
-	m_Render->SetPipeLine("2DTexture");
 	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
-	m_Render->SetAtlasConstantBuffer();
-	m_Render->SetColorConstantBuffer();
 	m_Render->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_Collision->GetTransform()->SetLocalScale(m_LocalScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
-
 
 	// 픽셀컬라이더 생성
 	m_PixelCollider = std::make_shared<PixelCollider>();
@@ -186,29 +183,17 @@ void Player::ComponentSetting()
 
 	// bottom 
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender_Bottom->SetPipeLine("2DTexture");
-	m_DebugRender_Bottom->SetAtlasConstantBuffer();
-	m_DebugRender_Bottom->SetColorConstantBuffer();
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender_Left->SetPipeLine("2DTexture");
-	m_DebugRender_Left->SetAtlasConstantBuffer();
-	m_DebugRender_Left->SetColorConstantBuffer();
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
-
+	
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender_Right->SetPipeLine("2DTexture");
-	m_DebugRender_Right->SetAtlasConstantBuffer();
-	m_DebugRender_Right->SetColorConstantBuffer();
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender_Top->SetPipeLine("2DTexture");
-	m_DebugRender_Top->SetAtlasConstantBuffer();
-	m_DebugRender_Top->SetColorConstantBuffer();
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
 }

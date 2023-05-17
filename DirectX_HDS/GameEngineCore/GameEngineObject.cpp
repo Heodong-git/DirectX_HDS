@@ -121,7 +121,7 @@ bool GameEngineObject::IsUpdate()
 	{
 		GameEngineObject* Master = Trans->GetMaster();
 
-		return GameEngineObjectBase::IsUpdate() || Master->IsUpdate();
+		return GameEngineObjectBase::IsUpdate() && Master->IsUpdate();
 	}
 
 	return GameEngineObjectBase::IsUpdate();

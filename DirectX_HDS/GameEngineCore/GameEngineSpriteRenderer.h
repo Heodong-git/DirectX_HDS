@@ -112,6 +112,12 @@ public:
 		ScaleRatio = _Ratio;
 	}
 
+	// 세팅되어있는 비율 반환 
+	inline float GetScaleRatio() const
+	{
+		return ScaleRatio;
+	}
+
 	// X축 뒤집기
 	void SetFlipX();
 	// Y축 뒤집기

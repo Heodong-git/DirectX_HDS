@@ -114,9 +114,9 @@ void GameEngineSpriteRenderer::Start()
 	// 컬러 구조체 초기화 
 	ColorOptionValue.MulColor = float4::One;
 	ColorOptionValue.PlusColor = float4::Null;
-
-	/*GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
-	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);*/
+		
+	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
