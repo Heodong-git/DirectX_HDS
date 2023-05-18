@@ -32,7 +32,7 @@ void ClubLevel_02::Start()
 	// 필요한 키생성
 	if (false == GameEngineInput::IsKey("ClubLevel02_ChangeLevel_ClubLevel03"))
 	{
-		GameEngineInput::CreateKey("ClubLevel02_ChangeLevel_ClubLevel03", VK_F2);
+		GameEngineInput::CreateKey("ClubLevel02_ChangeLevel_ClubLevel03", VK_F1);
 		GameEngineInput::CreateKey("ClubLevel02_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("ClubLevel02_ChangeColMap", '1');
 		GameEngineInput::CreateKey("ClubLevel02_ChangeMap", '2');
@@ -44,12 +44,20 @@ void ClubLevel_02::Start()
 	ActorLoad();
 
 	SetLevelType(LevelType::CLUBMAP2);
+
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
 	SetState(BaseLevel::LevelState::PLAY);
 }
 
 void ClubLevel_02::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("ClubLevel02_ChangeLevel_ClubLevel03"))
+	{
+		GameEngineCore::ChangeLevel("ClubLevel_03");
+		return;
+	}
+
+	BaseLevel::Update(_DeltaTime);
 }
 
 void ClubLevel_02::LevelChangeStart()

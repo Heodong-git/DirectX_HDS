@@ -98,9 +98,11 @@ void PlayManager::Start()
 	{
 		m_CameraPivots.reserve(8);
 
-		m_CameraPivots.push_back(float4{ -360 , 34 , 0 });
-		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });
-		m_CameraPivots.push_back(float4{ -335 , -250 , 0 });
-		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });
+		m_CameraPivots.push_back(float4{ -360 , 34 , 0 });    // 0 
+		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 1 
+		m_CameraPivots.push_back(float4{ -335 , -250 , 0 });  // 2
+		m_CameraPivots.push_back(float4{ -912 , 1076 , 0 });		  // 3		여기부터 설정
+		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });        // 4
+		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 5 
 	}
 }

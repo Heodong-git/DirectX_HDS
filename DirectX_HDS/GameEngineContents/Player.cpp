@@ -592,6 +592,7 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	// 상단픽셀 부딪히면 ㅇㅇ 
 	if (true == PixelCollider::PixelCol->TopPixelCheck())
 	{
 		m_CurrentVerticalVelocity /= 4.0f;
@@ -700,13 +701,10 @@ void Player::FlipStart()
 	m_Render->ChangeAnimation("player_flip");
 }
 
+// 플립상태에서는 무적이기 때문에 충돌체 off 처리 예정
+// 좌우측 픽셀검사로 벽이면 이동 ㄴㄴ 추가해야함 
 void Player::FlipUpdate(float _DeltaTime)
 {
-	if (false == PixelCollider::PixelCol->GroundCheck(this))
-	{
-		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-	}
-
 	// 방향보정 
 	if (true == m_Direction)
 	{
@@ -835,6 +833,11 @@ void Player::FallUpdate(float _DeltaTime)
 		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 	}
 
+	if (true == GameEngineInput::IsPress("player_crouch"))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
+	}
+
 	// 현재 땅이라면
 	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
@@ -845,13 +848,8 @@ void Player::FallUpdate(float _DeltaTime)
 	// 땅이아니라면
 	else if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
-		GetTransform()->AddLocalPosition(float4{ 0 , -1 } * 500.0f * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4{ 0 , -1 } * 300.0f * _DeltaTime);
 		return;
-	}
-
-	if (true == GameEngineInput::IsPress("player_crouch"))
-	{
-		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
 	}
 }
 

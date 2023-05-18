@@ -2,18 +2,18 @@
 #include "BaseLevel.h"
 
 // Ό³Έν :
-class ClubLevel_03 : public BaseLevel
+class ClubLevel_04 : public BaseLevel
 {
 public:
 	// constrcuter destructer
-	ClubLevel_03();
-	~ClubLevel_03();
+	ClubLevel_04();
+	~ClubLevel_04();
 
 	// delete Function
-	ClubLevel_03(const ClubLevel_03& _Other) = delete;
-	ClubLevel_03(ClubLevel_03&& _Other) noexcept = delete;
-	ClubLevel_03& operator=(const ClubLevel_03& _Other) = delete;
-	ClubLevel_03& operator=(ClubLevel_03&& _Other) noexcept = delete;
+	ClubLevel_04(const ClubLevel_04& _Other) = delete;
+	ClubLevel_04(ClubLevel_04&& _Other) noexcept = delete;
+	ClubLevel_04& operator=(const ClubLevel_04& _Other) = delete;
+	ClubLevel_04& operator=(ClubLevel_04&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

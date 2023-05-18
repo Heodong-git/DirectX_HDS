@@ -90,12 +90,12 @@ private:
 	float m_JumpPower = 450.0f;					// 점프하는 힘 
 	float m_JumpMoveSpeed = 400.0f;				// 점프중 이동속도  
 	float m_CurrentVerticalVelocity = 0.0f;	    // 현재 점프파워  
-	float m_FallPower = 800.0f;					// 낙하하는 힘 
+	float m_FallPower = 670.0f;					// 낙하하는 힘 
 
 	// Flip
 	bool m_RightFlip = false;
 	bool m_LeftFlip = false;
-	float m_FlipSpeed = 700.0f;
+	float m_FlipSpeed = 900.0f;
 
 	// 중력 
 	const float m_GravityPower = 1000.0f;

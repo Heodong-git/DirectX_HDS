@@ -79,7 +79,7 @@ bool PixelCollider::ColMapSetting()
 {
 	if (0 == m_ColMaps.size())
 	{
-		MsgAssert("현재 콜맵이 벡터에 저장되지 않았습니다.");
+		MsgAssert("ColMap이 벡터에 저장되지 않았습니다.");
 		return false;
 	}
 
