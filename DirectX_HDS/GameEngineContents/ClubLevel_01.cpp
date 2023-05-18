@@ -32,7 +32,7 @@ void ClubLevel_01::Start()
 	// 필요한 키생성
 	if (false == GameEngineInput::IsKey("ClubLevel01_ChangeLevel_ClubLevel02"))
 	{
-		GameEngineInput::CreateKey("ClubLevel01_ChangeLevel_ClubLevel02", VK_F2);
+		GameEngineInput::CreateKey("ClubLevel01_ChangeLevel_ClubLevel02", VK_F1);
 		GameEngineInput::CreateKey("ClubLevel01_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("ClubLevel01_ChangeColMap", '1');
 		GameEngineInput::CreateKey("ClubLevel01_ChangeMap", '2');
@@ -53,7 +53,7 @@ void ClubLevel_01::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("ClubLevel01_ChangeLevel_ClubLevel02"))
 	{
-		//GameEngineCore::ChangeLevel("ClubLevel_02");
+		GameEngineCore::ChangeLevel("ClubLevel_02");
 		return;
 	}
 
@@ -75,7 +75,7 @@ void ClubLevel_01::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ 0, 0 });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -538, -252 });
 
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");

@@ -99,8 +99,7 @@ bool PixelCollider::ColMapSetting()
 
 	LevelType CurMapName = CurLevel->GetLevelType();
 
-	// 현재 맵 타입을 받아와서 세팅하는걸로 
-
+	// 픽셀콜라이더에서 현재 레벨의 타입을 받아오고, 그 레벨타입에 맞는 충돌맵을 세팅해준다. 
 	switch (CurMapName)
 	{
 	case LevelType::CLUBMAP0:

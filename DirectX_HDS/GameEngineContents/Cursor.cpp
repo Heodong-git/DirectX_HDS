@@ -111,6 +111,11 @@ void Cursor::FollowCursor()
 	GameEngineLevel* Level = GameEngineCore::GetCurLevel().get();
 	BaseLevel* CurLevel = dynamic_cast<BaseLevel*>(Level);
 	LevelType CurLevelType = CurLevel->GetLevelType();
+
+	if (nullptr == Level->GetMainCamera())
+	{
+		return;
+	}
 	
 
 	// 현재 카메라 위치 가져오고
@@ -122,6 +127,11 @@ void Cursor::FollowCursor()
 	if (0.0f < OriginMousePos.y)
 	{
 		OriginMousePos.y = -OriginMousePos.y;
+	}
+
+	else if (0.0f > OriginMousePos.y)
+	{
+		OriginMousePos.y = abs(OriginMousePos.y);
 	}
 
 	float4 WorldMousePos = { OriginMousePos.x - GameEngineWindow::GetScreenSize().hx(),

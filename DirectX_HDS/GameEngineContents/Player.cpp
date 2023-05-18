@@ -424,11 +424,6 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		// true 이면 맵 밖인걸로
 		if (false == PixelCollider::PixelCol->RightPixelCheck())
 		{
-			if (false == PixelCollider::PixelCol->GroundCheck(this))
-			{
-				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-			}
-
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 		}
@@ -439,10 +434,6 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 	{
 		if (false == PixelCollider::PixelCol->LeftPixelCheck())
 		{
-			if (false == PixelCollider::PixelCol->GroundCheck(this))
-			{
-				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-			}
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
 		}
@@ -462,12 +453,6 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
-	if (false == PixelCollider::PixelCol->GroundCheck(this))
-	{
-		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-	}
-	
-
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -496,13 +481,13 @@ void Player::MoveUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
-	
 		// true 이면 맵 밖인걸로
 		if (false == PixelCollider::PixelCol->RightPixelCheck())
 		{
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;
@@ -516,6 +501,7 @@ void Player::MoveUpdate(float _DeltaTime)
 			m_Direction = false;
 			GetTransform()->SetLocalNegativeScaleX();
 			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+			//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;
@@ -647,17 +633,24 @@ void Player::JumpUpdate(float _DeltaTime)
 	// 점프중 좌우 이동시 동작할 코드 
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
-		// 애니메이션 방향보정
-		m_Direction = true;
-		GetTransform()->SetLocalPositiveScaleX();
-		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+		// true 이면 맵 밖인걸로
+		if (false == PixelCollider::PixelCol->RightPixelCheck())
+		{
+			m_Direction = true;
+			GetTransform()->SetLocalPositiveScaleX();
+			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-		m_Direction = false;
-		GetTransform()->SetLocalNegativeScaleX();
-		GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+		// true 이면 맵 밖인걸로
+		if (false == PixelCollider::PixelCol->LeftPixelCheck())
+		{
+			m_Direction = false;
+			GetTransform()->SetLocalNegativeScaleX();
+			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
 	}
 }
 

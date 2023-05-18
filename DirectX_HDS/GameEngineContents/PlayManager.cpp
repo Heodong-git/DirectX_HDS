@@ -70,14 +70,23 @@ void PlayManager::CameraSetting()
 			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP1)]);
 		}
 	}
+		break;
 	case LevelType::CLUBMAP2:
 	{
 		if (nullptr != Player::MainPlayer)
 		{
-			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP1)]);
+			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP2)]);
 		}
 	}
 		break;
+	case LevelType::CLUBMAP3:
+	{
+		if (nullptr != Player::MainPlayer)
+		{
+			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP3)]);
+		}
+	}
+	break;
 	default:
 		break;
 	}
@@ -90,6 +99,8 @@ void PlayManager::Start()
 		m_CameraPivots.reserve(8);
 
 		m_CameraPivots.push_back(float4{ -360 , 34 , 0 });
+		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });
+		m_CameraPivots.push_back(float4{ -335 , -250 , 0 });
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });
 	}
 }
