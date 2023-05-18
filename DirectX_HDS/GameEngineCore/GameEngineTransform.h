@@ -29,6 +29,13 @@ public:
 		DirectX::BoundingOrientedBox OBB;
 	};
 
+	void ScaleABS()
+	{
+		OBB.Extents.x = abs(OBB.Extents.x);
+		OBB.Extents.y = abs(OBB.Extents.y);
+		OBB.Extents.z = abs(OBB.Extents.z);
+	}
+
 	CollisionData()
 	{
 

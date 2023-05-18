@@ -272,6 +272,7 @@ void GameEngineTransform::WorldDecompose()
 	ColData.OBB.Center = TransData.WorldPosition.DirectFloat3;
 	ColData.OBB.Extents = (TransData.WorldScale * 0.5f).DirectFloat3;
 	ColData.OBB.Orientation = TransData.WorldQuaternion.DirectFloat4;
+	ColData.ScaleABS();
 }
 
 // 트랜스폼의 부모세팅 구조 
