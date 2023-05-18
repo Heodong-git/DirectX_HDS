@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #include "BaseLevel.h"
 #include "Player.h"
@@ -30,21 +31,25 @@ Cursor::~Cursor()
 void Cursor::Start()
 {
 	{
-		GameEngineDirectory NewDir;
-		// 원하는 폴더를 가진 디렉터리로 이동
-		NewDir.MoveParentToDirectory("katanazero_resources");
-		// 그 폴더로 이동
-		NewDir.Move("katanazero_resources");
-		NewDir.Move("Texture");
-		NewDir.Move("ClubLevel");
-		NewDir.Move("Cursor");
-
-		// 파일 전체로드 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
-		for (size_t i = 0; i < File.size(); i++)
+		if (nullptr == GameEngineTexture::Find("Cursor_0.png"))
 		{
-			GameEngineTexture::Load(File[i].GetFullPath());
+			GameEngineDirectory NewDir;
+			// 원하는 폴더를 가진 디렉터리로 이동
+			NewDir.MoveParentToDirectory("katanazero_resources");
+			// 그 폴더로 이동
+			NewDir.Move("katanazero_resources");
+			NewDir.Move("Texture");
+			NewDir.Move("ClubLevel");
+			NewDir.Move("Cursor");
+
+			// 파일 전체로드 
+			std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
 		}
+		
 	}
 
 	if (false == GameEngineInput::IsKey("cursor_DebugSwitch"))
@@ -103,9 +108,14 @@ void Cursor::DebugUpdate()
 
 void Cursor::FollowCursor()
 {
+	GameEngineLevel* Level = GameEngineCore::GetCurLevel().get();
+	BaseLevel* CurLevel = dynamic_cast<BaseLevel*>(Level);
+	LevelType CurLevelType = CurLevel->GetLevelType();
+	
+
 	// 현재 카메라 위치 가져오고
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	float4 CameraMovePivot = PlayManager::MainManager->GetCameraPivot();
+	float4 CameraMovePivot = PlayManager::MainManager->m_CameraPivots[static_cast<int>(CurLevelType)];
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 
 	// y축 값이 0보다 크다면 

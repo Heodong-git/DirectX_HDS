@@ -1,9 +1,9 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
-enum class MapName
+enum class LevelType
 {
-	CLUBMAP0,
+	CLUBMAP0 = 0,
 	CLUBMAP1,
 	CLUBMAP2,
 	CLUBMAP3,
@@ -45,14 +45,14 @@ public:
 		m_CurState = _State;
 	}
 
-	MapName GetMapName()
+	LevelType GetLevelType()
 	{
-		return m_CurMapName;
+		return m_LevelType;
 	}
 
-	void SetMapName(const MapName& _Name)
+	void SetLevelType(const LevelType& _Type)
 	{
-		m_CurMapName = _Name;
+		m_LevelType = _Type;
 	}
 
 protected:
@@ -66,7 +66,7 @@ protected:
 	BaseLevel::LevelState m_CurState = BaseLevel::LevelState::WAIT;
 
 	// 현재 맵이름
-	MapName m_CurMapName = MapName::NONE;
+	LevelType m_LevelType = LevelType::NONE;
 
 	// 디버그 
 	virtual void DebugSwitch()
@@ -81,6 +81,11 @@ protected:
 			DebugOn();
 		}
 	}
+
+	void ChangeMap();
+	void ChangeColMap();
+
+	std::shared_ptr<class Map> m_Map = nullptr;
 
 private:
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 

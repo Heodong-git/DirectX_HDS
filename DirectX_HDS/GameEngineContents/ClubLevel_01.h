@@ -2,19 +2,18 @@
 #include "BaseLevel.h"
 
 // 설명 :
-class ClubLevel : public BaseLevel
+class ClubLevel_01 : public BaseLevel
 {
 public:
 	// constrcuter destructer
-	ClubLevel();
-	~ClubLevel();
+	ClubLevel_01();
+	~ClubLevel_01();
 
 	// delete Function
-	ClubLevel(const ClubLevel& _Other) = delete;
-	ClubLevel(ClubLevel&& _Other) noexcept = delete;
-	ClubLevel& operator=(const ClubLevel& _Other) = delete;
-	ClubLevel& operator=(ClubLevel&& _Other) noexcept = delete;
-
+	ClubLevel_01(const ClubLevel_01& _Other) = delete;
+	ClubLevel_01(ClubLevel_01&& _Other) noexcept = delete;
+	ClubLevel_01& operator=(const ClubLevel_01& _Other) = delete;
+	ClubLevel_01& operator=(ClubLevel_01&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;
@@ -28,10 +27,7 @@ protected:
 
 private:
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-	std::shared_ptr<class Map> m_Club_Map = nullptr;
 
 	// 디버그용 
 	void DebugUpdate();
-	void ChangeMap();
-	void ChangeColMap();
 };

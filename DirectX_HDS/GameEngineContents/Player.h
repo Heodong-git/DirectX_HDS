@@ -55,10 +55,6 @@ public:
 		return m_Direction;
 	}
 
-	inline std::shared_ptr<PixelCollider> GetPixelCollider() const
-	{
-		return m_PixelCollider;
-	}
 
 protected:
 	void Start() override;
@@ -84,8 +80,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	// 충돌체 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
-	// 픽셀체크
-	std::shared_ptr<class PixelCollider> m_PixelCollider = nullptr;
 
 	// 방향체크, true = 오른쪽 , false = 왼쪽 
 	bool   m_Direction = true; 

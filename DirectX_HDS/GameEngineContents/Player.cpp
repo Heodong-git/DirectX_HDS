@@ -31,6 +31,12 @@ void Player::Start()
 {
 	// 액터 스타트 기본인터페이스 구성
 	// 키생성
+
+	// 컴포넌트 세팅
+	ComponentSetting();
+	// 필요한 리소스 로드및 애니메이션 생성
+	LoadAndCreateAnimation();
+
 	if (false == GameEngineInput::IsKey("player_slash"))
 	{
 		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
@@ -41,12 +47,6 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_jump", 'W');
 		GameEngineInput::CreateKey("player_crouch", 'S');
 	}
-
-	// 컴포넌트 세팅
-	ComponentSetting();
-
-	// 필요한 리소스 로드및 애니메이션 생성
-	LoadAndCreateAnimation();
 }
 
 void Player::LoadAndCreateAnimation()
@@ -176,7 +176,7 @@ void Player::ComponentSetting()
 
 	// 컴포넌트상속받는걸로 변경 ㄱㄱ
 	// 픽셀컬라이더 생성
-	m_PixelCollider = CreateComponent<PixelCollider>();
+	CreateComponent<PixelCollider>();
 	
 	// --------------------------- Debug Render ------------------------------
 
@@ -422,9 +422,9 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		// true 이면 맵 밖인걸로
-		if (false == m_PixelCollider->RightPixelCheck())
+		if (false == PixelCollider::PixelCol->RightPixelCheck())
 		{
-			if (false == m_PixelCollider->GroundCheck(this))
+			if (false == PixelCollider::PixelCol->GroundCheck(this))
 			{
 				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 			}
@@ -437,9 +437,9 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 
 	else if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		if (false == m_PixelCollider->LeftPixelCheck())
+		if (false == PixelCollider::PixelCol->LeftPixelCheck())
 		{
-			if (false == m_PixelCollider->GroundCheck(this))
+			if (false == PixelCollider::PixelCol->GroundCheck(this))
 			{
 				//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 			}
@@ -462,7 +462,7 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
-	if (false == m_PixelCollider->GroundCheck(this))
+	if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 	}
@@ -498,7 +498,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	{
 	
 		// true 이면 맵 밖인걸로
-		if (false == m_PixelCollider->RightPixelCheck())
+		if (false == PixelCollider::PixelCol->RightPixelCheck())
 		{
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
@@ -511,7 +511,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
 		// true 이면 맵 밖인걸로
-		if (false == m_PixelCollider->LeftPixelCheck())
+		if (false == PixelCollider::PixelCol->LeftPixelCheck())
 		{
 			m_Direction = false;
 			GetTransform()->SetLocalNegativeScaleX();
@@ -539,7 +539,7 @@ void Player::SlashUpdate(float _DeltaTime)
 	if (true == m_Render->FindAnimation("player_attack")->IsEnd())
 	{
 		// 위치가 땅이라면 아이들로 변경
-		if (true == m_PixelCollider->GroundCheck(this))
+		if (true == PixelCollider::PixelCol->GroundCheck(this))
 		{
 			ChangeState(PlayerState::IDLE);
 			return;
@@ -551,7 +551,7 @@ void Player::SlashUpdate(float _DeltaTime)
 	}
 
 	// 아래로 모션은 나와야함 음 일단 임시로, 맵밖,범위밖으로 공격했을 경우 
-	if (true == m_PixelCollider->GroundCheck(this))
+	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
@@ -576,7 +576,7 @@ void Player::SlashUpdate(float _DeltaTime)
 	MoveDir.Normalize();
 
 	// 수정해야 될 수도.
-	if (true == m_PixelCollider->TopPixelCheck())
+	if (true == PixelCollider::PixelCol->TopPixelCheck())
 	{
 		MoveDir.y = 0.0f;
 	}
@@ -606,13 +606,13 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
-	if (true == m_PixelCollider->TopPixelCheck())
+	if (true == PixelCollider::PixelCol->TopPixelCheck())
 	{
 		m_CurrentVerticalVelocity /= 4.0f;
 	}
 
 	// 만약 점프 상태일 때 내가 땅이라면
-	if (true == m_PixelCollider->GroundCheck(this))
+	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		// 값 초기화 후 아이들로 변경
 		m_CurrentVerticalVelocity = 0.0f;
@@ -709,7 +709,7 @@ void Player::FlipStart()
 
 void Player::FlipUpdate(float _DeltaTime)
 {
-	if (false == m_PixelCollider->GroundCheck(this))
+	if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		//GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
 	}
@@ -733,7 +733,7 @@ void Player::FlipUpdate(float _DeltaTime)
 		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
 		{
 			// 내위치가 땅이라면 
-			if (true == m_PixelCollider->GroundCheck(this))
+			if (true == PixelCollider::PixelCol->GroundCheck(this))
 			{
 				// 땅인데 아래키가 눌려있다면 
 				if (true == GameEngineInput::IsPress("player_crouch"))
@@ -757,7 +757,7 @@ void Player::FlipUpdate(float _DeltaTime)
 		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
 		{
 			// 내위치가 땅이라면 
-			if (true == m_PixelCollider->GroundCheck(this))
+			if (true == PixelCollider::PixelCol->GroundCheck(this))
 			{
 				// 땅인데 아래키가 눌려있다면 
 				if (true == GameEngineInput::IsPress("player_crouch"))
@@ -843,14 +843,14 @@ void Player::FallUpdate(float _DeltaTime)
 	}
 
 	// 현재 땅이라면
-	if (true == m_PixelCollider->GroundCheck(this))
+	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
-
+	
 	// 땅이아니라면
-	else if (false == m_PixelCollider->GroundCheck(this))
+	else if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		GetTransform()->AddLocalPosition(float4{ 0 , -1 } * 500.0f * _DeltaTime);
 		return;

@@ -168,6 +168,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ClubLevel_01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ClubLevel_02.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ClubLevel_03.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NormalDoor.h">
       <SubType>
       </SubType>
@@ -250,7 +262,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RecordingManager.h" />
-    <ClInclude Include="ClubLevel.h">
+    <ClInclude Include="ClubLevel_00.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -278,6 +290,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClubDoor.cpp" />
+    <ClCompile Include="ClubLevel_01.cpp" />
+    <ClCompile Include="ClubLevel_02.cpp" />
+    <ClCompile Include="ClubLevel_03.cpp" />
     <ClCompile Include="NormalDoor.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="SlashEffect.cpp" />
@@ -302,7 +317,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayManager.cpp" />
     <ClCompile Include="RecordingManager.cpp" />
-    <ClCompile Include="ClubLevel.cpp" />
+    <ClCompile Include="ClubLevel_00.cpp" />
     <ClCompile Include="ClubBossLevel.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleLevel.cpp">

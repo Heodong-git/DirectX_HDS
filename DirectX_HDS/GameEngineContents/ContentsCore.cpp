@@ -7,7 +7,9 @@
 #include "PlayLevel.h"
 #include "TitleLevel.h"
 #include "CTutorialLevel.h"
-#include "ClubLevel.h"
+#include "ClubLevel_00.h"
+#include "ClubLevel_01.h"
+
 #include "ClubBossLevel.h"
 #include "TitleEditer.h"
 #include "StageEditer.h"
@@ -32,10 +34,11 @@ void ContentsCore::ContentsResourcesCreate()
 void ContentsCore::GameStart()
 {
 	GameEngineCore::CreateLevel<TitleLevel>("TitleLevel");
-	GameEngineCore::CreateLevel<ClubLevel>("ClubLevel");
+	GameEngineCore::CreateLevel<ClubLevel_00>("ClubLevel_00");
+	GameEngineCore::CreateLevel<ClubLevel_01>("ClubLevel_01");
 	GameEngineCore::CreateLevel<ClubBossLevel>("ClubBossLevel");
 
-	GameEngineCore::ChangeLevel("ClubLevel");
+	GameEngineCore::ChangeLevel("ClubLevel_00");
 
 	// gui
 	{

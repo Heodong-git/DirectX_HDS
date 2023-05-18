@@ -10,9 +10,12 @@
 #include "BaseLevel.h"
 #include "Player.h"
 
+PixelCollider* PixelCollider::PixelCol = nullptr;
+std::vector<std::shared_ptr<class GameEngineTexture>> PixelCollider::m_ColMaps = std::vector<std::shared_ptr<class GameEngineTexture>>();
 
 PixelCollider::PixelCollider()
 {
+	PixelCol = this;
 }
 
 PixelCollider::~PixelCollider()
@@ -21,30 +24,36 @@ PixelCollider::~PixelCollider()
 
 void PixelCollider::Start()
 {
-	GameEngineDirectory NewDir;
-	// 원하는 폴더를 가진 디렉터리로 이동
-	NewDir.MoveParentToDirectory("katanazero_resources");
-	// 그 폴더로 이동
-	NewDir.Move("katanazero_resources");
-	NewDir.Move("Texture");
-	NewDir.Move("ClubLevel");
-	NewDir.Move("ColMap");
-
-	// 파일 전체로드 
-	// 여기서 순서대로 저장되기 때문에 파일의 순서가 바뀌면 안된다. 
-	// 이럴거면 맵이 나은거 같기도.. 
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
-	for (size_t i = 0; i < File.size(); i++)
-	{
-		m_ColMaps.push_back(GameEngineTexture::Load(File[i].GetFullPath()));
-	}
-
-	// 다저장하고 만약 사이즈가 0이라면 assert
 	if (0 == m_ColMaps.size())
 	{
-		MsgAssert("충돌맵이 저장되지 않았습니다.");
-		return;
+
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("ClubLevel");
+		NewDir.Move("ColMap");
+
+		// 파일 전체로드 
+		// 여기서 순서대로 저장되기 때문에 파일의 순서가 바뀌면 안된다. 
+		// 이럴거면 맵이 나은거 같기도.. 
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			m_ColMaps.push_back(GameEngineTexture::Load(File[i].GetFullPath()));
+		}
+
+		// 다저장하고 만약 사이즈가 0이라면 assert
+		if (0 == m_ColMaps.size())
+		{
+			MsgAssert("충돌맵이 저장되지 않았습니다.");
+			return;
+		}
 	}
+	
+		
 }
 
 bool PixelCollider::PixelCollision(class GameEngineObject* _Object)
@@ -68,6 +77,12 @@ bool PixelCollider::PixelCollision(class GameEngineObject* _Object)
 
 bool PixelCollider::ColMapSetting()
 {
+	if (0 == m_ColMaps.size())
+	{
+		MsgAssert("현재 콜맵이 벡터에 저장되지 않았습니다.");
+		return false;
+	}
+
 	if (nullptr == Player::MainPlayer)
 	{
 		MsgAssert("Player 가 nullptr 입니다.");
@@ -82,25 +97,25 @@ bool PixelCollider::ColMapSetting()
 		return false;
 	}
 
-	MapName CurMapName = CurLevel->GetMapName();
+	LevelType CurMapName = CurLevel->GetLevelType();
 
 	// 현재 맵 타입을 받아와서 세팅하는걸로 
 
 	switch (CurMapName)
 	{
-	case MapName::CLUBMAP0:
+	case LevelType::CLUBMAP0:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAP0)];
 		break;
-	case MapName::CLUBMAP1:
+	case LevelType::CLUBMAP1:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAP1)];
 		break;
-	case MapName::CLUBMAP2:
+	case LevelType::CLUBMAP2:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAP2)];
 		break;
-	case MapName::CLUBMAP3:
+	case LevelType::CLUBMAP3:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAP3)];
 		break;
-	case MapName::CLUBMAP4:
+	case LevelType::CLUBMAP4:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAP4)];
 		break;
 	}

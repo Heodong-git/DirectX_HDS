@@ -17,6 +17,8 @@ enum class ColMapName
 class PixelCollider : public GameEngineComponent
 {
 public:
+	static PixelCollider* PixelCol;
+public:
 	// constrcuter destructer
 	PixelCollider();
 	~PixelCollider();
@@ -60,8 +62,7 @@ private:
 	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
 	ColMapName m_CurColMapName = ColMapName::COLMAP0;
 
-	// 문자열로 충돌맵저장
-	std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
+	static std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
 
 	
 	GameEnginePixelColor m_BlackPixel = { static_cast<char>(0), static_cast<char>(0) , static_cast<char>(0) ,

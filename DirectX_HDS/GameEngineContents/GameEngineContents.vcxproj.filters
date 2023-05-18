@@ -66,7 +66,7 @@
     <ClInclude Include="Hud.h">
       <Filter>02.Actor\05.UI\03.Hud</Filter>
     </ClInclude>
-    <ClInclude Include="ClubLevel.h">
+    <ClInclude Include="ClubLevel_00.h">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClInclude>
     <ClInclude Include="ClubBossLevel.h">
@@ -76,7 +76,7 @@
       <Filter>02.Actor\07.BackGround</Filter>
     </ClInclude>
     <ClInclude Include="PixelCollider.h">
-      <Filter>05.Debug\00.PixelCollider</Filter>
+      <Filter>05.PixelCollider\00.Collider</Filter>
     </ClInclude>
     <ClInclude Include="SlashEffect.h">
       <Filter>02.Actor\08.Effect</Filter>
@@ -86,6 +86,15 @@
     </ClInclude>
     <ClInclude Include="NormalDoor.h">
       <Filter>02.Actor\09.Door</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubLevel_01.h">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubLevel_02.h">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubLevel_03.h">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +162,7 @@
     <ClCompile Include="Hud.cpp">
       <Filter>02.Actor\05.UI\03.Hud</Filter>
     </ClCompile>
-    <ClCompile Include="ClubLevel.cpp">
+    <ClCompile Include="ClubLevel_00.cpp">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClCompile>
     <ClCompile Include="ClubBossLevel.cpp">
@@ -163,7 +172,7 @@
       <Filter>02.Actor\07.BackGround</Filter>
     </ClCompile>
     <ClCompile Include="PixelCollider.cpp">
-      <Filter>05.Debug\00.PixelCollider</Filter>
+      <Filter>05.PixelCollider\00.Collider</Filter>
     </ClCompile>
     <ClCompile Include="SlashEffect.cpp">
       <Filter>02.Actor\08.Effect</Filter>
@@ -172,6 +181,15 @@
       <Filter>02.Actor\09.Door</Filter>
     </ClCompile>
     <ClCompile Include="NormalDoor.cpp" />
+    <ClCompile Include="ClubLevel_01.cpp">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubLevel_02.cpp">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubLevel_03.cpp">
+      <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -240,17 +258,17 @@
     <Filter Include="02.Actor\07.BackGround">
       <UniqueIdentifier>{8ebb710d-9c39-493b-9569-e3a9887b4aaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Debug">
-      <UniqueIdentifier>{443eb99a-6799-4086-8213-29e729c950af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.Debug\00.PixelCollider">
-      <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Actor\08.Effect">
       <UniqueIdentifier>{777e7068-da3d-43fa-8c35-0b9e0d0120ba}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Actor\09.Door">
       <UniqueIdentifier>{69f8e230-090e-4f3b-bd1f-2e671831beac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.PixelCollider">
+      <UniqueIdentifier>{443eb99a-6799-4086-8213-29e729c950af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.PixelCollider\00.Collider">
+      <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
