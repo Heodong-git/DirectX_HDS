@@ -28,5 +28,5 @@ float GameEngineTime::TimeCheck()
 	Prev.QuadPart = Current.QuadPart;
 	floatDeltaTime = static_cast<float>(DoubleDeltaTime);
 
-	return floatDeltaTime;
+	return GetTimeScaleDeltaTime();
 }
