@@ -75,7 +75,7 @@ void ClubLevel_02::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -900, -500 });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -900, -511 });
 
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");

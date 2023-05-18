@@ -681,12 +681,22 @@ void Player::CrouchUpdate(float _DeltaTime)
 	
 	if (true == GameEngineInput::IsDown("player_right_move"))
 	{
+		if (true == PixelCollider::PixelCol->RightPixelCheck())
+		{
+			return;
+		}
+
 		ChangeState(PlayerState::FLIP);
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("player_left_move"))
+	else if (true == GameEngineInput::IsDown("player_left_move"))
 	{
+		if (true == PixelCollider::PixelCol->LeftPixelCheck())
+		{
+			return;
+		}
+
 		ChangeState(PlayerState::FLIP);
 		return;
 	}
@@ -739,6 +749,12 @@ void Player::FlipUpdate(float _DeltaTime)
 			}
 		}
 
+		if (true == PixelCollider::PixelCol->RightPixelCheck())
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+
 		GetTransform()->AddLocalPosition(float4::Right * m_FlipSpeed * _DeltaTime);
 	}
 
@@ -761,6 +777,12 @@ void Player::FlipUpdate(float _DeltaTime)
 				ChangeState(PlayerState::IDLE);
 				return;
 			}
+		}
+
+		if (true == PixelCollider::PixelCol->LeftPixelCheck())
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
 		}
 
 		GetTransform()->AddLocalPosition(float4::Left * m_FlipSpeed * _DeltaTime);
@@ -786,6 +808,8 @@ void Player::FlipUpdate(float _DeltaTime)
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 		m_RightFlip = true;
+
+		return;
 	}
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
@@ -793,6 +817,8 @@ void Player::FlipUpdate(float _DeltaTime)
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 		m_LeftFlip = true;
+
+		return;
 	}
 }
 
