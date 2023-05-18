@@ -26,8 +26,11 @@ void AnimationInfo::Reset()
 // 애니메이션 정보의 업데이트
 void AnimationInfo::Update(float _DeltaTime)
 {
-	// 종료여부 = false; 
-	IsEndValue = false;
+	if (true == Loop)
+	{
+		// 종료여부 = false; 
+		IsEndValue = false;
+	}
 
 	// 정지 bool 변수가 true 라면, 더이상 애니메이션을 업데이트 하지 않는다. 
 	if (true == IsPauseValue)
@@ -74,6 +77,7 @@ void AnimationInfo::Update(float _DeltaTime)
 			// 그게 아니라면 마지막프레임에서 유지시켜서 애니메이션을 마지막 프레임으로 고정시킨다. 
 			else
 			{
+				IsEndValue = true;
 				--CurFrame;
 			}
 		}
