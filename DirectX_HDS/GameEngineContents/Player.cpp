@@ -590,12 +590,6 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
-	// 상단픽셀 부딪히면 ㅇㅇ 
-	if (true == PixelCollider::PixelCol->TopPixelCheck())
-	{
-		m_CurrentVerticalVelocity /= 4.0f;
-	}
-
 	// 만약 점프 상태일 때 내가 땅이라면
 	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
@@ -620,14 +614,16 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 
+	// 상단픽셀 부딪히면 ㅇㅇ 
+	if (true == PixelCollider::PixelCol->TopPixelCheck())
+	{
+		m_CurrentVerticalVelocity /= 4.0f;
+	}
 	// 점프의 힘에 중력을 더해준다. 
 	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
 	
 	// 점프 
 	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
-
-	// 위치체크용 변수 
-	float4 Pos = GetTransform()->GetLocalPosition();
 
 	// 점프중 좌우 이동시 동작할 코드 
 	if (true == GameEngineInput::IsPress("player_right_Move"))
@@ -638,6 +634,7 @@ void Player::JumpUpdate(float _DeltaTime)
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			return;
 		}
 	}
 
@@ -649,6 +646,7 @@ void Player::JumpUpdate(float _DeltaTime)
 			m_Direction = false;
 			GetTransform()->SetLocalNegativeScaleX();
 			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+			return;
 		}
 	}
 }
@@ -726,7 +724,7 @@ void Player::FlipUpdate(float _DeltaTime)
 
 	// 플립 로직 , 픽셀충돌 관련내용 추가해야함 
 	// 우측 플립이 true 라면 
-	if (true == m_RightFlip)
+	if (true == m_RightFlip && false == m_LeftFlip)
 	{
 		// 플립 애니메이션이 종료 되었다면
 		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
@@ -840,40 +838,68 @@ void Player::FallStart()
 	m_Render->ChangeAnimation("player_fall");
 }
 
+// 왼쪽오른쪽 픽셀체크 추가해야함 
 void Player::FallUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsPress("player_right_Move"))
-	{
-		m_Direction = true;
-		GetTransform()->SetLocalPositiveScaleX();
-		GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-	}
-
-	else if (true == GameEngineInput::IsPress("player_left_Move"))
-	{
-		//dsafdfdsf
-		m_Direction = false;
-		GetTransform()->SetLocalNegativeScaleX();
-		GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsPress("player_crouch"))
-	{
-		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
-	}
-
 	// 현재 땅이라면
 	if (true == PixelCollider::PixelCol->GroundCheck(this))
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
-	
+
 	// 땅이아니라면
 	else if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
-		GetTransform()->AddLocalPosition(float4{ 0 , -1 } * 300.0f * _DeltaTime);
-		return;
+		GetTransform()->AddLocalPosition(float4{ 0 , -1 } *300.0f * _DeltaTime);
+	}
+
+	// 이렇게 해주는게 무빙이 안이상함 
+	if (true == GameEngineInput::IsPress("player_crouch"))
+	{
+		if (true == GameEngineInput::IsDown("player_slash"))
+		{
+			ChangeState(PlayerState::SLASH);
+			return;
+		}
+
+		GetTransform()->AddLocalPosition(float4::Down * m_FallPower * _DeltaTime);
+
+		// 현재 땅이라면
+		if (true == PixelCollider::PixelCol->GroundCheck(this))
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+
+		// 땅이아니라면
+		else if (false == PixelCollider::PixelCol->GroundCheck(this))
+		{
+			GetTransform()->AddLocalPosition(float4{ 0 , -1 } *300.0f * _DeltaTime);
+			return;
+		}
+	}
+
+	if (true == GameEngineInput::IsPress("player_right_Move"))
+	{
+		if (false == PixelCollider::PixelCol->RightPixelCheck())
+		{
+			m_Direction = true;
+			GetTransform()->SetLocalPositiveScaleX();
+			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			return;
+		}
+	}
+
+	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	{
+		if (false == PixelCollider::PixelCol->LeftPixelCheck())
+		{
+			m_Direction = false;
+			GetTransform()->SetLocalNegativeScaleX();
+			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+			return;
+		}
 	}
 }
 
