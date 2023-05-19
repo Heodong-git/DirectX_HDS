@@ -51,6 +51,8 @@ void ClubLevel_03::Start()
 
 void ClubLevel_03::Update(float _DeltaTime)
 {
+	
+	BaseLevel::Update(_DeltaTime);
 }
 
 void ClubLevel_03::LevelChangeStart()
@@ -68,7 +70,7 @@ void ClubLevel_03::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -1402 , 979 });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -646.0f , 491.0f });
 
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
@@ -97,6 +99,8 @@ void ClubLevel_03::ActorLoad()
 {
 	m_Map = CreateActor<Map>(-10);
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_03.png");
+	//m_Map->GetRender()->GetTransform()->SetLocalScale(float4{ 1557.0f , 1440.0f });
+	
 
 	if (nullptr == Player::MainPlayer)
 	{

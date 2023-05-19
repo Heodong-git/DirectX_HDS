@@ -306,5 +306,15 @@ bool PixelCollider::TopPixelCheck()
 	return false;
 }
 
+bool PixelCollider::RightDiagonalCheck()
+{
+	return false;
+}
+
+bool PixelCollider::LeftDiagonalCheck()
+{
+	return false;
+}
+
 
 

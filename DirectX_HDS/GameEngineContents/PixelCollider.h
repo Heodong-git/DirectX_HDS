@@ -54,6 +54,9 @@ public:
 	// 위 체크 
 	bool TopPixelCheck();
 
+	bool RightDiagonalCheck();
+	bool LeftDiagonalCheck();
+
 	// 맵에서 find 함수 만들기 
 	
 protected:

@@ -58,7 +58,7 @@ void PlayManager::CameraSetting()
 	{
 		if (nullptr != Player::MainPlayer)
 		{
-			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP0)]);
+			CastLevel->GetMainCamera()->GetTransform()->SetLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP0)]);
 		}
 		
 	}
@@ -67,7 +67,7 @@ void PlayManager::CameraSetting()
 	{
 		if (nullptr != Player::MainPlayer)
 		{
-			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP1)]);
+			CastLevel->GetMainCamera()->GetTransform()->SetLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP1)]);
 		}
 	}
 		break;
@@ -75,7 +75,7 @@ void PlayManager::CameraSetting()
 	{
 		if (nullptr != Player::MainPlayer)
 		{
-			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP2)]);
+			CastLevel->GetMainCamera()->GetTransform()->SetLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP2)]);
 		}
 	}
 		break;
@@ -83,7 +83,7 @@ void PlayManager::CameraSetting()
 	{
 		if (nullptr != Player::MainPlayer)
 		{
-			CastLevel->GetMainCamera()->GetTransform()->AddLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP3)]);
+			CastLevel->GetMainCamera()->GetTransform()->SetLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP3)]);
 		}
 	}
 	break;
@@ -101,7 +101,7 @@ void PlayManager::Start()
 		m_CameraPivots.push_back(float4{ -360 , 34 , 0 });    // 0 
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 1 
 		m_CameraPivots.push_back(float4{ -335 , -250 , 0 });  // 2
-		m_CameraPivots.push_back(float4{ -912 , 1076 , 0 });		  // 3		여기부터 설정
+		m_CameraPivots.push_back(float4{ -72 , 356 , 0 });		  // 3		여기부터 설정
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });        // 4
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 5 
 	}

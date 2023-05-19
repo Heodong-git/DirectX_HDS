@@ -84,6 +84,7 @@ protected:
 
 	void ChangeMap();
 	void ChangeColMap();
+	void DebugCamera();
 
 	std::shared_ptr<class Map> m_Map = nullptr;
 

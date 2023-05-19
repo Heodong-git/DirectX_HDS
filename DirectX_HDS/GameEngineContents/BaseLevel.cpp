@@ -5,8 +5,9 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include "Map.h"
 
+#include "Map.h"
+#include "Player.h"
 
 BaseLevel::BaseLevel()
 {
@@ -130,4 +131,8 @@ void BaseLevel::ChangeColMap()
 	}
 	break;
 	}
+}
+
+void BaseLevel::DebugCamera()
+{
 }

@@ -59,17 +59,11 @@ void Cursor::Start()
 
 	// 메인렌더러 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
-	m_Render->SetPipeLine("2DTexture");
 	m_Render->SetScaleToTexture("cursor_0.png");
-	m_Render->SetAtlasConstantBuffer();
-	m_Render->SetColorConstantBuffer();
 	m_Render->GetTransform()->SetLocalScale(m_Scale);
 
 	// 렌더러 정중앙의 디버그 렌더러 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender->SetPipeLine("2DTexture");
-	m_DebugRender->SetAtlasConstantBuffer();
-	m_DebugRender->SetColorConstantBuffer();
 	m_DebugRender->GetTransform()->SetLocalScale( { 2, 2 });
 
 	// 테스트용, 오더 2번지정
@@ -120,7 +114,6 @@ void Cursor::FollowCursor()
 
 	// 현재 카메라 위치 가져오고
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetLocalPosition();
-	float4 CameraMovePivot = PlayManager::MainManager->m_CameraPivots[static_cast<int>(CurLevelType)];
 	float4 OriginMousePos = GameEngineWindow::GetMousePosition() + CameraPos;
 
 	// y축 값이 0보다 크다면 
@@ -138,7 +131,7 @@ void Cursor::FollowCursor()
 							 OriginMousePos.y + GameEngineWindow::GetScreenSize().hy() };
 
 	// ?? 왜되는데??????????????????????? 모름 왜돼 어쨌든 되니까 그냥 사용 
-	WorldMousePos.y += CameraMovePivot.y * 2;
+	WorldMousePos.y += CameraPos.y * 2;
 
 	GetTransform()->SetLocalPosition(WorldMousePos);
 	m_GameCursorPos = WorldMousePos;

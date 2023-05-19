@@ -487,7 +487,6 @@ void Player::MoveUpdate(float _DeltaTime)
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-			//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;
@@ -501,7 +500,6 @@ void Player::MoveUpdate(float _DeltaTime)
 			m_Direction = false;
 			GetTransform()->SetLocalNegativeScaleX();
 			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-			//GetLevel()->GetMainCamera()->GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;

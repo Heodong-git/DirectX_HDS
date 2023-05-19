@@ -33,6 +33,7 @@ void ClubLevel_01::Start()
 	if (false == GameEngineInput::IsKey("ClubLevel01_ChangeLevel_ClubLevel02"))
 	{
 		GameEngineInput::CreateKey("ClubLevel01_ChangeLevel_ClubLevel02", VK_F1);
+		//GameEngineInput::CreateKey("ClubLevel01_ChangeLevel_ClubLevel00", VK_F2);
 		GameEngineInput::CreateKey("ClubLevel01_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("ClubLevel01_ChangeColMap", '1');
 		GameEngineInput::CreateKey("ClubLevel01_ChangeMap", '2');
