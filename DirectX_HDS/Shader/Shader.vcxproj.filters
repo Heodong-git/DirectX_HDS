@@ -4,5 +4,6 @@
     <FxCompile Include="TextureShader.hlsl" />
     <FxCompile Include="BlinkShader.hlsl" />
     <FxCompile Include="TranslucentShader.hlsl" />
+    <FxCompile Include="MergeShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include <map>
 
 class GameEngineRenderer;
+class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineActor
 {
 	friend GameEngineRenderer;
@@ -50,6 +51,11 @@ public:
 	void Render(float _DeltaTime) override;
 
 	void CameraTransformUpdate();
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
+	{
+		return CamTarget;
+	}
 	
 protected:
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
@@ -85,5 +91,7 @@ private:
 	void RenderRelease();
 
 	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
+
+	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 };
 

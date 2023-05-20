@@ -146,7 +146,12 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 
 	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL == Desc.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
+	{
+		CreateRenderTargetView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
 	{
 		CreateDepthStencilView();
 	}

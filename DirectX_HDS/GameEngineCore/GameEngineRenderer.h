@@ -2,6 +2,18 @@
 #include "GameEngineComponent.h"
 #include "GameEngineShader.h"
 
+// 기존 렌더러의 내부 변수들과 기능을 이 클래스로 이관
+class GameEngineRenderUnit
+{
+public:
+	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
+	GameEngineShaderResHelper ShaderResHelper;
+
+public:
+	void SetPipeLine(const std::string_view& _Name);
+	void Render(float _DeltaTime);
+};
+
 // 설명 :
 class GameEngineRenderer : public GameEngineComponent
 {

@@ -88,7 +88,16 @@ Texture2D DiffuseTex : register(t0);
 
 // 샘플러
 // 텍스쳐를 어떻게 불러들이겠냐는 설정, 
-SamplerState CLAMPSAMPLER : register(s0);
+SamplerState WRAPSAMPLER : register(s0);
+
+struct OutColor
+{
+    float4 Color0 : SV_Target0;
+    float4 Color1 : SV_Target1;
+    float4 Color2 : SV_Target2;
+    float4 Color3 : SV_Target3;
+};
+
 
 // 픽셀셰이더에서는 버텍스셰이더에서 반환한 값을 받아서
 // 픽셀을 건져낸다. 
@@ -98,7 +107,7 @@ float4 Texture_PS(Output _Value) : SV_Target0
     // float4
     // float4.xy == float2
     // float4.xyz == float3 
-    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
   
     Color *= MulColor;
     Color += PlusColor;

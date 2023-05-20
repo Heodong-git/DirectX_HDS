@@ -4,6 +4,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include "GameEngineDevice.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineRenderTarget.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -49,6 +50,9 @@ void GameEngineCamera::Start()
 
 	Width = ViewPortData.Width;
 	Height = ViewPortData.Height;
+
+	CamTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
+	CamTarget->CreateDepthTexture();
 }
 
 void GameEngineCamera::RenderRelease()
@@ -143,6 +147,12 @@ void GameEngineCamera::Setting()
 {
 	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
 	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
+
+	// 화면을 지우고 그리는 작업
+	// 타겟 클리어
+	CamTarget->Clear();
+	// 세팅
+	CamTarget->Setting();
 }
 
 void GameEngineCamera::Render(float _DeltaTime)

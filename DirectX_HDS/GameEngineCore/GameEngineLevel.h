@@ -89,8 +89,6 @@ private:
 	// 메인카메라 , UI카메라 
 	std::shared_ptr<GameEngineCamera> MainCamera;
 
-	std::shared_ptr<GameEngineRenderTarget> CameraTarget;
-
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 
 	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
