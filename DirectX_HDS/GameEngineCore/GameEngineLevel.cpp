@@ -11,10 +11,10 @@ GameEngineLevel::GameEngineLevel()
 
 	Cameras.insert(std::make_pair(0, MainCamera));
 
-	/*std::shared_ptr<GameEngineCamera> UICamera = CreateActor<GameEngineCamera>();
+	std::shared_ptr<GameEngineCamera> UICamera = CreateActor<GameEngineCamera>();
 	UICamera->SetProjectionType(CameraType::Orthogonal);
 
-	Cameras.insert(std::make_pair(100, UICamera));*/
+	Cameras.insert(std::make_pair(100, UICamera));
 }
 
 GameEngineLevel::~GameEngineLevel()
@@ -115,7 +115,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	//	}
 	//}
 
-	//GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 }
 
 void GameEngineLevel::ActorRelease()
@@ -209,4 +209,31 @@ void GameEngineLevel::LevelChangeStart()
 void GameEngineLevel::LevelChangeEnd()
 {
 
+}
+
+void GameEngineLevel::PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder)
+{
+	std::shared_ptr<GameEngineCamera> FindCamera = GetCamera(_CameraOrder);
+
+	if (nullptr == FindCamera)
+	{
+		MsgAssert("존재하지 않는 카메라에 랜더러를 넣을수는 없습니다.");
+		return;
+	}
+
+	FindCamera->PushRenderer(_Renderer);
+}
+
+std::shared_ptr<GameEngineCamera> GameEngineLevel::GetCamera(int _CameraOrder)
+{
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator FindIter = Cameras.find(_CameraOrder);
+
+	if (FindIter == Cameras.end())
+	{
+		return nullptr;
+	}
+
+	std::shared_ptr<GameEngineCamera> Camera = FindIter->second;
+
+	return Camera;
 }

@@ -298,6 +298,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineUIRenderer.h" />
     <ClInclude Include="GameEngineVertex.h">
       <SubType>
       </SubType>
@@ -367,6 +368,7 @@
     <ClCompile Include="GameEngineTexture.cpp" />
     <ClCompile Include="GameEngineTileMapRenderer.cpp" />
     <ClCompile Include="GameEngineTransform.cpp" />
+    <ClCompile Include="GameEngineUIRenderer.cpp" />
     <ClCompile Include="GameEngineVertex.cpp" />
     <ClCompile Include="GameEngineVertexBuffer.cpp" />
     <ClCompile Include="GameEngineVertexShader.cpp" />

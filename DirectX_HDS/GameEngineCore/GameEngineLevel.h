@@ -7,9 +7,11 @@
 
 class GameEngineActor;
 class GameEngineCamera;
+class GameEngineRenderer;
 class GameEngineCollision;
 class GameEngineLevel : public GameEngineObject
 {
+	friend class GameEngineRenderer;
 	friend class GameEngineCollision;
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
@@ -75,6 +77,8 @@ public:
 		return DynamicThis<GameEngineLevel>();
 	}
 
+	std::shared_ptr<GameEngineCamera> GetCamera(int _CameraOrder);
+
 protected:
 	virtual void LevelChangeStart();
 	virtual void LevelChangeEnd();
@@ -88,6 +92,8 @@ private:
 
 	// 메인카메라 , UI카메라 
 	std::shared_ptr<GameEngineCamera> MainCamera;
+
+	void PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder);
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 

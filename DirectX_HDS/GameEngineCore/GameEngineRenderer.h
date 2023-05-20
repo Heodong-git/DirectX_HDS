@@ -38,11 +38,19 @@ public:
 		return ShaderResHelper;
 	}
 
+	void CameraCullingOn()
+	{
+		IsCameraCulling = true;
+	}
+
 protected:
 	void Start();
 	void Render(float _Delta) override;
+	void PushCameraRender(int _CameraOrder);
 
 private:
+	bool IsCameraCulling = false;
+
 	// 파이프라인과 쉐이더리소스헬퍼가 합쳐져야 렌더링이 되는 방식으로 구현
 	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe = nullptr;
 	GameEngineShaderResHelper ShaderResHelper;

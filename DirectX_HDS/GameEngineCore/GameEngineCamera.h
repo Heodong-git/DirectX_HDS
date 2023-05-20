@@ -8,6 +8,7 @@ class GameEngineRenderer;
 class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineActor
 {
+	friend GameEngineLevel;
 	friend GameEngineRenderer;
 public:
 	// constrcuter destructer
@@ -57,12 +58,18 @@ public:
 		return CamTarget;
 	}
 	
+	// 카메라컬링을 위한 체크함수 
+	bool IsView(const TransformData& _TransData);
+
 protected:
-	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
 
 	void Start() override;
 	
 private:
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
+
+	DirectX::BoundingOrientedBox Box;
+
 	bool FreeCamera = false;
 
 	// 뷰

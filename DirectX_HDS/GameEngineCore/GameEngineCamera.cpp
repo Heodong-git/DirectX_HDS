@@ -171,6 +171,17 @@ void GameEngineCamera::Render(float _DeltaTime)
 		{
 			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
 
+			// 업데이트중이 아니라면 그리지 않는다 
+			if (false == Render->IsUpdate())
+			{
+				continue;
+			}
+
+			if (true == Render->IsCameraCulling && false == IsView(Render->GetTransform()->GetTransDataRef()))
+			{
+				continue;
+			}
+
 			Render->RenderTransformUpdate(this);
 			Render->Render(_DeltaTime);
 
@@ -205,6 +216,14 @@ void GameEngineCamera::CameraTransformUpdate()
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+
+	float4 WorldPos = GetTransform()->GetWorldPosition();
+	float4 Dir = GetTransform()->GetLocalForwardVector();
+	Box.Center = (WorldPos + (Dir * Far * 0.5f)).DirectFloat3;
+	Box.Extents.z = Far * 0.6f;
+	Box.Extents.x = Width * 0.6f;
+	Box.Extents.y = Height * 0.6f;
+	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
 }
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
@@ -216,4 +235,38 @@ void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 	}
 
 	Renderers[_Render->GetOrder()].push_back(_Render);
+}
+
+bool GameEngineCamera::IsView(const TransformData& _TransData)
+{
+	// Width, Height, Near, Far;
+
+	switch (ProjectionType)
+	{
+	case CameraType::None:
+	{
+		MsgAssert("카메라 투영이 설정되지 않았습니다.");
+		break;
+	}
+	case CameraType::Perspective:
+
+		// DirectX::BoundingFrustum Box;
+
+		break;
+	case CameraType::Orthogonal:
+	{
+
+		DirectX::BoundingSphere Sphere;
+		Sphere.Center = _TransData.WorldPosition.DirectFloat3;
+		Sphere.Radius = _TransData.WorldPosition.MaxFloat() * 0.5f;
+
+		bool IsCal = Box.Intersects(Sphere);
+
+		return IsCal;
+	}
+	default:
+		break;
+	}
+
+	return false;
 }

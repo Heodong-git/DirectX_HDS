@@ -29,8 +29,5 @@ float4 Merge_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
     
-    Color.r = 1.0f;
-    Color.a = 1.0f;
-    
     return Color;
 }

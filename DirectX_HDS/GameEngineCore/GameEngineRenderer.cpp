@@ -49,7 +49,8 @@ GameEngineRenderer::~GameEngineRenderer()
 
 void GameEngineRenderer::Start()
 {
-	GetLevel()->GetMainCamera()->PushRenderer(DynamicThis<GameEngineRenderer>());
+	// 기본적으로는 메인카메라에 세팅
+	PushCameraRender(0);
 }
 
 void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
@@ -110,4 +111,9 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name)
 	}
 
 	GetTransform()->GetWorldMatrix(); // ? 
+}
+
+void GameEngineRenderer::PushCameraRender(int _CameraOrder)
+{
+	GetLevel()->PushCameraRenderer(DynamicThis<GameEngineRenderer>(), _CameraOrder);
 }

@@ -57,12 +57,6 @@ void AnimationInfo::Update(float _DeltaTime)
 		// 다음 프레임으로 변경
 		++CurFrame;
 
-		// 다음 프레임으로 변경된 시점에서 해당 프레임에 추가된 이벤트가 있다면 실행
-		if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
-		{
-			StartEventFunction[CurFrameIndex]();
-		}
-
 		// 프레임인덱스를 저장하는 배열의 크기가 현재프레임값과 같거나 작아졌다면
 		if (FrameIndex.size() <= CurFrame)
 		{
@@ -79,6 +73,18 @@ void AnimationInfo::Update(float _DeltaTime)
 			{
 				IsEndValue = true;
 				--CurFrame;
+			}
+		}
+
+		// 다음 프레임이 있고, 
+		else
+		{
+			CurFrameIndex = FrameIndex[CurFrame];
+
+			//Start콜백이 있다면 콜백을 호출
+			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
+			{
+				StartEventFunction[CurFrameIndex]();
 			}
 		}
 
@@ -107,20 +113,7 @@ void GameEngineSpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
-	SetPipeLine("2DTexture");
-
-	// 아틀라스 데이터값 초기화
-	AtlasData.x = 0.0f;
-	AtlasData.y = 0.0f;
-	AtlasData.z = 1.0f;
-	AtlasData.w = 1.0f;
-
-	// 컬러 구조체 초기화 
-	ColorOptionValue.MulColor = float4::One;
-	ColorOptionValue.PlusColor = float4::Null;
-		
-	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
-	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+	SpriteRenderInit();
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
@@ -403,4 +396,20 @@ std::string GameEngineSpriteRenderer::GetTexName()
 	GameEngineTextureSetter* Tex = GetShaderResHelper().GetTextureSetter("DiffuseTex");
 	std::string Name = Tex->Res->GetNameToString();
 	return Name;
+}
+
+void GameEngineSpriteRenderer::SpriteRenderInit()
+{
+	SetPipeLine("2DTexture");
+
+	AtlasData.x = 0.0f;
+	AtlasData.y = 0.0f;
+	AtlasData.z = 1.0f;
+	AtlasData.w = 1.0f;
+
+	ColorOptionValue.MulColor = float4::One;
+	ColorOptionValue.PlusColor = float4::Null;
+
+	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 }

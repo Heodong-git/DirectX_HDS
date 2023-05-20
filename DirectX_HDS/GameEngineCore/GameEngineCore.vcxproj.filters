@@ -143,6 +143,9 @@
     <ClInclude Include="GameEngineFSM.h">
       <Filter>ContentPattern</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineUIRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -281,6 +284,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineFSM.cpp">
       <Filter>ContentPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineUIRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

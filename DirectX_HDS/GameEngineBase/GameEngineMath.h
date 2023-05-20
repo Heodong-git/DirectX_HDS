@@ -284,11 +284,14 @@ public:
 		return static_cast<unsigned int>(w * 0.5f);
 	}
 
-
-
 	float GetAnagleDegZ()
 	{
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
+	}
+
+	float MaxFloat() const
+	{
+		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
 	float4 RotationXDegReturn(float _Deg)
