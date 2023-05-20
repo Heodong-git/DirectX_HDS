@@ -17,6 +17,21 @@ GameEngineRenderer::~GameEngineRenderer()
 {
 }
 
+void GameEngineRenderer::Start()
+{
+	GetLevel()->GetMainCamera()->PushRenderer(DynamicThis<GameEngineRenderer>());
+}
+
+void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
+{
+	if (nullptr == _Camera)
+	{
+		assert(false);
+		return;
+	}
+
+	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
+}
 
 void GameEngineRenderer::Render(float _Delta)
 {

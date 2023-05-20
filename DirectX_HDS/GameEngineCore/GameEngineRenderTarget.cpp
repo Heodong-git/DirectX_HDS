@@ -17,6 +17,10 @@ void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Textu
 	Texture = _Texture;
 }
 
+void GameEngineRenderTarget::ResCreate(float4 _Color)
+{
+}
+
 void GameEngineRenderTarget::Clear()
 {
 	ID3D11RenderTargetView* RTV = Texture->GetRTV();

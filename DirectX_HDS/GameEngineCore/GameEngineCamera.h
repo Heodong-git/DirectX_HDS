@@ -1,9 +1,13 @@
 #pragma once
 #include "GameEngineActor.h"
 #include "GameEngineEnum.h"
+#include <list>
+#include <map>
 
+class GameEngineRenderer;
 class GameEngineCamera : public GameEngineActor
 {
+	friend GameEngineRenderer;
 public:
 	// constrcuter destructer
 	GameEngineCamera();
@@ -44,8 +48,12 @@ public:
 
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
+
+	void CameraTransformUpdate();
 	
 protected:
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
+
 	void Start() override;
 	
 private:
@@ -75,5 +83,7 @@ private:
 	float Far = 10000.0f;
 	
 	void RenderRelease();
+
+	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
 };
 

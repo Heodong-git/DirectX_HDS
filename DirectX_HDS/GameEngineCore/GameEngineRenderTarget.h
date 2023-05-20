@@ -24,6 +24,15 @@ public:
 		return NewRenderTarget;
 	}
 
+	static std::shared_ptr<GameEngineRenderTarget> Create(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	{
+		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
+
+		NewRenderTarget->ResCreate(_Color);
+
+		return NewRenderTarget;
+	}
+
 	void Clear();
 
 	void Setting() override;
@@ -41,5 +50,6 @@ private:
 	// 깊이버퍼용 텍스쳐
 	std::shared_ptr<GameEngineTexture> DepthTexture;
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
+	void ResCreate(float4 _Color);
 };
 

@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include "GameEngineDevice.h"
+#include "GameEngineRenderer.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -146,6 +147,29 @@ void GameEngineCamera::Setting()
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupEndIter = Renderers.end();
+
+	for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+	{
+		std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
+
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
+
+		for (; StartRenderer != EndRenderer; ++StartRenderer)
+		{
+			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
+
+			Render->RenderTransformUpdate(this);
+			Render->Render(_DeltaTime);
+
+		}
+	}
+}
+
+void GameEngineCamera::CameraTransformUpdate()
+{
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
 	float4 EyeUp = GetTransform()->GetLocalUpVector();
@@ -171,4 +195,15 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+}
+
+void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
+{
+	if (nullptr == _Render)
+	{
+		MsgAssert("랜더러가 nullptr 입니다");
+		return;
+	}
+
+	Renderers[_Render->GetOrder()].push_back(_Render);
 }

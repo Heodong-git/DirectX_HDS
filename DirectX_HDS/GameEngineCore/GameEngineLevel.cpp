@@ -8,6 +8,13 @@
 GameEngineLevel::GameEngineLevel()
 {
 	MainCamera = CreateActor<GameEngineCamera>();
+
+	Cameras.insert(std::make_pair(0, MainCamera));
+
+	std::shared_ptr<GameEngineCamera> UICamera = CreateActor<GameEngineCamera>();
+	UICamera->SetProjectionType(CameraType::Orthogonal);
+
+	Cameras.insert(std::make_pair(100, UICamera));
 }
 
 GameEngineLevel::~GameEngineLevel()
@@ -18,8 +25,7 @@ GameEngineLevel::~GameEngineLevel()
 
 void GameEngineLevel::Start()
 {
-
-
+	CameraTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
 }
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
@@ -64,35 +70,42 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
-	GetMainCamera()->Setting();
-
-	// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
-
-	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	//GetMainCamera()->Setting();
+	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
-
-		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
-		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
-
-		for (; ActorStart != ActorEnd; ++ActorStart)
-		{
-			std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
-
-			Actor->AllRender(_DeltaTime);
-
-
-			/*if (false == Actor->IsUpdate())
-			{
-				continue;
-			}
-
-			GameEngineTransform* Transform = Actor->GetTransform();
-			Transform->AllRender(_DeltaTime);*/
-		}
+		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
+		Cam->Setting();
+		Cam->CameraTransformUpdate();
+		Cam->Render(_DeltaTime);
 	}
+
+	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+	//for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	//{
+	//	std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+	//	for (; ActorStart != ActorEnd; ++ActorStart)
+	//	{
+	//		std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+
+	//		Actor->AllRender(_DeltaTime);
+
+
+	//		/*if (false == Actor->IsUpdate())
+	//		{
+	//			continue;
+	//		}
+
+	//		GameEngineTransform* Transform = Actor->GetTransform();
+	//		Transform->AllRender(_DeltaTime);*/
+	//	}
+	//}
 
 	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 
