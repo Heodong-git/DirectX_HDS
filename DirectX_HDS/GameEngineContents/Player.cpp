@@ -711,17 +711,6 @@ void Player::FlipStart()
 // 좌우측 픽셀검사로 벽이면 이동 ㄴㄴ 추가해야함 
 void Player::FlipUpdate(float _DeltaTime)
 {
-	// 방향보정 
-	if (true == m_Direction)
-	{
-		GetTransform()->SetLocalPositiveScaleX();
-	}
-
-	else if (false == m_Direction)
-	{
-		GetTransform()->SetLocalNegativeScaleX();
-	}
-
 	// 플립 로직 , 픽셀충돌 관련내용 추가해야함 
 	// 우측 플립이 true 라면 
 	if (true == m_RightFlip && false == m_LeftFlip)
@@ -808,7 +797,7 @@ void Player::FlipUpdate(float _DeltaTime)
 		return;
 	}
 
-	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	else if (true == GameEngineInput::IsPress("player_left_Move") && false == m_RightFlip)
 	{
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
