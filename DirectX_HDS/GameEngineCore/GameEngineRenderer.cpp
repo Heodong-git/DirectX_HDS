@@ -66,23 +66,12 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 
 void GameEngineRenderer::Render(float _Delta)
 {
-	std::shared_ptr<GameEngineCamera> MainCamera = GetLevel()->GetMainCamera();
-
-	if (nullptr == MainCamera)
-	{
-		assert(false);
-		return;
-	}
-
-	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
-
 	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
 	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
 
 	Pipe->RenderingPipeLineSetting();
 
 
-	GameEngineActor* check = GetActor();
 	// 쉐이더가 어떤 텍스쳐, 어떤 상수버퍼를 사용할 것인지 여기서 세팅한다.
 	ShaderResHelper.Setting();
 

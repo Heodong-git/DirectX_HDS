@@ -487,6 +487,8 @@ void Player::MoveUpdate(float _DeltaTime)
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			//GetLevel()->GetMainCamera()->GetTransform()->SetLocalPosition(GetTransform()->GetWorldPosition());
+			//GetLevel()->GetCamera(100)->GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;

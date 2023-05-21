@@ -2,7 +2,8 @@
 #include "Battery.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineCamera.h>
 #include "BaseLevel.h"
 
 Battery* Battery::MainBattery = nullptr;
@@ -40,14 +41,10 @@ void Battery::Start()
 		}
 	}
 
-	m_CaseRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Battery_09.png");
-
-	/*m_CaseRender->SetPipeLine("2DBlinkTexture");
-	m_CaseRender->GetShaderResHelper().SetTexture("BlinkTex", "Battery_09.png");*/
-	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 });
-	m_CaseRender->GetTransform()->SetLocalPosition({ -560 , 335 });
-
+	m_CaseRender = CreateComponent<GameEngineUIRenderer>();
+	m_CaseRender->SetTexture("Battery_09.png");
+	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 , 1});
+	m_CaseRender->GetTransform()->SetLocalPosition({ -500 , 300 });
 }
 
 void Battery::Update(float _DeltaTime)
@@ -56,6 +53,8 @@ void Battery::Update(float _DeltaTime)
 	{
 		return;
 	}
+
+	GameEngineLevel* Level = GetLevel();
 
 	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
 	if (Random == 1)
