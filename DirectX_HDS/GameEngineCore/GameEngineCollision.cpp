@@ -17,6 +17,12 @@ void GameEngineCollision::Start()
 
 std::shared_ptr<GameEngineCollision> GameEngineCollision::Collision(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype)
 {
+	// 만약 충돌체의 업데이트가 false 라면, 충돌을 진행하지 않는다. 
+	if (false == this->IsUpdate())
+	{
+		return nullptr;
+	}
+
 	// 레벨이 저장하고 있는 충돌체 리스트를 받아온다.
 	std::list<std::shared_ptr<GameEngineCollision>>& Group = GetLevel()->Collisions[_TargetGroup];
 
@@ -58,6 +64,12 @@ void GameEngineCollision::SetOrder(int _Order)
 
 bool GameEngineCollision::CollisionAll(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col)
 {
+	// 만약 충돌체의 업데이트가 false 라면, 충돌을 진행하지 않는다. 
+	if (false == this->IsUpdate())
+	{
+		return false;
+	}
+
 	// 벡터초기화
 	_Col.clear();
 

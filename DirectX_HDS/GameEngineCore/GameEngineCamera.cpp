@@ -55,9 +55,7 @@ void GameEngineCamera::Start()
 	CamTarget->CreateDepthTexture();
 }
 
-void GameEngineCamera::RenderRelease()
-{
-}
+
 
 void GameEngineCamera::Update(float _DeltaTime)
 {
@@ -258,7 +256,7 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 
 		DirectX::BoundingSphere Sphere;
 		Sphere.Center = _TransData.WorldPosition.DirectFloat3;
-		Sphere.Radius = _TransData.WorldPosition.MaxFloat() * 0.5f;
+		Sphere.Radius = _TransData.WorldScale.MaxFloat() * 0.5f;
 
 		bool IsCal = Box.Intersects(Sphere);
 
@@ -269,4 +267,33 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 	}
 
 	return false;
+}
+
+void GameEngineCamera::Release()
+{
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupEndIter = Renderers.end();
+
+	for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+	{
+		std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
+
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
+		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
+
+		for (; StartRenderer != EndRenderer; )
+		{
+			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
+
+			// 만약 렌더러가 데스상태가 아니라면 제거하지 않는다. 
+			if (false == Render->IsDeath())
+			{
+				++StartRenderer;
+				continue;
+			}
+
+			StartRenderer = RenderGroup.erase(StartRenderer);
+
+		}
+	}
 }

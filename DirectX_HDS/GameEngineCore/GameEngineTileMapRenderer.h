@@ -40,10 +40,22 @@ public:
 		return MapCount;
 	}
 
+	inline void TilemapCullingOn()
+	{
+		IsTilemapCulling = true;
+	}
+
+	inline void TilemapCullingOff()
+	{
+		IsTilemapCulling = false;
+	}
+
 protected:
 	void Render(float _Delta) override;
 
 private:
+	bool IsTilemapCulling = false;
+
 	std::vector<std::vector<Tile>> Tiles;
 	float4 MapCount;
 	ColorOption ColorOptionValue;

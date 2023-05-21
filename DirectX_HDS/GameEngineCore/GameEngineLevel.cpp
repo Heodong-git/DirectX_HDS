@@ -120,6 +120,13 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 void GameEngineLevel::ActorRelease()
 {
+	// 랜더러를 릴리즈
+	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
+	{
+		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
+		Cam->Release();
+	}
+
 	{
 		// 콜리전삭제 
 		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();

@@ -95,7 +95,7 @@ private:
 	float Near = 0.1f;
 	float Far = 10000.0f;
 	
-	void RenderRelease();
+	void Release();
 
 	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
 

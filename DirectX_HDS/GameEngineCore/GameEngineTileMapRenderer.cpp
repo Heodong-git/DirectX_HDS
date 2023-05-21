@@ -2,6 +2,7 @@
 #include "GameEngineTileMapRenderer.h"
 #include "GameEngineSprite.h"
 #include "GameEngineLevel.h"
+#include "GameEngineCamera.h"
 
 GameEngineTileMapRenderer::GameEngineTileMapRenderer()
 {
@@ -99,6 +100,8 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 	float4x4 Rot;
 	float4 vPos;
 
+	std::shared_ptr<GameEngineCamera> Camera = GetLevel()->GetMainCamera();
+
 	for (size_t y = 0; y < Tiles.size(); y++)
 	{
 		for (size_t x = 0; x < Tiles[y].size(); x++)
@@ -114,12 +117,16 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 				Pos.Pos(vPos);
 				TileTransData.WorldViewProjectionMatrix = Scale * Pos * TransData.WorldMatrix;
 
-				float4 WorldPos = TileTransData.WorldViewProjectionMatrix.ArrVector[3];
+				if (true == IsTilemapCulling)
+				{
+					TileTransData.WorldPosition = TileTransData.WorldViewProjectionMatrix.ArrVector[3];
+					TileTransData.WorldScale = TileSize;
 
-				//if (true == GetLevel()->IsCameraOver(WorldPos))
-				//{
-				//	continue;
-				//}
+					if (false == Camera->IsView(TileTransData))
+					{
+						continue;
+					}
+				}
 
 				TileTransData.WorldViewProjectionMatrix = TileTransData.WorldViewProjectionMatrix * TransData.View * TransData.Projection;
 
