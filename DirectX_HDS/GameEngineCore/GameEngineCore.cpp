@@ -24,6 +24,12 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
+	// GUI 온오프 스위치 
+	if (false == GameEngineInput::IsKey("GUISwitch"))
+	{
+		GameEngineInput::CreateKey("GUISwitch", VK_F8);
+	}
+
 	// 리소스 초기화 이전에 디바이스 초기화를 해준다. 
 	GameEngineDevice::Initialize();
 
@@ -51,6 +57,7 @@ void GameEngineCore::EngineUpdate()
 		{
 			// 현재 메인레벨의 종료시점의 작업수행
 			MainLevel->LevelChangeEnd();
+			MainLevel->ActorLevelChangeEnd();
 		}
 
 		// 메인레벨은 다음레벨이 된다. 
@@ -60,6 +67,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			MainLevel->LevelChangeStart();
+			MainLevel->ActorLevelChangeStart();
 		}
 
 		// 변수초기화 

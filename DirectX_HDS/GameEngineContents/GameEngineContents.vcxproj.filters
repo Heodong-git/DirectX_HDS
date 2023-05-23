@@ -78,9 +78,6 @@
     <ClInclude Include="PixelCollider.h">
       <Filter>05.PixelCollider\00.Collider</Filter>
     </ClInclude>
-    <ClInclude Include="SlashEffect.h">
-      <Filter>02.Actor\08.Effect</Filter>
-    </ClInclude>
     <ClInclude Include="ClubDoor.h">
       <Filter>02.Actor\09.Door</Filter>
     </ClInclude>
@@ -98,6 +95,15 @@
     </ClInclude>
     <ClInclude Include="ClubLevel_04.h">
       <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LandEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +183,6 @@
     <ClCompile Include="PixelCollider.cpp">
       <Filter>05.PixelCollider\00.Collider</Filter>
     </ClCompile>
-    <ClCompile Include="SlashEffect.cpp">
-      <Filter>02.Actor\08.Effect</Filter>
-    </ClCompile>
     <ClCompile Include="ClubDoor.cpp">
       <Filter>02.Actor\09.Door</Filter>
     </ClCompile>
@@ -195,6 +198,15 @@
     </ClCompile>
     <ClCompile Include="ClubLevel_04.cpp">
       <Filter>01.Level\02.Club\00.Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="LandEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +287,9 @@
     </Filter>
     <Filter Include="05.PixelCollider\00.Collider">
       <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.Effect\00.Player">
+      <UniqueIdentifier>{dbdd5df2-4125-4306-b149-8dfb0f22a748}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

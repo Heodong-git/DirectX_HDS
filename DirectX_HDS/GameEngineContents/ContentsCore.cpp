@@ -42,7 +42,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_03>("ClubLevel_03");
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 
-	GameEngineCore::ChangeLevel("TitleLevel");
+	GameEngineCore::ChangeLevel("ClubLevel_00");
 
 	// gui
 	{

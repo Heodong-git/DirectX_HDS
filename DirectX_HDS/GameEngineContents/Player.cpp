@@ -14,6 +14,9 @@
 #include "BaseLevel.h"
 #include "Cursor.h"
 #include "PixelCollider.h"
+#include "SlashEffect.h"
+#include "JumpEffect.h"
+#include "LandEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -79,6 +82,7 @@ void Player::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_hurtrecover").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_jump").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_wallslide").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_roll").GetFullPath());
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -98,6 +102,9 @@ void Player::LoadAndCreateAnimation()
 
 	m_Render->CreateAnimation({ .AnimationName = "player_run_to_idle", .SpriteName = "player_run_to_idle", .Start = 0, .End = 4 ,
 								  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
+	// 롤 
+	m_Render->CreateAnimation({ .AnimationName = "player_roll", .SpriteName = "player_roll", .Start = 0, .End = 6 ,
+									  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_crouch", .SpriteName = "player_crouch", .Start = 0, .End = 0 ,
 							  .FrameInter = 0.01f , .Loop = false , .ScaleToTexture = true });
@@ -256,6 +263,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::MOVE:
 		MoveUpdate(_DeltaTime);
 		break;
+	case PlayerState::ROLL:
+		RollUpdate(_DeltaTime);
+		break;
 	case PlayerState::JUMP:
 		JumpUpdate(_DeltaTime);
 		break;
@@ -293,6 +303,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::MOVE:
 		MoveStart();
 		break;
+	case PlayerState::ROLL:
+		RollStart();
+		break;
 	case PlayerState::JUMP:
 		JumpStart();
 		break;
@@ -322,6 +335,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::MOVE:
 		MoveEnd();
 		break;
+	case PlayerState::ROLL:
+		RollEnd();
+		break;
 	case PlayerState::JUMP:
 		JumpEnd();
 		break;
@@ -343,6 +359,12 @@ void Player::ChangeState(PlayerState _State)
 void Player::IdleStart()
 {
 	m_Render->ChangeAnimation("player_idle");
+
+	// 만약 점프 상태일 때 내가 땅이라면
+	if (PlayerState::JUMP == m_PrevState)
+	{
+		GetLevel()->CreateActor<LandEffect>();
+	}
 }
 
 void Player::IdleUpdate(float _DeltaTime)
@@ -521,6 +543,9 @@ void Player::SlashStart()
 	m_Render->ChangeAnimation("player_attack");
 	// 공격시작시 현재 공격지점을 받아둔다. 
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+
+	// 공격시작순간 이펙트생성 ?? 
+	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
 
 void Player::SlashUpdate(float _DeltaTime)
@@ -592,6 +617,7 @@ void Player::JumpStart()
 	}
 
 	m_Render->ChangeAnimation("player_jump");
+	GetLevel()->CreateActor<JumpEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
 
 void Player::JumpUpdate(float _DeltaTime)
@@ -688,7 +714,7 @@ void Player::CrouchUpdate(float _DeltaTime)
 			return;
 		}
 
-		ChangeState(PlayerState::FLIP);
+		ChangeState(PlayerState::ROLL);
 		return;
 	}
 
@@ -699,7 +725,7 @@ void Player::CrouchUpdate(float _DeltaTime)
 			return;
 		}
 
-		ChangeState(PlayerState::FLIP);
+		ChangeState(PlayerState::ROLL);
 		return;
 	}
 }
@@ -708,21 +734,25 @@ void Player::CrouchEnd()
 {
 }
 
-void Player::FlipStart()
+void Player::RollStart()
 {
-	m_Render->ChangeAnimation("player_flip");
+	m_Render->ChangeAnimation("player_roll");
 }
 
-// 플립상태에서는 무적이기 때문에 충돌체 off 처리 예정
-// 좌우측 픽셀검사로 벽이면 이동 ㄴㄴ 추가해야함 
-void Player::FlipUpdate(float _DeltaTime)
+void Player::RollUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
 	// 플립 로직 , 픽셀충돌 관련내용 추가해야함 
 	// 우측 플립이 true 라면 
-	if (true == m_RightFlip && false == m_LeftFlip)
+	if (true == m_RightRoll && false == m_LeftRoll)
 	{
 		// 플립 애니메이션이 종료 되었다면
-		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+		if (true == m_Render->IsAnimationEnd())
 		{
 			// 내위치가 땅이라면 
 			if (true == PixelCollider::PixelCol->GroundCheck(this))
@@ -746,13 +776,13 @@ void Player::FlipUpdate(float _DeltaTime)
 			return;
 		}
 
-		GetTransform()->AddLocalPosition(float4::Right * m_FlipSpeed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
 	}
 
-	else if (true == m_LeftFlip)
+	else if (true == m_LeftRoll)
 	{
 		// 플립 애니메이션이 종료 되었다면
-		if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+		if (true == m_Render->IsAnimationEnd())
 		{
 			// 내위치가 땅이라면 
 			if (true == PixelCollider::PixelCol->GroundCheck(this))
@@ -776,11 +806,11 @@ void Player::FlipUpdate(float _DeltaTime)
 			return;
 		}
 
-		GetTransform()->AddLocalPosition(float4::Left * m_FlipSpeed * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
 	}
 
 	// 애니메이션이 종료되면 
-	if (true == m_Render->FindAnimation("player_flip")->IsEnd())
+	if (true == m_Render->IsAnimationEnd())
 	{
 		if (true == GameEngineInput::IsPress("player_crouch"))
 		{
@@ -798,25 +828,25 @@ void Player::FlipUpdate(float _DeltaTime)
 		// 애니메이션 방향보정
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
-		m_RightFlip = true;
+		m_RightRoll = true;
 
 		return;
 	}
 
-	else if (true == GameEngineInput::IsPress("player_left_Move") && false == m_RightFlip)
+	else if (true == GameEngineInput::IsPress("player_left_Move") && false == m_RightRoll)
 	{
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
-		m_LeftFlip = true;
+		m_LeftRoll = true;
 
 		return;
 	}
 }
 
-void Player::FlipEnd()
+void Player::RollEnd()
 {
-	m_RightFlip = false;
-	m_LeftFlip = false;
+	m_RightRoll = false;
+	m_LeftRoll = false;
 
 	if (true != GameEngineInput::IsPress("player_crouch"))
 	{
@@ -826,6 +856,24 @@ void Player::FlipEnd()
 			return;
 		}
 	}
+}
+
+void Player::FlipStart()
+{
+	
+}
+
+// 플립상태에서는 무적이기 때문에 충돌체 off 처리 예정
+// 좌우측 픽셀검사로 벽이면 이동 ㄴㄴ 추가해야함 
+// 이녀석이 플립이 아니라 롤이었구나 
+void Player::FlipUpdate(float _DeltaTime)
+{
+	
+}
+
+void Player::FlipEnd()
+{
+
 }
 
 void Player::FallStart()
@@ -900,5 +948,6 @@ void Player::FallUpdate(float _DeltaTime)
 
 void Player::FallEnd()
 {
+	GetLevel()->CreateActor<LandEffect>();
 }
 

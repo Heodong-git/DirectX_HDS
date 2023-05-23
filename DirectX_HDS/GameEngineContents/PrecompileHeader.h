@@ -2,6 +2,10 @@
 
 #include <GameEngineCore/PrecompileHeader.h>
 
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineCamera.h>
+
 // ÄÁÅÙÃ÷
 #include "ContentsEnum.h"

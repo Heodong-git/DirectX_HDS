@@ -184,6 +184,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="JumpEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="LandEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NormalDoor.h">
       <SubType>
       </SubType>
@@ -298,6 +306,8 @@
     <ClCompile Include="ClubLevel_02.cpp" />
     <ClCompile Include="ClubLevel_03.cpp" />
     <ClCompile Include="ClubLevel_04.cpp" />
+    <ClCompile Include="JumpEffect.cpp" />
+    <ClCompile Include="LandEffect.cpp" />
     <ClCompile Include="NormalDoor.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="SlashEffect.cpp" />

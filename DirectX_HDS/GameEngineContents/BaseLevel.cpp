@@ -48,7 +48,6 @@ void BaseLevel::Update(float _DeltaTime)
 		}
 	}
 
-	// GameEngineLevel 의 update 를 virtual 로 변경해준다면 삭제
 	GameEngineLevel::Update(_DeltaTime);
 }
 
@@ -102,7 +101,11 @@ void BaseLevel::ChangeMap()
 void BaseLevel::ChangeColMap()
 {
 	// 현재 레벨이 타이틀 레벨이라면 return 해야함.
-
+	if (LevelType::NONE== m_LevelType)
+	{
+		// 타이틀레벨 일 경우 맵타입이 세팅되지 않기때문에 해당 함수가 호출되면 바로 return; 
+			return;
+	}
 	if (nullptr == m_Map)
 	{
 		MsgAssert("현재 맵이 nullptr 입니다.");

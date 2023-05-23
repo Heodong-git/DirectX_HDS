@@ -26,6 +26,8 @@ TitleLevel::~TitleLevel()
 
 void TitleLevel::Start()
 {
+	GetMainCamera()->SetSortType(0, SortType::YSort);
+
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
@@ -45,7 +47,7 @@ void TitleLevel::Update(float _DeltaTime)
 
 void TitleLevel::LevelChangeStart()
 {
-	/*m_GUI = GameEngineGUI::FindGUIWindowConvert<CTitleEditer>("Title_Editer");
+	/*m_GUI = GameEngineGUI::FindGUIWindowConvert<TitleEditer>("Title_Editer");
 	if (m_GUI == nullptr)
 	{
 		MsgAssert("GUI Window가 nullptr 입니다.");

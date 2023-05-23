@@ -62,8 +62,6 @@ void ClubLevel_00::Update(float _DeltaTime)
 		return;
 	}
 
-
-
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -79,6 +77,7 @@ void ClubLevel_00::LevelChangeStart()
 		MsgAssert("GUI Window가 nullptr 입니다.");
 		return;
 	}
+	
 	m_GUI->On();
 
 	// 필요한 액터 생성, 초기화(세팅)

@@ -106,5 +106,7 @@ private:
 	void ActorUpdate(float _DeltaTime);
 	void ActorRender(float _DeltaTime);
 	void ActorRelease();
+	void ActorLevelChangeStart();
+	void ActorLevelChangeEnd();
 };
 

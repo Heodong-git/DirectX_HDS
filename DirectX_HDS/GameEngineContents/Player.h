@@ -12,11 +12,11 @@ enum class PlayerState
 	IDLETORUN,		// 아이들 -> 무브 전환 
 	IDLE,			// 아이들
 	MOVE,			// 무브 
+	ROLL,			// 구르기 
 	JUMP,			// 점프
 	SLASH,			// 공격 
 	CROUCH,			// 크라우치 (웅크리기)
-	FLIP,			// 지상 구르기
-	WALLFLIP,		// 벽타고 구르기 ㄷㄷ 
+	FLIP,			// 벽타고 구르기 
 	FALL,			// 낙하 
 };
 
@@ -50,11 +50,20 @@ public:
 		return m_Render;
 	}
 
-	const bool GetDir() const
+	inline const bool GetDir() const
 	{
 		return m_Direction;
 	}
+	
+	inline const float GetRenderPivot() const
+	{
+		return m_RenderPivot;
+	}
 
+	inline const float4 GetAttackPos() const
+	{
+		return m_AttackPos;
+	}
 
 protected:
 	void Start() override;
@@ -93,9 +102,9 @@ private:
 	float m_FallPower = 700.0f;					// 낙하하는 힘 
 
 	// Flip
-	bool m_RightFlip = false;
-	bool m_LeftFlip = false;
-	float m_FlipSpeed = 900.0f;
+	bool m_RightRoll = false;
+	bool m_LeftRoll = false;
+	float m_RollSpeed = 700.0f;
 
 	// 중력 
 	const float m_GravityPower = 1000.0f;
@@ -141,6 +150,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
 	float4 m_DebugRenderScale = { 4, 4 };
+	float m_RenderPivot = 36.0f;
 
 	// -------------------------------------------------------------------
 
@@ -178,6 +188,10 @@ private:
 	void CrouchStart();
 	void CrouchUpdate(float _DeltaTime);
 	void CrouchEnd();
+
+	void RollStart();
+	void RollUpdate(float _DeltaTime);
+	void RollEnd();
 
 	void FlipStart();
 	void FlipUpdate(float _DeltaTime);

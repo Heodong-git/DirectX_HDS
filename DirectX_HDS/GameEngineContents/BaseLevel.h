@@ -10,7 +10,6 @@ enum class LevelType
 	CLUBMAP4,
 
 
-
 	NONE = 99,
 };
 

@@ -237,6 +237,13 @@ void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 
 bool GameEngineCamera::IsView(const TransformData& _TransData)
 {
+	// 만약 프리카메라가 On 이라면
+	// 무조건 화면에 보여지게
+	if (true == IsFreeCamera())
+	{
+		return true;
+	}
+
 	// Width, Height, Near, Far;
 
 	switch (ProjectionType)
