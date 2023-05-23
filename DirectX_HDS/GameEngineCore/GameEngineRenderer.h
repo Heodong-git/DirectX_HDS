@@ -43,6 +43,9 @@ public:
 		IsCameraCulling = true;
 	}
 
+	// Z sort 
+	void CalSortZ(class GameEngineCamera* _Camera);
+
 protected:
 	void Start();
 	void Render(float _Delta) override;
@@ -50,6 +53,8 @@ protected:
 
 private:
 	bool IsCameraCulling = false;
+
+	float CalZ = 0.0f;
 
 	// 파이프라인과 쉐이더리소스헬퍼가 합쳐져야 렌더링이 되는 방식으로 구현
 	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe = nullptr;

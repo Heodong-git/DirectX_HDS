@@ -26,12 +26,12 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("CamMoveForward", 'W');
 		GameEngineInput::CreateKey("CamMoveBack", 'S');
 
-		GameEngineInput::CreateKey("RotY+", VK_NUMPAD1);
-		GameEngineInput::CreateKey("RotY-", VK_NUMPAD2);
-		GameEngineInput::CreateKey("RotZ+", VK_NUMPAD4);
-		GameEngineInput::CreateKey("RotZ-", VK_NUMPAD5);
-		GameEngineInput::CreateKey("RotX+", VK_NUMPAD7);
-		GameEngineInput::CreateKey("RotX-", VK_NUMPAD8);
+		GameEngineInput::CreateKey("RotY+", 'Y');
+		GameEngineInput::CreateKey("RotY-", 'U');
+		GameEngineInput::CreateKey("RotZ+", 'H');
+		GameEngineInput::CreateKey("RotZ-", 'J');
+		GameEngineInput::CreateKey("RotX+", 'N');
+		GameEngineInput::CreateKey("RotX-", 'M');
 
 		GameEngineInput::CreateKey("CamRot", VK_RBUTTON);
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
@@ -127,7 +127,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 		if (true == GameEngineInput::IsPress("CamRot"))
 		{
-			float4 Dir = GameEngineInput::GetMouseDirectionNormal();
+			float4 Dir = GameEngineInput::GetMouseDirectionNormal(); 
 
 			float4 RotMouseDir;
 			RotMouseDir.x = Dir.y;

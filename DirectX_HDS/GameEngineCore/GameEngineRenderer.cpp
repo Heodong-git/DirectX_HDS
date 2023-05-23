@@ -106,3 +106,8 @@ void GameEngineRenderer::PushCameraRender(int _CameraOrder)
 {
 	GetLevel()->PushCameraRenderer(DynamicThis<GameEngineRenderer>(), _CameraOrder);
 }
+
+void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
+{
+	CalZ = (_Camera->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition()).Size();
+}

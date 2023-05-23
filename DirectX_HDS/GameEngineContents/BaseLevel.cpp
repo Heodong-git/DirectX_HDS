@@ -101,6 +101,8 @@ void BaseLevel::ChangeMap()
 
 void BaseLevel::ChangeColMap()
 {
+	// 현재 레벨이 타이틀 레벨이라면 return 해야함.
+
 	if (nullptr == m_Map)
 	{
 		MsgAssert("현재 맵이 nullptr 입니다.");

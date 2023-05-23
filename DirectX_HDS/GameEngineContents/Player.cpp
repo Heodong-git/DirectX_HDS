@@ -140,16 +140,16 @@ void Player::LoadAndCreateAnimation()
 
 void Player::Update(float _DeltaTime)
 {
-	std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
-	// 충돌테스트코드 잘된다 
-	if (m_Collision->CollisionAll(ColOrder::CURSOR, TestVector))
-	{
-		// 
-		for (std::shared_ptr<GameEngineCollision> Col : TestVector)
-		{
-			Col->GetActor()->Death();
-		}
-	}
+	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
+	//// 충돌테스트코드 잘된다 ㅇㅇ  
+	//if (m_Collision->CollisionAll(ColOrder::CURSOR, TestVector))
+	//{
+	//	// 이런 식으로 가져와서 활용할 수 있음.
+	//	for (std::shared_ptr<GameEngineCollision> Col : TestVector)
+	//	{
+	//		Col->GetActor()->Death();
+	//	}
+	//}
 
 	// 현재방향체크 
 	DirCheck();
