@@ -23,6 +23,13 @@ std::shared_ptr<GameEngineCollision> GameEngineCollision::Collision(int _TargetG
 		return nullptr;
 	}
 
+	// 만약 this 의 타입이 MAX 라면 ( 인자에 값을 넣어주지 않았다면 ) 
+	// 컬리전이 가지고 있는 자신의 타입으로 충돌진행 
+	if (Type == ColType::MAX)
+	{
+		_ThisColType = Type;
+	}
+
 	// 레벨이 저장하고 있는 충돌체 리스트를 받아온다.
 	std::list<std::shared_ptr<GameEngineCollision>>& Group = GetLevel()->Collisions[_TargetGroup];
 
@@ -33,6 +40,13 @@ std::shared_ptr<GameEngineCollision> GameEngineCollision::Collision(int _TargetG
 		if (false == _OtherCol->IsUpdate())
 		{
 			continue;
+		}
+
+		// 만약, 상대의 컬리전타입이 MAX 일 경우 ( 값을 지정하지 않았다면 ) 
+		// 컬리전이 가지고 있는 타입으로 충돌진행
+		if (_OtherColtype == ColType::MAX)
+		{
+			_OtherColtype = _OtherCol->Type;
 		}
 
 		// 업데이트 중이라면 트랜스폼을 받아와서 충돌수행, 충돌했다면 충돌한 콜리전 반환 
@@ -62,7 +76,7 @@ void GameEngineCollision::SetOrder(int _Order)
 	GetLevel()->PushCollision(ConThis);
 }
 
-bool GameEngineCollision::CollisionAll(int _TargetGroup, ColType _ThisColType, ColType _OtherColtype, std::vector<std::shared_ptr<GameEngineCollision>>& _Col)
+bool GameEngineCollision::CollisionAll(int _TargetGroup, std::vector<std::shared_ptr<GameEngineCollision>>& _Col, ColType _ThisColType, ColType _OtherColtype)
 {
 	// 만약 충돌체의 업데이트가 false 라면, 충돌을 진행하지 않는다. 
 	if (false == this->IsUpdate())
@@ -81,11 +95,23 @@ bool GameEngineCollision::CollisionAll(int _TargetGroup, ColType _ThisColType, C
 		return false;
 	}
 
+	// 인자에 타입을 지정해주지 않았다면 컬리전 자신의 타입으로 충돌진행
+	if (_ThisColType == ColType::MAX)
+	{
+		_ThisColType = Type;
+	}
+
 	for (std::shared_ptr<GameEngineCollision>& _OtherCol : Group)
 	{
 		if (false == _OtherCol->IsUpdate())
 		{
 			continue;
+		}
+		
+		// 마찬가지 
+		if (_OtherColtype == ColType::MAX)
+		{
+			_OtherColtype = _OtherCol->Type;
 		}
 
 		// 충돌했다면 벡터에 충돌체를 추가한다. 

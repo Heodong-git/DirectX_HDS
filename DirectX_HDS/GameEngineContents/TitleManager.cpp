@@ -46,7 +46,7 @@ void TitleManager::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("Title_ChangeLevel"))
 	{
-		GameEngineCore::ChangeLevel("ClubLevel");
+		GameEngineCore::ChangeLevel("ClubLevel_00");
 		return;
 	}
 
@@ -87,7 +87,7 @@ void TitleManager::Update(float _DeltaTime)
 
 		if (m_BoxFlashingTime < 0.0f)
 		{
-			GameEngineCore::ChangeLevel("ClubLevel");
+			GameEngineCore::ChangeLevel("ClubLevel_00");
 			m_CurMenu = EMENU_TYPE::NEWGAME;
 			m_BoxFlashingTime = 0.0f; 
 		}
