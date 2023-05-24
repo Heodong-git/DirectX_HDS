@@ -221,7 +221,7 @@ void GameEngineCore::CoreResourcesInit()
 
 	}
 
-	// 버텍스쉐이더 컴파일
+	// 쉐이더 컴파일 
 	{
 		GameEngineDirectory NewDir;
 		// 인자로 입력한 폴더가 존재하는 디렉터리로 이동
@@ -232,12 +232,13 @@ void GameEngineCore::CoreResourcesInit()
 		// 임시변경
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드 
+		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드
 		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 
 		GameEngineVertexShader::Load(Files[1].GetFullPath(), "Merge_VS");
 		GameEnginePixelShader::Load(Files[1].GetFullPath(), "Merge_PS");
+		
 		// 테스트 ㅇㅇ 
 		GameEngineVertexShader::Load(Files[2].GetFullPath(), "Texture_VS");
 		GameEnginePixelShader::Load(Files[2].GetFullPath(), "Texture_PS");

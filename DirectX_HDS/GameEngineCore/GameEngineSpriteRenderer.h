@@ -180,7 +180,11 @@ public:
 	std::string GetTexName();
 
 protected:
+
 	void SpriteRenderInit();
+
+	// 상속받은 클래스에서 사용가능하도록 
+	float4 AtlasData;
 
 private:
 	void Update(float _Delta) override;
@@ -190,8 +194,6 @@ private:
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 
 	std::shared_ptr<AnimationInfo> CurAnimation;
-
-	float4 AtlasData;
 
 	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
 	size_t Frame = -1;
