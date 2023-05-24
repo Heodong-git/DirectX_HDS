@@ -17,6 +17,7 @@
 #include "SlashEffect.h"
 #include "JumpEffect.h"
 #include "LandEffect.h"
+#include "DashEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -44,7 +45,7 @@ void Player::Start()
 	{
 		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("player_slash", VK_LBUTTON);
-		GameEngineInput::CreateKey("player_snail", VK_LSHIFT);
+		GameEngineInput::CreateKey("player_skill_slow", VK_LSHIFT);
 		GameEngineInput::CreateKey("player_left_Move", 'A');
 		GameEngineInput::CreateKey("player_right_Move", 'D');
 		GameEngineInput::CreateKey("player_jump", 'W');
@@ -104,7 +105,7 @@ void Player::LoadAndCreateAnimation()
 								  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 	// 롤 
 	m_Render->CreateAnimation({ .AnimationName = "player_roll", .SpriteName = "player_roll", .Start = 0, .End = 6 ,
-									  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
+									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_crouch", .SpriteName = "player_crouch", .Start = 0, .End = 0 ,
 							  .FrameInter = 0.01f , .Loop = false , .ScaleToTexture = true });
@@ -160,6 +161,9 @@ void Player::Update(float _DeltaTime)
 
 	// 현재방향체크 
 	DirCheck();
+
+	// 스킬업데이트 
+	SkillUpdate(_DeltaTime);
 
 	// 상태업데이트
 	UpdateState(_DeltaTime);
@@ -282,6 +286,18 @@ void Player::UpdateState(float _DeltaTime)
 		FallUpdate(_DeltaTime);
 		break;
 	}
+}
+
+void Player::SkillUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsPress("player_skill_slow"))
+	{
+		Slow();
+	}
+}
+
+void Player::Slow()
+{
 }
 
 // state 변경, 변경될 상태의 start, 이전 상태의 end 수행
@@ -474,6 +490,7 @@ void Player::IdleToRunEnd()
 
 void Player::MoveStart()
 {
+	GetLevel()->CreateActor<DashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 	m_Render->ChangeAnimation("player_run");
 }
 
@@ -701,7 +718,7 @@ void Player::CrouchUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_slash"))
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
 		return;
@@ -890,6 +907,7 @@ void Player::FallUpdate(float _DeltaTime)
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
+
 
 	// 땅이아니라면
 	else if (false == PixelCollider::PixelCol->GroundCheck(this))

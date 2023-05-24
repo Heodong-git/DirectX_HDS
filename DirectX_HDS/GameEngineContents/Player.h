@@ -104,37 +104,13 @@ private:
 	// Flip
 	bool m_RightRoll = false;
 	bool m_LeftRoll = false;
-	float m_RollSpeed = 700.0f;
+	float m_RollSpeed = 900.0f;
 
 	// 중력 
 	const float m_GravityPower = 1000.0f;
 
-	// 얘는 필요없을것 같다. 일단 보류 
-	void AddGravity(float _DeltaTime)
-	{
-		switch (m_CurState)
-		{
-		case PlayerState::IDLETORUN:
-			break;
-		case PlayerState::IDLE:
-			break;
-		case PlayerState::MOVE:
-			break;
-		case PlayerState::JUMP:
-			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-			break;
-		case PlayerState::SLASH:
-			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-			break;
-		case PlayerState::CROUCH:
-			break;
-		case PlayerState::FLIP:
-			break;
-		case PlayerState::FALL:
-			GetTransform()->AddLocalPosition(float4::Down * m_GravityPower * _DeltaTime);
-			break;
-		}
-	}
+	// 공격의 쿨타임 여기부터 만들자 ㅇㅇ 
+	float m_GlobalCoolDown = 0.3f; 
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
@@ -153,6 +129,10 @@ private:
 	float m_RenderPivot = 36.0f;
 
 	// -------------------------------------------------------------------
+
+	// skill 
+	void SkillUpdate(float _DeltaTime);
+	void Slow();
 
 	// ------------------------- state ----------------------------------
 private:

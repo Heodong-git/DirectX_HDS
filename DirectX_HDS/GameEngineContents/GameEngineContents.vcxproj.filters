@@ -105,6 +105,9 @@
     <ClInclude Include="SlashEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
+    <ClInclude Include="DashEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -208,6 +211,9 @@
     <ClCompile Include="SlashEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
+    <ClCompile Include="DashEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -290,6 +296,9 @@
     </Filter>
     <Filter Include="02.Actor\08.Effect\00.Player">
       <UniqueIdentifier>{dbdd5df2-4125-4306-b149-8dfb0f22a748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\10.Camera">
+      <UniqueIdentifier>{4c199f71-cf72-47d0-87c2-eb0bc171a7ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
