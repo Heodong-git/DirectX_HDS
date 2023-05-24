@@ -29,6 +29,7 @@ void SlashEffect::Start()
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 
+	// 컴포넌트 생성
 	m_Render = CreateComponent<GameEngineSpriteRenderer>();
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->CreateAnimation({ .AnimationName = "slash_effect", .SpriteName = "slash", .Start = 0, .End = 4 ,
@@ -36,15 +37,14 @@ void SlashEffect::Start()
 
 	m_Render->ChangeAnimation("slash_effect");
 
+	// 이펙트 위치, 각도계산
 	float RenderPivot = Player::MainPlayer->GetRenderPivot();
 	const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	const float4 AttackPos = Player::MainPlayer->GetAttackPos();
 
 	float4 Dir = AttackPos - PlayerPos;
-
-	float angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
-	// 회전을 건드려야 되는데 값을.. 어떻게.. y값을 빼고, 그 값을 z축에 ㅠ 
-	m_Render->GetTransform()->SetLocalRotation({ 0 , 0 , angle });
+	float Angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
+	m_Render->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
 }
 
 void SlashEffect::Update(float _DeltaTime)

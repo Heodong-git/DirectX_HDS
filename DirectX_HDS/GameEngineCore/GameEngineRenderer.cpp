@@ -109,5 +109,28 @@ void GameEngineRenderer::PushCameraRender(int _CameraOrder)
 
 void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
 {
-	CalZ = (_Camera->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition()).Size();
+	// View행렬로 해야 카메라가 원점에 오고 그 원점을 기준으로 카메라가 위치한곳의 z로 처리한다.
+
+	switch (_Camera->ProjectionType)
+	{
+	case CameraType::Orthogonal:
+	{
+		// 직교 투영이기 때문에 카메라의 View행렬을 곱해서 원점을 기준으로 
+	// 위치를 카메라의 원점을 기준으로한 위치로 바꾸고 그 z를 사용하면 확실한
+	// 직교에서의 카메라와의 z거리가 된다.
+		float4 View = GetTransform()->GetWorldPosition() * _Camera->View;
+		CalZ = View.z;
+		break;
+	}
+	
+	case CameraType::Perspective:
+	{
+		float4 View = GetTransform()->GetWorldPosition() * _Camera->View;
+		CalZ = View.Size();
+		break;
+	}
+	default:
+		break;
+	}
+
 }
