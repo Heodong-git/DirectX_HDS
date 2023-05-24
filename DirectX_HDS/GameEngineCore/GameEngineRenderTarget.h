@@ -1,8 +1,10 @@
 #pragma once
 #include "GameEngineTexture.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineCore.h"
 
 // Ό³Έν :
+class GameEngineTexture;
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 {
 	friend class GameEngineCore;

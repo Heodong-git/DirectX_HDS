@@ -16,6 +16,7 @@ class GameEngineLevel : public GameEngineObject
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
 	friend class GameEngineActor;
+	friend class GameEngineTexture;
 
 public:
 	GameEngineTimeEvent TimeEvent;
@@ -88,6 +89,10 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	//      이름           경로
+	// 리소스 최적화를 위해서 레벨이 시작하고, 필요한 리소스를 로드할 때의 이름을 키값으로 하여 경로를 저장한다. 
+	std::map<std::string, std::string> TexturePath;
+
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 
 	// 메인카메라 , UI카메라 

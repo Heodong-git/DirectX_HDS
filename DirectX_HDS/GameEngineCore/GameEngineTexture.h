@@ -69,9 +69,16 @@ public:
 		return Load(_Path, NewPath.GetFileName());
 	}
 
+	// 경로체크 
+	static void PathCheck(const std::string_view& _Path, const std::string_view& _Name);
+
 	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+
+		// 리소스 로드 시에 경로를 체크해준다 
+		PathCheck(_Path, _Name);
+
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
@@ -154,5 +161,10 @@ private:
 
 	void VSSetting(UINT _Slot);
 	void PSSetting(UINT _Slot);
+
+
+	// 카메라 렌더타겟의 에러를 해결하기 위해
+	void VSReset(UINT _Slot);
+	void PSReset(UINT _Slot);
 };
 

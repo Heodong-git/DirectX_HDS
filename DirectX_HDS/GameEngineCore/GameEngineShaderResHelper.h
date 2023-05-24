@@ -13,6 +13,7 @@ public:
 
 public:
 	virtual void Setting() = 0;
+	virtual void Reset() {};
 };
 
 class GameEngineConstantBufferSetter : public GameEngineShaderResources
@@ -30,6 +31,7 @@ class GameEngineTextureSetter : public GameEngineShaderResources
 public:
 	std::shared_ptr<GameEngineTexture> Res;
 	void Setting() override;
+	void Reset() override;
 };
 
 class GameEngineSamplerSetter : public GameEngineShaderResources
@@ -96,4 +98,6 @@ public:
 	void Copy(const GameEngineShaderResHelper& _ResHelper);
 
 	void Setting();
+
+	void AllResourcesReset();
 };

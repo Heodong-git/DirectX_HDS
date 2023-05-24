@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "GameEngineTexture.h"
+#include "GameEngineLevel.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\GameEngineCore\\ThirdParty\\DirectXTex\\lib\\x64\\Debug\\DirectXTex.lib")
@@ -168,6 +169,19 @@ void GameEngineTexture::PSSetting(UINT _Slot)
 	}
 
 	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &SRV);
+}
+
+void GameEngineTexture::VSReset(UINT _Slot)
+{
+	static ID3D11ShaderResourceView* Nullptr = nullptr;
+
+	GameEngineDevice::GetContext()->VSSetShaderResources(_Slot, 1, &Nullptr);
+}
+void GameEngineTexture::PSReset(UINT _Slot)
+{
+	static ID3D11ShaderResourceView* Nullptr = nullptr;
+
+	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &Nullptr);
 }
 
 void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
@@ -512,4 +526,13 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 	}
 
 	return DefaultColor;
+}
+
+void GameEngineTexture::PathCheck(const std::string_view& _Path, const std::string_view& _Name)
+{
+	if (nullptr == GameEngineCore::CurLoadLevel)
+	{
+		return;
+	}
+	GameEngineCore::CurLoadLevel->TexturePath[_Name.data()] = _Path.data();
 }

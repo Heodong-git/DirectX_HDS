@@ -26,5 +26,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineUIRenderer> m_CaseRender = nullptr;
 
+	// Å×½ºÆ®
 	std::shared_ptr<class MySpriteRenderer> m_TestRender = nullptr;
 };

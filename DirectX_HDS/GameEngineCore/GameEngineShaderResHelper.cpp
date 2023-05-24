@@ -141,8 +141,32 @@ void GameEngineShaderResHelper::Setting()
 			Setter.Setting();
 		}
 	}
+}
 
+void GameEngineTextureSetter::Reset()
+{
+	ShaderType Type = ParentShader->GetType();
 
+	switch (Type)
+	{
+	case ShaderType::None:
+	{
+		MsgAssert("어떤 쉐이더에 세팅될지 알수없는 상수버퍼 입니다.");
+		break;
+	}
+	case ShaderType::Vertex:
+	{
+		Res->VSReset(BindPoint);
+		break;
+	}
+	case ShaderType::Pixel:
+	{
+		Res->PSReset(BindPoint);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size)
@@ -277,5 +301,18 @@ std::vector<GameEngineTextureSetter*> GameEngineShaderResHelper::GetTextureSette
 	}
 
 	return Result;
+}
 
+void GameEngineShaderResHelper::AllResourcesReset()
+{
+	{
+		std::multimap<std::string, GameEngineTextureSetter>::iterator StartIter = TextureSetters.begin();
+		std::multimap<std::string, GameEngineTextureSetter>::iterator EndIter = TextureSetters.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			GameEngineTextureSetter& Setter = StartIter->second;
+			Setter.Reset();
+		}
+	}
 }

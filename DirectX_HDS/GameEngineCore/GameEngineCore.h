@@ -16,6 +16,9 @@
 
 class GameEngineCore
 {
+	friend class GameEngineTexture;
+	friend class GameEngineSprite;
+
 public:
 	// constrcuter destructer
 	GameEngineCore();
@@ -80,6 +83,8 @@ public:
 protected:
 
 private:
+	static class GameEngineLevel* CurLoadLevel;
+
 	static void CoreResourcesInit();
 	static void CoreResourcesEnd();
 
