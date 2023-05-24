@@ -46,14 +46,9 @@ void Battery::Start()
 
 	m_CaseRender = CreateComponent<GameEngineUIRenderer>();
 	m_CaseRender->SetTexture("Battery_09.png");
-	m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 , 1});
-	m_CaseRender->GetTransform()->SetLocalPosition({ -500 , 300 });
-
-	// 마이쉐이더 테스트용
-	m_TestRender = CreateComponent<MySpriteRenderer>();
-	m_TestRender->SetTexture("Battery_00.png");
-	m_TestRender->GetTransform()->SetLocalScale({ 200, 200 , 1 });
-	
+	//m_CaseRender->GetTransform()->SetLocalScale({ 170, 40 , 0});
+	m_CaseRender->SetScaleToTexture("Battery_00.png");
+	m_CaseRender->GetTransform()->SetLocalPosition({ -550 , 330 });	
 }
 
 void Battery::Update(float _DeltaTime)

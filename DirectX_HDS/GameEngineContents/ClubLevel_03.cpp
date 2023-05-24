@@ -38,12 +38,12 @@ void ClubLevel_03::Start()
 		GameEngineInput::CreateKey("ClubLevel03_ChangeMap", '2');
 	}
 
+	SetLevelType(LevelType::CLUBMAP3);
+
 	// 필요한 리소스 로드
 	ResourcesLoad();
 	// 액터 로드 
 	ActorLoad();
-
-	SetLevelType(LevelType::CLUBMAP3);
 
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
 	SetState(BaseLevel::LevelState::PLAY);

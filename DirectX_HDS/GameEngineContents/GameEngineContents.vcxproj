@@ -164,6 +164,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CameraMovement.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ClubDoor.h">
       <SubType>
       </SubType>
@@ -309,6 +313,7 @@
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraMovement.cpp" />
     <ClCompile Include="ClubDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp" />
     <ClCompile Include="ClubLevel_02.cpp" />

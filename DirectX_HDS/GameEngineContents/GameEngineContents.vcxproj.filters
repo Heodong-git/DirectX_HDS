@@ -111,6 +111,9 @@
     <ClInclude Include="MySpriteRenderer.h">
       <Filter>06.Shader</Filter>
     </ClInclude>
+    <ClInclude Include="CameraMovement.h">
+      <Filter>02.Actor\10.Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -219,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="MySpriteRenderer.cpp">
       <Filter>06.Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMovement.cpp">
+      <Filter>02.Actor\10.Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

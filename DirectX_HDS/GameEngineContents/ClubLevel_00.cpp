@@ -16,6 +16,7 @@
 #include "Cursor.h"
 #include "Battery.h"
 #include "Map.h"
+#include "CameraMovement.h"
 
 // 아직
 #include "Inven.h"
@@ -32,6 +33,8 @@ ClubLevel_00::~ClubLevel_00()
 
 void ClubLevel_00::Start()
 {
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
+
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 
@@ -45,13 +48,14 @@ void ClubLevel_00::Start()
 		GameEngineInput::CreateKey("ClubLevel_ChangeMap", '2');
 	}
 
+	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
+	SetLevelType(LevelType::CLUBMAP0);
+
 	// 필요한 리소스 로드
 	ResourcesLoad();
 	// 액터 로드 
 	ActorLoad();
 
-	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
-	SetLevelType(LevelType::CLUBMAP0);
 }
 
 void ClubLevel_00::Update(float _DeltaTime)
@@ -69,6 +73,7 @@ void ClubLevel_00::LevelChangeStart()
 {
 	//레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
 	//레벨 start 의 기본 인터페이스
+
 
 	// 필요하다면, GUI On <-- Core에서 초기화 
 	m_GUI = GameEngineGUI::FindGUIWindowConvert<StageEditer>("Debug_State");
@@ -139,11 +144,13 @@ void ClubLevel_00::ActorLoad()
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
+
+	// 카메라
+	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
 }
 
 void ClubLevel_00::DebugUpdate()
 {
-
 }
 
 

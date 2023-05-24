@@ -21,6 +21,9 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 렌더러생성 및 세팅
+	void ComponentSetting();
+
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 };

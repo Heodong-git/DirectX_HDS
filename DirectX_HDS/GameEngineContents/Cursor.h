@@ -28,8 +28,6 @@ public:
 		return m_Render;
 	}
 	
-
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

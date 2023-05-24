@@ -22,9 +22,9 @@ void Hud::Start()
 		// 원하는 폴더를 가진 디렉터리로 이동
 		NewDir.MoveParentToDirectory("katanazero_resources");
 		// 그 폴더로 이동
-		NewDir.Move("katanazero_resources");
+		// NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Hud");
 
 		// 파일 전체로드 

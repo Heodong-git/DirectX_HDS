@@ -29,7 +29,6 @@ public:
 	PixelCollider& operator=(const PixelCollider& _Other) = delete;
 	PixelCollider& operator=(PixelCollider&& _Other) noexcept = delete;
 
-	// 나중에 맵에 저장하고 문자열키값으로 가져오는걸로 변경
 	std::shared_ptr<class GameEngineTexture> GetColMap()
 	{
 		return m_CurColMap;

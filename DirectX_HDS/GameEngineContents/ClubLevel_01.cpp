@@ -39,13 +39,14 @@ void ClubLevel_01::Start()
 		GameEngineInput::CreateKey("ClubLevel01_ChangeMap", '2');
 	}
 
+	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
+	SetLevelType(LevelType::CLUBMAP1);
+
 	// 필요한 리소스 로드
 	ResourcesLoad();
 	// 액터 로드 
 	ActorLoad();
 
-	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
-	SetLevelType(LevelType::CLUBMAP1);
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
 	SetState(BaseLevel::LevelState::PLAY);
 }

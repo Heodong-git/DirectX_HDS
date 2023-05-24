@@ -11,6 +11,9 @@
 #include <GameEngineCore/GameEngineResource.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+// 카메라
+#include "CameraMovement.h"
+
 #include "BaseLevel.h"
 #include "Cursor.h"
 #include "PixelCollider.h"
@@ -167,6 +170,12 @@ void Player::Update(float _DeltaTime)
 
 	// 상태업데이트
 	UpdateState(_DeltaTime);
+
+	// 카메라무브 업데이트
+	if (nullptr != CameraMovement::FollowCamera)
+	{
+		CameraMovement::FollowCamera->Update(_DeltaTime);
+	}
 
 	// 디버그 업데이트
 	DebugUpdate();
