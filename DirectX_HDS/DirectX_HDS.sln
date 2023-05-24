@@ -51,6 +51,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "문서", "문서", "{983D2D
 		수학.txt = 수학.txt
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyShader", "katanazero_resources\MyShader\MyShader.vcxproj", "{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -107,6 +109,14 @@ Global
 		{51D6463A-F96C-424D-ABF9-A2E4913B0EDD}.Release|x64.Build.0 = Release|x64
 		{51D6463A-F96C-424D-ABF9-A2E4913B0EDD}.Release|x86.ActiveCfg = Release|Win32
 		{51D6463A-F96C-424D-ABF9-A2E4913B0EDD}.Release|x86.Build.0 = Release|Win32
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Debug|x64.ActiveCfg = Debug|x64
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Debug|x64.Build.0 = Debug|x64
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Debug|x86.ActiveCfg = Debug|Win32
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Debug|x86.Build.0 = Debug|Win32
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Release|x64.ActiveCfg = Release|x64
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Release|x64.Build.0 = Release|x64
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Release|x86.ActiveCfg = Release|Win32
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +131,7 @@ Global
 		{E9207958-9A17-4CED-A400-BC388D7C4419} = {6495FFE7-04EF-4A53-BC5A-C0CE3A9BE4DD}
 		{5088AA93-BBC3-4391-85E4-174D6C780567} = {6495FFE7-04EF-4A53-BC5A-C0CE3A9BE4DD}
 		{51D6463A-F96C-424D-ABF9-A2E4913B0EDD} = {5088AA93-BBC3-4391-85E4-174D6C780567}
+		{38FAEAD7-5BEF-4A00-B715-B1110C48F6FB} = {27F3039A-FC52-44D1-9077-4EC74A354BB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DAAAC500-26CC-4F03-9787-1511D97BF041}

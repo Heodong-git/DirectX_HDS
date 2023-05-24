@@ -108,6 +108,9 @@
     <ClInclude Include="DashEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
+    <ClInclude Include="MySpriteRenderer.h">
+      <Filter>06.Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -214,6 +217,9 @@
     <ClCompile Include="DashEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
+    <ClCompile Include="MySpriteRenderer.cpp">
+      <Filter>06.Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -299,6 +305,9 @@
     </Filter>
     <Filter Include="02.Actor\10.Camera">
       <UniqueIdentifier>{4c199f71-cf72-47d0-87c2-eb0bc171a7ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Shader">
+      <UniqueIdentifier>{d8a620c5-e0c4-42d4-bb2b-fcfdf3f2c9c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
