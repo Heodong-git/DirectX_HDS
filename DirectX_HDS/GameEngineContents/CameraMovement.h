@@ -1,11 +1,6 @@
 #pragma once
 #include "BaseActor.h"
 
-enum class CameraMode
-{
-	
-};
-
 // 설명 :
 class CameraMovement : public BaseActor
 {
@@ -31,10 +26,11 @@ protected:
 
 private:
 	void Move(float _DeltaTime);
-	bool RangeOverCheck();
+	bool RangeOverCheck(float _DeltaTime);
 
 	std::shared_ptr<class GameEngineCamera> m_MainCamera = nullptr;
-
-	// 카메라의 이동가능범위를 어떻게 저장할거니?? 
-	// map <맵의 번호 , 좌상단 좌하단 우상단 우하단> 
+	float m_MoveSpeed = 200.0f;
+	
+	// 좌상단, 우상단, 좌하단 , 우하단 순서로 
+	std::map<int, std::vector<float4>> m_MapRanges = std::map<int, std::vector<float4>>();
 };

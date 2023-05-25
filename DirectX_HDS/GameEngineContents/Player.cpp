@@ -463,7 +463,7 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_slash"))
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
 		return;
@@ -619,10 +619,15 @@ void Player::SlashUpdate(float _DeltaTime)
 	// 수정해야 될 수도.
 	if (true == PixelCollider::PixelCol->TopPixelCheck())
 	{
-		MoveDir.y = 0.0f;
+		ChangeState(PlayerState::FALL);
+		return;
 	}
 
-	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+	if (false == PixelCollider::PixelCol->LeftPixelCheck() ||
+		false == PixelCollider::PixelCol->RightPixelCheck())
+	{	
+		GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+	}
 }
 
 // 공격이 종료되면 공격위치를 초기화 

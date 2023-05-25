@@ -24,5 +24,5 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineUIRenderer> m_CaseRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
 };
