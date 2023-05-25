@@ -25,7 +25,7 @@ std::shared_ptr<GameEngineCollision> GameEngineCollision::Collision(int _TargetG
 
 	// 만약 this 의 타입이 MAX 라면 ( 인자에 값을 넣어주지 않았다면 ) 
 	// 컬리전이 가지고 있는 자신의 타입으로 충돌진행 
-	if (Type == ColType::MAX)
+	if (_ThisColType == ColType::MAX)
 	{
 		_ThisColType = Type;
 	}
