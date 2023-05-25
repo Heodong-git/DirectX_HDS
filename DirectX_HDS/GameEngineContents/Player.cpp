@@ -3,6 +3,7 @@
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -299,14 +300,63 @@ void Player::UpdateState(float _DeltaTime)
 
 void Player::SkillUpdate(float _DeltaTime)
 {
+	// 눌려있으면 스킬발동중 인거고
 	if (true == GameEngineInput::IsPress("player_skill_slow"))
 	{
+		float OriginTime = GameEngineTime::GlobalTime.GetDeltaTime();
+		// 만약 스킬지속시간이 9초가넘어섰다면 
+		if (0.0f >= m_SlowLimitTime)
+		{
+			m_SlowLimitTime += OriginTime;
+			m_IsSlowSkill = false;
+			SlowReset();
+			return;
+		}
+
+		// 스킬온
+		m_IsSlowSkill = true;
+
+		
+		// 계속 누르고 있는 상태라면 지속적으로 델타타임을 누적해준다. 
+		// 이때는 정상적으로 적용될 수 있도록 타임스케일 조정 
+		m_SlowLimitTime -= OriginTime;
+		if (0.0f >= m_SlowLimitTime)
+		{
+			m_SlowLimitTime = 0.0f;
+			m_IsSlowSkill = false;
+			return;
+		}
+
 		Slow();
+	}
+
+	// 여긴 어차피 안눌린 상태니까 기존의 델타타임이 들어올거고 
+	else if (false == GameEngineInput::IsPress("player_skill_slow"))
+	{
+		// 안눌렸으면 바로 타임스케일리셋 
+		SlowReset();
+		m_IsSlowSkill = false;
+		if (9.0f <= m_SlowLimitTime)
+		{
+			m_SlowLimitTime = 9.0f;
+			return;
+		}
+
+		m_SlowLimitTime += _DeltaTime;
 	}
 }
 
 void Player::Slow()
 {
+	if (true == m_IsSlowSkill)
+	{
+		GameEngineTime::GlobalTime.SetTimeScale(0.3f);	
+	}
+}
+
+void Player::SlowReset()
+{
+	GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 }
 
 // state 변경, 변경될 상태의 start, 이전 상태의 end 수행

@@ -17,8 +17,6 @@
 #include "Battery.h"
 #include "Map.h"
 #include "CameraMovement.h"
-
-// 아직
 #include "Inven.h"
 #include "Timer.h"
 #include "Hud.h"
@@ -65,6 +63,8 @@ void ClubLevel_00::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("ClubLevel_01");
 		return;
 	}
+
+	// 업데이트의 경우 BaseLevel::LevelState::WAIT 가 PLAY 일때만 업데이트 하고 레벨이 필요한 함수를 호출하도록 할거
 
 	BaseLevel::Update(_DeltaTime);
 }
@@ -137,7 +137,7 @@ void ClubLevel_00::ActorLoad()
 	
 	// 플레이어
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->AddLocalPosition(float4{ -850 , -94 });
+	Player::MainPlayer->GetTransform()->AddLocalPosition(PlayerSetPos);
 
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
@@ -147,6 +147,12 @@ void ClubLevel_00::ActorLoad()
 
 	// 카메라
 	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
+
+	// 타이머
+	CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
+
+	// 인벤
+	CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
 }
 
 void ClubLevel_00::DebugUpdate()

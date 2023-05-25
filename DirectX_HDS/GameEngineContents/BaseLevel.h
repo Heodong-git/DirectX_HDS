@@ -94,9 +94,9 @@ private:
 	virtual void ResourcesLoad() {};
 	virtual void ActorLoad() {};
 
+	// 리셋이라는 함수를 만들고 호출하게 되면 모두 초기위치로? 
+
 	// 마우스
 	float4 m_CurMouseLocalPos = {};
 
-	// 녹화 간격 2초
-	float m_SaveInterval = 2.0f;
 };

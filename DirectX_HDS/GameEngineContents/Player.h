@@ -65,6 +65,16 @@ public:
 		return m_AttackPos;
 	}
 
+	const float GetSlowLimitTime() const
+	{
+		return m_SlowLimitTime;
+	}
+
+	inline bool IsSlowSkill() const
+	{
+		return m_IsSlowSkill;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -112,6 +122,8 @@ private:
 	// 공격의 쿨타임 여기부터 만들자 ㅇㅇ 
 	float m_GlobalCoolDown = 0.3f; 
 
+	
+
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
 
@@ -129,11 +141,14 @@ private:
 	float m_RenderPivot = 36.0f;
 
 	// -------------------------------------------------------------------
-
+	// -------------------------skill value----------------------------
+	float m_SlowLimitTime = 9.0f;
 	// skill 
 	void SkillUpdate(float _DeltaTime);
 	void Slow();
+	void SlowReset();
 
+	bool m_IsSlowSkill = false;
 	// ------------------------- state ----------------------------------
 private:
 	// 상태값 변경

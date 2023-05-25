@@ -5,6 +5,8 @@
 class Timer : public BaseActor
 {
 public:
+	static Timer* MainTimer;
+public:
 	// constrcuter destructer
 	Timer();
 	~Timer();
@@ -21,6 +23,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> m_CaseRender = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_GageRender = nullptr;
+	void Blink();
+	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_GageRender = nullptr;
 };

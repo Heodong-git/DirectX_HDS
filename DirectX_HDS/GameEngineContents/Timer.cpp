@@ -1,12 +1,14 @@
 #include "PrecompileHeader.h"
 #include "Timer.h"
 #include <GameEngineBase/GameEngineRandom.h>
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BaseLevel.h"
 
+Timer* Timer::MainTimer = nullptr;
 
 Timer::Timer()
 {
+	MainTimer = this;
 }
 
 Timer::~Timer()
@@ -22,7 +24,7 @@ void Timer::Start()
 		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Timer");
 
 		// 파일 전체로드 
@@ -33,12 +35,12 @@ void Timer::Start()
 		}
 	}
 
-	m_CaseRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_CaseRender->SetTexture("spr_hud_timer_0.png");
-	m_CaseRender->GetTransform()->SetLocalScale({ 230.0f, 40.0f });
-	m_CaseRender->GetTransform()->SetLocalPosition({ -10.0f , 338.0f });
+	m_MainRender = CreateComponent<GameEngineUIRenderer>();
+	m_MainRender->SetTexture("spr_hud_timer_0.png");
+	m_MainRender->GetTransform()->SetLocalScale({ 230.0f, 40.0f });
+	m_MainRender->GetTransform()->SetLocalPosition({ -10.0f , 338.0f });
 
-	m_GageRender = CreateComponent<GameEngineSpriteRenderer>();
+	m_GageRender = CreateComponent<GameEngineUIRenderer>();
 	m_GageRender->SetTexture("spr_timer_0.png");
 	m_GageRender->GetTransform()->SetLocalScale({ 200.0f, 25.0f });
 	m_GageRender->GetTransform()->SetLocalPosition({ 10.0f , 342.0f });
@@ -65,17 +67,23 @@ void Timer::Update(float _DeltaTime)
 		return;
 	}
 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
-	if (Random == 1)
-	{
-		m_CaseRender->Off();
-	}
-	else
-	{
-		m_CaseRender->On();
-	}
+	Blink();
 }
 
 void Timer::Render(float _DeltaTime)
 {
+}
+
+void Timer::Blink()
+{
+
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	if (Random == 1)
+	{
+		m_MainRender->Off();
+	}
+	else
+	{
+		m_MainRender->On();
+	}
 }

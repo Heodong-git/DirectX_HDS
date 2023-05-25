@@ -155,12 +155,21 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::Text("%.2f", CursorPos.x);
                 ImGui::NextColumn();
 
+                ImGui::Text("Slow :");
                 ImGui::NextColumn();
+                ImGui::Text("%s", Player::MainPlayer->IsSlowSkill() ? "true" : "false");
+
+              
 
                 ImGui::NextColumn();
                 ImGui::Text("Y:");
                 ImGui::NextColumn();
                 ImGui::Text("%.2f", CursorPos.y);
+                ImGui::NextColumn();
+
+                ImGui::Text("SkillTime :");
+                ImGui::NextColumn();
+                ImGui::Text("%.2f", Player::MainPlayer->GetSlowLimitTime());
                 ImGui::NextColumn();
 
 

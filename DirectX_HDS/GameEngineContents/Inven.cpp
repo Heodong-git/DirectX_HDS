@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Inven.h"
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BaseLevel.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
@@ -21,7 +21,7 @@ void Inven::Start()
 		// 그 폴더로 이동
 		NewDir.Move("katanazero_resources");
 		NewDir.Move("Texture");
-		NewDir.Move("Stage01Level");
+		NewDir.Move("ClubLevel");
 		NewDir.Move("Inven");
 
 		// 파일 전체로드 
@@ -31,11 +31,20 @@ void Inven::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-	m_CaseRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_CaseRender->SetPipeLine("2DTexture");
-	m_CaseRender->GetShaderResHelper().SetTexture("DiffuseTex", "Inven_0.png");
-	m_CaseRender->GetTransform()->SetLocalScale({ 115, 45 });
-	m_CaseRender->GetTransform()->SetLocalPosition({ 564 , 335 });
+	m_MainRender = CreateComponent<GameEngineUIRenderer>();
+	m_MainRender->GetShaderResHelper().SetTexture("DiffuseTex", "Inven_0.png");
+	m_MainRender->GetTransform()->SetLocalScale({ 115, 45 });
+	m_MainRender->GetTransform()->SetLocalPosition({ 564 , 335 });
+
+	m_LeftRender = CreateComponent<GameEngineUIRenderer>();
+	m_LeftRender->SetTexture("spr_left_click_1.png");
+	m_LeftRender->GetTransform()->SetLocalScale({ 25 , 30 });
+	m_LeftRender->GetTransform()->SetLocalPosition({ 550 , 310 });
+
+	m_RightRender = CreateComponent<GameEngineUIRenderer>();
+	m_RightRender->SetTexture("spr_right_click_1.png");
+	m_RightRender->GetTransform()->SetLocalScale({ 25 , 30 });
+	m_RightRender->GetTransform()->SetLocalPosition({ 615 , 310 });
 }
 
 void Inven::Update(float _DeltaTime)
@@ -46,17 +55,22 @@ void Inven::Update(float _DeltaTime)
 		return;
 	}
 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
-	if (Random == 1)
-	{
-		m_CaseRender->Off();
-	}
-	else
-	{
-		m_CaseRender->On();
-	}
+	Blink();
 }
 
 void Inven::Render(float _DeltaTime)
 {
+}
+
+void Inven::Blink()
+{
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	if (Random == 1)
+	{
+		m_MainRender->Off();
+	}
+	else
+	{
+		m_MainRender->On();
+	}
 }
