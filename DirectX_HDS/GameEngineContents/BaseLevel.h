@@ -54,6 +54,11 @@ public:
 		m_LevelType = _Type;
 	}
 
+	const inline float GetLimitTime() const
+	{
+		return m_LimitTime;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -87,6 +92,8 @@ protected:
 
 	std::shared_ptr<class Map> m_Map = nullptr;
 
+	float m_LimitTime = 110.0f;
+
 private:
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
 	virtual void CameraSetting();
@@ -94,7 +101,7 @@ private:
 	virtual void ResourcesLoad() {};
 	virtual void ActorLoad() {};
 
-	// 리셋이라는 함수를 만들고 호출하게 되면 모두 초기위치로? 
+	
 
 	// 마우스
 	float4 m_CurMouseLocalPos = {};

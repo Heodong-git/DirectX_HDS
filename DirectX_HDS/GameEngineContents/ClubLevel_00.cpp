@@ -64,6 +64,7 @@ void ClubLevel_00::Update(float _DeltaTime)
 		return;
 	}
 
+
 	// 업데이트의 경우 BaseLevel::LevelState::WAIT 가 PLAY 일때만 업데이트 하고 레벨이 필요한 함수를 호출하도록 할거
 
 	BaseLevel::Update(_DeltaTime);

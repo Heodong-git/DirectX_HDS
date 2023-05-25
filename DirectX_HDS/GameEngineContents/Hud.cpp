@@ -48,5 +48,5 @@ void Hud::Start()
 	m_MainRender = CreateComponent<GameEngineUIRenderer>();
 	m_MainRender->SetTexture("HUD.png");
 	m_MainRender->GetTransform()->SetLocalScale({ screensize.x , 50.0f } );
-	m_MainRender->GetTransform()->SetLocalPosition({ 0 , 330.0f });
+	m_MainRender->GetTransform()->SetLocalPosition({ 0 , 340.0f });
 }

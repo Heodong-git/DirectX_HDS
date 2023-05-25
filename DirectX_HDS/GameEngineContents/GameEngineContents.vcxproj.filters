@@ -117,6 +117,9 @@
     <ClInclude Include="Boss_HeadHunter.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
     </ClInclude>
+    <ClInclude Include="RollEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -231,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="Boss_HeadHunter.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
+    </ClCompile>
+    <ClCompile Include="RollEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -298,9 +298,7 @@ void GameEngineCamera::Release()
 				++StartRenderer;
 				continue;
 			}
-
 			StartRenderer = RenderGroup.erase(StartRenderer);
-
 		}
 	}
 }

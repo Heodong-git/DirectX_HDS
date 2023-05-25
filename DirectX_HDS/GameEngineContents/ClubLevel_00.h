@@ -15,7 +15,6 @@ public:
 	ClubLevel_00& operator=(const ClubLevel_00& _Other) = delete;
 	ClubLevel_00& operator=(ClubLevel_00&& _Other) noexcept = delete;
 
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -29,10 +28,6 @@ protected:
 private:
 	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-
-	// 스테이지 제한시간
-	// 스테이지가 시작되면 깎여나가게 
-	float m_LimitTime = 110.0f;
 
 	// 액터 초기위치
 	float4 PlayerSetPos = { -850 , -94 };

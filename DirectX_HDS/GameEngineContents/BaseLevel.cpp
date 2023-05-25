@@ -48,6 +48,25 @@ void BaseLevel::Update(float _DeltaTime)
 		}
 	}
 
+	if (BaseLevel::LevelState::WAIT == m_CurState)
+	{
+		return;
+	}
+
+	// 없어도 되지만 일단 임시로 
+	// 만약 현재 스테이트가 Play 라면 제한시간을 감소시킨다. 
+	if (BaseLevel::LevelState::PLAY == m_CurState)
+	{
+		
+		if (0 >= m_LimitTime)
+		{
+			// 플레이어 사망, 맵은 대기상태로 변경
+			int a = 0;
+		}
+
+		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
+	}
+
 	GameEngineLevel::Update(_DeltaTime);
 }
 

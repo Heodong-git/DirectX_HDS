@@ -23,7 +23,13 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void GaugeUpdate();
 	void Blink();
 	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> m_GageRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_GaugeRender = nullptr;
+
+	int m_GaugeWidth = 200;
+	int m_GaugeHeight = 25;
+
+	const float m_FullGauge = 110.0f;
 };
