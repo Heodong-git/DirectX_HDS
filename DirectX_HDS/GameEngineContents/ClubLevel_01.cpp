@@ -15,6 +15,10 @@
 #include "PlayManager.h"
 #include "Battery.h"
 #include "Cursor.h"
+#include "Hud.h"
+#include "CameraMovement.h"
+#include "Timer.h"
+#include "Inven.h"
 
 ClubLevel_01::ClubLevel_01()
 {
@@ -62,6 +66,7 @@ void ClubLevel_01::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 }
 
+// 나머지는 레벨체인지스타트에서 ㅇㅇ 
 void ClubLevel_01::LevelChangeStart()
 {
 	// 필요하다면, GUI On <-- Core에서 초기화 
@@ -79,11 +84,23 @@ void ClubLevel_01::LevelChangeStart()
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -538, -252 });
 
+	// HUD
+	CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "Hud");
+
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
+
+	// 카메라
+	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
+
+	// 타이머
+	CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
+
+	// 인벤
+	CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
 }
 
 void ClubLevel_01::LevelChangeEnd()
@@ -112,6 +129,8 @@ void ClubLevel_01::ActorLoad()
 		MsgAssert("현재 플레이어가 nullptr 입니다.");
 		return;
 	}
+
+
 }
 
 void ClubLevel_01::DebugUpdate()

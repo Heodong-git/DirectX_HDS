@@ -18,21 +18,25 @@ Timer::~Timer()
 void Timer::Start()
 {
 	{
-		GameEngineDirectory NewDir;
-		// 원하는 폴더를 가진 디렉터리로 이동
-		NewDir.MoveParentToDirectory("katanazero_resources");
-		// 그 폴더로 이동
-		NewDir.Move("katanazero_resources");
-		NewDir.Move("Texture");
-		NewDir.Move("ClubLevel");
-		NewDir.Move("Timer");
-
-		// 파일 전체로드 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
-		for (size_t i = 0; i < File.size(); i++)
+		if (nullptr == GameEngineTexture::Find("spr_hud_timer_0.png"))
 		{
-			GameEngineTexture::Load(File[i].GetFullPath());
+			GameEngineDirectory NewDir;
+			// 원하는 폴더를 가진 디렉터리로 이동
+			NewDir.MoveParentToDirectory("katanazero_resources");
+			// 그 폴더로 이동
+			NewDir.Move("katanazero_resources");
+			NewDir.Move("Texture");
+			NewDir.Move("ClubLevel");
+			NewDir.Move("Timer");
+
+			// 파일 전체로드 
+			std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
 		}
+		
 	}
 
 	m_MainRender = CreateComponent<GameEngineUIRenderer>();

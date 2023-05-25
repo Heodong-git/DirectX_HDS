@@ -14,6 +14,9 @@
 #include "Player.h"
 #include "PlayManager.h"
 #include "Battery.h"
+#include "Inven.h"
+#include "Timer.h"
+#include "Hud.h"
 #include "Cursor.h"
 
 

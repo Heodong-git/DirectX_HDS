@@ -127,6 +127,7 @@ void ClubLevel_00::ResourcesLoad()
 	}
 }
 
+// 00 레벨에서만 스타트에서 
 void ClubLevel_00::ActorLoad()
 {
 	// 맵 
@@ -138,6 +139,9 @@ void ClubLevel_00::ActorLoad()
 	// 플레이어
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->AddLocalPosition(PlayerSetPos);
+
+	// HUD
+	CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "Hud");
 
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");

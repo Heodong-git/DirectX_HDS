@@ -16,7 +16,17 @@ public:
 	Monster_Gangster& operator=(Monster_Gangster&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
 
 private:
+	// 렌더러생성 및 세팅
+	void ComponentSetting();
 
+	// 애니메이션 리소스 로드및생성
+	void LoadAndCreateAnimation();
+
+	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 };

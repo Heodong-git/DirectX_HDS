@@ -4,6 +4,8 @@
 // Ό³Έν :
 class Hud : public BaseActor
 {
+public: 
+	static Hud* MainHud;
 public:
 	// constrcuter destructer
 	Hud();
@@ -18,5 +20,5 @@ public:
 protected:
 	void Start() override;
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Renderer = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
 };

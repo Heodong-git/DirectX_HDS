@@ -15,6 +15,10 @@
 #include "PlayManager.h"
 #include "Battery.h"
 #include "Cursor.h"
+#include "Hud.h"
+#include "CameraMovement.h"
+#include "Inven.h"
+#include "Timer.h"
 
 ClubLevel_03::ClubLevel_03()
 {
@@ -72,11 +76,25 @@ void ClubLevel_03::LevelChangeStart()
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -646.0f , 491.0f });
 
+
+	// HUD
+	CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "Hud");
+
 	// 플레이어 배터리 
 	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
+
+	// 카메라
+	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
+
+	// 타이머
+	CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
+
+	// 인벤
+	CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
+	
 }
 
 void ClubLevel_03::LevelChangeEnd()
@@ -107,6 +125,8 @@ void ClubLevel_03::ActorLoad()
 		MsgAssert("현재 플레이어가 nullptr 입니다.");
 		return;
 	}
+
+
 }
 
 void ClubLevel_03::DebugUpdate()
