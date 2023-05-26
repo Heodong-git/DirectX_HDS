@@ -39,7 +39,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
             // 플레이어 위치 정보
             ImGui::Text("Player Position:");
             ImGui::SameLine();
-            ImGui::SetCursorPosX(ImGui::GetWindowWidth() * 0.5f);
+            ImGui::SetCursorPosX(ImGui::GetWindowWidth() * 0.27f);
             ImGui::Text("Camera Position:");
             ImGui::Separator();
 

@@ -92,6 +92,7 @@ private:
 	//      이름           경로
 	// 리소스 최적화를 위해서 레벨이 시작하고, 필요한 리소스를 로드할 때의 이름을 키값으로 하여 경로를 저장한다. 
 	std::map<std::string, std::string> TexturePath;
+	std::map<std::string, std::string> LoadEndPath;
 
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 
@@ -113,5 +114,9 @@ private:
 	void ActorRelease();
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();
+
+	void TextureUnLoad(GameEngineLevel* _NextLevel);
+
+	void TextureReLoad(GameEngineLevel* _PrevLevel);
 };
 

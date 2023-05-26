@@ -60,8 +60,9 @@ void GameEngineCore::EngineUpdate()
 		// 현재 레벨도 nullptr 이 아니라면 
 		if (nullptr != MainLevel)
 		{
-			// 현재 메인레벨의 종료시점의 작업수행
+			CurLoadLevel = MainLevel.get();
 			MainLevel->LevelChangeEnd();
+			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeEnd();
 		}
 
@@ -71,7 +72,9 @@ void GameEngineCore::EngineUpdate()
 		// 변경된 레벨의 start 
 		if (nullptr != MainLevel)
 		{
+			CurLoadLevel = MainLevel.get();
 			MainLevel->LevelChangeStart();
+			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeStart();
 		}
 
@@ -90,10 +93,6 @@ void GameEngineCore::EngineUpdate()
 		// 레퍼런스 카운트 관리해볼것이다.
 
 		// Prev레벨에서 사용한 텍스처들
-
-
-		PrevLevel;
-		MainLevel;
 		NextLevel = nullptr;
 
 		// 로딩이 오래걸릴수 있기 때문에 델타타임을 한번 리셋 
@@ -118,10 +117,12 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 
+	CurLoadLevel = MainLevel.get();
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
+	CurLoadLevel = nullptr;
 
 
 	// 비디오가 재생중이라면 렌더링을 하지 않는다. 

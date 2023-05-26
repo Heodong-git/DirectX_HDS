@@ -78,7 +78,6 @@ public:
 
 		// 리소스 로드 시에 경로를 체크해준다 
 		PathCheck(_Path, _Name);
-
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
@@ -89,17 +88,43 @@ public:
 		return NewTexture;
 	}
 
-	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, ID3D11Texture2D* _Value)
-	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
-		NewTexture->ResCreate(_Value);
-		return NewTexture;
-	}
-
 	static std::shared_ptr<GameEngineTexture> Create(const D3D11_TEXTURE2D_DESC& _Value)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
 		NewTexture->ResCreate(_Value);
+		return NewTexture;
+	}
+
+	static std::shared_ptr<GameEngineTexture> UnLoad(const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
+		}
+
+		NewTexture->Release();
+		return NewTexture;
+	}
+
+	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path)
+	{
+		GameEnginePath NewPath(_Path);
+		return ReLoad(_Path, NewPath.GetFileName());
+	}
+
+
+	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource<GameEngineTexture>::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
+		}
+
+		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
 
@@ -166,5 +191,7 @@ private:
 	// 카메라 렌더타겟의 에러를 해결하기 위해
 	void VSReset(UINT _Slot);
 	void PSReset(UINT _Slot);
+
+	void Release();
 };
 
