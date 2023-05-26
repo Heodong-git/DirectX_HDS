@@ -9,6 +9,8 @@
 #include "Map.h"
 #include "Player.h"
 
+#include "FadeInOut_Effect.h"
+
 BaseLevel::BaseLevel()
 {
 }
@@ -17,6 +19,8 @@ BaseLevel::~BaseLevel()
 {
 }
 
+// 모든레벨에서 필요하기 때문에 base level 에서 가지고 있는다. 
+// 근데 일단 오늘 구조 완성하면 ㅇㅇ 일단 기존 클럽레벨 00에서 ㄱㄱ 
 void BaseLevel::Start()
 {
 	CameraSetting();

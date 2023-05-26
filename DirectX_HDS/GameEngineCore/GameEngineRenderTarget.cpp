@@ -125,3 +125,11 @@ void GameEngineRenderTarget::Merge(std::shared_ptr<GameEngineRenderTarget> _Othe
 	MergeUnit.Render(0.0f);
 	MergeUnit.ShaderResHelper.AllResourcesReset();
 }
+
+void GameEngineRenderTarget::Effect()
+{
+	for (size_t i = 0; i < Effects.size(); i++)
+	{
+		Effects[i]->Effect(shared_from_this());
+	}
+}

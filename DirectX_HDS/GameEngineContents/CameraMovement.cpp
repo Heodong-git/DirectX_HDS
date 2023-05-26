@@ -29,6 +29,11 @@ void CameraMovement::Start()
 
 		m_MapRanges.insert(make_pair(0, Ranges));
 	}
+
+	{
+		// 1번맵은 범위 필요없으니까 건너뛰고 키값을 2부터 시작
+		
+	}
 }
 
 void CameraMovement::Update(float _DeltaTime)
@@ -153,7 +158,8 @@ bool CameraMovement::RangeOverCheck(float _DeltaTime)
 		break;
 	case LevelType::CLUBMAP1:
 	{
-		int a = 0;
+		// 얘는 그냥 카메라 안에 다들어와서 노상관 아무것도 없어도 될듯
+		return false;
 	}
 		break;
 	case LevelType::CLUBMAP2:

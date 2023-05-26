@@ -4,6 +4,7 @@
 #include "GameEngineCamera.h"
 #include "GameEngineGUI.h"
 #include "GameEngineCollision.h"
+#include <GameEnginePlatform/GameEngineInput.h>
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -15,6 +16,8 @@ GameEngineLevel::GameEngineLevel()
 	UICamera->SetProjectionType(CameraType::Orthogonal);
 
 	Cameras.insert(std::make_pair(100, UICamera));
+
+	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
 }
 
 GameEngineLevel::~GameEngineLevel()
@@ -122,15 +125,20 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
+		Cam->CamTarget->Effect();
 	}
+
+	LastTarget->Clear();
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
 		std::shared_ptr<GameEngineCamera> Camera = Pair.second;
 		std::shared_ptr<GameEngineRenderTarget> Target = Camera->GetCamTarget();
 
-		GameEngineDevice::GetBackBufferTarget()->Merge(Target);
+		LastTarget->Merge(Target);
 	}
+
+	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
 	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();

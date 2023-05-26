@@ -26,6 +26,9 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
+	// 카메라이펙트
+	std::shared_ptr<class FadeInOut_Effect> m_FadeEffect = nullptr;
+
 	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 

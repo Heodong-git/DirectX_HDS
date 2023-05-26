@@ -120,6 +120,9 @@
     <ClInclude Include="RollEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
+    <ClInclude Include="FadeInOut_Effect.h">
+      <Filter>02.Actor\08.Effect\10.Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -238,6 +241,9 @@
     <ClCompile Include="RollEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
+    <ClCompile Include="FadeInOut_Effect.cpp">
+      <Filter>02.Actor\08.Effect\10.Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -329,6 +335,9 @@
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter">
       <UniqueIdentifier>{8539d0e0-241c-4851-9ce4-e686a86f3c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.Effect\10.Camera">
+      <UniqueIdentifier>{ab016246-b013-4210-8fc3-43825fdca11e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

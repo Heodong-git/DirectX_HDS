@@ -80,6 +80,11 @@ public:
 
 	std::shared_ptr<GameEngineCamera> GetCamera(int _CameraOrder);
 
+	std::shared_ptr<GameEngineRenderTarget> GetLastTarget()
+	{
+		return LastTarget;
+	}
+
 protected:
 	virtual void LevelChangeStart();
 	virtual void LevelChangeEnd();
@@ -89,6 +94,8 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	// 모든 카메라의 내용이 다 종합된.
+	std::shared_ptr<GameEngineRenderTarget> LastTarget;
 	//      이름           경로
 	// 리소스 최적화를 위해서 레벨이 시작하고, 필요한 리소스를 로드할 때의 이름을 키값으로 하여 경로를 저장한다. 
 	std::map<std::string, std::string> TexturePath;

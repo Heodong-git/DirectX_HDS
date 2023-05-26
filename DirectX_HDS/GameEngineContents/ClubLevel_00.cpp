@@ -20,6 +20,7 @@
 #include "Inven.h"
 #include "Timer.h"
 #include "Hud.h"
+#include "FadeInOut_Effect.h"
 
 ClubLevel_00::ClubLevel_00()
 {
@@ -54,6 +55,9 @@ void ClubLevel_00::Start()
 	// 액터 로드 
 	ActorLoad();
 
+	// 카메라 이펙트 생성
+	// 이런 꼴로 사용 
+	// m_FadeEffect = GetLastTarget()->CreateEffect<FadeInOut_Effect>();
 }
 
 void ClubLevel_00::Update(float _DeltaTime)

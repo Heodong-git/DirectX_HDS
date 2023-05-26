@@ -86,12 +86,14 @@ protected:
 		}
 	}
 
+	// 디버그, 맵관련 
 	void ChangeMap();
 	void ChangeColMap();
 	void DebugCamera();
 
 	std::shared_ptr<class Map> m_Map = nullptr;
 
+	// 스테이지 제한시간
 	float m_LimitTime = 110.0f;
 
 private:
