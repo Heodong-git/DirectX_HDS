@@ -98,3 +98,43 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 		fclose(FilePtr);
 	}
 }
+
+void GameEngineFile::LoadText(GameEngineSerializer& _Data)
+{
+	FILE* FilePtr = nullptr;
+
+	std::string PathString = Path.GetFullPath();
+	std::string Text = "rt";
+
+	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
+
+	if (nullptr == FilePtr)
+	{
+		MsgAssert("파일 오픈에 실패했습니다." + PathString);
+	}
+
+	size_t FileSize = std::filesystem::file_size(Path.Path);
+
+	fread_s(_Data.GetData(), _Data.GetBufferSize(), FileSize, 1, FilePtr);
+
+	if (nullptr != FilePtr)
+	{
+		fclose(FilePtr);
+	}
+}
+
+std::string GameEngineFile::GetString()
+{
+
+	uintmax_t size = GetFileSize();
+	GameEngineSerializer Ser;
+	Ser.BufferResize(size + 1);
+	LoadText(Ser);
+
+	return Ser.GetString();
+}
+
+uintmax_t GameEngineFile::GetFileSize()
+{
+	return std::filesystem::file_size(Path.Path);
+}

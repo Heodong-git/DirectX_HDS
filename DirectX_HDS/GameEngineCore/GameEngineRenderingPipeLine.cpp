@@ -288,3 +288,21 @@ void GameEngineRenderingPipeLine::Render()
 	// 머티리얼 <= 색깔이 어떻게 나올것인가? 메시에 적용하여 시각적인 모양을 조절할 수 있는 에셋
 	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
 }
+
+// 추후 사용될것
+std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderingPipeLine::Clone()
+{
+	std::shared_ptr<GameEngineRenderingPipeLine> ClonePipe = std::make_shared<GameEngineRenderingPipeLine>();
+
+	ClonePipe->InputLayOutPtr = InputLayOutPtr;
+	ClonePipe->VertexBufferPtr = VertexBufferPtr;
+	ClonePipe->IndexBufferPtr = IndexBufferPtr;
+	ClonePipe->VertexShaderPtr = VertexShaderPtr;
+	ClonePipe->RasterizerPtr = RasterizerPtr;
+	ClonePipe->PixelShaderPtr = PixelShaderPtr;
+	ClonePipe->BlendStatePtr = BlendStatePtr;
+	ClonePipe->DepthStatePtr = DepthStatePtr;
+	ClonePipe->IsCloneValue = true;
+
+	return ClonePipe;
+}

@@ -35,6 +35,12 @@ public:
 
 	void LoadBin(GameEngineSerializer& _Data);
 
+	void LoadText(GameEngineSerializer& _Data);
+
+	std::string GetString();
+
+	uintmax_t GetFileSize();
+
 protected:
 
 private:

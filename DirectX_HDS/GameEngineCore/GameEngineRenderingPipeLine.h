@@ -48,9 +48,17 @@ public:
 	void RenderingPipeLineSetting();
 	void Render();
 
+	std::shared_ptr<GameEngineRenderingPipeLine> Clone();
+
+	bool IsClone()
+	{
+		return IsCloneValue;
+	}
+
 protected:
 
 private:
+	bool IsCloneValue = false;
 	// 각 정점에 대한 정보 준비
 	void InputAssembler1();
 	// 정점에 대한 연산, 가상의 3D로 입력되어 있는 좌표를 2D로 변환하는 작업

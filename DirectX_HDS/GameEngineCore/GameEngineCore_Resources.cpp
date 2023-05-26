@@ -232,19 +232,23 @@ void GameEngineCore::CoreResourcesInit()
 		// 임시변경
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineShader::AutoCompile(Files[i]);
+		}
 		// 버텍스쉐이더와 픽셀쉐이더에 정보를 로드
-		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
-		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
+		//GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+		//GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 
-		GameEngineVertexShader::Load(Files[1].GetFullPath(), "Merge_VS");
-		GameEnginePixelShader::Load(Files[1].GetFullPath(), "Merge_PS");
-		
-		// 테스트 ㅇㅇ 
-		GameEngineVertexShader::Load(Files[2].GetFullPath(), "Texture_VS");
-		GameEnginePixelShader::Load(Files[2].GetFullPath(), "Texture_PS");
+		//GameEngineVertexShader::Load(Files[1].GetFullPath(), "Merge_VS");
+		//GameEnginePixelShader::Load(Files[1].GetFullPath(), "Merge_PS");
+		//
+		//// 테스트 ㅇㅇ 
+		//GameEngineVertexShader::Load(Files[2].GetFullPath(), "Texture_VS");
+		//GameEnginePixelShader::Load(Files[2].GetFullPath(), "Texture_PS");
 
-		GameEngineVertexShader::Load(Files[3].GetFullPath(), "Texture_VS");
-		GameEnginePixelShader::Load(Files[3].GetFullPath(), "Texture_PS");
+		//GameEngineVertexShader::Load(Files[3].GetFullPath(), "Texture_VS");
+		//GameEnginePixelShader::Load(Files[3].GetFullPath(), "Texture_PS");
 		
 		
 		

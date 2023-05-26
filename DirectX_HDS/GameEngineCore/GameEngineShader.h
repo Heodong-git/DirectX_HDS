@@ -32,6 +32,9 @@ public:
 		return Type;
 	}
 
+	// 오토컴파일기능 추가
+	static void AutoCompile(GameEngineFile& _File);
+
 protected:
 	// 쉐이더는 각자 자신이 어떤 타입인지 구분 할 수 있도록
 	ShaderType Type = ShaderType::None;
