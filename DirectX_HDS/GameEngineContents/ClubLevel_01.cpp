@@ -85,22 +85,22 @@ void ClubLevel_01::LevelChangeStart()
 	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -538, -252 });
 
 	// HUD
-	CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "Hud");
+	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
 	// 플레이어 배터리 
-	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
+	CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery");
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
 	// 카메라
-	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
+	CreateActor<CameraMovement>();
 
 	// 타이머
-	CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
+	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");
 
 	// 인벤
-	CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
+	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
 }
 
 void ClubLevel_01::LevelChangeEnd()

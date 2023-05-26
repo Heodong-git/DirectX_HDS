@@ -36,17 +36,17 @@ void Inven::Start()
 
 		
 	}
-	m_MainRender = CreateComponent<GameEngineUIRenderer>();
+	m_MainRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_MainRender->GetShaderResHelper().SetTexture("DiffuseTex", "Inven_0.png");
 	m_MainRender->GetTransform()->SetLocalScale({ 115, 45 });
 	m_MainRender->GetTransform()->SetLocalPosition({ 564 , 335 });
 
-	m_LeftRender = CreateComponent<GameEngineUIRenderer>();
+	m_LeftRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_LeftRender->SetTexture("spr_left_click_1.png");
 	m_LeftRender->GetTransform()->SetLocalScale({ 25 , 30 });
 	m_LeftRender->GetTransform()->SetLocalPosition({ 550 , 310 });
 
-	m_RightRender = CreateComponent<GameEngineUIRenderer>();
+	m_RightRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_RightRender->SetTexture("spr_right_click_1.png");
 	m_RightRender->GetTransform()->SetLocalScale({ 25 , 30 });
 	m_RightRender->GetTransform()->SetLocalPosition({ 615 , 310 });

@@ -70,12 +70,12 @@ void Battery::Start()
 		return;
 	}
 
-	m_MainRender = CreateComponent<GameEngineUIRenderer>();
+	m_MainRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_MainRender->SetScaleToTexture("battery_09.png");
 	m_MainRender->GetTransform()->SetLocalScale({ 160.0f , 40.0f });
 	m_MainRender->GetTransform()->SetLocalPosition({ -560 , 337 });	
 
-	m_ShiftRender = CreateComponent<GameEngineUIRenderer>();
+	m_ShiftRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_ShiftRender->SetTexture("keyboard_shift_0.png");
 	m_ShiftRender->GetTransform()->SetLocalScale({ 60.0f , 25.0f });
 	m_ShiftRender->GetTransform()->SetLocalPosition({ -440.0f , 335.0f });

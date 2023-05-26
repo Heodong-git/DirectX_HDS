@@ -31,7 +31,7 @@ void LandEffect::Start()
 
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	float PlayerRenderPivot = Player::MainPlayer->GetRenderPivot();
-	m_Render = CreateComponent<GameEngineSpriteRenderer>();
+	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
 	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + 15.0f});
 	m_Render->ColorOptionValue.MulColor.a = 0.7f;
 	m_Render->SetScaleRatio(2.0f);

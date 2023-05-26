@@ -18,6 +18,7 @@ enum class PlayerState
 	CROUCH,			// 크라우치 (웅크리기)
 	FLIP,			// 벽타고 구르기 
 	FALL,			// 낙하 
+	WALL,			// 벽타기 
 };
 
 class Player : public BaseActor
@@ -195,6 +196,10 @@ private:
 	void FallStart();
 	void FallUpdate(float _DeltaTime);
 	void FallEnd();
+
+	void WallStart();
+	void WallUpdate(float _DeltaTime);
+	void WallEnd();
 };
 
 // 파일입출력이 필수다. 

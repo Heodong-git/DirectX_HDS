@@ -10,13 +10,14 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 // 컨텐츠
-#include "StageEditer.h"
 #include "PlayManager.h"
-#include "Player.h"
 #include "Cursor.h"
+#include "Player.h"
+#include "CameraMovement.h"
+#include "Monster_Gangster.h"
+#include "StageEditer.h"
 #include "Battery.h"
 #include "Map.h"
-#include "CameraMovement.h"
 #include "Inven.h"
 #include "Timer.h"
 #include "Hud.h"
@@ -142,26 +143,30 @@ void ClubLevel_00::ActorLoad()
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	
 	// 플레이어
-	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->AddLocalPosition(PlayerSetPos);
+	std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
+	NewPlayer->GetTransform()->AddLocalPosition(PlayerSetPos);
+	
 
 	// HUD
-	CreateActor<Hud>(static_cast<int>(RenderOrder::BASEUI), "Hud");
+	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
 	// 플레이어 배터리 
-	CreateActor<Battery>(static_cast<int>(RenderOrder::BASEUI), "Battery");
+	CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery");
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
 	// 카메라
-	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::CAMERA), "CameraMovement");
+	CreateActor<CameraMovement>();
 
 	// 타이머
-	CreateActor<Timer>(static_cast<int>(RenderOrder::BASEUI), "Timer");
+	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");
 
 	// 인벤
-	CreateActor<Inven>(static_cast<int>(RenderOrder::BASEUI), "Inven");
+	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
+
+	std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+	Monster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
 }
 
 void ClubLevel_00::DebugUpdate()

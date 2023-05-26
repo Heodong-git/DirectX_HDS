@@ -3,16 +3,14 @@
 enum class RenderOrder
 {
 	BACKGROUND,
-	CAMERA,
 	MAP,
-	OBJECT,
+	UI,
 	MONSTER,
 	BOSS,
-	BASEUI,
-	KEYUI,
 	PLAYER,
 	PLAYER_EFFECT,
 	EFFECT,
+	DEBUG,
 	CURSOR,
 };
 

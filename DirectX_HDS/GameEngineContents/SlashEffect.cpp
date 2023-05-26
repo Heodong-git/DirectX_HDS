@@ -54,7 +54,7 @@ void SlashEffect::Update(float _DeltaTime)
 
 	float RenderPivot = Player::MainPlayer->GetRenderPivot();
 	const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
-	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot });
+	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot});
 }
 
 void SlashEffect::Render(float _DeltaTime)
@@ -66,7 +66,7 @@ void SlashEffect::ComponentSetting()
 {
 	// ÄÄÆ÷³ÍÆ® »ý¼º
 	// ·»´õ·¯ 
-	m_Render = CreateComponent<GameEngineSpriteRenderer>();
+	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->CreateAnimation({ .AnimationName = "slash_effect", .SpriteName = "slash", .Start = 0, .End = 4 ,
 								.FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });

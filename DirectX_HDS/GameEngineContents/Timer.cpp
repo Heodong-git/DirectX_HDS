@@ -38,12 +38,12 @@ void Timer::Start()
 		}
 	}
 
-	m_MainRender = CreateComponent<GameEngineUIRenderer>();
+	m_MainRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_MainRender->SetTexture("spr_hud_timer_0.png");
 	m_MainRender->GetTransform()->SetLocalScale({ 230.0f, 40.0f });
 	m_MainRender->GetTransform()->SetLocalPosition({ -10.0f , 338.0f });
 
-	m_GaugeRender = CreateComponent<GameEngineUIRenderer>();
+	m_GaugeRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_GaugeRender->SetScaleToTexture("spr_timer_0.png");
 	m_GaugeRender->GetTransform()->SetLocalScale({ 200.0f, 25.0f });
 	m_GaugeRender->GetTransform()->SetLocalPosition({ 10.0f , 342.0f });
