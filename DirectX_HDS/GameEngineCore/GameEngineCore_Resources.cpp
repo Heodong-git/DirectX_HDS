@@ -130,7 +130,7 @@ void GameEngineCore::CoreResourcesInit()
 		D3D11_BLEND_DESC Desc = { 0, };
 
 		// 자동으로 알파 부분을 제거해서 출력한다. 엄청느림
-		Desc.AlphaToCoverageEnable = false;
+		Desc.AlphaToCoverageEnable = false; 
 
 		// true  : 블렌드를 여러개 세팅 
 		// false : 0번에 세팅된 걸로 모두 세팅
@@ -143,9 +143,9 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
-		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
-		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
-		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
 		GameEngineBlend::Create("AlphaBlend", Desc);
 	}

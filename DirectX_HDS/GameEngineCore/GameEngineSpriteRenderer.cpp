@@ -241,7 +241,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		{
 			if (_Paramter.End >= Sprite->GetSpriteCount())
 			{
-				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 만들려고 했습니다." + std::string(_Paramter.AnimationName));
 				return nullptr;
 			}
 
@@ -336,6 +336,21 @@ void GameEngineSpriteRenderer::Update(float _DeltaTime)
 	if (nullptr != CurAnimation)
 	{
 		CurAnimation->Update(_DeltaTime);
+
+		if (true == CurAnimation->ScaleToTexture)
+		{
+			const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
+			std::shared_ptr<GameEngineTexture> Texture = Info.Texture;
+			float4 Scale = Texture->GetScale();
+
+			Scale.x *= Info.CutData.SizeX;
+			Scale.y *= Info.CutData.SizeY;
+			Scale.z = 1.0f;                 // z 축 연산시 둘다 z 값이 0이면 문제가 생길 수 있다. 
+
+			Scale *= ScaleRatio;
+
+			GetTransform()->SetLocalScale(Scale);
+		}
 	}
 }
 
@@ -347,22 +362,6 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 
 		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
 		AtlasData = Info.CutData;
-
-		if (true == CurAnimation->ScaleToTexture)
-		{
-			std::shared_ptr<GameEngineTexture> Texture = Info.Texture;
-
-			float4 Scale = Texture->GetScale();
-
-			Scale.x *= Info.CutData.SizeX;
-			Scale.y *= Info.CutData.SizeY;
-			Scale.z = 1.0f;                 // z 축 연산시 둘다 z 값이 0이면 문제가 생길 수 있다. 
-
-			Scale *= ScaleRatio;
-
-			GetTransform()->SetLocalScale(Scale);
-		}
-
 	}
 	GameEngineRenderer::Render(_Delta);
 }

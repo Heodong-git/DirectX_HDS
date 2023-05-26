@@ -132,8 +132,6 @@ public:
 	// Force 가 true 인 경우 , 현재 재생중인 애니메이션으로 변경하더라도 강제로 변경한다. 
 	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
 
-	void AllAnimation();
-
 	void SetAtlasConstantBuffer();
 
 	void SetColorConstantBuffer();

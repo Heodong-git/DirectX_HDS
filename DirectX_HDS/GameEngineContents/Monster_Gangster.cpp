@@ -24,6 +24,11 @@ void Monster_Gangster::Start()
 	// 리소스 로드
 	LoadAndCreateAnimation();
 
+	// aim 스테이트로 변경되면 방향확인해서 이미지세팅해줘야함 지금은 일단 띄워
+	// m_GunRender->SetTexture("gangster_gun_left.png");
+
+	ChangeState(GangsterState::IDLE);
+
 	if (false == GameEngineInput::IsKey("gangster_DebugSwitch"))
 	{
 		GameEngineInput::CreateKey("gangster_DebugSwitch", 'Q');
@@ -32,6 +37,7 @@ void Monster_Gangster::Start()
 
 void Monster_Gangster::Update(float _DeltaTime)
 {
+	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
 
@@ -59,12 +65,20 @@ void Monster_Gangster::DebugUpdate()
 
 void Monster_Gangster::ComponentSetting()
 {
-	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	float4 MyPos = GetTransform()->GetLocalPosition();
 	
 	// 렌더러, 충돌체 생성
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
-	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , 50.0f });
+	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , 38.0f});
+	// m_MainRender->GetTransform()->SetLocalScale({ 200.0f , 200.0f });
 	m_MainRender->SetScaleRatio(2.0f);
+
+	// 총렌더 생성 ㅡㅡ 음.. 이미지세팅으로  
+	m_GunRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
+	// 피봇추가해야함 
+	m_GunRender->GetTransform()->SetLocalPosition(MyPos);
+	m_GunRender->GetTransform()->SetLocalScale({ 54.0f , 12.0f });
+	m_GunRender->Off();
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
@@ -90,17 +104,218 @@ void Monster_Gangster::LoadAndCreateAnimation()
 			Dir.Move("gangster");
 			
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_idle").GetFullPath());
-	
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_walk").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_hitground").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_run").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_turn").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_gun").GetFullPath());
+
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
 	}
-
+	
 	m_MainRender->CreateAnimation({ .AnimationName = "gangster_idle", .SpriteName = "gangster_idle", .Start = 0, .End = 7 ,
-								  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true });
+								  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true});
+
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_walk", .SpriteName = "gangster_walk", .Start = 0, .End = 7 ,
+								  .FrameInter = 0.1f , .Loop = true ,.ScaleToTexture = true });
+	
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_hitground", .SpriteName = "gangster_hitground", .Start = 0, .End = 13 ,
+								  .FrameInter = 0.1f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_run", .SpriteName = "gangster_run", .Start = 0, .End = 9 ,
+								  .FrameInter = 0.065f , .Loop = true ,.ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_turn", .SpriteName = "gangster_turn", .Start = 0, .End = 5 ,
+								  .FrameInter = 0.09f , .Loop = true ,.ScaleToTexture = true });
 
 	m_MainRender->ChangeAnimation("gangster_idle");
 }
 
+void Monster_Gangster::DirCheck()
+{
+	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함 ㅎㅎ 
+	// 방향체크 
+	// 오른쪽 
+	if (0 < m_Direction)
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	// 왼쪽 
+	else if (0 > m_Direction)
+	{
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+}
 
 // -------------------------------------------- State ----------------------------------------------------
-// 
+
+void Monster_Gangster::UpdateState(float _DeltaTime)
+{
+	// 현재 상태의 update 호출 
+	switch (m_CurState)
+	{
+	case GangsterState::IDLE:
+		IdleUpdate(_DeltaTime);
+		break;
+	case GangsterState::WALK:
+		WalkUpdate(_DeltaTime);
+		break;
+	case GangsterState::CHASE:
+		ChaseUpdate(_DeltaTime);
+		break;
+	case GangsterState::HITGROUND:
+		HitGroundUpdate(_DeltaTime);
+		break;
+	case GangsterState::AIM:
+		AimUpdate(_DeltaTime);
+		break;
+	}
+}
+
+
+// state 변경, 변경될 상태의 start, 이전 상태의 end 수행
+void Monster_Gangster::ChangeState(GangsterState _State)
+{
+	m_NextState = _State;
+	m_PrevState = m_CurState;
+	m_CurState = m_NextState;
+
+	//WALK,	 // 걷기
+	//	CHASE,	 // 뛰기 
+	//	HIT,	 // 쳐맞음
+	//	AIM,	 // 공격 
+	
+	// start 
+	switch (m_NextState)
+	{
+	case GangsterState::IDLE:
+		IdleStart();
+		break;
+	case GangsterState::WALK:
+		WalkStart();
+		break;
+	case GangsterState::CHASE:
+		ChaseStart();
+		break;
+	case GangsterState::HITGROUND:
+		HitGroundStart();
+		break;
+	case GangsterState::AIM:
+		AimStart();
+		break;
+	}
+
+	// 이전 state의 end 
+	switch (m_PrevState)
+	{
+	case GangsterState::IDLE:
+		IdleEnd();
+		break;
+	case GangsterState::WALK:
+		WalkEnd();
+		break;
+	case GangsterState::CHASE:
+		ChaseEnd();
+		break;
+	case GangsterState::HITGROUND:
+		HitGroundEnd();
+		break;
+	case GangsterState::AIM:
+		AimEnd();
+		break;
+	}
+}
+
+void Monster_Gangster::IdleStart()
+{
+	m_MainRender->GetTransform()->AddLocalPosition({ 0.0f , 10.f });
+	m_MainRender->ChangeAnimation("gangster_idle");
+	DirCheck();
+}
+
+void Monster_Gangster::IdleUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		ChangeState(GangsterState::WALK);
+		return;
+	}
+
+	DirCheck();
+}
+
+void Monster_Gangster::IdleEnd()
+{
+	m_MainRender->GetTransform()->AddLocalPosition({ 0.0f , -10.f });
+}
+
+void Monster_Gangster::WalkStart()
+{
+	m_MainRender->ChangeAnimation("gangster_run");
+	DirCheck();
+}
+
+void Monster_Gangster::WalkUpdate(float _DeltaTime)
+{
+	DirCheck();
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		ChangeState(GangsterState::IDLE);
+		return;
+	}
+
+}
+
+void Monster_Gangster::WalkEnd()
+{
+}
+
+void Monster_Gangster::ChaseStart()
+{
+}
+
+void Monster_Gangster::ChaseUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Gangster::ChaseEnd()
+{
+}
+
+void Monster_Gangster::AimStart()
+{
+}
+
+void Monster_Gangster::AimUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Gangster::AimEnd()
+{
+}
+
+void Monster_Gangster::TurnStart()
+{
+}
+
+void Monster_Gangster::TurnUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Gangster::TurnEnd()
+{
+}
+
+void Monster_Gangster::HitGroundStart()
+{
+}
+
+void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Gangster::HitGroundEnd()
+{
+}
