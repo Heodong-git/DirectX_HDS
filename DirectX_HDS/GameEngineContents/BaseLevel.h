@@ -94,8 +94,7 @@ protected:
 	std::shared_ptr<class Map> m_Map = nullptr;
 
 	// 스테이지 제한시간
-	float m_LimitTime = 110.0f;
-
+	float m_LimitTime = 3.0f;
 private:
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
 	virtual void CameraSetting();

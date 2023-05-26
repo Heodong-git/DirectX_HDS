@@ -154,14 +154,14 @@ void ClubLevel_00::ActorLoad()
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
-	// 카메라
-	CreateActor<CameraMovement>();
-
 	// 타이머
 	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");
 
 	// 인벤
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
+
+	// 카메라
+	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::UI), "Camera");
 
 	std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
 	Monster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });

@@ -19,6 +19,7 @@ enum class PlayerState
 	FLIP,			// 벽타고 구르기 
 	FALL,			// 낙하 
 	WALL,			// 벽타기 
+	DEATH,			// 쥬금
 };
 
 class Player : public BaseActor
@@ -200,6 +201,10 @@ private:
 	void WallStart();
 	void WallUpdate(float _DeltaTime);
 	void WallEnd();
+	
+	void DeathStart();
+	void DeathUpdate(float _DeltaTime);
+	void DeathEnd();
 };
 
 // 파일입출력이 필수다. 

@@ -13,6 +13,7 @@
 PlayManager* PlayManager::MainManager = nullptr;
 std::vector<float4> PlayManager::m_CameraPivots = {};
 
+
 PlayManager::PlayManager()
 {
 	MainManager = this;
@@ -25,6 +26,13 @@ PlayManager::~PlayManager()
 
 void PlayManager::Update(float _DeltaTime)
 {
+	// 플레이어 사망시 맵크기만큼의 충돌체 생성, 그리고 플레이어가 죽었을때만 
+	// 커서가 충돌체를 생성하게 만들고, 그 충돌체가 여기 매니저에서 만든 충돌체랑 충돌하게 되면 둘다 death 시키고 
+	// 레벨을 리셋한다. .. 어 .. ㅋ ㅋㅋ 
+	if (true == PlayerDeathCheck())
+	{
+		int a = 0;
+	}
 }
 
 void PlayManager::CameraSetting()
@@ -92,8 +100,25 @@ void PlayManager::CameraSetting()
 	}
 }
 
+bool PlayManager::PlayerDeathCheck()
+{
+	if (nullptr == Player::MainPlayer)
+	{
+		return false;
+	}
+
+
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void PlayManager::Start()
 {
+	// 맵별 카메라세팅
 	if (0 == m_CameraPivots.size())
 	{
 		m_CameraPivots.reserve(8);
@@ -105,4 +130,5 @@ void PlayManager::Start()
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });        // 4
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 5 
 	}
+
 }

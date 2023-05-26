@@ -88,6 +88,7 @@ void Player::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_jump").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_wallslide").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_roll").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_die").GetFullPath());
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -107,7 +108,7 @@ void Player::LoadAndCreateAnimation()
 
 	m_Render->CreateAnimation({ .AnimationName = "player_run_to_idle", .SpriteName = "player_run_to_idle", .Start = 0, .End = 4 ,
 								  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
-	// 롤 
+
 	m_Render->CreateAnimation({ .AnimationName = "player_roll", .SpriteName = "player_roll", .Start = 0, .End = 6 ,
 									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
@@ -133,7 +134,7 @@ void Player::LoadAndCreateAnimation()
 						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_hurtfly_loop", .SpriteName = "player_hurtfly_loop", .Start = 0, .End = 3,
-						  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true });
+						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_hurtground", .SpriteName = "player_hurtground", .Start = 0, .End = 5,
 					  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
@@ -146,6 +147,9 @@ void Player::LoadAndCreateAnimation()
 
 	m_Render->CreateAnimation({ .AnimationName = "player_wallslide", .SpriteName = "player_wallslide", .Start = 0, .End = 1,
 					  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
+
+	m_Render->CreateAnimation({ .AnimationName = "player_die", .SpriteName = "player_die", .Start = 0, .End = 11,
+					  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->ChangeAnimation("player_idle");
 }
@@ -163,8 +167,10 @@ void Player::Update(float _DeltaTime)
 	//	}
 	//}
 
+
 	// 현재방향체크 
-	DirCheck();
+	// DirCheck();
+	// 필요하면살려 근데 필요없는거같아 어차피 스테이트안에서 다해. 
 
 	// 스킬업데이트 
 	SkillUpdate(_DeltaTime);
@@ -180,6 +186,17 @@ void Player::Update(float _DeltaTime)
 
 	// 디버그 업데이트
 	DebugUpdate();
+
+	// 데스체크, 만약 스테이지 제한시간을 넘어섰다면 
+	if (0.0f >= GetReturnCastLevel()->GetLimitTime())
+	{
+		if (PlayerState::DEATH == m_CurState)
+		{
+			return;
+		}
+
+		ChangeState(PlayerState::DEATH);
+	}
 }
 
 void Player::Render(float _DeltaTime)
@@ -361,6 +378,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::WALL:
 		WallUpdate(_DeltaTime);
 		break;
+	case PlayerState::DEATH:
+		DeathUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -405,6 +425,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::WALL:
 		WallStart();
 		break;
+	case PlayerState::DEATH:
+		DeathStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -440,6 +463,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::WALL:
 		WallEnd();
 		break;
+	case PlayerState::DEATH:
+		DeathEnd();
+		break;
 	}
 }
 
@@ -456,6 +482,13 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
+	// death test
+	/*if (true == GameEngineInput::IsDown("player_jump"))
+	{
+		ChangeState(PlayerState::DEATH);
+		return;
+	}*/
+
 	// 점프키 , w
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
@@ -1046,7 +1079,6 @@ void Player::FallEnd()
 // 벽오브젝트를 만드는게 맞나? 
 void Player::WallStart()
 {
-	int a = 0;
 }
 
 void Player::WallUpdate(float _DeltaTime)
@@ -1054,6 +1086,37 @@ void Player::WallUpdate(float _DeltaTime)
 }
 
 void Player::WallEnd()
+{
+}
+
+// 일단 보류
+// 너무부자연스러움 
+void Player::DeathStart()
+{
+	DirCheck();
+	m_Render->ChangeAnimation("player_die");
+	
+}
+
+void Player::DeathUpdate(float _DeltaTime)
+{
+	if (true == m_Render->IsAnimationEnd())
+	{
+		return;
+	}
+
+	if (false == PixelCollider::PixelCol->GroundCheck(this))
+	{
+		if (true == PixelCollider::PixelCol->GroundCheck(this))
+		{
+			return;
+		}
+
+		GetTransform()->AddLocalPosition(float4::Down * 50.0f * _DeltaTime);
+	}
+}
+
+void Player::DeathEnd()
 {
 }
 

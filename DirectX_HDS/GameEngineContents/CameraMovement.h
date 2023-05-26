@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 
+
+// 뭔가 역할이 카메라가 아닌거같아.. 
 // 설명 :
 class CameraMovement : public BaseActor
 {
@@ -19,6 +21,10 @@ public:
 	CameraMovement& operator=(const CameraMovement& _Other) = delete;
 	CameraMovement& operator=(CameraMovement&& _Other) noexcept = delete;
 
+	static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
+	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
+	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -27,6 +33,7 @@ protected:
 private:
 	void Move(float _DeltaTime);
 	bool RangeOverCheck(float _DeltaTime);
+	bool PlayerDeathCheck();
 
 	std::shared_ptr<class GameEngineCamera> m_MainCamera = nullptr;
 	float m_MoveSpeed = 200.0f;

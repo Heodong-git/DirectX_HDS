@@ -78,6 +78,7 @@ void ClubLevel_01::LevelChangeStart()
 	}
 	m_GUI->On();
 
+	CreateActor<PlayManager>();
 	PlayManager::MainManager->CameraSetting();
 
 	// 플레이어 위치세팅

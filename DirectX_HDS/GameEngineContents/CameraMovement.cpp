@@ -1,11 +1,18 @@
 #include "PrecompileHeader.h"
 #include "CameraMovement.h"
 
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
+
+
 #include "BaseLevel.h"
 #include "Player.h"
 #include "PixelCollider.h"
 
 CameraMovement* CameraMovement::FollowCamera = nullptr;;
+std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_SuccessRender = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_FailRender = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_BlackBoxRender = nullptr;
 
 CameraMovement::CameraMovement()
 {
@@ -34,13 +41,66 @@ void CameraMovement::Start()
 		// 1번맵은 범위 필요없으니까 건너뛰고 키값을 2부터 시작
 		
 	}
+
+	// 두변수가 nullptr 이라면 최초생성 
+	// 얘네는 카메라로 옮길 수 도 있음. 
+	if (nullptr == g_SuccessRender)
+	{
+		// 파일로드, 텍스쳐세팅까지 여기서 한번에 진행
+		if (nullptr == GameEngineTexture::Find("restart.png"))
+		{
+			GameEngineDirectory NewDir;
+			// 원하는 폴더를 가진 디렉터리로 이동
+			NewDir.MoveParentToDirectory("katanazero_resources");
+			// 그 폴더로 이동
+			NewDir.Move("katanazero_resources");
+			NewDir.Move("Texture");
+			NewDir.Move("ClubLevel");
+			NewDir.Move("youcandothis");
+
+			// 파일 전체로드 
+			std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
+		}
+	}
+
+	// 타이머 완성되면 사용
+	float4 ScreenSize = GameEngineWindow::GetScreenSize();
+	// 이동하고 렌더러 생성 후 텍스쳐 세팅
+	g_SuccessRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_SuccessRender->GetTransform()->SetLocalScale(ScreenSize);
+	g_SuccessRender->SetTexture("youcandothis.png");
+	g_SuccessRender->Off();
+
+	g_BlackBoxRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_BlackBoxRender->SetTexture("background_black.png");
+	g_BlackBoxRender->GetTransform()->SetLocalScale({ ScreenSize.x / 3.0f , ScreenSize.y / 4.0f });
+	g_BlackBoxRender->GetTransform()->SetLocalPosition({ 50.0f , 0.0f });
+	g_BlackBoxRender->ColorOptionValue.MulColor.a = 0.4f;
+	g_BlackBoxRender->Off();
+
+	g_FailRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_FailRender->SetScaleToTexture("restart.png");
+	g_FailRender->GetTransform()->SetLocalPosition({ 60.0f , 0.0f });
+	g_FailRender->Off();
 }
 
 void CameraMovement::Update(float _DeltaTime)
 {
+	// 이것도 사실 필요한지 모르겠음 
 	if (nullptr != GameEngineCore::GetCurLevel())
 	{
 		m_MainCamera = GameEngineCore::GetCurLevel()->GetMainCamera();
+	}
+
+	// 일단 여기까지 
+	if (true == PlayerDeathCheck())
+	{
+		g_BlackBoxRender->On();
+		g_FailRender->On();
 	}
 
 	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 
@@ -159,7 +219,7 @@ bool CameraMovement::RangeOverCheck(float _DeltaTime)
 	case LevelType::CLUBMAP1:
 	{
 		// 얘는 그냥 카메라 안에 다들어와서 노상관 아무것도 없어도 될듯
-		return false;
+		return true;
 	}
 		break;
 	case LevelType::CLUBMAP2:
@@ -180,3 +240,20 @@ bool CameraMovement::RangeOverCheck(float _DeltaTime)
 	// 
 	return true;
 }
+
+bool CameraMovement::PlayerDeathCheck()
+{
+	if (nullptr == Player::MainPlayer)
+	{
+		return false;
+	}
+
+
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		return true;
+	}
+
+	return false;
+}
+

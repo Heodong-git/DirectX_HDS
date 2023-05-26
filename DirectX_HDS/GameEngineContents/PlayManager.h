@@ -29,4 +29,5 @@ protected:
 	void Start() override;
 
 private:
+	bool PlayerDeathCheck();
 };
