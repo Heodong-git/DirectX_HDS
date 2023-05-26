@@ -32,7 +32,7 @@ void DashEffect::Start()
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	float PlayerRenderPivot = Player::MainPlayer->GetRenderPivot();
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
-	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + 20.0f});
+	GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + 20.0f });
 	m_Render->ColorOptionValue.MulColor.a = 0.7f;
 	m_Render->SetScaleRatio(3.0f);
 	m_Render->CreateAnimation({ .AnimationName = "dash_cloud", .SpriteName = "dashcloud", .Start = 0, .End = 9 ,
@@ -62,13 +62,12 @@ void DashEffect::Update(float _DeltaTime)
 
 	if (true == DirValue)
 	{
-		float4 Test = m_Render->GetTransform()->GetLocalScale();
-		m_Render->GetTransform()->SetLocalNegativeScaleX();
+		GetTransform()->SetLocalNegativeScaleX();
 	}
 
 	else if (false == DirValue)
 	{
-		m_Render->GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalPositiveScaleX();
 	}
 }
 
