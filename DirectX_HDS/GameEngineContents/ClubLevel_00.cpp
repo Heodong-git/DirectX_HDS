@@ -160,11 +160,11 @@ void ClubLevel_00::ActorLoad()
 	// 인벤
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
 
-	// 카메라
-	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::UI), "Camera");
-
 	std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
 	Monster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+
+	// 카메라
+	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::UI), "Camera");
 }
 
 void ClubLevel_00::DebugUpdate()
@@ -181,9 +181,9 @@ void ClubLevel_00::ActorReset()
 	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
 	// 얘는 여기서 바꾸면 안돼 
 	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
-	Player::MainPlayer->ChangeState(PlayerState::IDLE);
 	Player::MainPlayer->ResetDir();
 	Player::MainPlayer->ResetSlowLimitTime();
+	Player::MainPlayer->ChangeState(PlayerState::IDLE);
 
 	// 카메라위치초기화 
 	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[0]);

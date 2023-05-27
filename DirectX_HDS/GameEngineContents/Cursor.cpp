@@ -91,6 +91,11 @@ void Cursor::Update(float _DeltaTime)
 				m_Collision->GetTransform()->SetLocalPosition(GetReturnCastLevel()->GetMainCamera()->GetTransform()->GetLocalPosition());
 				m_Collision->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize());
 			}
+			
+			else if (nullptr != m_Collision)
+			{
+				m_Collision->On();
+			}
 		}
 	}
 }

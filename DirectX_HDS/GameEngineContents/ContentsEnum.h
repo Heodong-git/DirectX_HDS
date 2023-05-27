@@ -4,9 +4,9 @@ enum class RenderOrder
 {
 	BACKGROUND,
 	MAP,
-	UI,
 	MONSTER,
 	BOSS,
+	UI,
 	PLAYER,
 	PLAYER_EFFECT,
 	EFFECT,

@@ -62,7 +62,7 @@ public:
 
 	inline void SetLimitTime()
 	{
-		m_LimitTime = 110.0f;
+		m_LimitTime = 3.0f;
 	}
 
 protected:

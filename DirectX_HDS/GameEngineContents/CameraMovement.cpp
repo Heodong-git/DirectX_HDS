@@ -127,7 +127,7 @@ void CameraMovement::Update(float _DeltaTime)
 		// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 		if (nullptr != CursorCol)
 		{
-			CursorCol->Death();
+			CursorCol->Off();
 			g_BlackBoxRender->Off();
 			g_FailRender->Off();
 			// 리셋하고 
