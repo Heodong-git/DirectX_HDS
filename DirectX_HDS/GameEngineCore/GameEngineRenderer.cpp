@@ -32,11 +32,6 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 	Pipe->Render();
 }
 
-
-
-
-
-
 // ------------------------------ ·»´õ·¯ ------------------------------------------
 
 GameEngineRenderer::GameEngineRenderer()

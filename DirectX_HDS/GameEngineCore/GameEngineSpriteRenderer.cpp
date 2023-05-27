@@ -332,20 +332,24 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 
 void GameEngineSpriteRenderer::Update(float _DeltaTime)
 {
-	// 현재 애니메이션이 nullptr 이 아니라면 
 	if (nullptr != CurAnimation)
 	{
 		CurAnimation->Update(_DeltaTime);
 
+		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
+
+		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+		AtlasData = Info.CutData;
+
 		if (true == CurAnimation->ScaleToTexture)
 		{
-			const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
 			std::shared_ptr<GameEngineTexture> Texture = Info.Texture;
+
 			float4 Scale = Texture->GetScale();
 
 			Scale.x *= Info.CutData.SizeX;
 			Scale.y *= Info.CutData.SizeY;
-			Scale.z = 1.0f;                 // z 축 연산시 둘다 z 값이 0이면 문제가 생길 수 있다. 
+			Scale.z = 1.0f;
 
 			Scale *= ScaleRatio;
 
@@ -354,16 +358,9 @@ void GameEngineSpriteRenderer::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineSpriteRenderer::Render(float _Delta)
+void GameEngineSpriteRenderer::Render(float _DeltaTime)
 {
-	if (nullptr != CurAnimation)
-	{
-		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
-
-		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
-		AtlasData = Info.CutData;
-	}
-	GameEngineRenderer::Render(_Delta);
+	GameEngineRenderer::Render(_DeltaTime);
 }
 
 void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
