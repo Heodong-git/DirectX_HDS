@@ -277,33 +277,55 @@ void Player::DebugUpdate()
 
 void Player::SkillUpdate(float _DeltaTime)
 {
-	// 눌려있으면 스킬발동중 인거고
-	if (true == GameEngineInput::IsPress("player_skill_slow"))
+	// 스케일적용 X 델타타임을 받아둔다.  
+	float OriginTime = GameEngineTime::GlobalTime.GetDeltaTime();
+
+	// 만약 배터리가 모두 소모 되었을 때의 충전로직
+	// 아래 if 문이랑 합쳐질거같기도한데 일단은 되니까 나중에
+	if (true == m_BatteryCharge)
 	{
-		float OriginTime = GameEngineTime::GlobalTime.GetDeltaTime();
-		// 만약 스킬지속시간이 9초가넘어섰다면 
-		if (0.0f >= m_SlowLimitTime)
+		m_SlowLimitTime += OriginTime;
+		m_LimitTimeValue = m_SlowLimitTime;
+		if (true == GameEngineInput::IsPress("player_skill_slow"))
 		{
-			m_SlowLimitTime += OriginTime;
-			m_IsSlowSkill = false;
-			SlowReset();
+			if (9.0f <= m_SlowLimitTime)
+			{
+				m_SlowLimitTime = 9.0f;
+				m_BatteryCharge = false;
+			}
 			return;
 		}
 
-		// 스킬온
-		m_IsSlowSkill = true;
+		else if (true == GameEngineInput::IsUp("player_skill_slow"))
+		{
+			m_SlowLimitTime = m_LimitTimeValue;
+			m_LimitTimeValue = 0.0f;
+			m_BatteryCharge = false;
+			return;
+		}
+	}
 
-
-		// 계속 누르고 있는 상태라면 지속적으로 델타타임을 누적해준다. 
-		// 이때는 정상적으로 적용될 수 있도록 타임스케일 조정 
-		m_SlowLimitTime -= OriginTime;
+	// 눌려있으면 스킬발동중 인거고 , 배터리 차지가 false 일때만 들어온다. 
+	if (true == GameEngineInput::IsPress("player_skill_slow"))
+	{
+		// 만약 누르고 있는중에 지속시간이 0.0초보다 작아지게 되면 스킬을 종료하고
+		// 스킬 사용 상태를 false로 변경, 제한시간을 0.0초로 초기화한다. 
 		if (0.0f >= m_SlowLimitTime)
 		{
+			m_BatteryCharge = true;
+			SlowReset();
 			m_SlowLimitTime = 0.0f;
 			m_IsSlowSkill = false;
 			return;
 		}
 
+		// 지금 누르고 있는 상태이기 때문에 스킬온 
+		m_IsSlowSkill = true;
+
+		// 지속시간을 감소시킨다. 
+		m_SlowLimitTime -= OriginTime;
+
+		// 델타타임에 스케일을 적용한다. 
 		Slow();
 	}
 
@@ -328,7 +350,7 @@ void Player::Slow()
 {
 	if (true == m_IsSlowSkill)
 	{
-		GameEngineTime::GlobalTime.SetTimeScale(0.3f);
+		GameEngineTime::GlobalTime.SetTimeScale(0.25f);
 	}
 }
 

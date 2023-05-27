@@ -157,6 +157,8 @@ private:
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
 	float m_SlowLimitTime = 9.0f;
+	float m_LimitTimeValue = 0.0f;
+	bool m_BatteryCharge = false;
 	// skill 
 	void SkillUpdate(float _DeltaTime);
 	void Slow();

@@ -129,55 +129,55 @@ void Battery::TextureChange()
 		return;
 	}
 
-	else if (8.0f >= TimeCheck && 7.0f < TimeCheck)
+	else if (9.0f > TimeCheck && 8.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_08.png");
 		return;
 	}
 
-	else if (7.0f >= TimeCheck && 6.0f < TimeCheck)
+	else if (8.0f > TimeCheck && 7.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_07.png");
 		return;
 	}
 
-	else if (6.0f >= TimeCheck && 5.0f < TimeCheck)
+	else if (7.0f > TimeCheck && 6.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_06.png");
 		return;
 	}
 
-	else if (5.0f >= TimeCheck && 4.0f < TimeCheck)
+	else if (6.0f > TimeCheck && 5.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_05.png");
 		return;
 	}
 
-	else if (4.0f >= TimeCheck && 3.0f < TimeCheck)
+	else if (5.0f > TimeCheck && 4.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_04.png");
 		return;
 	}
 
-	else if (3.0f >= TimeCheck && 2.0f < TimeCheck)
+	else if (4.0f > TimeCheck && 3.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_03.png");
 		return;
 	}
 
-	else if (2.0f >= TimeCheck && 1.0f < TimeCheck)
+	else if (3.0f > TimeCheck && 2.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_02.png");
 		return;
 	}
 
-	else if (1.0f >= TimeCheck && 0.0f < TimeCheck)
+	else if (2.0f > TimeCheck && 1.0f <= TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_01.png");
 		return;
 	}
 
-	else if (0.0f >= TimeCheck)
+	else if (1.0f > TimeCheck)
 	{
 		m_MainRender->SetTexture("Battery_00.png");
 		return;
