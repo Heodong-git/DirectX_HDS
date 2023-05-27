@@ -168,7 +168,25 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	//	}
 	//}
 
-	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	static bool GUIRender = true;
+
+	if (true == GameEngineInput::IsDown("GUISwitch"))
+	{
+		GUIRender = !GUIRender;
+
+		if (false == GUIRender)
+		{
+			GameEngineGUI::Release();
+		}
+		else {
+			GameEngineGUI::Initialize();
+		}
+	}
+
+	if (true == GUIRender)
+	{
+		GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	}
 }
 
 void GameEngineLevel::ActorRelease()
