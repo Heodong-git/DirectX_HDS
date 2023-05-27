@@ -136,8 +136,6 @@ private:
 	// 공격의 쿨타임 여기부터 만들자 ㅇㅇ 
 	float m_GlobalCoolDown = 0.3f; 
 
-	
-
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
 
@@ -156,15 +154,20 @@ private:
 
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
+	// 스킬 사용가능 시간 
 	float m_SlowLimitTime = 9.0f;
+	// 스킬 사용 중간에 값을 저장할 변수
 	float m_LimitTimeValue = 0.0f;
+	// 현재 배터리가 모두 소모된 상태에서 재충전될 때 사용할 변수
 	bool m_BatteryCharge = false;
-	// skill 
+	// 현재 슬로우 스킬의 사용 여부를 확인할 변수 
+	bool m_IsSlowSkill = false;
+
+	// skill
 	void SkillUpdate(float _DeltaTime);
 	void Slow();
 	void SlowReset();
 
-	bool m_IsSlowSkill = false;
 	// ------------------------- state ----------------------------------
 private:
 	// 상태값 변경
