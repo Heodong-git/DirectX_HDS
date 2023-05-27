@@ -156,6 +156,7 @@ void Player::LoadAndCreateAnimation()
 
 void Player::Update(float _DeltaTime)
 {
+	
 	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
 	//// 충돌테스트코드 잘된다 ㅇㅇ  
 	//if (m_Collision->CollisionAll(ColOrder::CURSOR, TestVector))
@@ -166,12 +167,7 @@ void Player::Update(float _DeltaTime)
 	//		Col->GetActor()->Death();
 	//	}
 	//}
-
-
-	// 현재방향체크 
-	// DirCheck();
-	// 필요하면살려 근데 필요없는거같아 어차피 스테이트안에서 다해. 
-
+	
 	// 스킬업데이트 
 	SkillUpdate(_DeltaTime);
 

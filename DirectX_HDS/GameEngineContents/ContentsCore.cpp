@@ -34,7 +34,6 @@ ContentsCore::~ContentsCore()
 
 void ContentsCore::ContentsResourcesCreate()
 {
-
 	{
 		// 쉐이더 로드 
 
@@ -47,10 +46,10 @@ void ContentsCore::ContentsResourcesCreate()
 
 		// 임시변경
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
-
-		// 쉐이더 자동컴파일
-		GameEngineVertexShader::Load(Files[0].GetFullPath(), "MyShader_VS");
-		GameEnginePixelShader::Load(Files[0].GetFullPath(), "MyShader_PS");
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineShader::AutoCompile(Files[i]);
+		}
 	}
 	
 	{
@@ -62,6 +61,17 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("MyShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("MyShader.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Fade");
+
+		Pipe->SetVertexBuffer("FullRect");
+		Pipe->SetIndexBuffer("FullRect");
+		Pipe->SetVertexShader("FadeShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("FadeShader.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

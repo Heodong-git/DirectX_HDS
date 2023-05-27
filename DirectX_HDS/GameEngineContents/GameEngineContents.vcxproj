@@ -196,7 +196,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="FadeInOut_Effect.h">
+    <ClInclude Include="FadeEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -333,7 +333,7 @@
     <ClCompile Include="ClubLevel_03.cpp" />
     <ClCompile Include="ClubLevel_04.cpp" />
     <ClCompile Include="DashEffect.cpp" />
-    <ClCompile Include="FadeInOut_Effect.cpp" />
+    <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="JumpEffect.cpp" />
     <ClCompile Include="LandEffect.cpp" />
     <ClCompile Include="MySpriteRenderer.cpp" />

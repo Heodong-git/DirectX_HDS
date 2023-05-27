@@ -21,7 +21,7 @@
 #include "Inven.h"
 #include "Timer.h"
 #include "Hud.h"
-#include "FadeInOut_Effect.h"
+#include "FadeEffect.h"
 
 ClubLevel_00::ClubLevel_00()
 {
@@ -33,11 +33,11 @@ ClubLevel_00::~ClubLevel_00()
 
 void ClubLevel_00::Start()
 {
-	GetMainCamera()->SetSortType(0, SortType::ZSort);
-
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 
+	// 페이드인아웃 이펙트
+	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	// 필요한 키생성
 	// 전부 베이스레벨에 있으면 될거같은데 
 	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubBossLevel"))
@@ -69,9 +69,7 @@ void ClubLevel_00::Update(float _DeltaTime)
 		return;
 	}
 
-
 	// 업데이트의 경우 BaseLevel::LevelState::WAIT 가 PLAY 일때만 업데이트 하고 레벨이 필요한 함수를 호출하도록 할거
-
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -173,22 +171,18 @@ void ClubLevel_00::DebugUpdate()
 
 void ClubLevel_00::ActorReset()
 {
-	// 일단 되는데. 너무 무방비하게 기능이 흩어져있는거같음 
-
-	// 정리다되면 벡터에 저장해서 전부 돌린다 
-
 	// 플레이어
 	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
 	// 얘는 여기서 바꾸면 안돼 
 	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
 	Player::MainPlayer->ResetDir();
-	Player::MainPlayer->ResetSlowLimitTime();
 	Player::MainPlayer->ChangeState(PlayerState::IDLE);
+	Player::MainPlayer->ResetSlowLimitTime();
 
 	// 카메라위치초기화 
 	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[0]);
 
-	// 레벨의 상태도 바꿔 
+	// 레벨상태변경
 	SetState(BaseLevel::LevelState::PLAY);
 
 	// 타이머리셋 

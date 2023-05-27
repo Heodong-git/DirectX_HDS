@@ -38,11 +38,10 @@ private:
 	float4 PlayerSetPos = { -850 , -94 };
 
 	// 카메라이펙트
-	std::shared_ptr<class FadeInOut_Effect> m_FadeEffect = nullptr;
+	std::shared_ptr<class FadeEffect> m_FadeEffect;
 
 	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-
 
 	// 디버그용 
 	void DebugUpdate();

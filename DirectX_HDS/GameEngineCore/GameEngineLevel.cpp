@@ -125,7 +125,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
-		Cam->CamTarget->Effect();
+		Cam->CamTarget->Effect(_DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -138,6 +138,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		LastTarget->Merge(Target);
 	}
 
+	LastTarget->Effect(_DeltaTime);
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
 	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.

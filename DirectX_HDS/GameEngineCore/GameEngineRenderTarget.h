@@ -12,8 +12,8 @@ public:
 	std::shared_ptr<GameEngineRenderTarget> ResultTarget;
 
 protected:
-	virtual void Start(std::shared_ptr<GameEngineRenderTarget> _Target) = 0;
-	virtual void Effect(std::shared_ptr<GameEngineRenderTarget> _Target) = 0;
+	virtual void Start(GameEngineRenderTarget* _Target) = 0;
+	virtual void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) = 0;
 };
 
 // ¼³¸í :
@@ -63,18 +63,24 @@ public:
 
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
+	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
+
 	// ·»´õÅ¸°Ù¿¡ ÀÌÆåÆ®¸¦ Ãß°¡ÇÑ´Ù´Â °³³ä
 	template<typename EffectType>
 	std::shared_ptr<EffectType> CreateEffect()
 	{
 		std::shared_ptr<EffectType> Effect = std::make_shared<EffectType>();
-		std::shared_ptr<GameEnginePostProcess> UpCast = std::dynamic_pointer_cast<GameEnginePostProcess>(Effect);
-		// UpCast->Start((shared_from_this()));
+		EffectInit(Effect);
 		Effects.push_back(Effect);
 		return Effect;
 	}
 
-	void Effect();
+	void Effect(float _DeltaTime);
+
+	std::shared_ptr<GameEngineTexture> GetTexture(int _Index)
+	{
+		return Textures[_Index];
+	}
 
 protected:
 

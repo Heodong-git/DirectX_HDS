@@ -120,7 +120,7 @@
     <ClInclude Include="RollEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
-    <ClInclude Include="FadeInOut_Effect.h">
+    <ClInclude Include="FadeEffect.h">
       <Filter>02.Actor\08.Effect\10.Camera</Filter>
     </ClInclude>
   </ItemGroup>
@@ -241,7 +241,7 @@
     <ClCompile Include="RollEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
-    <ClCompile Include="FadeInOut_Effect.cpp">
+    <ClCompile Include="FadeEffect.cpp">
       <Filter>02.Actor\08.Effect\10.Camera</Filter>
     </ClCompile>
   </ItemGroup>

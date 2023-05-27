@@ -8,7 +8,7 @@
 
 #include "Map.h"
 #include "Player.h"
-#include "FadeInOut_Effect.h"
+#include "FadeEffect.h"
 
 
 
@@ -84,6 +84,7 @@ void BaseLevel::LevelChangeStart()
 void BaseLevel::CameraSetting()
 {
 	// 카메라세팅
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000 });
 }

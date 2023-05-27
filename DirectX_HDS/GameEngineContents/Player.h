@@ -27,6 +27,7 @@ class Player : public BaseActor
 	friend class PixelCollider;
 	// Ω√«Ë¡ﬂ 
 	friend class ClubLevel_00;
+	friend class ClubLevel_01;
 public:
 	static Player* MainPlayer;
 

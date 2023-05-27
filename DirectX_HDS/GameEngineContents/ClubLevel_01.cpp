@@ -28,6 +28,8 @@ ClubLevel_01::~ClubLevel_01()
 {
 }
 
+
+
 void ClubLevel_01::Start()
 {
 	// 코어에서 처음 생성 될 때의 초기화 
@@ -83,7 +85,7 @@ void ClubLevel_01::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -538, -252 });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);
 
 	// HUD
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
@@ -136,4 +138,24 @@ void ClubLevel_01::ActorLoad()
 
 void ClubLevel_01::DebugUpdate()
 {
+}
+
+void ClubLevel_01::ActorReset()
+{
+	// 플레이어
+	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);
+	// 얘는 여기서 바꾸면 안돼 
+	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
+	Player::MainPlayer->ResetDir();
+	Player::MainPlayer->ResetSlowLimitTime();
+	Player::MainPlayer->ChangeState(PlayerState::IDLE);
+
+	// 카메라위치초기화 
+	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[1]);
+
+	// 레벨의 상태도 바꿔 
+	SetState(BaseLevel::LevelState::PLAY);
+
+	// 타이머리셋 
+	SetLimitTime();
 }
