@@ -203,6 +203,7 @@ void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
 	// 현재 로드된 레벨을 가져오고
 	CurLoadLevel = _Level.get();
+	_Level->Level = _Level.get();
 	_Level->Start();
 
 	// 변수를 초기화 

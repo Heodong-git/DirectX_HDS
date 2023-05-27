@@ -32,6 +32,7 @@ public:
 class GameEngineGUI
 {
 public:
+	static bool IsInit;
 	// constrcuter destructer
 	GameEngineGUI();
 	~GameEngineGUI();

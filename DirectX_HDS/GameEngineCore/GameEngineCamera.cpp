@@ -207,7 +207,7 @@ void GameEngineCamera::CameraTransformUpdate()
 		Projection.PerspectiveFovLH(FOV, Width / Height, Near, Far);
 		break;
 	case CameraType::Orthogonal:
-		Projection.OrthographicLH(Width, Height, Near, Far);
+		Projection.OrthographicLH(Width * ZoomRatio, Height * ZoomRatio, Near, Far);
 		break;
 	default:
 		break;

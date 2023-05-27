@@ -4,11 +4,9 @@
 #include "GameEngineDevice.h"
 #include "GameEngineLevel.h"
 
-// static 구현
 std::map<std::string, std::shared_ptr<GameEngineGUIWindow>> GameEngineGUI::AllWindow;
 
-//  다른 파일에서 선언한 전역변수를 가볍게 호출만 하여 현재 플젝에서 사용하고 싶을 때가 있다.
-//  그땐 extern 사용
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 GameEngineGUI::GameEngineGUI()
@@ -26,8 +24,15 @@ GameEngineGUI::~GameEngineGUI()
 //    return 0;
 //}
 
+bool GameEngineGUI::IsInit = false;
+
 void GameEngineGUI::Initialize()
 {
+    if (true == IsInit)
+    {
+        return;
+    }
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -73,7 +78,6 @@ void GameEngineGUI::Initialize()
     NewDir.Move("Font");
     io.Fonts->AddFontFromFileTTF(NewDir.GetPlusFileName("malgun.ttf").GetFullPath().c_str(), 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
 
-
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
     // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
@@ -89,7 +93,7 @@ void GameEngineGUI::Initialize()
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
-
+    IsInit = true;
 }
 
 void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime)
@@ -98,6 +102,7 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
 
     for (const std::pair<std::string, std::shared_ptr<GameEngineGUIWindow>>& WindowPair : AllWindow)
     {
@@ -131,8 +136,15 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
 
 void GameEngineGUI::Release()
 {
+    if (false == IsInit)
+    {
+        return;
+    }
+
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+
+    IsInit = false;
 }
 

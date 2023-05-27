@@ -13,7 +13,7 @@ class GameEngineObject :
 	// 
 	friend class GameEngineComponent;
 	friend class GameEngineActor;
-
+	friend class GameEngineCore;
 	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 public:
