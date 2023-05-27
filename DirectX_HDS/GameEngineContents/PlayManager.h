@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 
+// 얘이름을 카메라세터로 바꿀까..? 
+
 class PlayManager : public BaseActor
 {
 public:

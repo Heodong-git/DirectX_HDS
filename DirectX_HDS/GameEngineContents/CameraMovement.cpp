@@ -3,6 +3,7 @@
 
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 
 #include "BaseLevel.h"
@@ -13,6 +14,7 @@ CameraMovement* CameraMovement::FollowCamera = nullptr;;
 std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_SuccessRender = nullptr;
 std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_FailRender = nullptr;
 std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_BlackBoxRender = nullptr;
+std::shared_ptr<class GameEngineCollision> CameraMovement::g_MouseCheckCollision = nullptr;
 
 CameraMovement::CameraMovement()
 {
@@ -86,6 +88,12 @@ void CameraMovement::Start()
 	g_FailRender->SetScaleToTexture("restart.png");
 	g_FailRender->GetTransform()->SetLocalPosition({ 60.0f , 0.0f });
 	g_FailRender->Off();
+
+	// 마우스 충돌체크용
+	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
+	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
+
+	// 생성되는 위치는 현재카메라시점기준중앙을 기준으로해서 화면크기만큼 생성할거야
 }
 
 void CameraMovement::Update(float _DeltaTime)
@@ -96,11 +104,35 @@ void CameraMovement::Update(float _DeltaTime)
 		m_MainCamera = GameEngineCore::GetCurLevel()->GetMainCamera();
 	}
 
-	// 일단 여기까지 
+	// 플레이어가 사망하면, 텍스트를 띄우고 레벨을 대기 상태로 변경한다. 
 	if (true == PlayerDeathCheck())
 	{
+		GetReturnCastLevel()->SetState(BaseLevel::LevelState::WAIT);
 		g_BlackBoxRender->On();
 		g_FailRender->On();
+
+		// 여기서 만들어 
+		if (nullptr == g_MouseCheckCollision)
+		{
+			MsgAssert("마우스클릭 체크용 충돌체가 nullptr입니다.");
+			return;
+		}
+
+		g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
+		// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
+		
+		std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D,ColType::AABBBOX2D);
+		
+		// 뭔가가 들어왔다는건 충돌했다는거고 
+		// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+		if (nullptr != CursorCol)
+		{
+			CursorCol->Death();
+			g_BlackBoxRender->Off();
+			g_FailRender->Off();
+			// 리셋하고 
+			GetReturnCastLevel()->ActorReset();
+		}
 	}
 
 	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 

@@ -55,6 +55,7 @@ void Cursor::Start()
 	if (false == GameEngineInput::IsKey("cursor_DebugSwitch"))
 	{
 		GameEngineInput::CreateKey("cursor_DebugSwitch", 'Q');
+		GameEngineInput::CreateKey("cursor_leftclick", VK_LBUTTON);
 	}
 
 	
@@ -67,11 +68,6 @@ void Cursor::Start()
 	// 렌더러 정중앙의 디버그 렌더러 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender->GetTransform()->SetLocalScale( { 2, 2 });
-
-	// 테스트용, 오더 2번지정
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::CURSOR));
-	m_Collision->GetTransform()->SetLocalScale(m_Scale);
-	
 }
 
 void Cursor::Update(float _DeltaTime)
@@ -83,6 +79,20 @@ void Cursor::Update(float _DeltaTime)
 
 	DebugUpdate();
 	FollowCursor();
+
+	// 플레이어가 데스상태고, 레벨이 대기상태일때만 작동
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState() && PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		if (true == GameEngineInput::IsDown("cursor_leftclick"))
+		{
+			if (nullptr == m_Collision)
+			{
+				m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::CURSOR));
+				m_Collision->GetTransform()->SetLocalPosition(GetReturnCastLevel()->GetMainCamera()->GetTransform()->GetLocalPosition());
+				m_Collision->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize());
+			}
+		}
+	}
 }
 
 void Cursor::Render(float _DeltaTime)

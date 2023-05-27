@@ -3,6 +3,9 @@
 
 class BaseActor : public GameEngineActor
 {
+	// 레벨에서 초기상태로 리셋하게 될 경우
+	// 액터들을 초기상태로 설정하기 위함 
+	friend class BaseLevel;
 public:
 	// constrcuter destructer
 	BaseActor();

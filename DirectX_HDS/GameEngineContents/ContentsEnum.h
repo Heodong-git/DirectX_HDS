@@ -21,5 +21,6 @@ enum class ColOrder
 	PLAYER_ATTACK,
 	MONSTER,
 	MONSTER_ATTACK,
+	CHECKBOX,
 	CURSOR,
 };

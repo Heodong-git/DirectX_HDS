@@ -171,4 +171,26 @@ void ClubLevel_00::DebugUpdate()
 {
 }
 
+void ClubLevel_00::ActorReset()
+{
+	// 일단 되는데. 너무 무방비하게 기능이 흩어져있는거같음 
 
+	// 정리다되면 벡터에 저장해서 전부 돌린다 
+
+	// 플레이어
+	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
+	// 얘는 여기서 바꾸면 안돼 
+	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
+	Player::MainPlayer->ChangeState(PlayerState::IDLE);
+	Player::MainPlayer->ResetDir();
+	Player::MainPlayer->ResetSlowLimitTime();
+
+	// 카메라위치초기화 
+	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[0]);
+
+	// 레벨의 상태도 바꿔 
+	SetState(BaseLevel::LevelState::PLAY);
+
+	// 타이머리셋 
+	SetLimitTime();
+}

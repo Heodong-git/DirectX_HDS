@@ -3,6 +3,7 @@
 
 
 // 뭔가 역할이 카메라가 아닌거같아.. 
+// 지금 스테이지 미클리어시 화면에 텍스트 띄우기 + 레벨 리셋 호출을 하고 있는데 얘가 사실상 매니저가 아닌가.. 
 // 설명 :
 class CameraMovement : public BaseActor
 {
@@ -24,6 +25,7 @@ public:
 	static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
+	static std::shared_ptr<class GameEngineCollision> g_MouseCheckCollision;
 
 protected:
 	void Start() override;

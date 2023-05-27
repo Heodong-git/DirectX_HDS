@@ -25,7 +25,8 @@ enum class PlayerState
 class Player : public BaseActor
 {
 	friend class PixelCollider;
-
+	// Ω√«Ë¡ﬂ 
+	friend class ClubLevel_00;
 public:
 	static Player* MainPlayer;
 
@@ -56,6 +57,11 @@ public:
 	{
 		return m_Direction;
 	}
+
+	inline void ResetDir()
+	{
+		m_Direction = 1;
+	}
 	
 	inline const float GetRenderPivot() const
 	{
@@ -75,6 +81,11 @@ public:
 	inline bool IsSlowSkill() const
 	{
 		return m_IsSlowSkill;
+	}
+
+	inline void ResetSlowLimitTime()
+	{
+		m_SlowLimitTime = 9.0f;
 	}
 
 protected:

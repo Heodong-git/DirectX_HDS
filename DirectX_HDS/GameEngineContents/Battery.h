@@ -25,7 +25,6 @@ protected:
 
 	// 플레이어의 특정 값을 가져와서 해당하는 이미지로 변경할거야
 	
-
 private:
 	void TextureChange();
 	void Blink();

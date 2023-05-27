@@ -15,6 +15,13 @@ public:
 	ClubLevel_00& operator=(const ClubLevel_00& _Other) = delete;
 	ClubLevel_00& operator=(ClubLevel_00&& _Other) noexcept = delete;
 
+	// 초기위치로 리셋 
+	// 플레이어가 사망하고 난 이후에 호출되는 함수 
+	// 그냥 전부죽이고 새로 생성하는게 맞나?? 아니지 그냥 상태만 바꿔서 다시 가져다놓으면 되는거가틍ㄷ네 
+	// 일단 플레이어만 생각해 
+	// 일단 퍼블릭 
+	virtual void ActorReset() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -26,14 +33,16 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
+	
+	// 액터 초기위치
+	float4 PlayerSetPos = { -850 , -94 };
+
 	// 카메라이펙트
 	std::shared_ptr<class FadeInOut_Effect> m_FadeEffect = nullptr;
 
 	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 
-	// 액터 초기위치
-	float4 PlayerSetPos = { -850 , -94 };
 
 	// 디버그용 
 	void DebugUpdate();
