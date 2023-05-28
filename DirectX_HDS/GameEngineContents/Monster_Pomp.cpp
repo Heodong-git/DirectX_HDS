@@ -165,6 +165,18 @@ void Monster_Pomp::UpdateState(float _DeltaTime)
 	case PompState::HITGROUND:
 		HitGroundUpdate(_DeltaTime);
 		break;
+	case PompState::TURN:
+		TurnUpdate(_DeltaTime);
+		break;
+	case PompState::ATTACK:
+		AttackUpdate(_DeltaTime);
+		break;
+	case PompState::FALL:
+		FallUpdate(_DeltaTime);
+		break;
+	case PompState::KNOCKDOWN:
+		KnockDownUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -195,6 +207,18 @@ void Monster_Pomp::ChangeState(PompState _State)
 	case PompState::HITGROUND:
 		HitGroundStart();
 		break;
+	case PompState::TURN:
+		TurnStart();
+		break;
+	case PompState::ATTACK:
+		AttackStart();
+		break;
+	case PompState::FALL:
+		FallStart();
+		break;
+	case PompState::KNOCKDOWN:
+		KnockDownStart();
+		break;
 	}
 
 	// ¿Ã¿¸ state¿« end 
@@ -211,6 +235,18 @@ void Monster_Pomp::ChangeState(PompState _State)
 		break;
 	case PompState::HITGROUND:
 		HitGroundEnd();
+		break;
+	case PompState::TURN:
+		TurnEnd();
+		break;
+	case PompState::ATTACK:
+		AttackEnd();
+		break;
+	case PompState::FALL:
+		FallEnd();
+		break;
+	case PompState::KNOCKDOWN:
+		KnockDownEnd();
 		break;
 	}
 }

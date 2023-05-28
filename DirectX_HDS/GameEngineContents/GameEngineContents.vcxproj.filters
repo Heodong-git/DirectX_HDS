@@ -18,18 +18,6 @@
     <ClInclude Include="TitleLevel.h">
       <Filter>01.Level\01.Title</Filter>
     </ClInclude>
-    <ClInclude Include="Monster_Gangster.h">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster_Grunt.h">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster_Pomp.h">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster_Shotgun.h">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>02.Actor\04.Map</Filter>
     </ClInclude>
@@ -123,6 +111,21 @@
     <ClInclude Include="Player.h">
       <Filter>02.Actor\01.Player</Filter>
     </ClInclude>
+    <ClInclude Include="Monster_Grunt.h">
+      <Filter>02.Actor\02.Monster\Grunt</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Gangster.h">
+      <Filter>02.Actor\02.Monster\Gangster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Pomp.h">
+      <Filter>02.Actor\02.Monster\Pomp</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Shotgun.h">
+      <Filter>02.Actor\02.Monster\Shotgun</Filter>
+    </ClInclude>
+    <ClInclude Include="GruntEffect.h">
+      <Filter>02.Actor\02.Monster\Grunt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -143,18 +146,6 @@
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>01.Level\01.Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster_Gangster.cpp">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster_Grunt.cpp">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster_Pomp.cpp">
-      <Filter>02.Actor\02.Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster_Shotgun.cpp">
-      <Filter>02.Actor\02.Monster</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>02.Actor\04.Map</Filter>
@@ -243,6 +234,21 @@
     </ClCompile>
     <ClCompile Include="CameraSetter.cpp">
       <Filter>02.Actor\01.Player\Supporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Grunt.cpp">
+      <Filter>02.Actor\02.Monster\Grunt</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Gangster.cpp">
+      <Filter>02.Actor\02.Monster\Gangster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Pomp.cpp">
+      <Filter>02.Actor\02.Monster\Pomp</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Shotgun.cpp">
+      <Filter>02.Actor\02.Monster\Shotgun</Filter>
+    </ClCompile>
+    <ClCompile Include="GruntEffect.cpp">
+      <Filter>02.Actor\02.Monster\Grunt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +344,18 @@
     </Filter>
     <Filter Include="02.Actor\01.Player\Supporter">
       <UniqueIdentifier>{e68ca898-7f6c-420a-9c55-7f3860d3e9f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Grunt">
+      <UniqueIdentifier>{415694d8-eda1-43bd-84c5-c018e88e5a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Gangster">
+      <UniqueIdentifier>{47b91f92-f164-4732-9cae-e7e4053eca23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Pomp">
+      <UniqueIdentifier>{a7413bae-658c-48d6-b0cb-322e70b75a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Shotgun">
+      <UniqueIdentifier>{f61bbd66-af73-47b5-a5c5-e3d29917f0ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

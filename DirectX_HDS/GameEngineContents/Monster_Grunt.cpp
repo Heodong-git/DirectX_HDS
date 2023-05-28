@@ -29,6 +29,7 @@ void Monster_Grunt::Start()
 
 void Monster_Grunt::Update(float _DeltaTime)
 {
+	DirCheck();
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
@@ -57,40 +58,67 @@ void Monster_Grunt::DebugUpdate()
 
 void Monster_Grunt::ComponentSetting()
 {
-	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(static_cast<int>(RenderOrder::MONSTER));
-	m_MainRender->GetTransform()->SetLocalPosition({ 0, 0 });
+	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
+	m_MainRender->GetTransform()->SetLocalPosition({ 0, 35.0f });
 	m_MainRender->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
+	m_Collision = CreateComponent<GameEngineCollision>(RenderOrder::MONSTER);
 	m_Collision->GetTransform()->SetLocalScale({ 100.0f, 100.0f });
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 0.0f });
+
+	// 디버그렌더
+	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender->GetTransform()->SetLocalScale({ 4,  4 });
 }
 
 void Monster_Grunt::LoadAndCreateAnimation()
 {
-	//// 여기서 필요한 리소스 로드 후 애니메이션 만들어
-	//{
-	//	if (nullptr == GameEngineSprite::Find("grunt_idle"))
-	//	{
-	//		GameEngineDirectory Dir;
-	//		Dir.MoveParentToDirectory("katanazero_resources");
-	//		Dir.Move("katanazero_resources");
-	//		Dir.Move("Texture");
-	//		Dir.Move("ClubLevel");
-	//		Dir.Move("grunt");
+	// 여기서 필요한 리소스 로드 후 애니메이션 만들어
+	{
+		if (nullptr == GameEngineSprite::Find("grunt_idle"))
+		{
+			GameEngineDirectory Dir;
+			Dir.MoveParentToDirectory("katanazero_resources");
+			Dir.Move("katanazero_resources");
+			Dir.Move("Texture");
+			Dir.Move("ClubLevel");
+			Dir.Move("grunt");
 
-	//		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_idle").GetFullPath());
-	//		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_walk").GetFullPath());
-	//		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_hitground").GetFullPath());
-	//		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_run").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_idle").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_walk").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_hurtground").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_run").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_attack").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_turn").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_fall").GetFullPath());
 
-	//		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
-	//	}
-	//}
+			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+		}
+	}
 
-	//m_MainRender->CreateAnimation({ .AnimationName = "grunt_idle", .SpriteName = "grunt_idle", .Start = 0, .End = 7 ,
-	//							  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_idle", .SpriteName = "grunt_idle", .Start = 0, .End = 7 ,
+								  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_attack", .SpriteName = "grunt_attack", .Start = 0, .End = 7 ,
+							  .FrameInter = 0.06f , .Loop = false , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_fall", .SpriteName = "grunt_fall", .Start = 0, .End = 12 ,
+							  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_hurtground", .SpriteName = "grunt_hurtground", .Start = 0, .End = 15 ,
+							  .FrameInter = 0.10f , .Loop = false , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_run", .SpriteName = "grunt_run", .Start = 0, .End = 9 ,
+							  .FrameInter = 0.06f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_turn", .SpriteName = "grunt_turn", .Start = 0, .End = 7 ,
+							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_walk", .SpriteName = "grunt_walk", .Start = 0, .End = 9 ,
+							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->ChangeAnimation("grunt_walk");
 }
 
 
@@ -130,6 +158,15 @@ void Monster_Grunt::UpdateState(float _DeltaTime)
 	case GruntState::HITGROUND:
 		HitGroundUpdate(_DeltaTime);
 		break;
+	case GruntState::FALL:
+		FallUpdate(_DeltaTime);
+		break;
+	case GruntState::TURN:
+		TurnUpdate(_DeltaTime);
+		break;
+	case GruntState::ATTACK:
+		AttackUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -140,12 +177,6 @@ void Monster_Grunt::ChangeState(GruntState _State)
 	m_PrevState = m_CurState;
 	m_CurState = m_NextState;
 
-	//WALK,	 // 걷기
-	//	CHASE,	 // 뛰기 
-	//	HIT,	 // 쳐맞음
-	//	AIM,	 // 공격 
-
-	// start 
 	switch (m_NextState)
 	{
 	case GruntState::IDLE:
@@ -159,6 +190,15 @@ void Monster_Grunt::ChangeState(GruntState _State)
 		break;
 	case GruntState::HITGROUND:
 		HitGroundStart();
+		break;
+	case GruntState::FALL:
+		FallStart();
+		break;
+	case GruntState::TURN:
+		TurnStart();
+		break;
+	case GruntState::ATTACK:
+		AttackStart();
 		break;
 	}
 
@@ -176,6 +216,15 @@ void Monster_Grunt::ChangeState(GruntState _State)
 		break;
 	case GruntState::HITGROUND:
 		HitGroundEnd();
+		break;
+	case GruntState::FALL:
+		FallEnd();
+		break;
+	case GruntState::TURN:
+		TurnEnd();
+		break;
+	case GruntState::ATTACK:
+		AttackEnd();
 		break;
 	}
 }
@@ -226,5 +275,41 @@ void Monster_Grunt::HitGroundUpdate(float _DeltaTime)
 }
 
 void Monster_Grunt::HitGroundEnd()
+{
+}
+
+void Monster_Grunt::AttackStart()
+{
+}
+
+void Monster_Grunt::AttackUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Grunt::AttackEnd()
+{
+}
+
+void Monster_Grunt::TurnStart()
+{
+}
+
+void Monster_Grunt::TurnUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Grunt::TurnEnd()
+{
+}
+
+void Monster_Grunt::FallStart()
+{
+}
+
+void Monster_Grunt::FallUpdate(float _DeltaTime)
+{
+}
+
+void Monster_Grunt::FallEnd()
 {
 }

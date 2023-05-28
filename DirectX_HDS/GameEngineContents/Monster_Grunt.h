@@ -4,11 +4,13 @@
 enum class GruntState
 {
 	NONE,
-	IDLE,	 // 아이들
-	WALK,	 // 걷기
-	CHASE,	 // 뛰기 
-	HITGROUND,	 // 쳐맞음
-	AIM,	 // 공격 
+	IDLE,		// 아이들
+	WALK,		// 걷기
+	CHASE,		// 뛰기 
+	HITGROUND,	// 쳐맞음
+	ATTACK,		// 공격
+	FALL,		// 날아감
+	TURN,		// 뒤돌기 
 };
 
 // 근육맨
@@ -59,20 +61,38 @@ private:
 	GruntState m_PrevState = GruntState::NONE;
 	GruntState m_NextState = GruntState::NONE;
 
+	// 아이들
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
 
+	// 워크 
 	void WalkStart();
 	void WalkUpdate(float _DeltaTime);
 	void WalkEnd();
 
+	// 런 
 	void ChaseStart();
 	void ChaseUpdate(float _DeltaTime);
 	void ChaseEnd();
 
+	// 맞음 
 	void HitGroundStart();
 	void HitGroundUpdate(float _DeltaTime);
 	void HitGroundEnd();
 
+	// 공격 
+	void AttackStart();
+	void AttackUpdate(float _DeltaTime);
+	void AttackEnd();
+
+	// 뒤돌기 
+	void TurnStart();
+	void TurnUpdate(float _DeltaTime);
+	void TurnEnd();
+
+	// 낙하 
+	void FallStart();
+	void FallUpdate(float _DeltaTime);
+	void FallEnd();
 };

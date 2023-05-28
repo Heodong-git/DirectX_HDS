@@ -80,7 +80,7 @@ void Monster_Gangster::ComponentSetting()
 	m_GunRender->Off();
 
 	// 콜리전 생성
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
+	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
 	m_Collision->GetTransform()->SetLocalScale({ 100.0f, 100.0f });
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 0.0f });
 
