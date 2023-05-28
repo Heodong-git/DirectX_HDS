@@ -4,23 +4,26 @@
 
 // 뭔가 역할이 카메라가 아닌거같아.. 
 // 지금 스테이지 미클리어시 화면에 텍스트 띄우기 + 레벨 리셋 호출을 하고 있는데 얘가 사실상 매니저가 아닌가.. 
+// 스테이지 미클리어, 클리어 체크하여 화면에 렌더러 띄우기 
+// 모든작업이 완료 되면 레벨 리셋을 호출 
+// 플레이어를 쫓아가는 카메라 
 // 설명 :
-class CameraMovement : public BaseActor
+class PlaySupporter : public BaseActor
 {
 	friend class Player;
 public:
-	static CameraMovement* FollowCamera;
+	static PlaySupporter* MainSupporter;
 
 public:
 	// constrcuter destructer
-	CameraMovement();
-	~CameraMovement();
+	PlaySupporter();
+	~PlaySupporter();
 
 	// delete Function
-	CameraMovement(const CameraMovement& _Other) = delete;
-	CameraMovement(CameraMovement&& _Other) noexcept = delete;
-	CameraMovement& operator=(const CameraMovement& _Other) = delete;
-	CameraMovement& operator=(CameraMovement&& _Other) noexcept = delete;
+	PlaySupporter(const PlaySupporter& _Other) = delete;
+	PlaySupporter(PlaySupporter&& _Other) noexcept = delete;
+	PlaySupporter& operator=(const PlaySupporter& _Other) = delete;
+	PlaySupporter& operator=(PlaySupporter&& _Other) noexcept = delete;
 
 	static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;

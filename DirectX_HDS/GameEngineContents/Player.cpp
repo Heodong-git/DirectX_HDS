@@ -13,7 +13,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 // 카메라
-#include "CameraMovement.h"
+#include "PlaySupporter.h"
 
 #include "BaseLevel.h"
 #include "Cursor.h"
@@ -175,9 +175,9 @@ void Player::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 
 	// 카메라무브 업데이트
-	if (nullptr != CameraMovement::FollowCamera)
+	if (nullptr != PlaySupporter::MainSupporter)
 	{
-		CameraMovement::FollowCamera->Update(_DeltaTime);
+		PlaySupporter::MainSupporter->Update(_DeltaTime);
 	}
 
 	// 디버그 업데이트

@@ -111,9 +111,6 @@
     <ClInclude Include="MySpriteRenderer.h">
       <Filter>06.Shader</Filter>
     </ClInclude>
-    <ClInclude Include="CameraMovement.h">
-      <Filter>02.Actor\10.Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Boss_HeadHunter.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
     </ClInclude>
@@ -122,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="FadeEffect.h">
       <Filter>02.Actor\08.Effect\10.Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySupporter.h">
+      <Filter>02.Actor\01.Player\Supporter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,9 +232,6 @@
     <ClCompile Include="MySpriteRenderer.cpp">
       <Filter>06.Shader</Filter>
     </ClCompile>
-    <ClCompile Include="CameraMovement.cpp">
-      <Filter>02.Actor\10.Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Boss_HeadHunter.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
     </ClCompile>
@@ -243,6 +240,9 @@
     </ClCompile>
     <ClCompile Include="FadeEffect.cpp">
       <Filter>02.Actor\08.Effect\10.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySupporter.cpp">
+      <Filter>02.Actor\01.Player\Supporter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,9 +327,6 @@
     <Filter Include="02.Actor\08.Effect\00.Player">
       <UniqueIdentifier>{dbdd5df2-4125-4306-b149-8dfb0f22a748}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\10.Camera">
-      <UniqueIdentifier>{4c199f71-cf72-47d0-87c2-eb0bc171a7ce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06.Shader">
       <UniqueIdentifier>{d8a620c5-e0c4-42d4-bb2b-fcfdf3f2c9c8}</UniqueIdentifier>
     </Filter>
@@ -338,6 +335,9 @@
     </Filter>
     <Filter Include="02.Actor\08.Effect\10.Camera">
       <UniqueIdentifier>{ab016246-b013-4210-8fc3-43825fdca11e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\01.Player\Supporter">
+      <UniqueIdentifier>{e68ca898-7f6c-420a-9c55-7f3860d3e9f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

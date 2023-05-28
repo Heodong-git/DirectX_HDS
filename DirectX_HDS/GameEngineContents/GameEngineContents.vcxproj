@@ -168,7 +168,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="CameraMovement.h">
+    <ClInclude Include="PlaySupporter.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -326,7 +326,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss_HeadHunter.cpp" />
-    <ClCompile Include="CameraMovement.cpp" />
+    <ClCompile Include="PlaySupporter.cpp" />
     <ClCompile Include="ClubDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp" />
     <ClCompile Include="ClubLevel_02.cpp" />

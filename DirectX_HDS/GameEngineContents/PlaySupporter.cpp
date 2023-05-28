@@ -1,31 +1,30 @@
 #include "PrecompileHeader.h"
-#include "CameraMovement.h"
+#include "PlaySupporter.h"
 
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-
 #include "BaseLevel.h"
 #include "Player.h"
 #include "PixelCollider.h"
 
-CameraMovement* CameraMovement::FollowCamera = nullptr;;
-std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_SuccessRender = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_FailRender = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> CameraMovement::g_BlackBoxRender = nullptr;
-std::shared_ptr<class GameEngineCollision> CameraMovement::g_MouseCheckCollision = nullptr;
+PlaySupporter* PlaySupporter::MainSupporter = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_SuccessRender = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
+std::shared_ptr<class GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
 
-CameraMovement::CameraMovement()
+PlaySupporter::PlaySupporter()
 {
-	FollowCamera = this;
+	MainSupporter = this;
 }
 
-CameraMovement::~CameraMovement()
+PlaySupporter::~PlaySupporter()
 {
 }
 
-void CameraMovement::Start()
+void PlaySupporter::Start()
 {
 	{
 		// 이게 맞나.. 일단 0번맵 범위
@@ -96,7 +95,7 @@ void CameraMovement::Start()
 	// 생성되는 위치는 현재카메라시점기준중앙을 기준으로해서 화면크기만큼 생성할거야
 }
 
-void CameraMovement::Update(float _DeltaTime)
+void PlaySupporter::Update(float _DeltaTime)
 {
 	// 이것도 사실 필요한지 모르겠음 
 	if (nullptr != GameEngineCore::GetCurLevel())
@@ -144,12 +143,12 @@ void CameraMovement::Update(float _DeltaTime)
 	Move(_DeltaTime);
 }
 
-void CameraMovement::Render(float _DeltaTime)
+void PlaySupporter::Render(float _DeltaTime)
 {
 }
 
 // 플레이어를 받아와서 움직일거. 
-void CameraMovement::Move(float _DeltaTime)
+void PlaySupporter::Move(float _DeltaTime)
 {
 	if (nullptr == Player::MainPlayer)
 	{
@@ -172,7 +171,7 @@ void CameraMovement::Move(float _DeltaTime)
 // 카메라가 맵의 범위를 넘어서는지 
 // 당연히 현재 레벨에 진입하고, 레벨이 모두 세팅되어있다는 가정하에. 
 // 카메라가 
-bool CameraMovement::RangeOverCheck(float _DeltaTime)
+bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 {
 	// 맵가져와
 	std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
@@ -273,13 +272,12 @@ bool CameraMovement::RangeOverCheck(float _DeltaTime)
 	return true;
 }
 
-bool CameraMovement::PlayerDeathCheck()
+bool PlaySupporter::PlayerDeathCheck()
 {
 	if (nullptr == Player::MainPlayer)
 	{
 		return false;
 	}
-
 
 	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
 	{

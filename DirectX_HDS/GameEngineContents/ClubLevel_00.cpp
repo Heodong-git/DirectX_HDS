@@ -13,7 +13,7 @@
 #include "PlayManager.h"
 #include "Cursor.h"
 #include "Player.h"
-#include "CameraMovement.h"
+#include "PlaySupporter.h"
 #include "Monster_Gangster.h"
 #include "StageEditer.h"
 #include "Battery.h"
@@ -161,8 +161,8 @@ void ClubLevel_00::ActorLoad()
 	std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
 	Monster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
 
-	// 카메라
-	CreateActor<CameraMovement>(static_cast<int>(RenderOrder::UI), "Camera");
+	// 플레이서포터
+	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
 }
 
 void ClubLevel_00::DebugUpdate()

@@ -16,7 +16,7 @@
 #include "Battery.h"
 #include "Cursor.h"
 #include "Hud.h"
-#include "CameraMovement.h"
+#include "PlaySupporter.h"
 #include "Timer.h"
 #include "Inven.h"
 
@@ -96,8 +96,8 @@ void ClubLevel_01::LevelChangeStart()
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
-	// 카메라
-	CreateActor<CameraMovement>();
+	// 플레이서포터
+	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
 
 	// 타이머
 	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");

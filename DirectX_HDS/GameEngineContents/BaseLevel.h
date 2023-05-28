@@ -14,7 +14,7 @@ enum class LevelType
 
 class BaseLevel : public GameEngineLevel
 {
-	friend class CameraMovement;
+	friend class PlaySupporter;
 
 public:
 	// 레벨 리얼 스타트와, 대기시간을 구분하기 위한 enum
