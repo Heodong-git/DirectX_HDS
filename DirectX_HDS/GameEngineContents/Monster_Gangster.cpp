@@ -19,6 +19,10 @@ Monster_Gangster::~Monster_Gangster()
 
 void Monster_Gangster::Start()
 {
+	if (false == GameEngineInput::IsKey("gangster_DebugSwitch"))
+	{
+		GameEngineInput::CreateKey("gangster_DebugSwitch", 'Q');
+	}
 	// 렌더러생성 및 세팅
 	ComponentSetting();
 	// 리소스 로드
@@ -28,11 +32,6 @@ void Monster_Gangster::Start()
 	// m_GunRender->SetTexture("gangster_gun_left.png");
 
 	ChangeState(GangsterState::IDLE);
-
-	if (false == GameEngineInput::IsKey("gangster_DebugSwitch"))
-	{
-		GameEngineInput::CreateKey("gangster_DebugSwitch", 'Q');
-	}
 }
 
 void Monster_Gangster::Update(float _DeltaTime)
@@ -47,7 +46,7 @@ void Monster_Gangster::Render(float _DeltaTime)
 
 void Monster_Gangster::DebugUpdate()
 {
-	if (true == GameEngineInput::IsDown("player_debugswitch"))
+	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
 	{
 		DebugSwitch();
 	}

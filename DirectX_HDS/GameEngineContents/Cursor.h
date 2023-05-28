@@ -27,6 +27,18 @@ public:
 	{
 		return m_Render;
 	}
+
+	// 만약 온을 두번호출한 상태에서 오프를 한번 호출하게 되면 
+	// 그대로 온 상태이기 때문에 횟수를 주의해야함
+	void WindowCursorOn()
+	{
+		ShowCursor(true);
+	}
+
+	void WindowCursorOff()
+	{
+		ShowCursor(false);
+	}
 	
 protected:
 	void Start() override;

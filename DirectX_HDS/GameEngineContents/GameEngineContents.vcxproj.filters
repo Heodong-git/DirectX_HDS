@@ -12,9 +12,6 @@
     <ClInclude Include="BaseActor.h">
       <Filter>02.Actor\00.Base</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>02.Actor\01.Player</Filter>
-    </ClInclude>
     <ClInclude Include="CTutorialLevel.h">
       <Filter>01.Level</Filter>
     </ClInclude>
@@ -122,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="CameraSetter.h">
       <Filter>02.Actor\01.Player\Supporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>02.Actor\01.Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

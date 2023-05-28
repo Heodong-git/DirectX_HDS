@@ -176,7 +176,6 @@ public:
 		AbsolutePosition = false;
 		TransData.Position = _Value;
 
-
 		TransformUpdate();
 		CalChild();
 	}

@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "PlaySupporter.h"
 #include "Monster_Gangster.h"
+#include "Monster_Pomp.h"
 #include "StageEditer.h"
 #include "Battery.h"
 #include "Map.h"
@@ -158,8 +159,11 @@ void ClubLevel_00::ActorLoad()
 	// 인벤
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
 
-	std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
-	Monster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	std::shared_ptr<Monster_Gangster> NewGangster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+	NewGangster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+
+	std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+	NewPomp->GetTransform()->SetLocalPosition({ -100.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
 
 	// 플레이서포터
 	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
