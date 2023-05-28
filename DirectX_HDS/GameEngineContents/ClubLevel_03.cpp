@@ -12,7 +12,7 @@
 #include "StageEditer.h"
 #include "Map.h"
 #include "Player.h"
-#include "PlayManager.h"
+#include "CameraSetter.h"
 #include "Battery.h"
 #include "Cursor.h"
 #include "Hud.h"
@@ -70,7 +70,7 @@ void ClubLevel_03::LevelChangeStart()
 	}
 	m_GUI->On();
 
-	PlayManager::MainManager->CameraSetting();
+	CameraSetter::MainCamSetter->CameraSetting();
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");

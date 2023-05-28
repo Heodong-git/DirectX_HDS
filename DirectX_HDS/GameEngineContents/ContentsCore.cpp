@@ -22,7 +22,7 @@
 #include "StageEditer.h"
 
 // ¾ê´Â ½ºÅÂÆ½À¸·Î °¡ÀÚ 
-#include "PlayManager.h"
+#include "CameraSetter.h"
 
 ContentsCore::ContentsCore()
 {
@@ -89,7 +89,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_03>("ClubLevel_03");
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 
-	GameEngineCore::ChangeLevel("TitleLevel");
+	GameEngineCore::ChangeLevel("ClubLevel_00");
 
 	// gui
 	{

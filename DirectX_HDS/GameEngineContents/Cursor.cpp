@@ -10,7 +10,7 @@
 
 #include "BaseLevel.h"
 #include "Player.h"
-#include "PlayManager.h"
+#include "CameraSetter.h"
 
 Cursor* Cursor::MainCursor = nullptr;
 

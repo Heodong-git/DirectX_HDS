@@ -12,7 +12,7 @@
 #include "StageEditer.h"
 #include "Map.h"
 #include "Player.h"
-#include "PlayManager.h"
+#include "CameraSetter.h"
 #include "Battery.h"
 #include "Inven.h"
 #include "Timer.h"

@@ -12,7 +12,7 @@
 #include "StageEditer.h"
 #include "Map.h"
 #include "Player.h"
-#include "PlayManager.h"
+#include "CameraSetter.h"
 #include "Battery.h"
 #include "Cursor.h"
 #include "Hud.h"
@@ -80,8 +80,8 @@ void ClubLevel_01::LevelChangeStart()
 	}
 	m_GUI->On();
 
-	CreateActor<PlayManager>();
-	PlayManager::MainManager->CameraSetting();
+	CreateActor<CameraSetter>();
+	CameraSetter::MainCamSetter->CameraSetting();
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
@@ -132,8 +132,6 @@ void ClubLevel_01::ActorLoad()
 		MsgAssert("현재 플레이어가 nullptr 입니다.");
 		return;
 	}
-
-
 }
 
 void ClubLevel_01::DebugUpdate()
@@ -151,7 +149,7 @@ void ClubLevel_01::ActorReset()
 	Player::MainPlayer->ChangeState(PlayerState::IDLE);
 
 	// 카메라위치초기화 
-	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[1]);
+	GetMainCamera()->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[1]);
 
 	// 레벨의 상태도 바꿔 
 	SetState(BaseLevel::LevelState::PLAY);

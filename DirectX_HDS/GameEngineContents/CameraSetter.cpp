@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "PlayManager.h"
+#include "CameraSetter.h"
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
@@ -10,21 +10,21 @@
 #include "BaseLevel.h"
 #include "Battery.h"
 
-PlayManager* PlayManager::MainManager = nullptr;
-std::vector<float4> PlayManager::m_CameraPivots = {};
+CameraSetter* CameraSetter::MainCamSetter = nullptr;
+std::vector<float4> CameraSetter::m_CameraPivots = {};
 
 
-PlayManager::PlayManager()
+CameraSetter::CameraSetter()
 {
-	MainManager = this;
+	MainCamSetter = this;
 }
 
-PlayManager::~PlayManager()
+CameraSetter::~CameraSetter()
 {
 	
 }
 
-void PlayManager::Update(float _DeltaTime)
+void CameraSetter::Update(float _DeltaTime)
 {
 	// 플레이어 사망시 맵크기만큼의 충돌체 생성, 그리고 플레이어가 죽었을때만 
 	// 커서가 충돌체를 생성하게 만들고, 그 충돌체가 여기 매니저에서 만든 충돌체랑 충돌하게 되면 둘다 death 시키고 
@@ -35,7 +35,7 @@ void PlayManager::Update(float _DeltaTime)
 	}
 }
 
-void PlayManager::CameraSetting()
+void CameraSetter::CameraSetting()
 {
 	// 처음에 만든레벨가 00이라서 안들어옴 그럼 그냥 겟레벨 해서 다이나믹캐스트
 	// 근데 이럴필요 없이 그냥 레벨시작하면 지가 카메라 세팅하면 될거같은데'???? 
@@ -100,7 +100,7 @@ void PlayManager::CameraSetting()
 	}
 }
 
-bool PlayManager::PlayerDeathCheck()
+bool CameraSetter::PlayerDeathCheck()
 {
 	if (nullptr == Player::MainPlayer)
 	{
@@ -116,7 +116,7 @@ bool PlayManager::PlayerDeathCheck()
 	return false;
 }
 
-void PlayManager::Start()
+void CameraSetter::Start()
 {
 	// 맵별 카메라세팅
 	if (0 == m_CameraPivots.size())

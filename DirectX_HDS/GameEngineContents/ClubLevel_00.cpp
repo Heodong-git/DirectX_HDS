@@ -10,7 +10,7 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 // 컨텐츠
-#include "PlayManager.h"
+#include "CameraSetter.h"
 #include "Cursor.h"
 #include "Player.h"
 #include "PlaySupporter.h"
@@ -89,8 +89,8 @@ void ClubLevel_00::LevelChangeStart()
 	m_GUI->On();
 
 	// 필요한 액터 생성, 초기화(세팅)
-	CreateActor<PlayManager>();
-	PlayManager::MainManager->CameraSetting();
+	CreateActor<CameraSetter>();
+	CameraSetter::MainCamSetter->CameraSetting();
 
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
 	SetState(BaseLevel::LevelState::PLAY);
@@ -134,7 +134,7 @@ void ClubLevel_00::ResourcesLoad()
 void ClubLevel_00::ActorLoad()
 {
 	// 맵 
-	m_Map = CreateActor<Map>(-10);
+	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_00.png");
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
@@ -180,7 +180,7 @@ void ClubLevel_00::ActorReset()
 	Player::MainPlayer->ResetSlowLimitTime();
 
 	// 카메라위치초기화 
-	GetMainCamera()->GetTransform()->SetLocalPosition(PlayManager::MainManager->m_CameraPivots[0]);
+	GetMainCamera()->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[0]);
 
 	// 레벨상태변경
 	SetState(BaseLevel::LevelState::PLAY);

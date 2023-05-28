@@ -293,7 +293,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PlayManager.h">
+    <ClInclude Include="CameraSetter.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -360,7 +360,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayManager.cpp" />
+    <ClCompile Include="CameraSetter.cpp" />
     <ClCompile Include="RecordingManager.cpp" />
     <ClCompile Include="ClubLevel_00.cpp" />
     <ClCompile Include="ClubLevel_Boss.cpp" />

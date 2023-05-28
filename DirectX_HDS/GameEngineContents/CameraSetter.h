@@ -2,22 +2,21 @@
 #include "BaseActor.h"
 
 // 얘이름을 카메라세터로 바꿀까..? ㅇㅇ 얘를 카메라 세터로 바꾸고 
-
-class PlayManager : public BaseActor
+class CameraSetter : public BaseActor
 {
 public:
-	static PlayManager* MainManager;
+	static CameraSetter* MainCamSetter;
 
 public:
 	// constrcuter destructer
-	PlayManager();
-	~PlayManager();
+	CameraSetter();
+	~CameraSetter();
 
 	// delete Function
-	PlayManager(const PlayManager& _Other) = delete;
-	PlayManager(PlayManager&& _Other) noexcept = delete;
-	PlayManager& operator=(const PlayManager& _Other) = delete;
-	PlayManager& operator=(PlayManager&& _Other) noexcept = delete;
+	CameraSetter(const CameraSetter& _Other) = delete;
+	CameraSetter(CameraSetter&& _Other) noexcept = delete;
+	CameraSetter& operator=(const CameraSetter& _Other) = delete;
+	CameraSetter& operator=(CameraSetter&& _Other) noexcept = delete;
 
 
 	void Update(float _DeltaTime);
