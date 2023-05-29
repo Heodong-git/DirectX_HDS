@@ -4,6 +4,7 @@ enum class RenderOrder
 {
 	BACKGROUND,
 	MAP,
+	DOOR,
 	MONSTER,
 	BOSS,
 	UI,
@@ -23,4 +24,5 @@ enum class ColOrder
 	MONSTER_ATTACK,
 	CHECKBOX,
 	CURSOR,
+	DOOR,
 };

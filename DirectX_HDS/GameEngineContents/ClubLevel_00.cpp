@@ -24,6 +24,7 @@
 #include "Timer.h"
 #include "Hud.h"
 #include "FadeEffect.h"
+#include "IronDoor.h"
 
 ClubLevel_00::ClubLevel_00()
 {
@@ -162,12 +163,29 @@ void ClubLevel_00::ActorLoad()
 	std::shared_ptr<Monster_Gangster> NewGangster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
 	NewGangster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
 
-	std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-	NewPomp->GetTransform()->SetLocalPosition({ 100.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	{
+		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		NewPomp->GetTransform()->SetLocalPosition({ -202.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	}
+	{
+		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		NewPomp->GetTransform()->SetLocalPosition({ 252.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	}
+	{
+		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		NewGrunt->GetTransform()->SetLocalPosition({ -474.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	}
+	{
+		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		NewGrunt->GetTransform()->SetLocalPosition({ 404.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	}
+	{
+		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		NewGrunt->GetTransform()->SetLocalPosition({ 524.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+	}
 
-	std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-	NewGrunt->GetTransform()->SetLocalPosition({ -200.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
-
+	std::shared_ptr<IronDoor> NewDoor = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
+	NewDoor->GetTransform()->SetLocalPosition({ -67.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y});
 	// 플레이서포터
 	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
 }
@@ -176,7 +194,7 @@ void ClubLevel_00::DebugUpdate()
 {
 }
 
-void ClubLevel_00::ActorReset()
+void ClubLevel_00::LevelReset()
 {
 	// 플레이어
 	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);

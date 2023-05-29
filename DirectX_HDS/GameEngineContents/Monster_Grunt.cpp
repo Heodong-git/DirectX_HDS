@@ -134,7 +134,7 @@ void Monster_Grunt::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "grunt_walk", .SpriteName = "grunt_walk", .Start = 0, .End = 9 ,
 							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
 
-	m_MainRender->ChangeAnimation("grunt_walk");
+	m_MainRender->ChangeAnimation("grunt_turn");
 }
 
 

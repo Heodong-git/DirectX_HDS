@@ -138,7 +138,7 @@ void ClubLevel_01::DebugUpdate()
 {
 }
 
-void ClubLevel_01::ActorReset()
+void ClubLevel_01::LevelReset()
 {
 	// 플레이어
 	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);

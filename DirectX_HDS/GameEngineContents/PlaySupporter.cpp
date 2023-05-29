@@ -130,7 +130,7 @@ void PlaySupporter::Update(float _DeltaTime)
 			g_BlackBoxRender->Off();
 			g_FailRender->Off();
 			// 리셋하고 
-			GetReturnCastLevel()->ActorReset();
+			GetReturnCastLevel()->LevelReset();
 		}
 	}
 

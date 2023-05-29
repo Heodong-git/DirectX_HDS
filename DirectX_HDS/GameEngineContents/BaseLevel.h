@@ -119,7 +119,7 @@ private:
 	float4 m_CurMouseLocalPos = {};
 
 	// 얘는 자식클래스에서 반드시 오버라이드, 액터들의 초기값리셋
-	virtual void ActorReset() {};
+	virtual void LevelReset() {};
 	// 베이스레벨에서 리셋이라는 함수를 호출하면
 	// 액터들을 전부 초기 위치로 되돌려 놓는다. 
 	// 음.. 근데 몬스터, 플레이어 정도만 되돌려놓으면 되니까.. 그냥 가지고 있는게 낫나? 

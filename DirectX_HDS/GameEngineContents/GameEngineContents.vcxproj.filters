@@ -63,9 +63,6 @@
     <ClInclude Include="ClubDoor.h">
       <Filter>02.Actor\09.Door</Filter>
     </ClInclude>
-    <ClInclude Include="NormalDoor.h">
-      <Filter>02.Actor\09.Door</Filter>
-    </ClInclude>
     <ClInclude Include="ClubLevel_01.h">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClInclude>
@@ -125,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="GruntEffect.h">
       <Filter>02.Actor\02.Monster\Grunt</Filter>
+    </ClInclude>
+    <ClInclude Include="IronDoor.h">
+      <Filter>02.Actor\09.Door</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="GruntEffect.cpp">
       <Filter>02.Actor\02.Monster\Grunt</Filter>
+    </ClCompile>
+    <ClCompile Include="IronDoor.cpp">
+      <Filter>02.Actor\09.Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

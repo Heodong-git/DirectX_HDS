@@ -20,7 +20,7 @@ public:
 	// 그냥 전부죽이고 새로 생성하는게 맞나?? 아니지 그냥 상태만 바꿔서 다시 가져다놓으면 되는거가틍ㄷ네 
 	// 일단 플레이어만 생각해 
 	// 일단 퍼블릭 
-	virtual void ActorReset() override;
+	virtual void LevelReset() override;
 
 protected:
 	void Start() override;
