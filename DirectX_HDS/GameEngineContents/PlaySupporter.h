@@ -22,7 +22,7 @@ public:
 	static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
-	static std::shared_ptr<class GameEngineCollision> g_MouseCheckCollision;
+	static std::shared_ptr<class GameEngineCollision>  g_MouseCheckCollision;
 
 protected:
 	void Start() override;

@@ -1,6 +1,13 @@
 #pragma once
 #include "BaseActor.h"
 
+enum class ClubDoorState
+{
+	NONE,
+	CLOSE,
+	OPEN,
+};
+
 // 설명 :
 class ClubDoor : public BaseActor
 {
@@ -21,5 +28,33 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	void DebugUpdate();
+
+	// 렌더러생성 및 세팅
+	void ComponentSetting();
+
+	// 애니메이션 리소스 로드및생성
+	void LoadAndCreateAnimation();
+
+	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
+
+private:
+	// 상태값 변경
+	void ChangeState(ClubDoorState _State);
+	// 현재 상태값에 따른 업데이트 
+	void UpdateState(float _DeltaTime);
+
+	ClubDoorState m_CurState = ClubDoorState::CLOSE;
+	ClubDoorState m_PrevState = ClubDoorState::NONE;
+	ClubDoorState m_NextState = ClubDoorState::NONE;
+
+	void CloseStart();
+	void CloseUpdate(float _DeltaTime);
+	void CloseEnd();
+
+	void OpenStart();
+	void OpenUpdate(float _DeltaTime);
+	void OpenEnd();
 };

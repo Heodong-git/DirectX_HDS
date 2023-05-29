@@ -33,7 +33,6 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
-	
 	// 액터 초기위치
 	float4 PlayerSetPos = { -850 , -94 };
 

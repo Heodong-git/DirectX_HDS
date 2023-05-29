@@ -55,6 +55,7 @@ void SlashEffect::Update(float _DeltaTime)
 	float RenderPivot = Player::MainPlayer->GetRenderPivot();
 	const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot});
+	m_Collision->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot });
 }
 
 void SlashEffect::Render(float _DeltaTime)
@@ -82,6 +83,7 @@ void SlashEffect::ComponentSetting()
 	m_Render->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
 
 	// 충돌체 
-	// m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLAYER_ATTACK);
-	// m_Collision->GetTransform()->SetLocalScale({ 100, 100 });
+	// 스케일은 임시크기 
+	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLAYER_ATTACK);
+	m_Collision->GetTransform()->SetLocalScale({ 100, 50 });
 }

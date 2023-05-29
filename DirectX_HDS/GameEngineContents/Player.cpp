@@ -355,7 +355,7 @@ void Player::Slow()
 {
 	if (true == m_IsSlowSkill)
 	{
-		GameEngineTime::GlobalTime.SetTimeScale(0.25f);
+		GameEngineTime::GlobalTime.SetTimeScale(0.15f);
 	}
 }
 

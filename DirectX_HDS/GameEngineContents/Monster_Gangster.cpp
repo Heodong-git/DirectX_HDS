@@ -36,6 +36,19 @@ void Monster_Gangster::Start()
 
 void Monster_Gangster::Update(float _DeltaTime)
 {
+	// 내가 플레이어의 공격과 충돌했다면 
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	// 뭔가가 들어왔다는건 충돌했다는거고 
+	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+	if (nullptr != Col)
+	{
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		ChangeState(GangsterState::HITGROUND);
+	}
+
 	UpdateState(_DeltaTime);
 	DebugUpdate();
 }
@@ -81,8 +94,8 @@ void Monster_Gangster::ComponentSetting()
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
-	m_Collision->GetTransform()->SetLocalScale({ 100.0f, 100.0f });
-	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 0.0f });
+	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 50.0f });
+	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 50.0f });
 
 	// 디버그렌더 생성
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
@@ -120,7 +133,7 @@ void Monster_Gangster::LoadAndCreateAnimation()
 								  .FrameInter = 0.1f , .Loop = true ,.ScaleToTexture = true });
 	
 	m_MainRender->CreateAnimation({ .AnimationName = "gangster_hitground", .SpriteName = "gangster_hitground", .Start = 0, .End = 13 ,
-								  .FrameInter = 0.1f , .Loop = true , .ScaleToTexture = true });
+								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 
 	m_MainRender->CreateAnimation({ .AnimationName = "gangster_run", .SpriteName = "gangster_run", .Start = 0, .End = 9 ,
 								  .FrameInter = 0.065f , .Loop = true ,.ScaleToTexture = true });
@@ -309,10 +322,16 @@ void Monster_Gangster::TurnEnd()
 
 void Monster_Gangster::HitGroundStart()
 {
+	DirCheck();
+	m_MainRender->ChangeAnimation("gangster_hitground");
 }
 
 void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 {
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		int a = 0;
+	}
 }
 
 void Monster_Gangster::HitGroundEnd()
