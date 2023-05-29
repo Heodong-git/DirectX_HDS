@@ -38,8 +38,6 @@ void ClubLevel_00::Start()
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 
-	// 페이드인아웃 이펙트
-	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	// 필요한 키생성
 	// 전부 베이스레벨에 있으면 될거같은데 
 	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubBossLevel"))
@@ -70,6 +68,7 @@ void ClubLevel_00::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("ClubLevel_01");
 		return;
 	}
+
 
 	// 업데이트의 경우 BaseLevel::LevelState::WAIT 가 PLAY 일때만 업데이트 하고 레벨이 필요한 함수를 호출하도록 할거
 	BaseLevel::Update(_DeltaTime);

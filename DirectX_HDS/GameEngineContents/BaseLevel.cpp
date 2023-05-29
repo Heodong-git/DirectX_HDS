@@ -25,6 +25,9 @@ BaseLevel::~BaseLevel()
 void BaseLevel::Start()
 {
 	CameraSetting();
+
+	// 페이드인아웃 이펙트
+	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 }
 
 void BaseLevel::Update(float _DeltaTime)
@@ -34,6 +37,17 @@ void BaseLevel::Update(float _DeltaTime)
 	if (nullptr != Cursor::MainCursor)
 	{
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+	}
+
+	// 테스트
+	if (true == Player::MainPlayer->IsSlowSkill())
+	{
+		GetFadeEffect()->FadeIn();
+	}
+
+	else if (false == Player::MainPlayer->IsSlowSkill())
+	{
+		//m_FadeEffect->FadeOut();
 	}
 
 	if (true == GameEngineInput::IsDown("ClubLevel_DebugSwitch"))
@@ -58,19 +72,7 @@ void BaseLevel::Update(float _DeltaTime)
 		return;
 	}
 
-	// 없어도 되지만 일단 임시로 
-	// 만약 현재 스테이트가 Play 라면 제한시간을 감소시킨다. 
-	if (BaseLevel::LevelState::PLAY == m_CurState)
-	{
-		
-		if (0 >= m_LimitTime)
-		{
-			// 플레이어 사망, 맵은 대기상태로 변경
-			int a = 0;
-		}
 
-		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
-	}
 
 	GameEngineLevel::Update(_DeltaTime);
 }

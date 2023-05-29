@@ -65,6 +65,11 @@ public:
 		m_LimitTime = 55.0f;
 	}
 
+	std::shared_ptr<class FadeEffect> GetFadeEffect()
+	{
+		return m_FadeEffect;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -102,6 +107,8 @@ protected:
 	// 스테이지 제한시간
 	float m_LimitTime = 55.0f;
 private:
+	// 카메라이펙트
+	std::shared_ptr<class FadeEffect> m_FadeEffect;
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
 	virtual void CameraSetting();
 

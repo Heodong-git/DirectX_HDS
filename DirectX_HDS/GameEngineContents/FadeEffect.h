@@ -24,8 +24,9 @@ public:
 
 	void FadeIn()
 	{
+		// 0.0f 
 		State = FadeState::FADEIN;
-		FadeData.x = 0.0f;
+		FadeData.x = 0.1f;
 	}
 
 	void FadeOut()

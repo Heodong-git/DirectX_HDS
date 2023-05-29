@@ -288,6 +288,8 @@ void Player::SkillUpdate(float _DeltaTime)
 		m_LimitTimeValue = m_SlowLimitTime;
 		if (true == GameEngineInput::IsPress("player_skill_slow"))
 		{
+			m_Render->ColorOptionValue.MulColor.r = 1.0f;
+
 			if (9.0f <= m_SlowLimitTime)
 			{
 				m_SlowLimitTime = 9.0f;
@@ -308,6 +310,8 @@ void Player::SkillUpdate(float _DeltaTime)
 	// 눌려있으면 스킬발동중 인거고 , 배터리 차지가 false 일때만 들어온다. 
 	if (true == GameEngineInput::IsPress("player_skill_slow"))
 	{
+		m_Render->ColorOptionValue.MulColor.r = 0.1f;
+		
 		// 만약 누르고 있는중에 지속시간이 0.0초보다 작아지게 되면 스킬을 종료하고
 		// 스킬 사용 상태를 false로 변경, 제한시간을 0.0초로 초기화한다. 
 		if (0.0f >= m_SlowLimitTime)
@@ -332,6 +336,7 @@ void Player::SkillUpdate(float _DeltaTime)
 	// 여긴 어차피 안눌린 상태니까 기존의 델타타임이 들어올거고 
 	else if (false == GameEngineInput::IsPress("player_skill_slow"))
 	{
+		m_Render->ColorOptionValue.MulColor.r = 1.0f;
 		// 안눌렸으면 바로 타임스케일리셋 
 		SlowReset();
 		m_IsSlowSkill = false;

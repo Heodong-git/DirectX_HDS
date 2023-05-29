@@ -34,7 +34,7 @@ void FadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 		return;
 	}
 
-	if (State == FadeState::FADEIN && 1.0f <= FadeData.x)
+	if (State == FadeState::FADEIN && 0.2f <= FadeData.x)
 	{
 		return;
 	}
@@ -43,7 +43,8 @@ void FadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	{
 		FadeData.x += _DeltaTime;
 	}
-	else {
+	else
+	{
 		FadeData.x -= _DeltaTime;
 	}
 
