@@ -138,6 +138,8 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		LastTarget->Merge(Target);
 	}
 
+	// 이시점에서 렌더타겟을 가져온다..? 
+
 	LastTarget->Effect(_DeltaTime);
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 

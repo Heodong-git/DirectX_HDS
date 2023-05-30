@@ -129,6 +129,12 @@
     <ClInclude Include="ColEventObj.h">
       <Filter>02.Actor\10.Event</Filter>
     </ClInclude>
+    <ClInclude Include="SlashHit_Effect.h">
+      <Filter>02.Actor\08.Effect\01.Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="YouCanDoThis.h">
+      <Filter>02.Actor\05.UI\04.Clear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -258,6 +264,12 @@
     <ClCompile Include="ColEventObj.cpp">
       <Filter>02.Actor\10.Event</Filter>
     </ClCompile>
+    <ClCompile Include="SlashHit_Effect.cpp">
+      <Filter>02.Actor\08.Effect\01.Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="YouCanDoThis.cpp">
+      <Filter>02.Actor\05.UI\04.Clear</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -367,6 +379,12 @@
     </Filter>
     <Filter Include="02.Actor\10.Event">
       <UniqueIdentifier>{f4404e77-95b5-42ec-b80b-ce7fc5471208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.Effect\01.Hit">
+      <UniqueIdentifier>{e1329101-50f4-4da4-a8d4-b9d545ed6825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\05.UI\04.Clear">
+      <UniqueIdentifier>{3e0f00c6-3893-4e6b-b34c-891154c49dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

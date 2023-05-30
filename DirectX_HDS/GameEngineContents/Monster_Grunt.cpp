@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "BaseLevel.h"
+#include "Player.h"
 
 Monster_Grunt::Monster_Grunt()
 {
@@ -31,8 +32,20 @@ void Monster_Grunt::Start()
 
 void Monster_Grunt::Update(float _DeltaTime)
 {
-	DirCheck();
+	if (true == Player::MainPlayer->IsSlowSkill())
+	{
+		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
+		m_MainRender->ColorOptionValue.MulColor.g = 0.2f;
+		m_MainRender->ColorOptionValue.MulColor.b = 0.3f;
+	}
+	else
+	{
+		m_MainRender->ColorOptionValue.MulColor.r = 1.0f;
+		m_MainRender->ColorOptionValue.MulColor.g = 1.0f;
+		m_MainRender->ColorOptionValue.MulColor.b = 1.0f;
+	}
 
+	DirCheck();
 	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	

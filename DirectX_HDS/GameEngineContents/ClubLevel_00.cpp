@@ -151,7 +151,6 @@ void ClubLevel_00::ActorLoad()
 		Push_ResetActor(NewPlayer);
 	}
 
-	
 	// HUD
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
@@ -225,35 +224,8 @@ void ClubLevel_00::ActorLoad()
 
 	// 플레이서포터
 	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
-
-	// 리셋이 필요한 액터들은 액터를 생성한 이후에 vector에 저장하고, 
-	// 레벨리셋을 호출하면 그 vector 에 저장되어 있는 액터->Reset 을 호출하는 방식으로 
-	// 대신 내가 액터를 생성하면 벡터에 넣어주어야함
-	
-	// 다넣었고. 이제 각 액터의 Reset을 만들어
 }
 
 void ClubLevel_00::DebugUpdate()
 {
 }
-
-// 이제 얘는 내가 가진 벡터 순회하면서 리셋만 호출해. 
-//void ClubLevel_00::LevelReset()
-//{
-//	// 플레이어
-//	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
-//	// 얘는 여기서 바꾸면 안돼 
-//	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
-//	Player::MainPlayer->ResetDir();
-//	Player::MainPlayer->ChangeState(PlayerState::IDLE);
-//	Player::MainPlayer->ResetSlowLimitTime();
-//
-//	// 카메라위치초기화 
-//	GetMainCamera()->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[0]);
-//
-//	// 레벨상태변경
-//	SetState(BaseLevel::LevelState::PLAY);
-//
-//	// 타이머리셋 
-//	SetLimitTime();
-//}

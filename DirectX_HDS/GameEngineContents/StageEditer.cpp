@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineTransform.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include "BaseLevel.h"
 #include "Player.h"
 #include "Cursor.h"
 
@@ -177,7 +178,21 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::Separator();
             }
 
-        
+
+            BaseLevel* CastLevel = dynamic_cast<BaseLevel*>(CurLevel.get());
+
+            if (nullptr == CastLevel)
+            {
+                return;
+            }
+
+            {
+                // 여기에 몬스터카운트 뜨게 
+                ImGui::Text("Monster Count :");
+                ImGui::SameLine();
+                ImGui::Text("%.2d", CastLevel->GetMonsterCount());
+            }
+            
             ImGui::End();
         }
 

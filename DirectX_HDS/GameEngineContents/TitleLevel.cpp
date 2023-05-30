@@ -31,6 +31,7 @@ void TitleLevel::Start()
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
+	SetLevelType(LevelType::TITLE);
 	BaseLevel::Start();
 }
 

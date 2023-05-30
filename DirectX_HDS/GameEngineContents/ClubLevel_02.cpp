@@ -19,6 +19,7 @@
 #include "PlaySupporter.h"
 #include "Inven.h"
 #include "Timer.h"
+#include "Monster_Grunt.h"
 
 ClubLevel_02::ClubLevel_02()
 {
@@ -51,7 +52,6 @@ void ClubLevel_02::Start()
 	// 액터 로드 
 	ActorLoad();
 
-
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
 	SetState(BaseLevel::LevelState::PLAY);
 }
@@ -78,29 +78,48 @@ void ClubLevel_02::LevelChangeStart()
 	}
 	m_GUI->On();
 
+	// 리셋이필요한 액터는 전부 push 
+	Push_ResetActor(CreateActor<CameraSetter>());
 	CameraSetter::MainCamSetter->CameraSetting();
 
 	// 플레이어 위치세팅
-	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -900, -511 });
+	Push_ResetActor(CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player"));
+	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);
 
 	// HUD
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
 	// 플레이어 배터리 
-	CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery");
+	Push_ResetActor(CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery"));
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
 	// 플레이서포터
-	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
+	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
 
 	// 타이머
-	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");
+	Push_ResetActor(CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer"));
 
 	// 인벤
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
+
+	{
+		std::shared_ptr<Monster_Grunt> NewMonster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { -224.0f , -137.0f };
+		NewMonster->GetTransform()->SetLocalPosition(InitPos);
+		NewMonster->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewMonster);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> NewMonster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { -54.0f , -137.0f };
+		NewMonster->GetTransform()->SetLocalPosition(InitPos);
+		NewMonster->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewMonster);
+	}
 }
 
 void ClubLevel_02::LevelChangeEnd()

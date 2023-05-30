@@ -74,7 +74,7 @@ void ClubLevel_03::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	Player::MainPlayer->GetTransform()->SetLocalPosition(float4{ -646.0f , 491.0f });
+	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);
 
 
 	// HUD

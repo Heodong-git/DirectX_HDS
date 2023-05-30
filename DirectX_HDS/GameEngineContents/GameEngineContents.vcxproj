@@ -236,6 +236,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SlashHit_Effect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TitleBackGround.h">
       <SubType>
       </SubType>
@@ -331,6 +335,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="YouCanDoThis.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss_HeadHunter.cpp" />
@@ -351,6 +359,7 @@
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="RollEffect.cpp" />
     <ClCompile Include="SlashEffect.cpp" />
+    <ClCompile Include="SlashHit_Effect.cpp" />
     <ClCompile Include="TitleBackGround.cpp" />
     <ClCompile Include="Battery.cpp" />
     <ClCompile Include="Hud.cpp" />
@@ -387,6 +396,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="YouCanDoThis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

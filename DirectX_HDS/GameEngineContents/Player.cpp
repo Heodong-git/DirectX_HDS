@@ -180,9 +180,9 @@ void Player::Update(float _DeltaTime)
 	//	}
 	//}
 	
-	// 스킬업데이트 
+	
 	SkillUpdate(_DeltaTime);
-
+	
 	// 상태업데이트
 	UpdateState(_DeltaTime);
 
@@ -211,6 +211,8 @@ void Player::Render(float _DeltaTime)
 {
 }
 
+// 이거는 사실 필요없는거같아.. 
+// 일단 냅둬 
 float4 Player::FindSettingPos()
 {
 	BaseLevel* CurLevel = GetReturnCastLevel();
@@ -239,14 +241,14 @@ float4 Player::FindSettingPos()
 	{
 		ClubLevel_01* CastLevel = nullptr;
 		CastLevel = dynamic_cast<ClubLevel_01*>(CurLevel);
-		//SetPos = CastLevel->GetPlayerSetPos();
+		SetPos = CastLevel->GetPlayerSetPos();
 	}
 
 	else if (type == typeid(ClubLevel_02))
 	{
 		ClubLevel_02* CastLevel = nullptr;
 		CastLevel = dynamic_cast<ClubLevel_02*>(CurLevel);
-		//SetPos = CastLevel->GetPlayerSetPos();
+		SetPos = CastLevel->GetPlayerSetPos();
 	}
 
 	else if (type == typeid(ClubLevel_03))
@@ -355,6 +357,18 @@ void Player::DebugUpdate()
 
 void Player::SkillUpdate(float _DeltaTime)
 {
+	// 
+	if (PlayerState::DEATH == m_CurState)
+	{
+		// 스킬 false
+		m_IsSlowSkill = false;
+		// 색돌리고 
+		m_Render->ColorOptionValue.MulColor.r = 1.0f;
+		// 슬로우리셋
+		SlowReset();
+		return;
+	}
+
 	// 스케일적용 X 델타타임을 받아둔다.  
 	float OriginTime = GameEngineTime::GlobalTime.GetDeltaTime();
 

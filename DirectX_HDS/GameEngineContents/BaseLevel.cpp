@@ -6,8 +6,6 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-
-
 #include "Map.h"
 #include "Player.h"
 #include "FadeEffect.h"
@@ -39,7 +37,6 @@ void BaseLevel::Start()
 void BaseLevel::Update(float _DeltaTime)
 {
 
-
 	// 현재 커서가 nullptr 이 아니라면 
 	// 받아와서 로컬포지션을 저장
 	if (nullptr != Cursor::MainCursor)
@@ -48,7 +45,7 @@ void BaseLevel::Update(float _DeltaTime)
 	}
 
 	// 현재 맵이 클리어 되었는지
-	if (true == IsClear())
+	if (true == IsClear() && LevelType::TITLE != m_LevelType)
 	{
 		if (false == m_IsClear)
 		{
@@ -58,6 +55,8 @@ void BaseLevel::Update(float _DeltaTime)
 			// 잘들어오고 맵이 클리어 되었다면 내가 원하는 위치에 충돌체를 생성
 			// 근데 여기서하면.. 
 			// 스위치로 
+
+			// 여기부터 다시 해야함 
 			
 			switch (m_LevelType)
 			{
@@ -74,10 +73,19 @@ void BaseLevel::Update(float _DeltaTime)
 			}
 				break;
 			case LevelType::CLUBMAP2:
+			{
+
+			}
 				break;
 			case LevelType::CLUBMAP3:
+			{
+
+			}
 				break;
 			case LevelType::CLUBMAP4:
+			{
+
+			}
 				break;
 			case LevelType::NONE:
 				break;
@@ -250,12 +258,13 @@ void BaseLevel::LevelReset()
 	// 일단 레벨의 제한시간 초기화 
 	Reset();
 
-	if (0 == m_ResetActors.size())
-	{
-		// 일단걸어두고
-		MsgAssert("현재 초기화되어야할 액터의 수가 0 입니다.");
-		return;
-	}
+	// 레벨 Start 에서 반드시 벡터에 추가
+	//if (0 == m_ResetActors.size())
+	//{
+	//	// 일단걸어두고
+	//	// MsgAssert("현재 초기화되어야할 액터의 수가 0 입니다.");
+	//	return;
+	//}
 
 	std::vector <std::shared_ptr<class BaseActor>>::iterator StartIter = m_ResetActors.begin();
 	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();

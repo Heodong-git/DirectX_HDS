@@ -6,6 +6,9 @@
 
 #include "BaseLevel.h"
 
+// 테스트
+#include "Player.h"
+
 Monster_Pomp::Monster_Pomp()
 {
 }
@@ -31,6 +34,19 @@ void Monster_Pomp::Start()
 
 void Monster_Pomp::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSlowSkill())
+	{
+		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
+		m_MainRender->ColorOptionValue.MulColor.g = 0.2f;
+		m_MainRender->ColorOptionValue.MulColor.b = 0.3f;
+	}
+	else
+	{
+		m_MainRender->ColorOptionValue.MulColor.r = 1.0f;
+		m_MainRender->ColorOptionValue.MulColor.g = 1.0f;
+		m_MainRender->ColorOptionValue.MulColor.b = 1.0f;
+	}
+
 	DirCheck();
 
 	// 내가 플레이어의 공격과 충돌했다면 

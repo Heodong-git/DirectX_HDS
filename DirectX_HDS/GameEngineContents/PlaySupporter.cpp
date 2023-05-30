@@ -14,6 +14,7 @@ std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_SuccessRender = nul
 std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
 std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
 std::shared_ptr<class GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
+std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_ClearRender = nullptr;
 
 PlaySupporter::PlaySupporter()
 {
@@ -87,6 +88,11 @@ void PlaySupporter::Start()
 	g_FailRender->SetScaleToTexture("restart.png");
 	g_FailRender->GetTransform()->SetLocalPosition({ 60.0f , 0.0f });
 	g_FailRender->Off();
+
+	g_ClearRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_ClearRender->SetTexture("youcandothis.png");
+	g_ClearRender->GetTransform()->SetLocalScale(ScreenSize);
+	g_ClearRender->Off();
 
 	// 마우스 충돌체크용
 	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);

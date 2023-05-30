@@ -9,6 +9,10 @@ enum class LevelType
 	CLUBMAP3,
 	CLUBMAP4,
 
+	CLUBBOSS0, 
+
+
+	TITLE = 98,
 	NONE = 99,
 };
 
@@ -150,8 +154,6 @@ protected:
 
 	// 리셋이 필요한 액터를 저장, 액터생성시에 초기화해야하는 액터를 자료구조에 저장한다.
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
-
-	
 
 private:
 	// 충돌용 액터

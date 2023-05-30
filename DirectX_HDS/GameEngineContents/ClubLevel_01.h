@@ -15,7 +15,12 @@ public:
 	ClubLevel_01& operator=(const ClubLevel_01& _Other) = delete;
 	ClubLevel_01& operator=(ClubLevel_01&& _Other) noexcept = delete;
 
-	virtual void LevelReset() override;
+
+	float4& GetPlayerSetPos()
+	{
+		return m_PlayerSetPos;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

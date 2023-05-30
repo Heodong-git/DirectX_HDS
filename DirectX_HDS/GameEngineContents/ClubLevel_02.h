@@ -15,6 +15,11 @@ public:
 	ClubLevel_02& operator=(const ClubLevel_02& _Other) = delete;
 	ClubLevel_02& operator=(ClubLevel_02&& _Other) noexcept = delete;
 
+	float4& GetPlayerSetPos()
+	{
+		return m_PlayerSetPos;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -27,6 +32,7 @@ protected:
 
 private:
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
+	float4 m_PlayerSetPos = float4{ -900, -511 };
 
 	// 디버그용 
 	void DebugUpdate();
