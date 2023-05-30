@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "FadeEffect.h"
+#include "ColEventObj.h"
 
 
 
@@ -53,11 +54,37 @@ void BaseLevel::Update(float _DeltaTime)
 		{
 			m_IsClear = true;
 			
-			// 충돌체를.. 음 
+			// 충돌체를.. 음
+			// 잘들어오고 맵이 클리어 되었다면 내가 원하는 위치에 충돌체를 생성
+			// 근데 여기서하면.. 
+			// 스위치로 
+			
+			switch (m_LevelType)
+			{
+			case LevelType::CLUBMAP0:
+			{
+				m_ColObj = CreateActor<ColEventObj>();
+				m_ColObj->GetTransform()->SetLocalPosition({ 939.0f , -75.0f });
+			}
+				break;
+			case LevelType::CLUBMAP1:
+			{
+				m_ColObj = CreateActor<ColEventObj>();
+				m_ColObj->GetTransform()->SetLocalPosition({ 623.0f, 48.0f});
+			}
+				break;
+			case LevelType::CLUBMAP2:
+				break;
+			case LevelType::CLUBMAP3:
+				break;
+			case LevelType::CLUBMAP4:
+				break;
+			case LevelType::NONE:
+				break;
+			default:
+				break;
+			}
 		}
-		// 잘들어오고 맵이 클리어 되었다면 내가 원하는 위치에 충돌체를 생성
-		// 근데 여기서하면.. 
-		int a = 0;
 	}
 
 
@@ -244,8 +271,19 @@ void BaseLevel::LevelReset()
 
 void BaseLevel::Reset()
 {
+	m_IsClear = false;
 	SetLimitTime();
+	ResetMonsterCount();
+	ResetColObj();
 	SetState(BaseLevel::LevelState::PLAY);
+}
+
+void BaseLevel::ResetColObj()
+{
+	if (nullptr != m_ColObj)
+	{
+		m_ColObj->Death();
+	}
 }
 
 bool BaseLevel::IsClear()

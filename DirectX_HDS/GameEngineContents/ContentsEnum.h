@@ -25,4 +25,5 @@ enum class ColOrder
 	CHECKBOX,
 	CURSOR,
 	DOOR,
+	STAGE_COL_OBJ,
 };

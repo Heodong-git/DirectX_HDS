@@ -614,7 +614,7 @@ void Player::IdleUpdate(float _DeltaTime)
 	// 우측이동 , d
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		ChangeState(PlayerState::IDLETORUN);
+		ChangeState(PlayerState::IDLETORUN); 
 		return;
 	}
 
@@ -684,7 +684,7 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	else if (true == GameEngineInput::IsPress("player_left_move"))
+	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
 		if (false == PixelCollider::PixelCol->LeftPixelCheck())
 		{
@@ -733,10 +733,9 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-
 	if (true == GameEngineInput::IsPress("player_right_Move"))
 	{
-		// true 이면 맵 밖인걸로
+		bool test = PixelCollider::PixelCol->RightPixelCheck();
 		if (false == PixelCollider::PixelCol->RightPixelCheck())
 		{
 			m_Direction = true;
@@ -749,7 +748,6 @@ void Player::MoveUpdate(float _DeltaTime)
 
 	else if (true == GameEngineInput::IsPress("player_left_Move"))
 	{
-		// true 이면 맵 밖인걸로
 		if (false == PixelCollider::PixelCol->LeftPixelCheck())
 		{
 			m_Direction = false;
@@ -813,9 +811,39 @@ void Player::SlashUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
-
+	// 공격 방향을 구해온다. 
 	float4 MoveDir = m_AttackPos - MyPos;
 	MoveDir.Normalize();
+
+	// 플레이어가 왼쪽 벽에 충돌중일 경우
+	// 일단 임시로 
+	if (true == PixelCollider::PixelCol->LeftPixelCheck())
+	{
+		// 나보다 우측으로 공격했을 때만 이동한다.
+		if (m_AttackPos.x >= MyPos.x)
+		{
+			GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+			return;
+		}
+	}
+
+	// 내가 우측 벽에 충돌중일 경우 
+	if (true == PixelCollider::PixelCol->RightPixelCheck())
+	{
+		// 나보다 좌측으로 공격했을때만 이동한다. 
+		if (m_AttackPos.x <= MyPos.x)
+		{
+			GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+			return;
+		}
+	}
+
+	// 플레이어가 왼쪽벽이나 오른쪽 벽과 충돌중일 경우
+	if (true == PixelCollider::PixelCol->LeftPixelCheck() ||
+		true == PixelCollider::PixelCol->RightPixelCheck())
+	{
+		return;
+	}
 
 	// 수정해야 될 수도.
 	if (true == PixelCollider::PixelCol->TopPixelCheck())

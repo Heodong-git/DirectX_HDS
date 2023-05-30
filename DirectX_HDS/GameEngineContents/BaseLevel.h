@@ -62,7 +62,7 @@ public:
 
 	inline void SetLimitTime()
 	{
-		m_LimitTime = 5.0f;
+		m_LimitTime = 55.0f;
 	}
 
 	std::shared_ptr<class FadeEffect> GetFadeEffect()
@@ -74,11 +74,17 @@ public:
 	inline void PlusMonsterCount()
 	{
 		++m_MonsterCount;
+		++m_MaxMonsterCount;
 	}
 
 	const int GetMonsterCount()
 	{
 		return m_MonsterCount;
+	}
+
+	inline void ResetMonsterCount()
+	{
+		m_MonsterCount = m_MaxMonsterCount;
 	}
 	
 	// 몹이 죽을때마다 얘를 호출한다.. 하 개이상해
@@ -93,11 +99,16 @@ public:
 
 		--m_MonsterCount;
 	}
+
+	// 몬스터 카운트 체크 
+	bool IsClear();
+
 protected:
 	// 몬스터 다죽었나?
 	// 생성할때마다 ++ 시켜. 근데 너무 귀찮아. 
 	// 베이스액터 초기화위치세팅할때마다 ++ 그냥 레벨마다 설정하면되는거아님?ㅋㅋㅋ 
 	int m_MonsterCount = 0;
+	int m_MaxMonsterCount = 0;
 
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -133,13 +144,19 @@ protected:
 	std::shared_ptr<class Map> m_Map = nullptr;
 
 	// 스테이지 제한시간
-	float m_LimitTime = 5.0f;
+	float m_LimitTime = 55.0f;
 
 	void Push_ResetActor(std::shared_ptr<class BaseActor> _Actor);
 
 	// 리셋이 필요한 액터를 저장, 액터생성시에 초기화해야하는 액터를 자료구조에 저장한다.
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
+
+	
+
 private:
+	// 충돌용 액터
+	std::shared_ptr<class ColEventObj> m_ColObj = nullptr;
+
 	// 카메라이펙트
 	std::shared_ptr<class FadeEffect> m_FadeEffect;
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
@@ -154,9 +171,8 @@ private:
 	// 그냥 얘를 호출하면 되는거아닌가? 
 	virtual void LevelReset();
 	void Reset();
+	void ResetColObj();
 	
-	// 몬스터 카운트 체크 
-	bool IsClear();
 	bool m_IsClear = false; 
 
 

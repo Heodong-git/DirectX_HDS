@@ -178,9 +178,20 @@ bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 // 충돌 검사 함수
 bool PixelCollider::RightPixelCheck()
 {
+	// 만약 내가 왼쪽을 보고 있다면 
 	ColMapSetting();
 
-	float4 CheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
+	float4 CheckPos = {};
+	if (false == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Left->GetTransform()->GetWorldPosition();
+	}
+	
+	else if (true == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
+	}
+	
 	float4 ColMapSize = m_CurColMap->GetScale();
 	float4 ColMapHalpSize = ColMapSize.half();
 
@@ -216,11 +227,16 @@ bool PixelCollider::LeftPixelCheck()
 {
 	ColMapSetting();
 
-	/*float4 RightCheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
-	float4 BottomCheckPos = Player::MainPlayer->m_DebugRender_Bottom->GetTransform()->GetWorldPosition();*/
+	float4 CheckPos = {};
+	if (false == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
+	}
 
-	// 지금 x축반전으로 인해서 Left 값이 라이트 값으로 바뀌고 있으니까 그냥 Right 값을 그대로 두면 되지않을까? 
-	float4 CheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
+	else if (true == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Left->GetTransform()->GetWorldPosition();
+	}
 	float4 ColMapSize = m_CurColMap->GetScale();
 	float4 ColMapHalpSize = ColMapSize.half();
 

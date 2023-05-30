@@ -22,6 +22,7 @@ protected:
 	
 private:
 	void DebugUpdate();
+	void CollisionUpdate(float _DeltaTime);
 	// 렌더러생성 및 세팅
 	void ComponentSetting();
 
