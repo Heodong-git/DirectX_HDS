@@ -37,7 +37,7 @@ public:
 		return CreateActor<ActorType>(0, _Name);
 	}
 
-	// 아 개빡침 내가 변환해서 넣는다. 
+	// 아 개빡침 내가 변환해서 넣는다. _ <-- 가 클래스명에 들어가있으면 이게 안댐ㅋㅋㅋ 
 	/*template<typename ActorType, typename EnumType>
 	std::shared_ptr<ActorType> CreateActor(EnumType  _Order, const std::string_view& _Name = "")
 	{

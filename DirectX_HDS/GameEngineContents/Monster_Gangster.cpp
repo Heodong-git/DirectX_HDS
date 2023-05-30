@@ -7,6 +7,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "BaseLevel.h"
+
 #include "Player.h"
 
 Monster_Gangster::Monster_Gangster()
@@ -46,6 +48,9 @@ void Monster_Gangster::Update(float _DeltaTime)
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
+		
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
 		ChangeState(GangsterState::HITGROUND);
 	}
 
@@ -142,6 +147,18 @@ void Monster_Gangster::LoadAndCreateAnimation()
 								  .FrameInter = 0.09f , .Loop = true ,.ScaleToTexture = true });
 
 	m_MainRender->ChangeAnimation("gangster_idle");
+}
+
+void Monster_Gangster::Reset()
+{
+	// 나의 초기 세팅위치로 이동
+	GetTransform()->SetLocalPosition(GetInitPos());
+	if (false == m_Collision->IsUpdate())
+	{
+		m_Collision->On();
+	}
+	ChangeState(GangsterState::IDLE);
+	ResetDir();
 }
 
 void Monster_Gangster::DirCheck()

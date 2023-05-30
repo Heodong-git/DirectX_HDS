@@ -61,7 +61,7 @@ public:
 
 	inline void ResetDir()
 	{
-		m_Direction = 1;
+		m_Direction = true;
 	}
 	
 	inline const float GetRenderPivot() const
@@ -94,7 +94,14 @@ protected:
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
+	// 너무어렵게가나 일단하자 
+	virtual float4 FindSettingPos() override;
+
 private:
+	// 레벨 초기화시 리셋
+	// 리셋할때 방향초기화 
+	virtual void Reset() override;
+
 	// 렌더러생성 및 세팅
 	void ComponentSetting();
 

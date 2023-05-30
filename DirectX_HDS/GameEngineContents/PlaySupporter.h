@@ -39,4 +39,5 @@ private:
 	
 	// 좌상단, 우상단, 좌하단 , 우하단 순서로 
 	std::map<int, std::vector<float4>> m_MapRanges = std::map<int, std::vector<float4>>();
+	virtual void Reset() override;
 };

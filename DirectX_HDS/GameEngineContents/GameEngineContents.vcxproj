@@ -168,6 +168,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ColEventObj.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GruntEffect.h">
       <SubType>
       </SubType>
@@ -330,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss_HeadHunter.cpp" />
+    <ClCompile Include="ColEventObj.cpp" />
     <ClCompile Include="GruntEffect.cpp" />
     <ClCompile Include="IronDoor.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
@@ -343,7 +348,6 @@
     <ClCompile Include="JumpEffect.cpp" />
     <ClCompile Include="LandEffect.cpp" />
     <ClCompile Include="MySpriteRenderer.cpp" />
-    <ClCompile Include="NormalDoor.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="RollEffect.cpp" />
     <ClCompile Include="SlashEffect.cpp" />

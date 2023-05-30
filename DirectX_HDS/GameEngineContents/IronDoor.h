@@ -28,6 +28,9 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 리셋 
+	virtual void Reset() override;
+
 	void DebugUpdate();
 
 	// 렌더러생성 및 세팅

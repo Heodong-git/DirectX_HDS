@@ -20,6 +20,16 @@ public:
 	// 필요한가..? ㅇㅇ 필요함 
 	class BaseLevel* GetReturnCastLevel() const;
 
+	inline void SetInitPos(float4& _Pos)
+	{
+		m_InitPos = _Pos;
+	}
+
+	inline const float4 GetInitPos() const
+	{
+		return m_InitPos;
+	}
+
 protected:
 	void Update(float _DeltaTime) override;
 
@@ -37,9 +47,10 @@ protected:
 		}
 	}
 
-private:
+	virtual float4 FindSettingPos() { return float4{ 0,0 }; }
 
-	
-	// -------------------------recording info-------------------------------
-	// 역재생에 필요한 녹화될 정보들을 아래 부분에 작성하고, 함수를 그 정보들을 저장하고, 로드하는 함수를 구현? 
+private:
+	// BaseActor들은 전부 얘를 오버라이드 
+	virtual void Reset() {};
+	float4 m_InitPos = {};
 };

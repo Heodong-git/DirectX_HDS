@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+
+
 #include "Map.h"
 #include "Player.h"
 #include "FadeEffect.h"
@@ -26,12 +28,17 @@ void BaseLevel::Start()
 {
 	CameraSetting();
 
+	// 벡터 리사이즈 
+	m_ResetActors.reserve(8);
+
 	// 페이드인아웃 이펙트
 	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 }
 
 void BaseLevel::Update(float _DeltaTime)
 {
+
+
 	// 현재 커서가 nullptr 이 아니라면 
 	// 받아와서 로컬포지션을 저장
 	if (nullptr != Cursor::MainCursor)
@@ -39,7 +46,22 @@ void BaseLevel::Update(float _DeltaTime)
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
 
-	// 테스트
+	// 현재 맵이 클리어 되었는지
+	if (true == IsClear())
+	{
+		if (false == m_IsClear)
+		{
+			m_IsClear = true;
+			
+			// 충돌체를.. 음 
+		}
+		// 잘들어오고 맵이 클리어 되었다면 내가 원하는 위치에 충돌체를 생성
+		// 근데 여기서하면.. 
+		int a = 0;
+	}
+
+
+	// 플레이어 페이드인이펙트 
 	if (true == Player::MainPlayer->IsSlowSkill())
 	{
 		GetFadeEffect()->FadeIn();
@@ -102,6 +124,8 @@ void BaseLevel::CameraSetting()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0 , 0 , -1000 });
 }
+
+
 
 void BaseLevel::ChangeMap()
 {
@@ -179,4 +203,57 @@ void BaseLevel::ChangeColMap()
 
 void BaseLevel::DebugCamera()
 {
+}
+
+// 액터생성후 벡터에 푸시
+void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
+{
+	if (nullptr == _Actor)
+	{
+		MsgAssert("액터가 nullptr 입니다.");
+		return;
+	}
+
+	m_ResetActors.push_back(_Actor);
+}
+
+// 레벨 리셋을 호출하면 그냥 얘가 호출되는거지 자식에서 재정의는 하지않고 
+void BaseLevel::LevelReset()
+{
+	// 일단 레벨의 제한시간 초기화 
+	Reset();
+
+	if (0 == m_ResetActors.size())
+	{
+		// 일단걸어두고
+		MsgAssert("현재 초기화되어야할 액터의 수가 0 입니다.");
+		return;
+	}
+
+	std::vector <std::shared_ptr<class BaseActor>>::iterator StartIter = m_ResetActors.begin();
+	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();
+
+	// 현재 벡터에 저장된 액터들을 순회하면서 리셋 
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		(*StartIter)->Reset();
+	}
+
+	// 일단 여기까지 , 후에 추가 작업필요할 경우 코드 작성
+}
+
+void BaseLevel::Reset()
+{
+	SetLimitTime();
+	SetState(BaseLevel::LevelState::PLAY);
+}
+
+bool BaseLevel::IsClear()
+{
+	if (0 == m_MonsterCount)
+	{
+		return true;
+	}
+
+	return false;
 }

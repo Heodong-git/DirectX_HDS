@@ -31,4 +31,5 @@ protected:
 
 private:
 	bool PlayerDeathCheck();
+	virtual void Reset() override;
 };

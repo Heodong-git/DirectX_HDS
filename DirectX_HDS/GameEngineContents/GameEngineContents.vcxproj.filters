@@ -126,6 +126,9 @@
     <ClInclude Include="IronDoor.h">
       <Filter>02.Actor\09.Door</Filter>
     </ClInclude>
+    <ClInclude Include="ColEventObj.h">
+      <Filter>02.Actor\10.Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -192,7 +195,6 @@
     <ClCompile Include="ClubDoor.cpp">
       <Filter>02.Actor\09.Door</Filter>
     </ClCompile>
-    <ClCompile Include="NormalDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClCompile>
@@ -252,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="IronDoor.cpp">
       <Filter>02.Actor\09.Door</Filter>
+    </ClCompile>
+    <ClCompile Include="ColEventObj.cpp">
+      <Filter>02.Actor\10.Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,6 +364,9 @@
     </Filter>
     <Filter Include="02.Actor\02.Monster\Shotgun">
       <UniqueIdentifier>{f61bbd66-af73-47b5-a5c5-e3d29917f0ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\10.Event">
+      <UniqueIdentifier>{f4404e77-95b5-42ec-b80b-ce7fc5471208}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

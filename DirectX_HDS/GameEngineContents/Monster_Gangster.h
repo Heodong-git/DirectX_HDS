@@ -47,6 +47,12 @@ private:
 
 	
 private:
+	// 리셋
+	virtual void Reset() override;
+	inline void ResetDir()
+	{
+		m_Direction = -1;
+	}
 	// 방향
 	// + 오른쪽 
 	// - 왼쪽

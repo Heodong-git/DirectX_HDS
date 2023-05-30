@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "BaseLevel.h"
+
 Monster_Pomp::Monster_Pomp()
 {
 }
@@ -42,6 +44,8 @@ void Monster_Pomp::Update(float _DeltaTime)
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
 		ChangeState(PompState::HITGROUND);
 	}
 
@@ -139,6 +143,19 @@ void Monster_Pomp::LoadAndCreateAnimation()
 	m_MainRender->ChangeAnimation("pomp_turn");
 }
 
+
+// 내리셋은 플레이어와 동일 
+void Monster_Pomp::Reset()
+{
+	// 나의 초기 세팅위치로 이동
+	GetTransform()->SetLocalPosition(GetInitPos());
+	ChangeState(PompState::IDLE);
+	if (false == m_Collision->IsUpdate())
+	{
+		m_Collision->On();
+	}
+	ResetDir();
+}
 
 void Monster_Pomp::DirCheck()
 {
@@ -265,6 +282,7 @@ void Monster_Pomp::ChangeState(PompState _State)
 
 void Monster_Pomp::IdleStart()
 {
+	m_MainRender->ChangeAnimation("pomp_idle");
 }
 
 void Monster_Pomp::IdleUpdate(float _DeltaTime)

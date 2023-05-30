@@ -64,6 +64,9 @@ void ClubLevel_00::Start()
 
 void ClubLevel_00::Update(float _DeltaTime)
 {
+	// 테스트, 몬스터수는맞는데.. 
+	int Test = GetMonsterCount();
+
 	if (true == GameEngineInput::IsDown("ClubLevel_ChangeLevel_ClubLevel01"))
 	{
 		GameEngineCore::ChangeLevel("ClubLevel_01");
@@ -91,7 +94,7 @@ void ClubLevel_00::LevelChangeStart()
 	m_GUI->On();
 
 	// 필요한 액터 생성, 초기화(세팅)
-	CreateActor<CameraSetter>();
+	Push_ResetActor(CreateActor<CameraSetter>());
 	CameraSetter::MainCamSetter->CameraSetting();
 
 	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
@@ -142,74 +145,115 @@ void ClubLevel_00::ActorLoad()
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	
 	// 플레이어
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	NewPlayer->GetTransform()->AddLocalPosition(PlayerSetPos);
+	{
+		std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
+		NewPlayer->GetTransform()->AddLocalPosition(m_PlayerSetPos);
+		Push_ResetActor(NewPlayer);
+	}
+
 	
 	// HUD
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
 	// 플레이어 배터리 
-	CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery");
+	Push_ResetActor(CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery"));
 
 	// 커서 
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
 	// 타이머
-	CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer");
+	Push_ResetActor(CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer"));
 
 	// 인벤
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
 
-	std::shared_ptr<Monster_Gangster> NewGangster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
-	NewGangster->GetTransform()->SetLocalPosition({ 0.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
-
+	{
+		std::shared_ptr<Monster_Gangster> NewGangster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+		float4 InitPos = { 584.0f , -94.0f };
+		NewGangster->GetTransform()->SetLocalPosition(InitPos);
+		NewGangster->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewGangster);
+	}
+	
 	{
 		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		NewPomp->GetTransform()->SetLocalPosition({ -202.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		float4 InitPos = { -202.0f , -94.0f };
+		NewPomp->GetTransform()->SetLocalPosition(InitPos);
+		NewPomp->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewPomp);
 	}
 	{
 		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		NewPomp->GetTransform()->SetLocalPosition({ 252.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		float4 InitPos = { -1.0f , -94.0f };
+		NewPomp->GetTransform()->SetLocalPosition(InitPos);
+		NewPomp->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewPomp);
 	}
 	{
 		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-		NewGrunt->GetTransform()->SetLocalPosition({ -474.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		float4 InitPos = { -474.0f , -94.0f };
+		NewGrunt->GetTransform()->SetLocalPosition(InitPos);
+		NewGrunt->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewGrunt);
 	}
 	{
 		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { 40.0f , -94.0f };
 		NewGrunt->GetTransform()->SetLocalPosition({ 404.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		NewGrunt->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewGrunt);
 	}
 	{
 		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-		NewGrunt->GetTransform()->SetLocalPosition({ 524.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		float4 InitPos = { 344.0f , -94.0f };
+		NewGrunt->GetTransform()->SetLocalPosition(InitPos);
+		NewGrunt->SetInitPos(InitPos);
+		PlusMonsterCount();
+		Push_ResetActor(NewGrunt);
+	}
+	{
+		// 문은 움직일 일이 없잖아? 
+		std::shared_ptr<IronDoor> NewDoor = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
+		NewDoor->GetTransform()->SetLocalPosition({ -67.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
+		Push_ResetActor(NewDoor);
 	}
 
-	std::shared_ptr<IronDoor> NewDoor = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
-	NewDoor->GetTransform()->SetLocalPosition({ -67.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y});
 	// 플레이서포터
-	CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter");
+	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
+
+	// 리셋이 필요한 액터들은 액터를 생성한 이후에 vector에 저장하고, 
+	// 레벨리셋을 호출하면 그 vector 에 저장되어 있는 액터->Reset 을 호출하는 방식으로 
+	// 대신 내가 액터를 생성하면 벡터에 넣어주어야함
+	
+	// 다넣었고. 이제 각 액터의 Reset을 만들어
 }
 
 void ClubLevel_00::DebugUpdate()
 {
 }
 
-void ClubLevel_00::LevelReset()
-{
-	// 플레이어
-	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
-	// 얘는 여기서 바꾸면 안돼 
-	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
-	Player::MainPlayer->ResetDir();
-	Player::MainPlayer->ChangeState(PlayerState::IDLE);
-	Player::MainPlayer->ResetSlowLimitTime();
-
-	// 카메라위치초기화 
-	GetMainCamera()->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[0]);
-
-	// 레벨상태변경
-	SetState(BaseLevel::LevelState::PLAY);
-
-	// 타이머리셋 
-	SetLimitTime();
-}
+// 이제 얘는 내가 가진 벡터 순회하면서 리셋만 호출해. 
+//void ClubLevel_00::LevelReset()
+//{
+//	// 플레이어
+//	Player::MainPlayer->GetTransform()->SetLocalPosition(PlayerSetPos);
+//	// 얘는 여기서 바꾸면 안돼 
+//	// 녹화된 장면을 전부 보여주고 바꾸거나 해야할듯? 
+//	Player::MainPlayer->ResetDir();
+//	Player::MainPlayer->ChangeState(PlayerState::IDLE);
+//	Player::MainPlayer->ResetSlowLimitTime();
+//
+//	// 카메라위치초기화 
+//	GetMainCamera()->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[0]);
+//
+//	// 레벨상태변경
+//	SetState(BaseLevel::LevelState::PLAY);
+//
+//	// 타이머리셋 
+//	SetLimitTime();
+//}

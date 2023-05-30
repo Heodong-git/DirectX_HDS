@@ -23,6 +23,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	virtual void Reset();
+
 	void GaugeUpdate();
 	void Blink();
 	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;

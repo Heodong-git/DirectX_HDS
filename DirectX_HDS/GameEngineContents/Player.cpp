@@ -12,6 +12,18 @@
 #include <GameEngineCore/GameEngineResource.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+
+// 타입인포 
+#include <typeinfo>
+
+// 레벨이 추가될때마다 헤더추가 후 Reset 함수에 추가.. 
+#include "ClubLevel_00.h"
+#include "ClubLevel_01.h"
+#include "ClubLevel_02.h"
+#include "ClubLevel_03.h"
+#include "ClubLevel_04.h"
+#include "ClubLevel_Boss.h"
+
 // 카메라
 #include "PlaySupporter.h"
 
@@ -197,6 +209,72 @@ void Player::Update(float _DeltaTime)
 
 void Player::Render(float _DeltaTime)
 {
+}
+
+float4 Player::FindSettingPos()
+{
+	BaseLevel* CurLevel = GetReturnCastLevel();
+
+	if (nullptr == CurLevel)
+	{
+		MsgAssert("현재 레벨이 nullptr 입니다.");
+	}
+
+	// 객체의 타입에 대한 정보 얻기 
+	const std::type_info& type = typeid(*CurLevel);
+
+	// 변수 초기화 
+	float4 SetPos = {};
+
+	// 각 레벨일 때의 세팅되는 포지션을 받아온다. 
+	if (type == typeid(ClubLevel_00))
+	{
+		// 어.. 
+		ClubLevel_00* CastLevel = nullptr;
+		CastLevel = dynamic_cast<ClubLevel_00*>(CurLevel);
+		SetPos = CastLevel->GetPlayerSetPos();
+	}
+
+	else if (type == typeid(ClubLevel_01))
+	{
+		ClubLevel_01* CastLevel = nullptr;
+		CastLevel = dynamic_cast<ClubLevel_01*>(CurLevel);
+		//SetPos = CastLevel->GetPlayerSetPos();
+	}
+
+	else if (type == typeid(ClubLevel_02))
+	{
+		ClubLevel_02* CastLevel = nullptr;
+		CastLevel = dynamic_cast<ClubLevel_02*>(CurLevel);
+		//SetPos = CastLevel->GetPlayerSetPos();
+	}
+
+	else if (type == typeid(ClubLevel_03))
+	{
+		ClubLevel_03* CastLevel = nullptr;
+		CastLevel = dynamic_cast<ClubLevel_03*>(CurLevel);
+	}
+
+	else if (type == typeid(ClubLevel_04))
+	{
+		ClubLevel_04* CastLevel = nullptr;
+		CastLevel = dynamic_cast<ClubLevel_04*>(CurLevel);
+	}
+
+	return SetPos;
+}
+
+void Player::Reset()
+{
+	// 내가 세팅된 위치를 찾아온다. 
+	// 그냥 내가 가지고 있게 하면 되는데 너무 돌아서 감. 
+	// 일단 내비둬
+	float4 SetPos = FindSettingPos();
+
+	GetTransform()->SetLocalPosition(SetPos);
+	ResetSlowLimitTime();
+	ResetDir();	
+	ChangeState(PlayerState::IDLE);
 }
 
 void Player::ComponentSetting()
@@ -494,6 +572,13 @@ void Player::ChangeState(PlayerState _State)
 
 void Player::IdleStart()
 {
+	// 만약 이전 스테이트가 데스였다면
+	// 변경시 무조건 방향은 오른쪽 
+	if (PlayerState::DEATH == m_PrevState)
+	{
+		GetTransform()->SetLocalPositiveScaleX();
+	}
+
 	m_Render->ChangeAnimation("player_idle");
 
 	// 만약 점프 상태일 때 내가 땅이라면
@@ -1114,11 +1199,12 @@ void Player::WallEnd()
 
 // 일단 보류
 // 너무부자연스러움 
+// 죽었을때 좀 예쁘게 날아가게 바꿔야함
 void Player::DeathStart()
 {
 	DirCheck();
 	m_Render->ChangeAnimation("player_die");
-	
+	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
 void Player::DeathUpdate(float _DeltaTime)
@@ -1141,5 +1227,6 @@ void Player::DeathUpdate(float _DeltaTime)
 
 void Player::DeathEnd()
 {
+	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 }
 

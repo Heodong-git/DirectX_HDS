@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "BaseLevel.h"
+
 Monster_Grunt::Monster_Grunt()
 {
 }
@@ -43,6 +45,9 @@ void Monster_Grunt::Update(float _DeltaTime)
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
 		ChangeState(GruntState::HITGROUND);
 	}
 
@@ -135,6 +140,18 @@ void Monster_Grunt::LoadAndCreateAnimation()
 							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
 
 	m_MainRender->ChangeAnimation("grunt_turn");
+}
+
+void Monster_Grunt::Reset()
+{
+	// 나의 초기 세팅위치로 이동
+	GetTransform()->SetLocalPosition(GetInitPos());
+	ChangeState(GruntState::IDLE);
+	if (false == m_Collision->IsUpdate())
+	{
+		m_Collision->On();
+	}
+	ResetDir();
 }
 
 
@@ -248,6 +265,7 @@ void Monster_Grunt::ChangeState(GruntState _State)
 
 void Monster_Grunt::IdleStart()
 {
+	m_MainRender->ChangeAnimation("grunt_idle");
 }
 
 void Monster_Grunt::IdleUpdate(float _DeltaTime)

@@ -20,8 +20,12 @@ public:
 	// 그냥 전부죽이고 새로 생성하는게 맞나?? 아니지 그냥 상태만 바꿔서 다시 가져다놓으면 되는거가틍ㄷ네 
 	// 일단 플레이어만 생각해 
 	// 일단 퍼블릭 
-	virtual void LevelReset() override;
+	// virtual void LevelReset() override;
 
+	float4& GetPlayerSetPos()
+	{
+		return m_PlayerSetPos;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -34,7 +38,8 @@ protected:
 
 private:
 	// 액터 초기위치
-	float4 PlayerSetPos = { -850 , -94 };
+	// 어차피 얼마 안되니까 다 가지고 있어, 일단 필요한애들 세워두고 
+	float4 m_PlayerSetPos = { -850 , -94 };
 
 	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;

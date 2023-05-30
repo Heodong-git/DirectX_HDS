@@ -116,6 +116,11 @@ bool CameraSetter::PlayerDeathCheck()
 	return false;
 }
 
+void CameraSetter::Reset()
+{
+	CameraSetting();
+}
+
 void CameraSetter::Start()
 {
 	// 맵별 카메라세팅

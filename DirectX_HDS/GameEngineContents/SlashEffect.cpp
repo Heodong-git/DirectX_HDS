@@ -37,6 +37,8 @@ void SlashEffect::Start()
 
 void SlashEffect::Update(float _DeltaTime)
 {
+	// 여기서 충돌체크를해서 충돌체를 오프시키는게 편할거같은데
+
 	if (nullptr != m_Render)
 	{
 		if (m_Render->IsAnimationEnd())

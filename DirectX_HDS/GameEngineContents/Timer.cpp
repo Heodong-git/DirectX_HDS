@@ -67,12 +67,23 @@ void Timer::Render(float _DeltaTime)
 {
 }
 
+void Timer::Reset()
+{
+}
+
 void Timer::GaugeUpdate()
 {
 	
+
+
 	// 현재 남은시간 
 	float LimitTime = GetReturnCastLevel()->GetLimitTime();
 	
+	if (0.0f >= LimitTime)
+	{
+		return;
+	}
+
 	// 흠
 	float GaugeWidth = m_GaugeWidth * (LimitTime / m_FullGauge);
 

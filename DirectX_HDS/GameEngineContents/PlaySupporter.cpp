@@ -287,3 +287,7 @@ bool PlaySupporter::PlayerDeathCheck()
 	return false;
 }
 
+void PlaySupporter::Reset()
+{
+}
+

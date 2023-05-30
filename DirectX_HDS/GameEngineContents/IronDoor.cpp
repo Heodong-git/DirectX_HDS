@@ -27,6 +27,15 @@ void IronDoor::Render(float _DeltaTime)
 {
 }
 
+void IronDoor::Reset()
+{
+	// 만약 내가 오픈상태라면 클로즈 상태로 변경 
+	if (IronDoorState::OPEN == m_CurState)
+	{
+		ChangeState(IronDoorState::CLOSE);
+	}
+}
+
 void IronDoor::DebugUpdate()
 {
 	if (true == GameEngineInput::IsDown("gangster_debugswitch"))

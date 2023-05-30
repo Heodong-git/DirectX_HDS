@@ -36,6 +36,14 @@ void ClubDoor::LoadAndCreateAnimation()
 {
 }
 
+void ClubDoor::Reset()
+{
+	// 만약 내가 오픈상태라면 클로즈 상태로 변경 
+	if (ClubDoorState::OPEN == m_CurState)
+	{
+		ChangeState(ClubDoorState::CLOSE);
+	}
+}
 // -------------------------------------------- State ----------------------------------------------------
 
 void ClubDoor::UpdateState(float _DeltaTime)

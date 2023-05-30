@@ -41,6 +41,8 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
 private:
+	// 리셋 
+	virtual void Reset() override;
 	// 상태값 변경
 	void ChangeState(ClubDoorState _State);
 	// 현재 상태값에 따른 업데이트 

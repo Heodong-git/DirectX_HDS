@@ -2,6 +2,7 @@
 #include "BaseActor.h"
 #include "BaseLevel.h"
 
+
 BaseActor::BaseActor()
 {
 }
@@ -26,3 +27,4 @@ BaseLevel* BaseActor::GetReturnCastLevel() const
 void BaseActor::Update(float _DeltaTime)
 {
 }
+
