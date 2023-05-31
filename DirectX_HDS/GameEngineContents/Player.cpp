@@ -233,21 +233,21 @@ float4 Player::FindSettingPos()
 		// 어.. 
 		ClubLevel_00* CastLevel = nullptr;
 		CastLevel = dynamic_cast<ClubLevel_00*>(CurLevel);
-		SetPos = CastLevel->GetPlayerSetPos();
+		SetPos = this->GetInitPos();
 	}
 
 	else if (type == typeid(ClubLevel_01))
 	{
 		ClubLevel_01* CastLevel = nullptr;
 		CastLevel = dynamic_cast<ClubLevel_01*>(CurLevel);
-		SetPos = CastLevel->GetPlayerSetPos();
+		SetPos = this->GetInitPos();
 	}
 
 	else if (type == typeid(ClubLevel_02))
 	{
 		ClubLevel_02* CastLevel = nullptr;
 		CastLevel = dynamic_cast<ClubLevel_02*>(CurLevel);
-		SetPos = CastLevel->GetPlayerSetPos();
+		SetPos = this->GetInitPos();
 	}
 
 	else if (type == typeid(ClubLevel_03))
@@ -267,10 +267,7 @@ float4 Player::FindSettingPos()
 
 void Player::Reset()
 {
-	// 내가 세팅된 위치를 찾아온다. 
-	// 그냥 내가 가지고 있게 하면 되는데 너무 돌아서 감. 
-	// 일단 내비둬
-	float4 SetPos = FindSettingPos();
+	float4 SetPos = GetInitPos();
 
 	GetTransform()->SetLocalPosition(SetPos);
 	ResetSlowLimitTime();

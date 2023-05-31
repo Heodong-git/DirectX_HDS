@@ -96,7 +96,7 @@ void Timer::GaugeUpdate()
 void Timer::Blink()
 {
 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 40);
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 100);
 	if (Random == 1)
 	{
 		m_MainRender->Off();

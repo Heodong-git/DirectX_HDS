@@ -38,21 +38,11 @@ ClubLevel_00::~ClubLevel_00()
 // 레벨 Start 기본 인터페이스 
 void ClubLevel_00::Start()
 {
-	GUISetting();
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 
-	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubBossLevel"))
-	{
-		GameEngineInput::CreateKey("ClubLevel_ChangeLevel_ClubLevel01", VK_F1);
-		GameEngineInput::CreateKey("ClubLevel_DebugSwitch", 'Q');
-		GameEngineInput::CreateKey("ClubLevel_ChangeColMap", '1');
-		GameEngineInput::CreateKey("ClubLevel_ChangeMap", '2');
-	}
-
 	// 기본 맵이름은 0번으로. 0번부터 시작할거니까 
 	SetLevelType(LevelType::CLUBMAP0);
-
 	// 필요한 리소스 로드
 	ResourcesLoad();
 	// 액터 로드 
@@ -61,12 +51,6 @@ void ClubLevel_00::Start()
 
 void ClubLevel_00::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("ClubLevel_ChangeLevel_ClubLevel01"))
-	{
-		GameEngineCore::ChangeLevel("ClubLevel_01");
-		return;
-	}
-
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -117,16 +101,14 @@ void ClubLevel_00::ResourcesLoad()
 // 초기화 필요한 액터는 Push_ResetActor
 void ClubLevel_00::ActorLoad()
 {
-	//float4 ScreenSize = GameEngineWindow::GetScreenSize();
-
-	// 맵을 생성하고, 사용할 텍스쳐ㄹ르 세팅
+	// 맵을 생성하고, 사용할 텍스쳐세팅 
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_00.png");
 
 	// 플레이어
 	std::shared_ptr<Player> NewPlayer = CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
-	NewPlayer->GetTransform()->AddLocalPosition(m_PlayerSetPos);
-	Push_ResetActor(NewPlayer);
+	float4 InitPos = { -850 , -94 };
+	ActorInit(NewPlayer, InitPos);
 
 	// UI 
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
@@ -134,69 +116,71 @@ void ClubLevel_00::ActorLoad()
 	Push_ResetActor(CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer"));
 	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
 
-	// 커서
+	// 서포터, 커서
+	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 
-	// 이름 뭘로할까~~~ 
-	{
-		// 함수를 만들면 좋을 거 같긴하다.. 
-		std::shared_ptr<Monster_Gangster> NewGangster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
-		float4 InitPos = { 584.0f , -94.0f };
-		NewGangster->GetTransform()->SetLocalPosition(InitPos);
-		NewGangster->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewGangster);
-	}
-	
-	{
-		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		float4 InitPos = { -202.0f , -94.0f };
-		NewPomp->GetTransform()->SetLocalPosition(InitPos);
-		NewPomp->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewPomp);
-	}
-	{
-		std::shared_ptr<Monster_Pomp> NewPomp = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		float4 InitPos = { -1.0f , -94.0f };
-		NewPomp->GetTransform()->SetLocalPosition(InitPos);
-		NewPomp->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewPomp);
-	}
-	{
-		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-		float4 InitPos = { -474.0f , -94.0f };
-		NewGrunt->GetTransform()->SetLocalPosition(InitPos);
-		NewGrunt->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewGrunt);
-	}
-	{
-		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-		float4 InitPos = { 40.0f , -94.0f };
-		NewGrunt->GetTransform()->SetLocalPosition({ 404.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
-		NewGrunt->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewGrunt);
-	}
-	{
-		std::shared_ptr<Monster_Grunt> NewGrunt = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
-		float4 InitPos = { 344.0f , -94.0f };
-		NewGrunt->GetTransform()->SetLocalPosition(InitPos);
-		NewGrunt->SetInitPos(InitPos);
-		PlusMonsterCount();
-		Push_ResetActor(NewGrunt);
-	}
-	{
-		// 문은 움직일 일이 없잖아? 
-		std::shared_ptr<IronDoor> NewDoor = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
-		NewDoor->GetTransform()->SetLocalPosition({ -67.0f , Player::MainPlayer->GetTransform()->GetLocalPosition().y });
-		Push_ResetActor(NewDoor);
-	}
+	// 플레이어, UI를 제외한 오브젝트 생성 및 초기화 
+	CreateObjAndInit();
+}
 
-	// 플레이서포터
-	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
+void ClubLevel_00::CreateObjAndInit()
+{
+	{
+		std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+		float4 InitPos = float4{ 584.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		float4 InitPos = { -202.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		float4 InitPos = { -1.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { -474.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { 70.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { 344.0f , -94.0f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<IronDoor> Door = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
+		float4 InitPos = { -67.0f , -94.0f };
+		ActorInit(Door, InitPos);
+	}
+}
+
+void ClubLevel_00::CreateKey()
+{
+	if (false == GameEngineInput::IsKey("ClubLevel_ChangeLevel_ClubLevel01"))
+	{
+		GameEngineInput::CreateKey("ClubLevel_ChangeLevel_ClubLevel01", VK_F1);
+		GameEngineInput::CreateKey("ClubLevel_DebugSwitch", 'Q');
+		GameEngineInput::CreateKey("ClubLevel_ChangeColMap", '1');
+		GameEngineInput::CreateKey("ClubLevel_ChangeMap", '2');
+	}
+}
+
+void ClubLevel_00::KeyUpdate()
+{
+	if (true == GameEngineInput::IsDown("ClubLevel_ChangeLevel_ClubLevel01"))
+	{
+		GameEngineCore::ChangeLevel("ClubLevel_01");
+		return;
+	}
 }
 
 void ClubLevel_00::GUISetting()

@@ -30,8 +30,14 @@ void BaseLevel::CameraSetting()
 
 void BaseLevel::Start()
 {
+	// 키생성 및 세팅, 자식에서 오버라이드 
+	CreateKey();
+	
 	// 카메라위치, 투영, Sort 세팅
 	CameraSetting();
+
+	// GUI 세팅, 자식에서 오버라이드 
+	GUISetting();
 
 	// 리셋될 액터를 저장할 벡터 초기화
 	m_ResetActors.reserve(8);
@@ -47,6 +53,9 @@ void BaseLevel::Update(float _DeltaTime)
 	{
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
+
+	// 키 업데이트
+	KeyUpdate();
 
 	// 스테이지 클리어 체크
 	LevelClearCheck();
@@ -72,7 +81,6 @@ void BaseLevel::Update(float _DeltaTime)
 		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
 	}
 
-
 	// GameEngineLevel::Update(_DeltaTime);
 }
 
@@ -85,7 +93,6 @@ void BaseLevel::DebugCamera()
 {
 }
 
-// 액터생성후 벡터에 푸시
 void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 {
 	if (nullptr == _Actor)

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineTransform.h>
 
 enum class LevelType
 {
@@ -108,10 +109,30 @@ public:
 	bool IsClear();
 
 protected:
-	virtual void LevelReset();
-	void Reset();
-	void ResetColObj();
-	bool m_IsClear = false;
+	// 뭔가 기가막히게 필요 없는 듯 하지만 조금더 편해지니까.. 
+	template<typename ActorType>
+	void ActorInit(std::shared_ptr<ActorType>& _Actor, float4& _SetPos)
+	{
+		if (nullptr == _Actor)
+		{
+			MsgAssert("액터가 nullptr 입니다. 초기화할 액터를 확인하세요.");
+			return;
+		}
+
+		std::shared_ptr<ActorType> Actor = _Actor;
+		Actor->GetTransform()->SetLocalPosition(_SetPos);
+		Actor->SetInitPos(_SetPos);
+		std::shared_ptr<GameEngineActor> UpCast = dynamic_pointer_cast<GameEngineActor>(Actor);
+		int Order = UpCast->GetOrder();
+
+		// 내가 몬스터일때만 카운트를 추가해. 
+		if (RenderOrder::MONSTER == static_cast<RenderOrder>(Order))
+		{
+			PlusMonsterCount();
+		}
+
+		Push_ResetActor(Actor);
+	}
 
 	// 맵의 몬스터 카운트
 	int m_MonsterCount = 0;
@@ -122,9 +143,6 @@ protected:
 
 	void Start() override;
 	void Update(float _DeltaTime);
-
-	virtual void ResourcesLoad() {};
-	virtual void ActorLoad() {};
 
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override {};
@@ -150,13 +168,25 @@ protected:
 	void DebugCamera();
 	
 	std::shared_ptr<class Map> m_Map = nullptr;
-
 	// 푸시액터
 	void Push_ResetActor(std::shared_ptr<class BaseActor> _Actor);
 	// 리셋이 필요한 액터를 저장, 액터생성시에 초기화해야하는 액터를 자료구조에 저장한다.
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
-
+	
 private:
+	virtual void LevelReset();
+	void Reset();
+	void ResetColObj();
+	bool m_IsClear = false;
+
+	virtual void ResourcesLoad() {};
+	virtual void ActorLoad() {};
+
+	virtual void GUISetting() {};
+	virtual void CreateKey() {};
+
+	// 키업데이트 
+	virtual void KeyUpdate() {};
 	// 디버그 업데이트
 	void DebugUpdate();
 
