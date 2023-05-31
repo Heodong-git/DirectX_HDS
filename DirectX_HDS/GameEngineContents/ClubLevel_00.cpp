@@ -48,7 +48,6 @@ void ClubLevel_00::Start()
 	}
 	m_GUI->On();
 
-
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 

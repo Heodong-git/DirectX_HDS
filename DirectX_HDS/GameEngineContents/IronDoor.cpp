@@ -21,6 +21,8 @@ void IronDoor::Start()
 void IronDoor::Update(float _DeltaTime)
 {
 	DebugUpdate();
+	UpdateState(_DeltaTime);
+	
 }
 
 void IronDoor::Render(float _DeltaTime)
@@ -145,6 +147,19 @@ void IronDoor::CloseStart()
 
 void IronDoor::CloseUpdate(float _DeltaTime)
 {
+	// 만약 플레이어 공격과 충돌했다면
+	// 내가 플레이어의 공격과 충돌했다면 
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	// 뭔가가 들어왔다는건 충돌했다는거고 
+	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+	if (nullptr != Col)
+	{
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		ChangeState(IronDoorState::OPEN);
+	}
 }
 
 void IronDoor::CloseEnd()
@@ -153,6 +168,7 @@ void IronDoor::CloseEnd()
 
 void IronDoor::OpenStart()
 {
+	m_MainRender->SetAnimPauseOff();
 }
 
 void IronDoor::OpenUpdate(float _DeltaTime)

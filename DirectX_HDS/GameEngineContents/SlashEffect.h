@@ -23,6 +23,8 @@ protected:
 private:
 	// 렌더러생성 및 세팅
 	void ComponentSetting();
+	void CollisionUpdate(float _DeltaTime);
+	void MoveUpdate(float _DeltaTime);
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
