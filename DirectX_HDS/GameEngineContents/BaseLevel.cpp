@@ -272,6 +272,12 @@ void BaseLevel::LevelReset()
 
 void BaseLevel::Reset()
 {
+	if (nullptr != m_GoUI)
+	{
+		m_GoUI->Death();
+		m_GoUI = nullptr;
+	}
+
 	m_IsClear = false;
 	SetLimitTime();
 	ResetMonsterCount();

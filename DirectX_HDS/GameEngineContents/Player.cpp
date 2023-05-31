@@ -828,6 +828,36 @@ void Player::SlashUpdate(float _DeltaTime)
 	float4 MoveDir = m_AttackPos - MyPos;
 	MoveDir.Normalize();
 
+	if ((false == PixelCollider::PixelCol->GroundCheck(this) && PlayerState::IDLE == m_PrevState && m_AttackPos.y < MyPos.y) ||
+		(false == PixelCollider::PixelCol->GroundCheck(this) && PlayerState::CROUCH == m_PrevState && m_AttackPos.y < MyPos.y) ||
+		(false == PixelCollider::PixelCol->GroundCheck(this) && PlayerState::IDLETORUN == m_PrevState && m_AttackPos.y < MyPos.y) ||
+		(false == PixelCollider::PixelCol->GroundCheck(this) && PlayerState::ROLL == m_PrevState && m_AttackPos.y < MyPos.y))
+	{
+		MoveDir.y = 0.0f;
+		// 플레이어가 왼쪽 벽에 충돌중일 경우
+		// 일단 임시로 
+		if (true == PixelCollider::PixelCol->LeftPixelCheck())
+		{
+			// 나보다 우측으로 공격했을 때만 이동한다.
+			if (m_AttackPos.x >= MyPos.x)
+			{
+				GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+				return;
+			}
+		}
+
+		// 내가 우측 벽에 충돌중일 경우 
+		if (true == PixelCollider::PixelCol->RightPixelCheck())
+		{
+			// 나보다 좌측으로 공격했을때만 이동한다. 
+			if (m_AttackPos.x <= MyPos.x)
+			{
+				GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+				return;
+			}
+		}
+	}
+
 	// 플레이어가 왼쪽 벽에 충돌중일 경우
 	// 일단 임시로 
 	if (true == PixelCollider::PixelCol->LeftPixelCheck())

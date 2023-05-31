@@ -129,6 +129,10 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::SameLine();
                 ImGui::Text("Fall");
                 break;
+            case PlayerState::ROLL:
+                ImGui::SameLine();
+                ImGui::Text("Roll");
+                break;
             }
 
             ImGui::Text("Dir : ");
