@@ -107,10 +107,7 @@ void Battery::TextureChange()
 		return;
 	}
 
-	float TimeCheck = Player::MainPlayer->GetSlowLimitTime();
-
-	// 키보드 쉬프트 텍스쳐
-	// 값이 깎여나가있다면 누르고 있는것.. 인데 여기서간단하게안되나 ?
+	// 시프트키 텍스쳐
 	if (false == Player::MainPlayer->IsSlowSkill())
 	{
 		m_ShiftRender->SetTexture("keyboard_shift_0.png");
@@ -121,6 +118,11 @@ void Battery::TextureChange()
 		m_ShiftRender->SetTexture("keyboard_shift_1.png");
 	}
 
+
+
+
+
+	float TimeCheck = Player::MainPlayer->GetSlowLimitTime();
 	
 	// 배터리텍스쳐
 	if (9.0f <= TimeCheck)
@@ -182,58 +184,6 @@ void Battery::TextureChange()
 		m_MainRender->SetTexture("Battery_00.png");
 		return;
 	}
-	//// 9초 미만일 경우
-	//else if (8.0f >= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_08.png");
-	//	return;
-	//}
-
-	//// 8초 미만일 경우 
-	//else if (7.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_07.png");
-	//	return;
-	//}
-
-	//else if (7.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_06.png");
-	//	return;
-	//}
-	//else if (6.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_05.png");
-	//	return;
-	//}
-	//else if (5.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_04.png");
-	//	return;
-	//}
-	//else if (4.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_03.png");
-	//	return;
-	//}
-	//else if (3.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_02.png");
-	//	return;
-	//}
-
-	//else if (2.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_01.png");
-	//	return;
-	//}
-
-	//else if (1.0f <= TimeCheck)
-	//{
-	//	m_MainRender->SetTexture("Battery_00.png");
-	//	return;
-	//}
-
 }
 
 void Battery::Blink()

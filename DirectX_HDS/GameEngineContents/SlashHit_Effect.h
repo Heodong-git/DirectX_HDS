@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 
+
+// 히트이펙트가 얘가 아닌거같은데 
 // 설명 :
 class SlashHit_Effect : public BaseActor
 {
@@ -24,6 +26,6 @@ private:
 	// 렌더러생성 및 세팅
 	void ComponentSetting();
 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 
 };

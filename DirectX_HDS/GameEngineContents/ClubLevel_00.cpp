@@ -36,6 +36,19 @@ ClubLevel_00::~ClubLevel_00()
 
 void ClubLevel_00::Start()
 {
+	//레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
+	//레벨 start 의 기본 인터페이스
+
+	// 필요하다면, GUI On <-- Core에서 초기화 
+	m_GUI = GameEngineGUI::FindGUIWindowConvert<StageEditer>("Debug_State");
+	if (m_GUI == nullptr)
+	{
+		MsgAssert("GUI Window가 nullptr 입니다.");
+		return;
+	}
+	m_GUI->On();
+
+
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 
@@ -80,19 +93,6 @@ void ClubLevel_00::Update(float _DeltaTime)
 
 void ClubLevel_00::LevelChangeStart()
 {
-	//레벨체인지하면서 imgui 를 on 시킬때 포커스가 해제되는중
-	//레벨 start 의 기본 인터페이스
-
-	// 필요하다면, GUI On <-- Core에서 초기화 
-	m_GUI = GameEngineGUI::FindGUIWindowConvert<StageEditer>("Debug_State");
-	if (m_GUI == nullptr)
-	{
-		MsgAssert("GUI Window가 nullptr 입니다.");
-		return;
-	}
-	
-	m_GUI->On();
-
 	// 필요한 액터 생성, 초기화(세팅)
 	Push_ResetActor(CreateActor<CameraSetter>());
 	CameraSetter::MainCamSetter->CameraSetting();

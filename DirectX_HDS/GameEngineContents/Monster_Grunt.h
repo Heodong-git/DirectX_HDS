@@ -46,6 +46,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
 private:
+	// 히트이펙트 피봇
+	float m_HitEffectPivot = 20.0f;
+
 	// 리셋
 	virtual void Reset() override;
 	inline void ResetDir()

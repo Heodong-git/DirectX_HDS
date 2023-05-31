@@ -241,6 +241,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SlashLaser_Effect.h" />
     <ClInclude Include="TitleBackGround.h">
       <SubType>
       </SubType>
@@ -362,6 +363,7 @@
     <ClCompile Include="RollEffect.cpp" />
     <ClCompile Include="SlashEffect.cpp" />
     <ClCompile Include="SlashHit_Effect.cpp" />
+    <ClCompile Include="SlashLaser_Effect.cpp" />
     <ClCompile Include="TitleBackGround.cpp" />
     <ClCompile Include="Battery.cpp" />
     <ClCompile Include="Hud.cpp" />

@@ -6,8 +6,8 @@
 
 #include "BaseLevel.h"
 
-// 테스트
 #include "Player.h"
+#include "SlashHit_Effect.h"
 
 Monster_Pomp::Monster_Pomp()
 {
@@ -60,6 +60,10 @@ void Monster_Pomp::Update(float _DeltaTime)
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
+		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
 		ChangeState(PompState::HITGROUND);

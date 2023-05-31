@@ -7,6 +7,8 @@
 #include "BaseLevel.h"
 #include "Player.h"
 
+#include "SlashHit_Effect.h"
+
 Monster_Grunt::Monster_Grunt()
 {
 }
@@ -48,15 +50,14 @@ void Monster_Grunt::Update(float _DeltaTime)
 	DirCheck();
 	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	
 
-	// 뭔가가 들어왔다는건 충돌했다는거고 
-	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 	if (nullptr != Col)
 	{
 		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
-		// 나의 충돌체를 off
-		// 애니메이션 렌더를 데스애니메이션으로전환 
+		
+		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
 		m_Collision->Off();
 
 		// 내가죽었으니까 -1 

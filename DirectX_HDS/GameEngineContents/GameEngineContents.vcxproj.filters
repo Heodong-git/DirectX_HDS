@@ -81,9 +81,6 @@
     <ClInclude Include="LandEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
-    <ClInclude Include="SlashEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClInclude>
     <ClInclude Include="DashEffect.h">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClInclude>
@@ -129,14 +126,20 @@
     <ClInclude Include="ColEventObj.h">
       <Filter>02.Actor\10.Event</Filter>
     </ClInclude>
-    <ClInclude Include="SlashHit_Effect.h">
-      <Filter>02.Actor\08.Effect\01.Hit</Filter>
-    </ClInclude>
     <ClInclude Include="YouCanDoThis.h">
       <Filter>02.Actor\05.UI\04.Clear</Filter>
     </ClInclude>
     <ClInclude Include="Go_UI.h">
       <Filter>02.Actor\05.UI\05.Go</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashLaser_Effect.h">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashHit_Effect.h">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +225,6 @@
     <ClCompile Include="LandEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
-    <ClCompile Include="SlashEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClCompile>
     <ClCompile Include="DashEffect.cpp">
       <Filter>02.Actor\08.Effect\00.Player</Filter>
     </ClCompile>
@@ -267,14 +267,20 @@
     <ClCompile Include="ColEventObj.cpp">
       <Filter>02.Actor\10.Event</Filter>
     </ClCompile>
-    <ClCompile Include="SlashHit_Effect.cpp">
-      <Filter>02.Actor\08.Effect\01.Hit</Filter>
-    </ClCompile>
     <ClCompile Include="YouCanDoThis.cpp">
       <Filter>02.Actor\05.UI\04.Clear</Filter>
     </ClCompile>
     <ClCompile Include="Go_UI.cpp">
       <Filter>02.Actor\05.UI\05.Go</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashLaser_Effect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashHit_Effect.cpp">
+      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,14 +392,14 @@
     <Filter Include="02.Actor\10.Event">
       <UniqueIdentifier>{f4404e77-95b5-42ec-b80b-ce7fc5471208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\08.Effect\01.Hit">
-      <UniqueIdentifier>{e1329101-50f4-4da4-a8d4-b9d545ed6825}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Actor\05.UI\04.Clear">
       <UniqueIdentifier>{3e0f00c6-3893-4e6b-b34c-891154c49dfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Actor\05.UI\05.Go">
       <UniqueIdentifier>{da7f92de-0853-4e75-aaf8-3a317ab19013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.Effect\00.Player\Slash">
+      <UniqueIdentifier>{dfe80819-ee58-4ddc-92f6-0d6a527e5fd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

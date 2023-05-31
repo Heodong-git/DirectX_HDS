@@ -79,6 +79,16 @@ void ContentsCore::ContentsResourcesCreate()
 // 게임이 실행되면 동작해야할 함수를 호출
 void ContentsCore::GameStart()
 {
+	// gui
+	{
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<TitleEditer>("Title_Editer");
+		Window->Off();
+	}
+	{
+		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<StageEditer>("Debug_State");
+		Window->Off();
+	}
+
 	ContentsResourcesCreate();
 
 	GameEngineCore::CreateLevel<TitleLevel>("TitleLevel");
@@ -90,15 +100,7 @@ void ContentsCore::GameStart()
 
 	GameEngineCore::ChangeLevel("TitleLevel");
 
-	// gui
-	{
-		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<TitleEditer>("Title_Editer");
-		Window->Off();
-	}
-	{
-		std::shared_ptr<GameEngineGUIWindow> Window = GameEngineGUI::GUIWindowCreate<StageEditer>("Debug_State");
-		Window->Off();
-	}
+
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출
