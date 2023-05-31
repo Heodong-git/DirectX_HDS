@@ -17,7 +17,6 @@ public:
 	BaseActor& operator=(const BaseActor& _Other) = delete;
 	BaseActor& operator=(BaseActor&& _Other) noexcept = delete;
 
-	// 필요한가..? ㅇㅇ 필요함 
 	class BaseLevel* GetReturnCastLevel() const;
 
 	inline void SetInitPos(float4& _Pos)
@@ -46,8 +45,6 @@ protected:
 			DebugOn();
 		}
 	}
-
-	virtual float4 FindSettingPos() { return float4{ 0,0 }; }
 
 private:
 	// BaseActor들은 전부 얘를 오버라이드 

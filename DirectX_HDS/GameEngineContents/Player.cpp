@@ -210,61 +210,6 @@ void Player::Render(float _DeltaTime)
 {
 }
 
-// 이거는 사실 필요없는거같아.. 
-// 일단 냅둬 
-float4 Player::FindSettingPos()
-{
-	BaseLevel* CurLevel = GetReturnCastLevel();
-
-	if (nullptr == CurLevel)
-	{
-		MsgAssert("현재 레벨이 nullptr 입니다.");
-	}
-
-	// 객체의 타입에 대한 정보 얻기 
-	const std::type_info& type = typeid(*CurLevel);
-
-	// 변수 초기화 
-	float4 SetPos = {};
-
-	// 각 레벨일 때의 세팅되는 포지션을 받아온다. 
-	if (type == typeid(ClubLevel_00))
-	{
-		// 어.. 
-		ClubLevel_00* CastLevel = nullptr;
-		CastLevel = dynamic_cast<ClubLevel_00*>(CurLevel);
-		SetPos = this->GetInitPos();
-	}
-
-	else if (type == typeid(ClubLevel_01))
-	{
-		ClubLevel_01* CastLevel = nullptr;
-		CastLevel = dynamic_cast<ClubLevel_01*>(CurLevel);
-		SetPos = this->GetInitPos();
-	}
-
-	else if (type == typeid(ClubLevel_02))
-	{
-		ClubLevel_02* CastLevel = nullptr;
-		CastLevel = dynamic_cast<ClubLevel_02*>(CurLevel);
-		SetPos = this->GetInitPos();
-	}
-
-	else if (type == typeid(ClubLevel_03))
-	{
-		ClubLevel_03* CastLevel = nullptr;
-		CastLevel = dynamic_cast<ClubLevel_03*>(CurLevel);
-	}
-
-	else if (type == typeid(ClubLevel_04))
-	{
-		ClubLevel_04* CastLevel = nullptr;
-		CastLevel = dynamic_cast<ClubLevel_04*>(CurLevel);
-	}
-
-	return SetPos;
-}
-
 void Player::Reset()
 {
 	float4 SetPos = GetInitPos();

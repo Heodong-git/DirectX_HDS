@@ -143,6 +143,9 @@ void IronDoor::ChangeState(IronDoorState _State)
 
 void IronDoor::CloseStart()
 {
+	m_MainRender->ChangeAnimation("iron_door");
+	m_MainRender->SetAnimPauseOn();
+	m_Collision->On();
 }
 
 void IronDoor::CloseUpdate(float _DeltaTime)

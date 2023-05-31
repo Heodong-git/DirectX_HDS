@@ -2,7 +2,6 @@
 #include "BaseActor.h"
 #include "BaseLevel.h"
 
-
 BaseActor::BaseActor()
 {
 }

@@ -7,7 +7,6 @@ class PlaySupporter : public BaseActor
 	friend class Player;
 public:
 	static PlaySupporter* MainSupporter;
-
 public:
 	// constrcuter destructer
 	PlaySupporter();
@@ -19,7 +18,7 @@ public:
 	PlaySupporter& operator=(const PlaySupporter& _Other) = delete;
 	PlaySupporter& operator=(PlaySupporter&& _Other) noexcept = delete;
 
-	//static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
+	// 스테이지 클리어 실패, 투명, 클리어 성공, 마우스 클릭 체크용 콜리전
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_ClearRender;
@@ -31,13 +30,16 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	void Move(float _DeltaTime);
+	void CameraMovement(float _DeltaTime);
 	bool RangeOverCheck(float _DeltaTime);
 	bool PlayerDeathCheck();
 
 	std::shared_ptr<class GameEngineCamera> m_MainCamera = nullptr;
-	float m_MoveSpeed = 200.0f;
+	const float m_MoveSpeed = 200.0f;
 	
+	void ComponentSetting();
+
+	void SaveCameraRange();
 	// 좌상단, 우상단, 좌하단 , 우하단 순서로 
 	std::map<int, std::vector<float4>> m_MapRanges = std::map<int, std::vector<float4>>();
 	virtual void Reset() override;

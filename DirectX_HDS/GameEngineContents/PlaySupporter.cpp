@@ -10,11 +10,10 @@
 #include "PixelCollider.h"
 
 PlaySupporter* PlaySupporter::MainSupporter = nullptr;
-//std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_SuccessRender = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
-std::shared_ptr<class GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_ClearRender = nullptr;
+std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
+std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
+std::shared_ptr<GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
+std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_ClearRender = nullptr;
 
 PlaySupporter::PlaySupporter()
 {
@@ -27,22 +26,8 @@ PlaySupporter::~PlaySupporter()
 
 void PlaySupporter::Start()
 {
-	{
-		// 이게 맞나.. 일단 0번맵 범위
-		std::vector<float4> Ranges = std::vector<float4>();
-		float4 LeftTop = { -360.0f , 34.0f };
-		float4 RightTop = { 307.0f , 34.0f };
-
-		Ranges.push_back(LeftTop);
-		Ranges.push_back(RightTop);
-
-		m_MapRanges.insert(make_pair(0, Ranges));
-	}
-
-	{
-		// 1번맵은 범위 필요없으니까 건너뛰고 키값을 2부터 시작
-		
-	}
+	// 각 레벨별 카메라 범위저장
+	SaveCameraRange();
 
 	// 두변수가 nullptr 이라면 최초생성 
 	// 얘네는 카메라로 옮길 수 도 있음. 
@@ -69,36 +54,7 @@ void PlaySupporter::Start()
 		}
 	}
 
-	// 타이머 완성되면 사용
-	float4 ScreenSize = GameEngineWindow::GetScreenSize();
-	// 이동하고 렌더러 생성 후 텍스쳐 세팅
-	/*g_SuccessRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	g_SuccessRender->GetTransform()->SetLocalScale(ScreenSize);
-	g_SuccessRender->SetTexture("youcandothis.png");
-	g_SuccessRender->Off();*/
-
-	g_BlackBoxRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	g_BlackBoxRender->SetTexture("background_black.png");
-	g_BlackBoxRender->GetTransform()->SetLocalScale({ ScreenSize.x / 3.0f , ScreenSize.y / 4.0f });
-	g_BlackBoxRender->GetTransform()->SetLocalPosition({ 50.0f , 0.0f });
-	g_BlackBoxRender->ColorOptionValue.MulColor.a = 0.4f;
-	g_BlackBoxRender->Off();
-
-	g_FailRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	g_FailRender->SetScaleToTexture("restart.png");
-	g_FailRender->GetTransform()->SetLocalPosition({ 60.0f , 0.0f });
-	g_FailRender->Off();
-
-	g_ClearRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	g_ClearRender->SetTexture("youcandothis.png");
-	g_ClearRender->GetTransform()->SetLocalScale(ScreenSize);
-	g_ClearRender->Off();
-
-	// 마우스 충돌체크용
-	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
-	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
-
-	// 생성되는 위치는 현재카메라시점기준중앙을 기준으로해서 화면크기만큼 생성할거야
+	ComponentSetting();
 }
 
 void PlaySupporter::Update(float _DeltaTime)
@@ -146,15 +102,14 @@ void PlaySupporter::Update(float _DeltaTime)
 		return;
 	}
 
-	Move(_DeltaTime);
+	CameraMovement(_DeltaTime);
 }
 
 void PlaySupporter::Render(float _DeltaTime)
 {
 }
 
-// 플레이어를 받아와서 움직일거. 
-void PlaySupporter::Move(float _DeltaTime)
+void PlaySupporter::CameraMovement(float _DeltaTime)
 {
 	if (nullptr == Player::MainPlayer)
 	{
@@ -171,15 +126,10 @@ void PlaySupporter::Move(float _DeltaTime)
 	Dir.y = 0.0f;
 	Dir.Normalize();
 	m_MainCamera->GetTransform()->AddLocalPosition(Dir * m_MoveSpeed * _DeltaTime);
-	
 }
 
-// 카메라가 맵의 범위를 넘어서는지 
-// 당연히 현재 레벨에 진입하고, 레벨이 모두 세팅되어있다는 가정하에. 
-// 카메라가 
 bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 {
-	// 맵가져와
 	std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
 	BaseLevel* CastLevel = dynamic_cast<BaseLevel*>(CurLevel.get());
 
@@ -198,7 +148,7 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		return true;
 	}
 
-	// 픽셀컬라이더의 충돌맵을 가져오고
+	// 픽셀컬라이더의 충돌맵을 가져오고, 어차피 실제 사용하는 맵과 크기는 동일
 	std::shared_ptr<GameEngineTexture> CurMap = PixelCollider::PixelCol->GetColMap();
 
 	if (nullptr == CurMap)
@@ -207,23 +157,19 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		return true;
 	}
 
-	// 맵이 nullptr이 아닐 경우 맵의 크기를 받아오고 ... 여기서.. 
+	// 맵의 크기를 받아온다.
 	float4 MapSize = CurMap->GetScale();
 
-	// 현재 맵 타입에 따라서 범위를 전부 다르게 계산 
-	// 어차피 이동할때만 하면되니까 ㅇㅇ 
-	// 여기서 어떻게 할거니 ㅎㅎ 
-	// 맵에따라서 들어오게 까지 완성
-	// 일단 되긴하는데 정리가 좀 필요하다. 
+	// 현재 레벨 타입에 따라서 카메라 적용범위 계산
 	switch (CurLevelType)
 	{
 	case LevelType::CLUBMAP0:
 	{
-		// 이부분이 뭔가 맘에 안들어.. 
-		if (nullptr == m_MainCamera)
-		{
-			return true;
-		}
+		//// 이부분이 뭔가 맘에 안들어.. 
+		//if (nullptr == m_MainCamera)
+		//{
+		//	return true;
+		//}
 
 		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(0);
 		if (m_MapRanges.end() == FindIter)
@@ -255,7 +201,7 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		break;
 	case LevelType::CLUBMAP1:
 	{
-		// 얘는 그냥 카메라 안에 다들어와서 노상관 아무것도 없어도 될듯
+		// 피봇 에 전체가 다 잡히기 때문에 필요 없음. 
 		return true;
 	}
 		break;
@@ -274,7 +220,6 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		break;
 	}
 
-	// 
 	return true;
 }
 
@@ -291,6 +236,51 @@ bool PlaySupporter::PlayerDeathCheck()
 	}
 
 	return false;
+}
+
+void PlaySupporter::ComponentSetting()
+{
+	float4 ScreenSize = GameEngineWindow::GetScreenSize();
+
+	g_BlackBoxRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_BlackBoxRender->SetTexture("background_black.png");
+	g_BlackBoxRender->GetTransform()->SetLocalScale({ ScreenSize.x / 3.0f , ScreenSize.y / 4.0f });
+	g_BlackBoxRender->GetTransform()->SetLocalPosition({ 50.0f , 0.0f });
+	g_BlackBoxRender->ColorOptionValue.MulColor.a = 0.4f;
+	g_BlackBoxRender->Off();
+
+	g_FailRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_FailRender->SetScaleToTexture("restart.png");
+	g_FailRender->GetTransform()->SetLocalPosition({ 60.0f , 0.0f });
+	g_FailRender->Off();
+
+	g_ClearRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	g_ClearRender->SetTexture("youcandothis.png");
+	g_ClearRender->GetTransform()->SetLocalScale(ScreenSize);
+	g_ClearRender->Off();
+
+	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
+	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
+}
+
+void PlaySupporter::SaveCameraRange()
+{
+	{
+		// 이게 맞나.. 일단 0번맵 범위
+		std::vector<float4> Ranges = std::vector<float4>();
+		float4 LeftTop = { -360.0f , 34.0f };
+		float4 RightTop = { 307.0f , 34.0f };
+
+		Ranges.push_back(LeftTop);
+		Ranges.push_back(RightTop);
+
+		m_MapRanges.insert(make_pair(0, Ranges));
+	}
+
+	{
+		// 1번맵은 범위 필요없으니까 건너뛰고 키값을 2부터 시작
+
+	}
 }
 
 void PlaySupporter::Reset()
