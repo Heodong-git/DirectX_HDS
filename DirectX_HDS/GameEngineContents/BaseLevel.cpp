@@ -54,13 +54,17 @@ void BaseLevel::Update(float _DeltaTime)
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
 
+	// 디버그 업데이트
+	DebugUpdate();
+
 	// 키 업데이트
 	KeyUpdate();
 
 	// 스테이지 클리어 체크
 	LevelClearCheck();
+
+	// 플레이어 스킬 체크 
 	PlayerSkillCheck();
-	DebugUpdate();
 
 	// 현재 레벨이 대기상태라면 업데이트하지 않음
 	if (BaseLevel::LevelState::WAIT == m_CurState)

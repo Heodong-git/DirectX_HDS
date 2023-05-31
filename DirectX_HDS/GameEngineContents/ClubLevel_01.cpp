@@ -42,6 +42,8 @@ void ClubLevel_01::Start()
 
 	// 액터 로드 
 	ActorLoad();
+
+	SetState(BaseLevel::LevelState::WAIT);
 }
 
 void ClubLevel_01::Update(float _DeltaTime)
@@ -96,7 +98,7 @@ void ClubLevel_01::ResourcesLoad()
 
 void ClubLevel_01::ActorLoad()
 {
-	m_Map = CreateActor<Map>(-10);
+	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_01.png");
 }
 

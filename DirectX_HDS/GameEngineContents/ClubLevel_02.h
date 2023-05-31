@@ -15,25 +15,22 @@ public:
 	ClubLevel_02& operator=(const ClubLevel_02& _Other) = delete;
 	ClubLevel_02& operator=(ClubLevel_02&& _Other) noexcept = delete;
 
-	float4& GetPlayerSetPos()
-	{
-		return m_PlayerSetPos;
-	}
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
+private:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 
 	virtual void ResourcesLoad() override;
 	virtual void ActorLoad() override;
 
-private:
-	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-	float4 m_PlayerSetPos = float4{ -900, -511 };
+	void CreateObjAndInit();
 
-	// 디버그용 
-	void DebugUpdate();
+	virtual void KeyUpdate() override;
+	virtual void CreateKey() override;
+
+	virtual void GUISetting() override;
+	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 };

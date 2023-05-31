@@ -19,10 +19,19 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
+private:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 
-private:
 	virtual void ResourcesLoad() override;
 	virtual void ActorLoad() override;
+
+	void CreateObjAndInit();
+
+	virtual void KeyUpdate() override;
+	virtual void CreateKey() override;
+
+	virtual void GUISetting() override;
+
+	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 };

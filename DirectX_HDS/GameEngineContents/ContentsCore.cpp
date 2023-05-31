@@ -9,18 +9,16 @@
 #include <GameEngineCore/GameEnginePixelShader.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 
-#include "PlayLevel.h"
 #include "TitleLevel.h"
-#include "CTutorialLevel.h"
 #include "ClubLevel_00.h"
 #include "ClubLevel_01.h"
 #include "ClubLevel_02.h"
 #include "ClubLevel_03.h"
+#include "ClubLevel_04.h"
 
 #include "ClubLevel_Boss.h"
 #include "TitleEditer.h"
 #include "StageEditer.h"
-#include "CameraSetter.h"
 
 ContentsCore::ContentsCore()
 {
@@ -94,6 +92,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_01>("ClubLevel_01");
 	GameEngineCore::CreateLevel<ClubLevel_02>("ClubLevel_02");
 	GameEngineCore::CreateLevel<ClubLevel_03>("ClubLevel_03");
+	GameEngineCore::CreateLevel<ClubLevel_04>("ClubLevel_04");
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 
 	GameEngineCore::ChangeLevel("TitleLevel");

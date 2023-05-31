@@ -12,9 +12,6 @@
     <ClInclude Include="BaseActor.h">
       <Filter>02.Actor\00.Base</Filter>
     </ClInclude>
-    <ClInclude Include="CTutorialLevel.h">
-      <Filter>01.Level</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>01.Level\01.Title</Filter>
     </ClInclude>
@@ -155,9 +152,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>02.Actor\01.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="CTutorialLevel.cpp">
-      <Filter>01.Level</Filter>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>01.Level\01.Title</Filter>

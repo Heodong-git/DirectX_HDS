@@ -47,6 +47,8 @@ void ClubLevel_00::Start()
 	ResourcesLoad();
 	// 액터 로드 
 	ActorLoad();
+
+	SetState(BaseLevel::LevelState::WAIT);
 }
 
 void ClubLevel_00::Update(float _DeltaTime)
