@@ -74,6 +74,7 @@ public:
 		return m_FadeEffect;
 	}
 	
+
 	// 당장떠오르는게 이거밖에 없다 
 	inline void PlusMonsterCount()
 	{
@@ -164,6 +165,7 @@ private:
 
 	// 카메라이펙트
 	std::shared_ptr<class FadeEffect> m_FadeEffect;
+
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 
 	virtual void CameraSetting();
 

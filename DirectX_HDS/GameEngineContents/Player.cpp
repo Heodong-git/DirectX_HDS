@@ -313,6 +313,10 @@ void Player::ComponentSetting()
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
+
+	m_DebugRender_WallRight = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_WallRight->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_WallRight->GetTransform()->SetLocalPosition({ 2.0f , PlayerPos.y + 36.0f });
 }
 
 void Player::DirCheck()
@@ -344,6 +348,7 @@ void Player::DebugUpdate()
 		m_DebugRender_Left->On();
 		m_DebugRender_Right->On();
 		m_DebugRender_Top->On();
+		m_DebugRender_WallRight->On();
 	}
 
 	else if (false == IsDebug())
@@ -352,6 +357,7 @@ void Player::DebugUpdate()
 		m_DebugRender_Left->Off();
 		m_DebugRender_Right->Off();
 		m_DebugRender_Top->Off();
+		m_DebugRender_WallRight->Off();
 	}
 }
 
@@ -490,8 +496,11 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::FALL:
 		FallUpdate(_DeltaTime);
 		break;
-	case PlayerState::WALL:
-		WallUpdate(_DeltaTime);
+	case PlayerState::RIGHTWALL:
+		RightWallUpdate(_DeltaTime);
+		break;
+	case PlayerState::LEFTWALL:
+		LeftWallUpdate(_DeltaTime);
 		break;
 	case PlayerState::DEATH:
 		DeathUpdate(_DeltaTime);
@@ -537,8 +546,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::FALL:
 		FallStart();
 		break;
-	case PlayerState::WALL:
-		WallStart();
+	case PlayerState::RIGHTWALL:
+		RightWallStart();
+		break;
+	case PlayerState::LEFTWALL:
+		LeftWallStart();
 		break;
 	case PlayerState::DEATH:
 		DeathStart();
@@ -575,8 +587,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::FALL:
 		FallEnd();
 		break;
-	case PlayerState::WALL:
-		WallEnd();
+	case PlayerState::RIGHTWALL:
+		RightWallEnd();
+		break;
+	case PlayerState::LEFTWALL:
+		LeftWallEnd();
 		break;
 	case PlayerState::DEATH:
 		DeathEnd();
@@ -940,6 +955,14 @@ void Player::JumpUpdate(float _DeltaTime)
 			m_Direction = true;
 			GetTransform()->SetLocalPositiveScaleX();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			
+			/*float4 CheckPos = m_DebugRender_WallRight->GetTransform()->GetLocalPosition();
+			if (true == PixelCollider::PixelCol->RightWallCheck(CheckPos))
+			{
+				ChangeState(PlayerState::RIGHTWALL);
+				return;
+			}*/
+
 			return;
 		}
 	}
@@ -959,6 +982,7 @@ void Player::JumpUpdate(float _DeltaTime)
 
 void Player::JumpEnd()
 {
+	m_CurrentVerticalVelocity = 0.0f;
 	m_IsJumping = false;
 }
 
@@ -1226,16 +1250,39 @@ void Player::FallEnd()
 	GetLevel()->CreateActor<LandEffect>();
 }
 
-// 벽오브젝트를 만드는게 맞나? 
-void Player::WallStart()
+void Player::RightWallStart()
+{
+	//m_Render->ChangeAnimation("player_wallslide");
+}
+
+void Player::RightWallUpdate(float _DeltaTime)
+{
+	/*if (true == PixelCollider::PixelCol->GroundCheck(this))
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	else
+	{
+		GetTransform()->AddLocalPosition(float4::Down * 200.0f * _DeltaTime);
+		return;
+	}*/
+}
+
+void Player::RightWallEnd()
 {
 }
 
-void Player::WallUpdate(float _DeltaTime)
+void Player::LeftWallStart()
 {
 }
 
-void Player::WallEnd()
+void Player::LeftWallUpdate(float _DeltaTime)
+{
+}
+
+void Player::LeftWallEnd()
 {
 }
 

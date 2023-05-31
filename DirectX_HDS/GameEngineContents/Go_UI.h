@@ -22,7 +22,7 @@ protected:
 
 private:
 	void Move(float _DeltaTime);
-	float4 m_StartPos = float4 { 500, 100 };
+	float4 m_StartPos = float4 { 500, 120 };
 	float  m_MoveTime = 1.0f;
 	float  m_MoveSpeed = 50.0f;
 

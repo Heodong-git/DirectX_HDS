@@ -222,6 +222,52 @@ bool PixelCollider::RightPixelCheck()
 	return false; // 충돌 없음
 }
 
+bool PixelCollider::RightWallCheck(float4& _Pos)
+{
+	// 만약 내가 왼쪽을 보고 있다면 
+	ColMapSetting();
+
+	float4 CheckPos = _Pos;
+	if (false == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Left->GetTransform()->GetWorldPosition();
+	}
+
+	else if (true == Player::MainPlayer->GetDir())
+	{
+		CheckPos = Player::MainPlayer->m_DebugRender_Right->GetTransform()->GetWorldPosition();
+	}
+
+	float4 ColMapSize = m_CurColMap->GetScale();
+	float4 ColMapHalpSize = ColMapSize.half();
+
+	// 픽셀 크기 계산
+	float PixelSizeX = ColMapSize.x / m_CurColMap->GetWidth();
+	float PixelSizeY = ColMapSize.y / m_CurColMap->GetHeight();
+
+	// 충돌 위치 계산
+	int CheckX = static_cast<int>((CheckPos.x + (ColMapSize.x / 2)) / PixelSizeX);
+	int CheckY = static_cast<int>(((ColMapSize.y / 2) - CheckPos.y) / PixelSizeY);
+
+	// 현재 맵의 범위에서 벗어날 경우 충돌로 간주
+	if (CheckX < 0 || CheckX >= m_CurColMap->GetWidth() ||
+		CheckY < 0 || CheckY >= m_CurColMap->GetHeight())
+	{
+		return true; // 충돌 발생 (맵 범위를 벗어남)
+	}
+
+	// 검사할 위치의 픽셀값을 받아온다.
+	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
+
+	// 충돌 검사
+	if (m_BlackPixel == ColPixel)
+	{
+		return true; // 충돌 발생
+	}
+
+	return false; // 충돌 없음
+}
+
 // 충돌 검사 함수 (Left 충돌)
 bool PixelCollider::LeftPixelCheck()
 {

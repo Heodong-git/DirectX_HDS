@@ -65,7 +65,7 @@ void Go_UI::ComponentSetting()
 
 	/*m_MainRender->SetScaleToTexture("go_go.png");
 	m_SubRender->SetScaleToTexture("go_arrow.png");*/
-
+	
 	m_MainRender->SetTexture("go_go.png");
 	m_MainRender->GetTransform()->SetLocalScale({ 78.0f , 40.0f });
 	m_SubRender->SetTexture("go_arrow.png");

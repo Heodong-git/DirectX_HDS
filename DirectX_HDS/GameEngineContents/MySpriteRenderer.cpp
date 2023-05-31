@@ -26,7 +26,6 @@ void MySpriteRenderer::Start()
 	AColor.r = 1.0f;
 	AColor.a = 1.0f;
 
-
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 	GetShaderResHelper().SetConstantBufferLink("TestColor", AColor);

@@ -56,12 +56,12 @@ void BaseLevel::Update(float _DeltaTime)
 			{
 			case LevelType::CLUBMAP0:
 			{
-				m_ColObj->GetTransform()->SetLocalPosition({ 939.0f , -75.0f });
+				m_ColObj->GetTransform()->SetLocalPosition({ 959.0f , -75.0f });
 			}
 				break;
 			case LevelType::CLUBMAP1:
 			{
-				m_ColObj->GetTransform()->SetLocalPosition({ 623.0f, 48.0f});
+				m_ColObj->GetTransform()->SetLocalPosition({ 653.0f, 48.0f});
 			}
 				break;
 			case LevelType::CLUBMAP2:

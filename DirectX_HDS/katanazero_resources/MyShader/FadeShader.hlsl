@@ -22,7 +22,6 @@ OutPut Fade_VS(Input _Value)
     return OutPutValue;
 }
 
-
 cbuffer FadeData : register(b1)
 {
     // 상수버퍼는 

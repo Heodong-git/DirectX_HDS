@@ -87,26 +87,27 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 
 		float4 Dir = ColPos - PlayerPos;
 
+		float DirY = Dir.y;
 		float EffectX = 0.0f; 
 		float EffectY = 0.0f;
 		if (ColPos.x >= PlayerPos.x)
 		{
-			EffectX = -900.0f;
+			EffectX = -800.0f;
 		}
 
 		else
 		{
-			EffectX = 900.0f;
+			EffectX = 800.0f;
 		}
 
 		if (ColPos.y >= PlayerPos.y)
 		{
-			EffectY = -320.0f;
+			EffectY = -330.0f;
 		}
 
 		else
 		{
-			EffectY = 320.0f;
+			EffectY = 330.0f;
 		}
 		
 		// 그러면 레이저 이펙트를 생성하는데. 

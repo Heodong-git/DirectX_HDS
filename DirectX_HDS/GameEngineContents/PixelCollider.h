@@ -46,7 +46,7 @@ public:
 
 	// 오른쪽 체크 
 	bool RightPixelCheck();
-
+	bool RightWallCheck(float4& _Pos);
 	// 왼쪽 체크 
 	bool LeftPixelCheck();
 

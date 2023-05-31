@@ -54,7 +54,6 @@ void Monster_Grunt::Update(float _DeltaTime)
 	if (nullptr != Col)
 	{
 		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
-		
 		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
 		float4 MyPos = GetTransform()->GetLocalPosition();
 		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });

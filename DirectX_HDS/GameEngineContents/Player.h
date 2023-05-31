@@ -18,7 +18,8 @@ enum class PlayerState
 	CROUCH,			// 크라우치 (웅크리기)
 	FLIP,			// 벽타고 구르기 
 	FALL,			// 낙하 
-	WALL,			// 벽타기 
+	RIGHTWALL,			// 벽타기 
+	LEFTWALL,
 	DEATH,			// 쥬금
 };
 
@@ -153,6 +154,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 
+	// wall right 
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_WallRight = nullptr;
+
 	// top
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
@@ -222,9 +226,13 @@ private:
 	void FallUpdate(float _DeltaTime);
 	void FallEnd();
 
-	void WallStart();
-	void WallUpdate(float _DeltaTime);
-	void WallEnd();
+	void RightWallStart();
+	void RightWallUpdate(float _DeltaTime);
+	void RightWallEnd();
+
+	void LeftWallStart();
+	void LeftWallUpdate(float _DeltaTime);
+	void LeftWallEnd();
 	
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);
