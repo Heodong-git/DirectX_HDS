@@ -10,7 +10,7 @@
 #include "PixelCollider.h"
 
 PlaySupporter* PlaySupporter::MainSupporter = nullptr;
-std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_SuccessRender = nullptr;
+//std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_SuccessRender = nullptr;
 std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
 std::shared_ptr<class GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
 std::shared_ptr<class GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
@@ -46,7 +46,7 @@ void PlaySupporter::Start()
 
 	// 두변수가 nullptr 이라면 최초생성 
 	// 얘네는 카메라로 옮길 수 도 있음. 
-	if (nullptr == g_SuccessRender)
+	if (nullptr == g_BlackBoxRender)
 	{
 		// 파일로드, 텍스쳐세팅까지 여기서 한번에 진행
 		if (nullptr == GameEngineTexture::Find("restart.png"))
@@ -72,10 +72,10 @@ void PlaySupporter::Start()
 	// 타이머 완성되면 사용
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	// 이동하고 렌더러 생성 후 텍스쳐 세팅
-	g_SuccessRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	/*g_SuccessRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	g_SuccessRender->GetTransform()->SetLocalScale(ScreenSize);
 	g_SuccessRender->SetTexture("youcandothis.png");
-	g_SuccessRender->Off();
+	g_SuccessRender->Off();*/
 
 	g_BlackBoxRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	g_BlackBoxRender->SetTexture("background_black.png");

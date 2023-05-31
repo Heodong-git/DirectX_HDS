@@ -104,6 +104,16 @@ void Cursor::Render(float _DeltaTime)
 {
 }
 
+void Cursor::LevelChangeStart()
+{
+	WindowCursorOff();
+}
+
+void Cursor::LevelChangeEnd()
+{
+	WindowCursorOn();
+}
+
 void Cursor::DebugUpdate()
 {
 	if (true == IsDebug())
@@ -119,7 +129,7 @@ void Cursor::DebugUpdate()
 
 void Cursor::FollowCursor()
 {
-	GameEngineLevel* Level = GameEngineCore::GetCurLevel().get();
+	GameEngineLevel* Level = GetLevel();
 	BaseLevel* CurLevel = dynamic_cast<BaseLevel*>(Level);
 	LevelType CurLevelType = CurLevel->GetLevelType();
 

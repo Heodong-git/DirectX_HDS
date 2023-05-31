@@ -433,10 +433,8 @@ void TitleManager::CreateRender()
 	m_ExitTextRender->Off();
 
 	m_MenuSelectBoxRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_MenuSelectBoxRender->SetPipeLine("2DTranslucentTexture");
-	m_MenuSelectBoxRender->GetShaderResHelper().SetTexture("TranslucentTex", "menu_white_bar.png");
-	m_MenuSelectBoxRender->SetAtlasConstantBuffer();
-	m_MenuSelectBoxRender->SetColorConstantBuffer();
+	m_MenuSelectBoxRender->SetTexture("menu_white_bar.png");
+	m_MenuSelectBoxRender->ColorOptionValue.MulColor.a = 0.2f;
 	m_MenuSelectBoxRender->GetTransform()->SetLocalScale({450, 30});
 	m_MenuSelectBoxRender->GetTransform()->SetLocalPosition(float4 { 0 , -160});
 	m_MenuSelectBoxRender->Off();

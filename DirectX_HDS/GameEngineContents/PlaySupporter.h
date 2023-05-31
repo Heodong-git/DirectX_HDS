@@ -19,11 +19,10 @@ public:
 	PlaySupporter& operator=(const PlaySupporter& _Other) = delete;
 	PlaySupporter& operator=(PlaySupporter&& _Other) noexcept = delete;
 
-	static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
+	//static std::shared_ptr<class GameEngineUIRenderer> g_SuccessRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_ClearRender;
-
 	static std::shared_ptr<class GameEngineCollision>  g_MouseCheckCollision;
 
 protected:

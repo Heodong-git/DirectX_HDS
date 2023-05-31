@@ -10,8 +10,7 @@
 #include "Player.h"
 #include "FadeEffect.h"
 #include "ColEventObj.h"
-
-
+#include "Go_UI.h"
 
 BaseLevel::BaseLevel()
 {
@@ -44,31 +43,24 @@ void BaseLevel::Update(float _DeltaTime)
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
 
+	// 여기서 Go도 만들어 
 	// 현재 맵이 클리어 되었는지
 	if (true == IsClear() && LevelType::TITLE != m_LevelType)
 	{
 		if (false == m_IsClear)
 		{
 			m_IsClear = true;
-			
-			// 충돌체를.. 음
-			// 잘들어오고 맵이 클리어 되었다면 내가 원하는 위치에 충돌체를 생성
-			// 근데 여기서하면.. 
-			// 스위치로 
-
-			// 여기부터 다시 해야함 
-			
+			m_ColObj = CreateActor<ColEventObj>(static_cast<int>(RenderOrder::DEBUG));
+			m_GoUI = CreateActor<Go_UI>(static_cast<int>(RenderOrder::UI));
 			switch (m_LevelType)
 			{
 			case LevelType::CLUBMAP0:
 			{
-				m_ColObj = CreateActor<ColEventObj>();
 				m_ColObj->GetTransform()->SetLocalPosition({ 939.0f , -75.0f });
 			}
 				break;
 			case LevelType::CLUBMAP1:
 			{
-				m_ColObj = CreateActor<ColEventObj>();
 				m_ColObj->GetTransform()->SetLocalPosition({ 623.0f, 48.0f});
 			}
 				break;

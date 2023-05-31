@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 #include "BaseLevel.h"
+#include "YouCanDoThis.h"
 
 ColEventObj::ColEventObj()
 {
@@ -48,7 +49,11 @@ void ColEventObj::CollisionUpdate(float _DeltaTime)
 		BaseLevel* CurLevel = GetReturnCastLevel();
 		LevelType CurLevelType = CurLevel->GetLevelType();
 
-		switch (CurLevelType)
+		// 바로 체인지레벨을 하는게 아니라 클리어 화면 액터를 먼저띄우고
+		// 일정 시간 뒤에 레벨체인지를 하는걸로 여기서 액터를 만들어 
+		GetLevel()->CreateActor<YouCanDoThis>();
+		m_Collision->Off();
+		/*switch (CurLevelType)
 		{
 		case LevelType::CLUBMAP0:
 			GameEngineCore::ChangeLevel("ClubLevel_01");
@@ -65,7 +70,7 @@ void ColEventObj::CollisionUpdate(float _DeltaTime)
 		case LevelType::CLUBMAP4:
 			GameEngineCore::ChangeLevel("ClubLevel_05");
 			break;
-		}
+		}*/
 	}
 }
 

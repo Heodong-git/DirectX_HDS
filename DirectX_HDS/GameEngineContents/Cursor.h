@@ -28,6 +28,20 @@ public:
 		return m_Render;
 	}
 
+	
+	
+protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
+
+	virtual void LevelChangeStart() override;
+	virtual void LevelChangeEnd() override;
+
+	void DebugUpdate();
+
+
+private:
 	// 만약 온을 두번호출한 상태에서 오프를 한번 호출하게 되면 
 	// 그대로 온 상태이기 때문에 횟수를 주의해야함
 	void WindowCursorOn()
@@ -39,15 +53,7 @@ public:
 	{
 		ShowCursor(false);
 	}
-	
-protected:
-	void Start() override;
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override;
 
-	void DebugUpdate();
-
-private:
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
 	// 마우스커서 쫓아가기

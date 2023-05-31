@@ -36,7 +36,6 @@ void ContentsCore::ContentsResourcesCreate()
 {
 	{
 		// 쉐이더 로드 
-
 		GameEngineDirectory NewDir;
 		// 인자로 입력한 폴더가 존재하는 디렉터리로 이동
 		NewDir.MoveParentToDirectory("katanazero_resources");
@@ -89,7 +88,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_03>("ClubLevel_03");
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 
-	GameEngineCore::ChangeLevel("ClubLevel_00");
+	GameEngineCore::ChangeLevel("TitleLevel");
 
 	// gui
 	{

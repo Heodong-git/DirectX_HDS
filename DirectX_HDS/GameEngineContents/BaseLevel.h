@@ -159,6 +159,9 @@ private:
 	// 충돌용 액터
 	std::shared_ptr<class ColEventObj> m_ColObj = nullptr;
 
+	// Go UI
+	std::shared_ptr<class GameEngineActor> m_GoUI = nullptr;
+
 	// 카메라이펙트
 	std::shared_ptr<class FadeEffect> m_FadeEffect;
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅을 한다. 

@@ -172,6 +172,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Go_UI.h" />
     <ClInclude Include="GruntEffect.h">
       <SubType>
       </SubType>
@@ -343,6 +344,7 @@
   <ItemGroup>
     <ClCompile Include="Boss_HeadHunter.cpp" />
     <ClCompile Include="ColEventObj.cpp" />
+    <ClCompile Include="Go_UI.cpp" />
     <ClCompile Include="GruntEffect.cpp" />
     <ClCompile Include="IronDoor.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />

@@ -23,5 +23,6 @@ protected:
 private:
 	// 렌더러생성 및 세팅
 	void ComponentSetting();
-	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
+	float m_OriginLiveTime = 1.75f;
 };
