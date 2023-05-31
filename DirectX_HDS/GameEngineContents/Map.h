@@ -24,6 +24,8 @@ protected:
 	void Start() override;
 
 private:
+	void ComponentSetting();
+
 	// ∏ﬁ¿Œ∏  ∑ª¥ı∑Ø 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MapRender = nullptr;
 
