@@ -78,6 +78,7 @@ void ColEventObj::ComponentSetting()
 {
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_MainRender->GetTransform()->SetLocalScale({ 50.0f, 50.0f });
+	m_MainRender->Off();
 	
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::STAGE_COL_OBJ);
 	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 50.0f });

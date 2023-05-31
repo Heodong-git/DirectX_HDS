@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <GameEngineBase/GameEngineSerializer.h>
-#include "BaseActor.h"
-
 #include <GameEngineCore/GameEngineTexture.h>
+
+#include "BaseActor.h"
 
 // 플레이어 상태값 
 enum class PlayerState

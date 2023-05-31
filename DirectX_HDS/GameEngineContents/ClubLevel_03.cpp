@@ -76,7 +76,6 @@ void ClubLevel_03::LevelChangeStart()
 	CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player");
 	Player::MainPlayer->GetTransform()->SetLocalPosition(m_PlayerSetPos);
 
-
 	// HUD
 	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
 
