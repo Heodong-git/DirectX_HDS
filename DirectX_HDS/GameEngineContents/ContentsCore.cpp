@@ -20,8 +20,6 @@
 #include "ClubLevel_Boss.h"
 #include "TitleEditer.h"
 #include "StageEditer.h"
-
-// 얘는 스태틱으로 가자 
 #include "CameraSetter.h"
 
 ContentsCore::ContentsCore()

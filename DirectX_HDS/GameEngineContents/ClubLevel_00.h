@@ -15,17 +15,11 @@ public:
 	ClubLevel_00& operator=(const ClubLevel_00& _Other) = delete;
 	ClubLevel_00& operator=(ClubLevel_00&& _Other) noexcept = delete;
 
-	// 초기위치로 리셋 
-	// 플레이어가 사망하고 난 이후에 호출되는 함수 
-	// 그냥 전부죽이고 새로 생성하는게 맞나?? 아니지 그냥 상태만 바꿔서 다시 가져다놓으면 되는거가틍ㄷ네 
-	// 일단 플레이어만 생각해 
-	// 일단 퍼블릭 
-	// virtual void LevelReset() override;
-
 	float4& GetPlayerSetPos()
 	{
 		return m_PlayerSetPos;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -37,13 +31,8 @@ protected:
 	virtual void ActorLoad() override;
 
 private:
-	// 액터 초기위치
-	// 어차피 얼마 안되니까 다 가지고 있어, 일단 필요한애들 세워두고 
+	void GUISetting();
 	float4 m_PlayerSetPos = { -850 , -94 };
 
-	// gui
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
-
-	// 디버그용 
-	void DebugUpdate();
 };

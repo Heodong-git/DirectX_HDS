@@ -27,7 +27,6 @@ TitleLevel::~TitleLevel()
 void TitleLevel::Start()
 {
 	GetMainCamera()->SetSortType(0, SortType::YSort);
-
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
@@ -37,12 +36,6 @@ void TitleLevel::Start()
 
 void TitleLevel::Update(float _DeltaTime)
 {
-	/*if (true == GameEngineInput::IsDown("DebugChange_Tutorial"))
-	{
-		GameEngineCore::ChangeLevel("TutorialLevel");
-		return;
-	}*/
-
 	BaseLevel::Update(_DeltaTime);
 }
 
