@@ -51,21 +51,14 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
 
+			float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetUpdateOrderTimeScale(GroupStartIter->first);
+
 			for (; ActorStart != ActorEnd; ++ActorStart)
 			{
 				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
 
-				Actor->AllAccTime(_DeltaTime);
-				Actor->AllUpdate(_DeltaTime);
-
-				//if (false == Actor->IsUpdate())
-				//{
-				//	continue;
-				//}
-
-				//GameEngineTransform* Transform = Actor->GetTransform();
-				//Transform->AllAccTime(_DeltaTime);
-				//Transform->AllUpdate(_DeltaTime);
+				Actor->AllAccTime(ScaleTime);
+				Actor->AllUpdate(ScaleTime);
 			}
 		}
 	}

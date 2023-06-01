@@ -73,9 +73,6 @@ void Timer::Reset()
 
 void Timer::GaugeUpdate()
 {
-	
-
-
 	// 현재 남은시간 
 	float LimitTime = GetReturnCastLevel()->GetLimitTime();
 	

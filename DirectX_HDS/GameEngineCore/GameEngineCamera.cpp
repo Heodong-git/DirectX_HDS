@@ -162,14 +162,35 @@ void GameEngineCamera::Render(float _DeltaTime)
 	{
 		std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
 
+		int Order = RenderGroupStartIter->first;
+		std::map<int, SortType>::iterator SortIter = SortValues.find(Order);
+
+		if (SortIter != SortValues.end() && SortIter->second != SortType::None)
+		{
+			if (SortIter->second == SortType::ZSort)
+			{
+				for (std::shared_ptr<GameEngineRenderer>& Render : RenderGroup)
+				{
+					Render->CalSortZ(this);
+				}
+
+				// 퀵소트 내일
+				RenderGroup.sort([](std::shared_ptr<GameEngineRenderer>& _Left, std::shared_ptr<GameEngineRenderer>& _Right)
+					{
+						return _Left->CalZ > _Right->CalZ;
+					});
+			}
+		}
+
 		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
 		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
+
+		float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
 
 		for (; StartRenderer != EndRenderer; ++StartRenderer)
 		{
 			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
 
-			// 업데이트중이 아니라면 그리지 않는다 
 			if (false == Render->IsUpdate())
 			{
 				continue;
@@ -181,8 +202,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 			}
 
 			Render->RenderTransformUpdate(this);
-			Render->Render(_DeltaTime);
-
+			Render->Render(ScaleTime);
 		}
 	}
 }

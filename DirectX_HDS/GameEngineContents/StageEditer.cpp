@@ -199,10 +199,14 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
             }
 
             {
-                // 여기에 몬스터카운트 뜨게 
+                // 레벨 몬스터 카운트
                 ImGui::Text("Monster Count :");
                 ImGui::SameLine();
                 ImGui::Text("%.2d", CastLevel->GetMonsterCount());
+
+                ImGui::Text("Level LimitTime :");
+                ImGui::SameLine();
+                ImGui::Text("%.2f", CastLevel->GetLimitTime());
             }
             
             ImGui::End();

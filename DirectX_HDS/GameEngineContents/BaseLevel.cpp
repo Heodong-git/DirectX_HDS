@@ -64,7 +64,6 @@ void BaseLevel::Update(float _DeltaTime)
 	}
 
 	// 현재레벨이 플레이상태라면 제한시간을 감소시킨다. 
-	// 필요없음.. 
 	if (BaseLevel::LevelState::PLAY == m_CurState)
 	{
 
