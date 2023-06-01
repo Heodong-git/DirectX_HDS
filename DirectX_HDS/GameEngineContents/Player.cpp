@@ -167,19 +167,7 @@ void Player::LoadAndCreateAnimation()
 
 void Player::Update(float _DeltaTime)
 {
-	
-	//std::vector<std::shared_ptr<GameEngineCollision>> TestVector;
-	//// 충돌테스트코드 잘된다 ㅇㅇ  
-	//if (m_Collision->CollisionAll(ColOrder::CURSOR, TestVector))
-	//{
-	//	// 이런 식으로 가져와서 활용할 수 있음.
-	//	for (std::shared_ptr<GameEngineCollision> Col : TestVector)
-	//	{
-	//		Col->GetActor()->Death();
-	//	}
-	//}
-	
-	
+	DirCheck();
 	SkillUpdate(_DeltaTime);
 	
 	// 상태업데이트
@@ -300,9 +288,9 @@ void Player::DebugUpdate()
 	}
 }
 
+// 후순위
 void Player::SkillUpdate(float _DeltaTime)
 {
-	// 
 	if (PlayerState::DEATH == m_CurState)
 	{
 		// 스킬 false
@@ -540,8 +528,8 @@ void Player::ChangeState(PlayerState _State)
 
 void Player::IdleStart()
 {
-	// 만약 이전 스테이트가 데스였다면
-	// 변경시 무조건 방향은 오른쪽 
+	// 이전 스테이트가 데스라면 스테이지 미클리어,
+	// 난무조건 정방향 ( 오른쪽 ) 
 	if (PlayerState::DEATH == m_PrevState)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
@@ -549,7 +537,7 @@ void Player::IdleStart()
 
 	m_Render->ChangeAnimation("player_idle");
 
-	// 만약 점프 상태일 때 내가 땅이라면
+	// 이전 상태가 점프였는데, Idle로 변경 되었다면 내가 땅이라는 뜻이기 때문에 착지이펙트 생성
 	if (PlayerState::JUMP == m_PrevState)
 	{
 		GetLevel()->CreateActor<LandEffect>();
@@ -558,12 +546,12 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
-	// death test
-	/*if (true == GameEngineInput::IsDown("player_jump"))
+	// 공격, 마우스 좌클릭 
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
-		ChangeState(PlayerState::DEATH);
+		ChangeState(PlayerState::SLASH);
 		return;
-	}*/
+	}
 
 	// 점프키 , w
 	if (true == GameEngineInput::IsDown("player_jump"))
@@ -592,13 +580,6 @@ void Player::IdleUpdate(float _DeltaTime)
 		ChangeState(PlayerState::IDLETORUN);
 		return;
 	}
-
-	// 공격, 마우스 좌클릭 
-	if (true == GameEngineInput::IsDown("player_slash"))
-	{
-		ChangeState(PlayerState::SLASH);
-		return;
-	}
 }
 
 void Player::IdleEnd()
@@ -610,12 +591,13 @@ void Player::IdleToRunStart()
 	m_Render->ChangeAnimation("player_idle_to_run");
 }
 
+// -------------- 여기까지 
 void Player::IdleToRunUpdate(float _DeltaTime)
 {
-	// 애니메이션이 종료되면 Move로 전환하는데. 
-	// 만약 종료된 시점에 키가 눌려있지 않고 내가 땅에 있다면 아이들로 다시 전환. 
 	if (true == m_Render->IsAnimationEnd())
 	{
+		// 애니메이션이 종료된 시점에 왼쪽키나 오른쪽키가 눌려있다면
+		// 무브 상태로 전환 
 		if (true == GameEngineInput::IsPress("player_right_move") ||
 			true == GameEngineInput::IsPress("player_left_move"))
 		{
@@ -623,14 +605,8 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 			return;
 		}
 
-		// 그게 아니라면 
+		// 눌려 있지 않다면, 다시 IDLE 
 		ChangeState(PlayerState::IDLE);
-		return;
-	}
-
-	if (true == GameEngineInput::IsPress("player_jump"))
-	{
-		ChangeState(PlayerState::JUMP);
 		return;
 	}
 
@@ -640,11 +616,16 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 수정할수도
+	if (true == GameEngineInput::IsPress("player_jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
+
+	// 내위치의 픽셀체크를 해서, 내 위치가 흰색 픽셀 일때만 이동이 가능하다. 
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		// true 이면 맵 밖인걸로
-		if (false == PixelCollider::PixelCol->RightPixelCheck())
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(this))
 		{
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
@@ -654,14 +635,37 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		if (false == PixelCollider::PixelCol->LeftPixelCheck())
+		// true 이면 맵 밖인걸로
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(this))
 		{
 			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
 		}
 		return;
 	}
-	
+
+	// 기존 픽셀충돌 
+	//// 여기서부터 픽셀충돌 사용이니까 다시, 픽셀충돌이 false true가 아니라 픽셀컬러를 리턴하게 변경
+	//if (true == GameEngineInput::IsPress("player_right_move"))
+	//{
+	//	// true 이면 맵 밖인걸로
+	//	if (false == PixelCollider::PixelCol->RightPixelCheck())
+	//	{
+	//		DirCheck();
+	//		GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+	//	}
+	//	return;
+	//}
+
+	//if (true == GameEngineInput::IsPress("player_left_move"))
+	//{
+	//	if (false == PixelCollider::PixelCol->LeftPixelCheck())
+	//	{
+	//		DirCheck();
+	//		GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+	//	}
+	//	return;
+	//}
 }
 
 void Player::IdleToRunEnd()

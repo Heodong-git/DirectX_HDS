@@ -16,6 +16,7 @@ enum class ColMapName
 // 설명 :
 class PixelCollider : public GameEngineComponent
 {
+	friend class Player;
 public:
 	static PixelCollider* PixelCol;
 public:
@@ -34,8 +35,7 @@ public:
 		return m_CurColMap;
 	}
 
-	void Start() override;
-	bool PixelCollision(class GameEngineObject* _Object);
+	GameEnginePixelColor PixelCollision(const class GameEngineObject* _Object);
 
 	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
 	bool ColMapSetting();
@@ -49,28 +49,28 @@ public:
 	bool RightWallCheck(float4& _Pos);
 	// 왼쪽 체크 
 	bool LeftPixelCheck();
-
 	// 위 체크 
 	bool TopPixelCheck();
 
-	bool RightDiagonalCheck();
-	bool LeftDiagonalCheck();
-
-	// 맵에서 find 함수 만들기 
+	
 	
 protected:
-
+	void Start() override;
 private:
 	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
 	ColMapName m_CurColMapName = ColMapName::COLMAP0;
 
 	static std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
 
-	
-	GameEnginePixelColor m_BlackPixel = { static_cast<char>(0), static_cast<char>(0) , static_cast<char>(0) ,
-										static_cast<char>(255) };
-	GameEnginePixelColor m_WhitePixel = { static_cast<char>(255), static_cast<char>(255) , static_cast<char>(255) ,
-										static_cast<char>(255) };
-	GameEnginePixelColor m_GreenPixel = { static_cast<char>(0), static_cast<char>(255) , static_cast<char>(0) ,
-										static_cast<char>(255) };
+	// 땅
+	static GameEnginePixelColor g_BlackPixel;
+
+	static GameEnginePixelColor g_WhitePixel;
+
+	// 벽
+	static GameEnginePixelColor g_GreenPixel;
+
+	// 에러
+	static GameEnginePixelColor g_ErrorPixel;
+
 };
