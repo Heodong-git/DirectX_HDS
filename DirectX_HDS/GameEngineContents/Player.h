@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
-#include <GameEngineBase/GameEngineSerializer.h>
 #include <GameEngineCore/GameEngineTexture.h>
-
 #include "BaseActor.h"
 
 // 플레이어 상태값 
@@ -18,7 +16,7 @@ enum class PlayerState
 	CROUCH,			// 크라우치 (웅크리기)
 	FLIP,			// 벽타고 구르기 
 	FALL,			// 낙하 
-	RIGHTWALL,			// 벽타기 
+	RIGHTWALL,		// 벽타기 
 	LEFTWALL,
 	DEATH,			// 쥬금
 };
@@ -26,9 +24,6 @@ enum class PlayerState
 class Player : public BaseActor
 {
 	friend class PixelCollider;
-	// 시험중 
-	friend class ClubLevel_00;
-	friend class ClubLevel_01;
 public:
 	static Player* MainPlayer;
 

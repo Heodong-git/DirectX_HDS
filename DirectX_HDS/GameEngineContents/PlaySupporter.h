@@ -33,6 +33,7 @@ private:
 	void CameraMovement(float _DeltaTime);
 	bool RangeOverCheck(float _DeltaTime);
 	bool PlayerDeathCheck();
+	void LevelResetCheck();
 
 	std::shared_ptr<class GameEngineCamera> m_MainCamera = nullptr;
 	const float m_MoveSpeed = 200.0f;
@@ -40,6 +41,9 @@ private:
 	void ComponentSetting();
 
 	void SaveCameraRange();
+	void LoadResources();
+
+
 	// 좌상단, 우상단, 좌하단 , 우하단 순서로 
 	std::map<int, std::vector<float4>> m_MapRanges = std::map<int, std::vector<float4>>();
 	virtual void Reset() override;

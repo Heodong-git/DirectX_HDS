@@ -29,31 +29,10 @@ void PlaySupporter::Start()
 	// 각 레벨별 카메라 범위저장
 	SaveCameraRange();
 
-	// 두변수가 nullptr 이라면 최초생성 
-	// 얘네는 카메라로 옮길 수 도 있음. 
-	if (nullptr == g_BlackBoxRender)
-	{
-		// 파일로드, 텍스쳐세팅까지 여기서 한번에 진행
-		if (nullptr == GameEngineTexture::Find("restart.png"))
-		{
-			GameEngineDirectory NewDir;
-			// 원하는 폴더를 가진 디렉터리로 이동
-			NewDir.MoveParentToDirectory("katanazero_resources");
-			// 그 폴더로 이동
-			NewDir.Move("katanazero_resources");
-			NewDir.Move("Texture");
-			NewDir.Move("ClubLevel");
-			NewDir.Move("youcandothis");
+	// 필요한 리소스 로드
+	LoadResources();
 
-			// 파일 전체로드 
-			std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
-			for (size_t i = 0; i < File.size(); i++)
-			{
-				GameEngineTexture::Load(File[i].GetFullPath());
-			}
-		}
-	}
-
+	// 컴포넌트 세팅
 	ComponentSetting();
 }
 
@@ -69,31 +48,9 @@ void PlaySupporter::Update(float _DeltaTime)
 	if (true == PlayerDeathCheck())
 	{
 		GetReturnCastLevel()->SetState(BaseLevel::LevelState::WAIT);
-		g_BlackBoxRender->On();
-		g_FailRender->On();
 
-		// 여기서 만들어 
-		if (nullptr == g_MouseCheckCollision)
-		{
-			MsgAssert("마우스클릭 체크용 충돌체가 nullptr입니다.");
-			return;
-		}
-
-		g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
-		// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
-		
-		std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D,ColType::AABBBOX2D);
-		
-		// 뭔가가 들어왔다는건 충돌했다는거고 
-		// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-		if (nullptr != CursorCol)
-		{
-			CursorCol->Off();
-			g_BlackBoxRender->Off();
-			g_FailRender->Off();
-			// 리셋하고 
-			GetReturnCastLevel()->LevelReset();
-		}
+		// 레벨리셋여부체크 
+		LevelResetCheck();
 	}
 
 	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 
@@ -171,7 +128,7 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		//	return true;
 		//}
 
-		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(0);
+		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(static_cast<int>(LevelType::CLUBMAP0));
 		if (m_MapRanges.end() == FindIter)
 		{
 			MsgAssert("맵 범위 저장 벡터가 비어있습니다.");
@@ -238,6 +195,34 @@ bool PlaySupporter::PlayerDeathCheck()
 	return false;
 }
 
+void PlaySupporter::LevelResetCheck()
+{
+	g_BlackBoxRender->On();
+	g_FailRender->On();
+
+	if (nullptr == g_MouseCheckCollision)
+	{
+		MsgAssert("마우스클릭 체크용 충돌체가 nullptr입니다.");
+		return;
+	}
+
+	// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
+	g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
+
+	std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
+
+	// 뭔가가 들어왔다는건 충돌했다는거고 
+	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+	if (nullptr != CursorCol)
+	{
+		CursorCol->Off();
+		g_BlackBoxRender->Off();
+		g_FailRender->Off();
+		// 리셋하고 
+		GetReturnCastLevel()->LevelReset();
+	}
+}
+
 void PlaySupporter::ComponentSetting()
 {
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
@@ -263,23 +248,55 @@ void PlaySupporter::ComponentSetting()
 	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
 }
 
+// 생각해보니 레프트탑 라이트바텀만 있으면 되는거아닌가 ? 
 void PlaySupporter::SaveCameraRange()
 {
 	{
-		// 이게 맞나.. 일단 0번맵 범위
 		std::vector<float4> Ranges = std::vector<float4>();
 		float4 LeftTop = { -360.0f , 34.0f };
 		float4 RightTop = { 307.0f , 34.0f };
 
 		Ranges.push_back(LeftTop);
 		Ranges.push_back(RightTop);
-
-		m_MapRanges.insert(make_pair(0, Ranges));
+		m_MapRanges.insert(make_pair(static_cast<int>(LevelType::CLUBMAP0), Ranges));
 	}
 
 	{
-		// 1번맵은 범위 필요없으니까 건너뛰고 키값을 2부터 시작
+		// 1번맵은 넣어두기만. 실제로 스위치문에서 적용 X 
+		std::vector<float4> Ranges = std::vector<float4>();
+		float4 LeftTop = { 0.0f , 0.0f };
+		float4 RightTop = { 0.0f, 0.0f };
 
+		Ranges.push_back(LeftTop);
+		Ranges.push_back(RightTop);
+		m_MapRanges.insert(make_pair(static_cast<int>(LevelType::CLUBMAP1), Ranges));
+	}
+
+	{
+
+	}
+}
+
+void PlaySupporter::LoadResources()
+{
+	if (nullptr == g_BlackBoxRender)
+	{
+		if (nullptr == GameEngineTexture::Find("restart.png"))
+		{
+			GameEngineDirectory NewDir;
+			NewDir.MoveParentToDirectory("katanazero_resources");
+			NewDir.Move("katanazero_resources");
+			NewDir.Move("Texture");
+			NewDir.Move("ClubLevel");
+			NewDir.Move("youcandothis");
+
+			std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
+		}
 	}
 }
 

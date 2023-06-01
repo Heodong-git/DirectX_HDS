@@ -30,14 +30,10 @@ void BaseLevel::CameraSetting()
 
 void BaseLevel::Start()
 {
-	// 키생성 및 세팅, 자식에서 오버라이드 
-	CreateKey();
-	
 	// 카메라위치, 투영, Sort 세팅
 	CameraSetting();
 
-	// GUI 세팅, 자식에서 오버라이드 
-	GUISetting();
+	CreateKey();
 
 	// 리셋될 액터를 저장할 벡터 초기화
 	m_ResetActors.reserve(8);
@@ -54,17 +50,12 @@ void BaseLevel::Update(float _DeltaTime)
 		m_CurMouseLocalPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	}
 
-	// 디버그 업데이트
-	DebugUpdate();
-
-	// 키 업데이트
 	KeyUpdate();
 
 	// 스테이지 클리어 체크
 	LevelClearCheck();
-
-	// 플레이어 스킬 체크 
 	PlayerSkillCheck();
+	DebugUpdate();
 
 	// 현재 레벨이 대기상태라면 업데이트하지 않음
 	if (BaseLevel::LevelState::WAIT == m_CurState)
@@ -85,6 +76,7 @@ void BaseLevel::Update(float _DeltaTime)
 		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
 	}
 
+
 	// GameEngineLevel::Update(_DeltaTime);
 }
 
@@ -93,10 +85,8 @@ void BaseLevel::LevelChangeStart()
 	
 }
 
-void BaseLevel::DebugCamera()
-{
-}
 
+// 액터생성후 벡터에 푸시
 void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 {
 	if (nullptr == _Actor)
@@ -110,6 +100,7 @@ void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 
 void BaseLevel::DebugUpdate()
 {
+	// Q 만 여기서. 
 	if (true == GameEngineInput::IsDown("ClubLevel_DebugSwitch"))
 	{
 		DebugSwitch();
@@ -141,12 +132,12 @@ void BaseLevel::LevelClearCheck()
 			{
 			case LevelType::CLUBMAP0:
 			{
-				m_ColObj->GetTransform()->SetLocalPosition({ 939.0f , -75.0f });
+				m_ColObj->GetTransform()->SetLocalPosition({ 959.0f , -75.0f });
 			}
 			break;
 			case LevelType::CLUBMAP1:
 			{
-				m_ColObj->GetTransform()->SetLocalPosition({ 623.0f, 48.0f });
+				m_ColObj->GetTransform()->SetLocalPosition({ 653.0f, 48.0f});
 			}
 			break;
 			case LevelType::CLUBMAP2:

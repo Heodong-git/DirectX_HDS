@@ -187,8 +187,9 @@ private:
 
 	// 키업데이트 
 	virtual void KeyUpdate() {};
+
 	// 디버그 업데이트
-	void DebugUpdate();
+	virtual void DebugUpdate();
 
 	// 레벨 클리어 체크
 	void LevelClearCheck();
