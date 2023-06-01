@@ -78,6 +78,7 @@ public:
 
 		// 리소스 로드 시에 경로를 체크해준다 
 		PathCheck(_Path, _Name);
+		NewTexture->SetPath(_Path);
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
@@ -124,7 +125,7 @@ public:
 			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
 		}
 
-		NewTexture->ResLoad(_Path);
+		NewTexture->ReLoad();
 		return NewTexture;
 	}
 
@@ -160,6 +161,9 @@ public:
 
 	GameEnginePixelColor GetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor = GameEnginePixelColor::Black);
 
+	void ReLoad();
+	void Release();
+
 protected:
 
 private:
@@ -191,7 +195,5 @@ private:
 	// 카메라 렌더타겟의 에러를 해결하기 위해
 	void VSReset(UINT _Slot);
 	void PSReset(UINT _Slot);
-
-	void Release();
 };
 

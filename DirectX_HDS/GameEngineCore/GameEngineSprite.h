@@ -72,6 +72,43 @@ public:
 		return Sprites[_Index];
 	}
 
+	static std::shared_ptr<GameEngineSprite> UnLoad(const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineSprite> FindSprite = GameEngineResource::Find(_Name);
+
+		if (nullptr == FindSprite)
+		{
+			MsgAssert("존재하지 않는 스프라이트를 언로드 하려고 했습니다.");
+		}
+
+		FindSprite->Release();
+		return FindSprite;
+	}
+
+
+	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path)
+	{
+		GameEnginePath NewPath(_Path);
+		return ReLoad(_Path, NewPath.GetFileName());
+	}
+
+
+	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource<GameEngineSprite>::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
+		}
+
+		NewTexture->ReLoad();
+		return NewTexture;
+	}
+
+	void ReLoad();
+	void Release();
+
 protected:
 
 private:
