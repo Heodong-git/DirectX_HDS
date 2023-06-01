@@ -30,6 +30,11 @@ void BaseLevel::CameraSetting()
 
 void BaseLevel::Start()
 {
+	if (false == GameEngineInput::IsKey("SetLimitTime"))
+	{
+		GameEngineInput::CreateKey("SetLimitTime", VK_F2);
+	}
+
 	// 카메라위치, 투영, Sort 세팅
 	CameraSetting();
 
@@ -84,7 +89,6 @@ void BaseLevel::LevelChangeStart()
 	
 }
 
-
 // 액터생성후 벡터에 푸시
 void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 {
@@ -99,6 +103,11 @@ void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 
 void BaseLevel::DebugUpdate()
 {
+	if (true == GameEngineInput::IsDown("SetLimitTime"))
+	{
+		SetLimitTime(1.0f);
+	}
+
 	// Q 만 여기서. 
 	if (true == GameEngineInput::IsDown("ClubLevel_DebugSwitch"))
 	{

@@ -199,14 +199,29 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
             }
 
             {
+                ImGui::Text("Level LimitTime :");
+                ImGui::SameLine();
+                ImGui::Text("%.2f", CastLevel->GetLimitTime());
+
+                ImGui::Text("Level State :");
+                ImGui::SameLine();
+                BaseLevel::LevelState State = CastLevel->GetCurState();
+                switch (State)
+                {
+                case BaseLevel::LevelState::WAIT:
+                    ImGui::Text("WAIT");
+                    break;
+                case BaseLevel::LevelState::PLAY:
+                    ImGui::Text("PLAY");
+                    break;
+                default:
+                    break;
+                }
+
                 // 레벨 몬스터 카운트
                 ImGui::Text("Monster Count :");
                 ImGui::SameLine();
                 ImGui::Text("%.2d", CastLevel->GetMonsterCount());
-
-                ImGui::Text("Level LimitTime :");
-                ImGui::SameLine();
-                ImGui::Text("%.2f", CastLevel->GetLimitTime());
             }
             
             ImGui::End();

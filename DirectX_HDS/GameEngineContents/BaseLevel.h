@@ -71,6 +71,11 @@ public:
 		m_LimitTime = 55.0f;
 	}
 
+	inline void SetLimitTime(float _Time)
+	{
+		m_LimitTime = _Time;
+	}
+
 	// ---------------------Effect----------------------------
 	std::shared_ptr<class FadeEffect> GetFadeEffect()
 	{
@@ -165,7 +170,6 @@ protected:
 
 	void ChangeMap();
 	void ChangeColMap();
-	void DebugCamera();
 	
 	std::shared_ptr<class Map> m_Map = nullptr;
 	// г╙╫ц╬вем
