@@ -237,14 +237,14 @@ bool BaseLevel::IsClear()
 // ----------------------------- Change Map -----------------------------------
 void BaseLevel::ChangeColMap()
 {
+	if (LevelType::TITLE == m_LevelType || LevelType::NONE == m_LevelType)
+	{
+		return;
+	}
+	
 	if (nullptr == m_Map)
 	{
 		MsgAssert("현재 맵이 nullptr 입니다.");
-		return;
-	}
-
-	if (LevelType::TITLE == m_LevelType || LevelType::NONE == m_LevelType)
-	{
 		return;
 	}
 	
@@ -275,6 +275,11 @@ void BaseLevel::ChangeColMap()
 
 void BaseLevel::ChangeMap()
 {
+	if (LevelType::TITLE == m_LevelType || LevelType::NONE == m_LevelType)
+	{
+		return;
+	}
+
 	if (nullptr == m_Map)
 	{
 		MsgAssert("현재 맵이 nullptr 입니다.");

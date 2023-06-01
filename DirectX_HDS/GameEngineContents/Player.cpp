@@ -760,9 +760,8 @@ void Player::SlashUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 공격로직
-	// 내위치를 받아오고 
-	float4 MyPos = GetTransform()->GetLocalPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+
 	// 공격포지션이 내오른쪽이면 정위치 
 	if (MyPos.x <= m_AttackPos.x)
 	{
@@ -775,36 +774,47 @@ void Player::SlashUpdate(float _DeltaTime)
 		//	m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-
 	// 공격 방향을 구한다. 
 	float4 MoveDir = m_AttackPos - MyPos;
 	float4 MoveDirOrigin = MoveDir;
 	MoveDir.Normalize();
 	MoveDirOrigin.Normalize();
 
-	// 좌우를 체크해서 현재 벽일 경우
-	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	// 내 왼쪽이나 오른쪽이 벽인 상태에서
+	// 내가 벽쪽으로 공격지점을 찍는다면. 
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) ||
+		PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
 	{
-		// 공격위치가 나보다 높다면 x축은 움직이지 않고 y축만 움직인다. 
-		if (m_AttackPos.y > MyPos.y)
+		if (m_AttackPos.x < MyPos.x)
 		{
 			MoveDir.x = 0.0f;
 		}
-		// 그게 아니라면 아예 움직이지 않음
-		else
+
+		// 공격위치가 나보다 낮다면 y축은 움직이지 않고 x축만 움직인다. 
+		if (m_AttackPos.y < MyPos.y)
 		{
-			return;
+			MoveDir.y = 0.0f;
 		}
 	}
 
 	// 업데이트중 만약 내 아래가 검은색 픽셀이라면 바닥에 닿았다는 것. y축은 움직이지 않는다.
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		MoveDir.y = 0.0f;
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
+		{
+			// 공격위치가 나보다 높다면 x축은 움직이지 않고 y축만 움직인다. 
+			if (m_AttackPos.y < MyPos.y)
+			{
+				MoveDirOrigin.y = 0.0f;
+			}
+
+			GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDirOrigin.y * 1.2f } *m_MoveSpeed * _DeltaTime);
+			return;
+		}
 	}
 
-	// 이동
-	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.2f , MoveDir.y } *m_MoveSpeed * _DeltaTime);
+	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDir.y * 1.2f } *m_MoveSpeed * _DeltaTime);
 }
 
 // 공격이 종료되면 공격위치를 초기화 
