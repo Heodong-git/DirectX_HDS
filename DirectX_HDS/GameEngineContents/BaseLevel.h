@@ -68,7 +68,7 @@ public:
 
 	inline void SetLimitTime()
 	{
-		m_LimitTime = 5.0f;
+		m_LimitTime = 55.0f;
 	}
 
 	// ---------------------Effect----------------------------
@@ -139,7 +139,7 @@ protected:
 	int m_MaxMonsterCount = 0;
 
 	// 스테이지 제한시간
-	float m_LimitTime = 5.0f;
+	float m_LimitTime = 55.0f;
 
 	void Start() override;
 	void Update(float _DeltaTime);

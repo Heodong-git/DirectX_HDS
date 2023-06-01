@@ -59,6 +59,8 @@ void ClubLevel_00::Update(float _DeltaTime)
 
 void ClubLevel_00::LevelChangeStart()
 {
+	GUISetting();
+
 	// 카메라 피봇세팅
 	Push_ResetActor(CreateActor<CameraSetter>());
 	CameraSetter::MainCamSetter->CameraSetting();
