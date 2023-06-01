@@ -115,6 +115,7 @@ private:
 
 	// 방향체크, true = 오른쪽 , false = 왼쪽 
 	bool m_Direction = true; 
+	bool m_SlashDir = true;
 	void DirCheck();
 
 	// 점프
@@ -134,8 +135,9 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-	float4 m_DebugRenderScale = { 4, 4 };
+	float4 m_DebugRenderScale = { 1, 1 };
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom_Down = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;

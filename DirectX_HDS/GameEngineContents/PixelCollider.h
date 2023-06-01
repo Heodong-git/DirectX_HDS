@@ -35,7 +35,7 @@ public:
 		return m_CurColMap;
 	}
 
-	GameEnginePixelColor PixelCollision(const class GameEngineObject* _Object);
+	GameEnginePixelColor PixelCollision(const float4& _Pos);
 
 	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
 	bool ColMapSetting();

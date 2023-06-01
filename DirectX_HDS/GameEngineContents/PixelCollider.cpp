@@ -118,19 +118,13 @@ bool PixelCollider::ColMapSetting()
 }
 
 
-GameEnginePixelColor PixelCollider::PixelCollision(const class GameEngineObject* _Obj)
+GameEnginePixelColor PixelCollider::PixelCollision(const float4& _Pos)
 {
 	// 충돌맵 세팅
 	ColMapSetting();
 
-	if (nullptr == _Obj)
-	{
-		MsgAssert("인자로 들어온 오브젝트가 nullptr 입니다.");
-		return g_ErrorPixel;
-	}
-
-	// 체크할 위치 나의 현재위치
-	float4 CheckPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	// 체크할 위치
+	float4 CheckPos = _Pos;
 
 	float WidthHalf = static_cast<float>(m_CurColMap->GetWidth() / 2);
 	float HeightHalf = static_cast<float>(m_CurColMap->GetHeight() / 2);
@@ -138,8 +132,13 @@ GameEnginePixelColor PixelCollider::PixelCollision(const class GameEngineObject*
 	int CheckX = static_cast<int>(CheckPos.x + WidthHalf);
 	int CheckY = static_cast<int>(HeightHalf - CheckPos.y);
 
-	// 충돌맵의 플레이어와 겹치는 위치의 색상을 받아온다. 
 	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
+
+	// 
+	if (g_BlackPixel == ColPixel)
+	{
+		return g_BlackPixel;
+	}
 
 	// y 축으로 이동한값 
 	int UpCount = 0;
@@ -177,7 +176,6 @@ bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 		MsgAssert("인자로 들어온 오브젝트가 nullptr 입니다.");
 		return false;
 	}
-
 
 	// 체크할 위치 
 	float4 CheckPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
