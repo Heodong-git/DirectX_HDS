@@ -215,49 +215,47 @@ void Player::Reset()
 	float4 SetPos = GetInitPos();
 
 	GetTransform()->SetLocalPosition(SetPos);
-	ResetSlowLimitTime();
+	ResetSkillLimitTime();
 	ResetDir();	
 	ChangeState(PlayerState::IDLE);
 }
 
 void Player::ComponentSetting()
 {
-	// 플레이어 메인렌더
-	float4 PlayerPos = GetTransform()->GetLocalPosition();
+	// 픽셀충돌 
+	CreateComponent<PixelCollider>();
+
+	// 메인렌더 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER);
-	m_Render->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
+	m_Render->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 	m_Render->SetScaleRatio(2.0f);
 
-	// 콜리전 생성
+	// 콜리전 
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
-	m_Collision->GetTransform()->SetLocalScale(m_LocalScale);
-	m_Collision->GetTransform()->SetLocalPosition({ 0, PlayerPos.y + 36.0f });
+	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
+	m_Collision->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 
-	// 컴포넌트상속받는걸로 변경 ㄱㄱ
-	// 픽셀컬라이더 생성
-	CreateComponent<PixelCollider>();
-	
 	// --------------------------- Debug Render ------------------------------
 
-	// bottom 
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, PlayerPos.y + 36.0f });
+	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
 	
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, PlayerPos.y + 36.0f });
+	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , PlayerPos.y + 72.0f });
+	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
 
+	// 흠.. 
 	m_DebugRender_WallRight = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_WallRight->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_WallRight->GetTransform()->SetLocalPosition({ 2.0f , PlayerPos.y + 36.0f });
+	m_DebugRender_WallRight->GetTransform()->SetLocalPosition({ 2.0f , m_RenderPivot });
 }
 
 void Player::DirCheck()
@@ -308,7 +306,7 @@ void Player::SkillUpdate(float _DeltaTime)
 	if (PlayerState::DEATH == m_CurState)
 	{
 		// 스킬 false
-		m_IsSlowSkill = false;
+		m_IsSkill = false;
 		// 색돌리고 
 		m_Render->ColorOptionValue.MulColor.r = 1.0f;
 		// 슬로우리셋
@@ -323,15 +321,15 @@ void Player::SkillUpdate(float _DeltaTime)
 	// 아래 if 문이랑 합쳐질거같기도한데 일단은 되니까 나중에
 	if (true == m_BatteryCharge)
 	{
-		m_SlowLimitTime += OriginTime;
-		m_LimitTimeValue = m_SlowLimitTime;
+		m_SkillLimitTime += OriginTime;
+		m_LimitTimeValue = m_SkillLimitTime;
 		if (true == GameEngineInput::IsPress("player_skill_slow"))
 		{
 			m_Render->ColorOptionValue.MulColor.r = 1.0f;
 
-			if (9.0f <= m_SlowLimitTime)
+			if (9.0f <= m_SkillLimitTime)
 			{
-				m_SlowLimitTime = 9.0f;
+				m_SkillLimitTime = 9.0f;
 				m_BatteryCharge = false;
 			}
 			return;
@@ -339,7 +337,7 @@ void Player::SkillUpdate(float _DeltaTime)
 
 		else if (true == GameEngineInput::IsUp("player_skill_slow"))
 		{
-			m_SlowLimitTime = m_LimitTimeValue;
+			m_SkillLimitTime = m_LimitTimeValue;
 			m_LimitTimeValue = 0.0f;
 			m_BatteryCharge = false;
 			return;
@@ -353,20 +351,20 @@ void Player::SkillUpdate(float _DeltaTime)
 		
 		// 만약 누르고 있는중에 지속시간이 0.0초보다 작아지게 되면 스킬을 종료하고
 		// 스킬 사용 상태를 false로 변경, 제한시간을 0.0초로 초기화한다. 
-		if (0.0f >= m_SlowLimitTime)
+		if (0.0f >= m_SkillLimitTime)
 		{
 			m_BatteryCharge = true;
 			SlowReset();
-			m_SlowLimitTime = 0.0f;
-			m_IsSlowSkill = false;
+			m_SkillLimitTime = 0.0f;
+			m_IsSkill = false;
 			return;
 		}
 
 		// 지금 누르고 있는 상태이기 때문에 스킬온 
-		m_IsSlowSkill = true;
+		m_IsSkill = true;
 
 		// 지속시간을 감소시킨다. 
-		m_SlowLimitTime -= OriginTime;
+		m_SkillLimitTime -= OriginTime;
 
 		// 델타타임에 스케일을 적용한다. 
 		Slow();
@@ -378,21 +376,21 @@ void Player::SkillUpdate(float _DeltaTime)
 		m_Render->ColorOptionValue.MulColor.r = 1.0f;
 		// 안눌렸으면 바로 타임스케일리셋 
 		SlowReset();
-		m_IsSlowSkill = false;
-		if (9.0f <= m_SlowLimitTime)
+		m_IsSkill = false;
+		if (9.0f <= m_SkillLimitTime)
 		{
-			m_SlowLimitTime = 9.0f;
+			m_SkillLimitTime = 9.0f;
 			return;
 		}
 
-		m_SlowLimitTime += _DeltaTime;
+		m_SkillLimitTime += _DeltaTime;
 	}
 }
 
 // ---------------------------------skill --------------------------------------
 void Player::Slow()
 {
-	if (true == m_IsSlowSkill)
+	if (true == m_IsSkill)
 	{
 		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
 	}

@@ -39,7 +39,7 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 	// 현재 State 반환
-	PlayerState GetCurState()
+	inline const PlayerState GetCurState() const
 	{
 		return m_CurState;
 	}
@@ -60,6 +60,7 @@ public:
 		m_Direction = true;
 	}
 	
+	// 삭제보류 
 	inline const float GetRenderPivot() const
 	{
 		return m_RenderPivot;
@@ -70,19 +71,19 @@ public:
 		return m_AttackPos;
 	}
 
-	const float GetSlowLimitTime() const
+	const float GetSkillLimitTime() const
 	{
-		return m_SlowLimitTime;
+		return m_SkillLimitTime;
 	}
 
-	inline bool IsSlowSkill() const
+	inline bool IsSkill() const
 	{
-		return m_IsSlowSkill;
+		return m_IsSkill;
 	}
 
-	inline void ResetSlowLimitTime()
+	inline void ResetSkillLimitTime()
 	{
-		m_SlowLimitTime = 9.0f;
+		m_SkillLimitTime = 9.0f;
 	}
 
 protected:
@@ -91,8 +92,6 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	// 레벨 초기화시 리셋
-	// 리셋할때 방향초기화 
 	virtual void Reset() override;
 
 	// 렌더러생성 및 세팅
@@ -104,8 +103,8 @@ private:
 	// 마우스를 클릭했을 때의 좌표를 저장
 	float4 m_AttackPos = {};
 
-	// 로컬에서의 크기 (임시) 
-	float4 m_LocalScale = { 75.0f , 75.0f , 0.0f };
+	// 콜리전 크기 (임시) 
+	float4 m_ColScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
 	float  m_StartMoveSpeed = 400.0f;
 
@@ -115,56 +114,46 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
 	// 방향체크, true = 오른쪽 , false = 왼쪽 
-	bool   m_Direction = true; 
+	bool m_Direction = true; 
 	void DirCheck();
 
 	// 점프
 	bool m_IsJumping = false;					// 점프상태인지
 	float m_JumpPower = 450.0f;					// 점프하는 힘 
-	float m_JumpMoveSpeed = 400.0f;				// 점프중 이동속도  
+	float m_JumpMoveSpeed = 300.0f;				// 점프중 이동속도  
 	float m_CurrentVerticalVelocity = 0.0f;	    // 현재 점프파워  
 	float m_FallPower = 700.0f;					// 낙하하는 힘 
 
-	// Flip
+	// Roll 
 	bool m_RightRoll = false;
 	bool m_LeftRoll = false;
-	float m_RollSpeed = 900.0f;
+	float m_RollSpeed = 1000.0f;
 
 	// 중력 
 	const float m_GravityPower = 1000.0f;
 
-	// 공격의 쿨타임 여기부터 만들자 ㅇㅇ 
-	float m_GlobalCoolDown = 0.3f; 
-
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-
-	// bottom 
+	float4 m_DebugRenderScale = { 4, 4 };
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
-
-	// left, right 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
-
-	// wall right 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_WallRight = nullptr;
-
-	// top
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
-	float4 m_DebugRenderScale = { 4, 4 };
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_WallRight = nullptr;
+
 	float m_RenderPivot = 36.0f;
 
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
 	// 스킬 사용가능 시간 
-	float m_SlowLimitTime = 9.0f;
+	float m_SkillLimitTime = 9.0f;
 	// 스킬 사용 중간에 값을 저장할 변수
 	float m_LimitTimeValue = 0.0f;
 	// 현재 배터리가 모두 소모된 상태에서 재충전될 때 사용할 변수
 	bool m_BatteryCharge = false;
-	// 현재 슬로우 스킬의 사용 여부를 확인할 변수 
-	bool m_IsSlowSkill = false;
+	// 현재 스킬의 사용 여부를 확인할 변수 
+	bool m_IsSkill = false;
 
 	// skill
 	void SkillUpdate(float _DeltaTime);

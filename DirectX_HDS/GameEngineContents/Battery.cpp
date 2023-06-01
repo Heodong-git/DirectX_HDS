@@ -108,12 +108,12 @@ void Battery::TextureChange()
 	}
 
 	// 시프트키 텍스쳐
-	if (false == Player::MainPlayer->IsSlowSkill())
+	if (false == Player::MainPlayer->IsSkill())
 	{
 		m_ShiftRender->SetTexture("keyboard_shift_0.png");
 	}
 
-	else if (true == Player::MainPlayer->IsSlowSkill())
+	else if (true == Player::MainPlayer->IsSkill())
 	{
 		m_ShiftRender->SetTexture("keyboard_shift_1.png");
 	}
@@ -122,7 +122,7 @@ void Battery::TextureChange()
 
 
 
-	float TimeCheck = Player::MainPlayer->GetSlowLimitTime();
+	float TimeCheck = Player::MainPlayer->GetSkillLimitTime();
 	
 	// 배터리텍스쳐
 	if (9.0f <= TimeCheck)

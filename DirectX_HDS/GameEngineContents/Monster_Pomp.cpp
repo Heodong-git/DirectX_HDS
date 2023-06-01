@@ -34,7 +34,7 @@ void Monster_Pomp::Start()
 
 void Monster_Pomp::Update(float _DeltaTime)
 {
-	if (true == Player::MainPlayer->IsSlowSkill())
+	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
 		m_MainRender->ColorOptionValue.MulColor.g = 0.2f;

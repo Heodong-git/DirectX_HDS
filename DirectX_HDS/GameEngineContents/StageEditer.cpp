@@ -170,7 +170,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 
                 ImGui::Text("Slow :");
                 ImGui::NextColumn();
-                ImGui::Text("%s", Player::MainPlayer->IsSlowSkill() ? "true" : "false");
+                ImGui::Text("%s", Player::MainPlayer->IsSkill() ? "true" : "false");
 
               
 
@@ -182,7 +182,7 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 
                 ImGui::Text("SkillTime :");
                 ImGui::NextColumn();
-                ImGui::Text("%.2f", Player::MainPlayer->GetSlowLimitTime());
+                ImGui::Text("%.2f", Player::MainPlayer->GetSkillLimitTime());
                 ImGui::NextColumn();
 
 

@@ -80,7 +80,6 @@ void BaseLevel::Update(float _DeltaTime)
 		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
 	}
 
-
 	// GameEngineLevel::Update(_DeltaTime);
 }
 
@@ -175,12 +174,12 @@ void BaseLevel::LevelClearCheck()
 void BaseLevel::PlayerSkillCheck()
 {
 	// 플레이어 페이드인이펙트 
-	if (true == Player::MainPlayer->IsSlowSkill())
+	if (true == Player::MainPlayer->IsSkill())
 	{
 		GetFadeEffect()->FadeIn();
 	}
 
-	else if (false == Player::MainPlayer->IsSlowSkill())
+	else if (false == Player::MainPlayer->IsSkill())
 	{
 		//m_FadeEffect->FadeOut();
 	}
