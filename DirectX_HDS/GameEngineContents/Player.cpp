@@ -729,14 +729,14 @@ void Player::MoveUpdate(float _DeltaTime)
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+			m_NextTrans->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 
 			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
 			{
 				return;
 			}
 
-			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 			return;
 		}
 	}
@@ -753,7 +753,7 @@ void Player::MoveUpdate(float _DeltaTime)
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
 			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
-			m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			m_NextTrans->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 			
 			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
 			// 그 위치가 검은색 픽셀이라면 이동하지 않고
@@ -763,7 +763,7 @@ void Player::MoveUpdate(float _DeltaTime)
 			}
 
 			// 그게 아니라면 진짜 나의 위치를 이동해
-			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 			return;
 		}
 	}
@@ -909,6 +909,7 @@ void Player::SlashEnd()
 	m_MyOriginPos = { 0 , 0 };
 }
 
+// 일단 임시 마무리 
 void Player::JumpStart()
 {
 	// 점프 상태가 false 일 경우 
@@ -917,6 +918,10 @@ void Player::JumpStart()
 		// true 로 만들어준다. 
 		m_IsJumping = true;
 		m_CurrentVerticalVelocity = m_JumpPower;
+
+		// 보류
+		//float4 MyPos = GetTransform()->GetLocalPosition();
+		//m_JumpCutLine = MyPos.y + m_MaxJumpHeight;
 	}
 
 	m_Render->ChangeAnimation("player_jump");
@@ -925,20 +930,19 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
-	// 점프
-	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
-	// 점프의 힘에 중력을 더해준다. 
-	m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
-
-	// 만약 점프 상태일 때 내 아래픽셀이 검은색이라면 땅인거야 이제. 
-	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	// 
+	/*if (m_JumpCutLine < GetTransform()->GetLocalPosition().y)
 	{
-		// 값 초기화 후 아이들로 변경
-		m_CurrentVerticalVelocity = 0.0f;
-		ChangeState(PlayerState::IDLE);
+		ChangeState(PlayerState::FALL);
+		return;
+	}*/
+
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
+	{
+		ChangeState(PlayerState::FALL);
 		return;
 	}
-	
+
 	if (true == GameEngineInput::IsPress("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -951,33 +955,80 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 상단픽셀 부딪히면 ㅇㅇ 
-	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
+	// 내 윗픽셀이 흰색일 때만 이동하고 
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
 	{
-		ChangeState(PlayerState::FALL);
+		// 점프의 힘에 중력을 더해준다. 
+		m_CurrentVerticalVelocity += -m_GravityPower * _DeltaTime;
+		m_NextTrans->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+
+		// 만약에 내 뚝배기가 검은색픽셀이거나 
+		// 최대 점프높이에 도달했다면 fall 상태로 변경 <--- 얘를 어떻게? 
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{0.0f, m_RenderPivot * 2.0f}) ||
+			PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+		GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+	}
+
+	// 만약 점프 상태일 때 내 아래픽셀이 검은색이라면 땅인거야 이제. 
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		// 값 초기화 후 아이들로 변경
+		m_CurrentVerticalVelocity = 0.0f;
+		PixelCollider::PixelCol->GroundCheck(this);
+		ChangeState(PlayerState::IDLE);
 		return;
 	}
 	
-	if (true == GameEngineInput::IsPress("player_right_Move"))
+	
+	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		// true 이면 맵 밖인걸로
+		DirCheck();
+		if (true == GameEngineInput::IsPress("player_left_move"))
+		{
+			return;
+		}
+
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			m_Direction = true;
-			GetTransform()->SetLocalPositiveScaleX();
-			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 			return;
 		}
 	}
 
-	else if (true == GameEngineInput::IsPress("player_left_Move"))
+	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		// true 이면 맵 밖인걸로
+		DirCheck();
+		if (true == GameEngineInput::IsPress("player_right_move"))
+		{
+			return;
+		}
+
+		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			m_Direction = false;
-			GetTransform()->SetLocalNegativeScaleX();
-			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+			m_NextTrans->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+
+			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
+			// 그 위치가 검은색 픽셀이라면 이동하지 않고
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			// 그게 아니라면 진짜 나의 위치를 이동해
+			GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
 			return;
 		}
 	}
@@ -986,12 +1037,15 @@ void Player::JumpUpdate(float _DeltaTime)
 void Player::JumpEnd()
 {
 	m_CurrentVerticalVelocity = 0.0f;
+	// 보류 
+	//m_JumpCutLine = 0.0f;
 	m_IsJumping = false;
 }
 
 void Player::CrouchStart()
 {
 	m_Render->ChangeAnimation("player_crouch");
+	DirCheck();
 }
 
 void Player::CrouchUpdate(float _DeltaTime)
@@ -1011,25 +1065,44 @@ void Player::CrouchUpdate(float _DeltaTime)
 	// 크라우치 상태에서 우측키 Down, 
 	if (true == GameEngineInput::IsDown("player_right_move"))
 	{
-		// 내 오른쪽이 벽이라면 return
-		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		DirCheck();
+		// 내오른쪽 픽셀이 흰색일 때 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
+			// 넥스트포스 체크 후 
+			m_NextTrans->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
+
+			// 검은색 픽셀이라면 스테이트 변경 X 
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			// 검은픽셀이 아니라면 스테이트변경
+			ChangeState(PlayerState::ROLL);
 			return;
 		}
-
-		ChangeState(PlayerState::ROLL);
-		return;
 	}
 
-	else if (true == GameEngineInput::IsDown("player_left_move"))
+	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		DirCheck();
+		// 내 왼쪽(리버스고) 픽셀이 흰색일때 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
+			// 넥스트포스 체크 후 
+			m_NextTrans->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
+
+			// 검은색 픽셀이라면 스테이트 변경 X 
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			// 검은픽셀이 아니라면 스테이트변경
+			ChangeState(PlayerState::ROLL);
 			return;
 		}
-
-		ChangeState(PlayerState::ROLL);
-		return;
 	}
 }
 
@@ -1037,82 +1110,15 @@ void Player::CrouchEnd()
 {
 }
 
-// 얘부터 다시 
+// 4일 여기부터 다시 
 void Player::RollStart()
 {
 	m_Render->ChangeAnimation("player_roll");
+	DirCheck();
 }
 
 void Player::RollUpdate(float _DeltaTime)
 {
-	// 회피중 공격키를 누른다면 슬래시로 전환 
-	if (true == GameEngineInput::IsDown("player_slash"))
-	{
-		ChangeState(PlayerState::SLASH);
-		return;
-	}
-
-	if (true == m_RightRoll && false == m_LeftRoll)
-	{
-		// 플립 애니메이션이 종료 되었다면
-		if (true == m_Render->IsAnimationEnd())
-		{
-			// 내위치가 땅이라면 
-			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
-				PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
-			{
-				// 땅인데 아래키가 눌려있다면 
-				if (true == GameEngineInput::IsPress("player_crouch"))
-				{
-					ChangeState(PlayerState::CROUCH);
-					return;
-				}
-
-				// 키가 눌려있지 않다면 IDLE로 전환
-				ChangeState(PlayerState::IDLE);
-				return;
-			}
-		}
-
-		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			ChangeState(PlayerState::IDLE);
-			return;
-		}
-
-		GetTransform()->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
-	}
-
-	else if (true == m_LeftRoll)
-	{
-		if (true == m_Render->IsAnimationEnd())
-		{
-			// 내위치가 땅이라면 
-			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
-				PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
-			{
-				// 땅인데 아래키가 눌려있다면 
-				if (true == GameEngineInput::IsPress("player_crouch"))
-				{
-					ChangeState(PlayerState::CROUCH);
-					return;
-				}
-
-				// 그게 아니라면 아이들 
-				ChangeState(PlayerState::IDLE);
-				return;
-			}
-		}
-
-		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			ChangeState(PlayerState::IDLE);
-			return;
-		}
-
-		GetTransform()->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
-	}
-
 	// 애니메이션이 종료되면 
 	if (true == m_Render->IsAnimationEnd())
 	{
@@ -1126,24 +1132,127 @@ void Player::RollUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_right_Move"))
+	// 회피중 공격키를 누른다면 슬래시로 전환 
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
-		// 애니메이션 방향보정
-		m_Direction = true;
-		GetTransform()->SetLocalPositiveScaleX();
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
+	if (false == m_LeftRoll && true == GameEngineInput::IsPress("player_right_Move"))
+	{
 		m_RightRoll = true;
 
+		// 애초에 벽이면 return 
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		{
+			// 내가 아래키를 누르고 있다면 크라우치로 변경
+			if (true == GameEngineInput::IsPress("player_crouch"))
+			{
+				ChangeState(PlayerState::CROUCH);
+				return;
+			}
+
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+		
+		m_NextTrans->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
+
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 {m_RenderPivot , m_RenderPivot}))
+		{
+			return;
+		}
+		
+		GetTransform()->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
 		return;
+		
 	}
 
-	else if (true == GameEngineInput::IsPress("player_left_Move") && false == m_RightRoll)
-	{
-		m_Direction = false;
-		GetTransform()->SetLocalNegativeScaleX();
-		m_LeftRoll = true;
+	//if (true == GameEngineInput::IsPress("player_left_Move") && false == m_RightRoll)
+	//{
+	//	m_LeftRoll = true;
+	//
+	//	// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
+	//	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	//	{
+	//		// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+	//		m_NextTrans->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
 
-		return;
-	}
+	//		// 그 위치가 검은색 픽셀이라면 이동하지 않고
+	//		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+	//		{
+	//			return;
+	//		}
+
+	//		// 그게 아니라면 진짜 나의 위치를 이동해
+	//		GetTransform()->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
+	//		return;
+	//	}
+	//	
+	//}
+
+	//// 
+	//if (true == m_RightRoll && false == m_LeftRoll)
+	//{
+	//	// 플립 애니메이션이 종료 되었다면
+	//	if (true == m_Render->IsAnimationEnd())
+	//	{
+	//		// 내위치가 땅이라면 
+	//		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
+	//			PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	//		{
+	//			// 땅인데 아래키가 눌려있다면 
+	//			if (true == GameEngineInput::IsPress("player_crouch"))
+	//			{
+	//				ChangeState(PlayerState::CROUCH);
+	//				return;
+	//			}
+
+	//			// 키가 눌려있지 않다면 IDLE로 전환
+	//			ChangeState(PlayerState::IDLE);
+	//			return;
+	//		}
+	//	}
+
+	//	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	//	{
+	//		ChangeState(PlayerState::IDLE);
+	//		return;
+	//	}
+
+	//	GetTransform()->AddLocalPosition(float4::Right * m_RollSpeed * _DeltaTime);
+	//}
+
+	//else if (true == m_LeftRoll)
+	//{
+	//	if (true == m_Render->IsAnimationEnd())
+	//	{
+	//		// 내위치가 땅이라면 
+	//		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
+	//			PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	//		{
+	//			// 땅인데 아래키가 눌려있다면 
+	//			if (true == GameEngineInput::IsPress("player_crouch"))
+	//			{
+	//				ChangeState(PlayerState::CROUCH);
+	//				return;
+	//			}
+
+	//			// 그게 아니라면 아이들 
+	//			ChangeState(PlayerState::IDLE);
+	//			return;
+	//		}
+	//	}
+
+	//	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	//	{
+	//		ChangeState(PlayerState::IDLE);
+	//		return;
+	//	}
+
+	//	GetTransform()->AddLocalPosition(float4::Left * m_RollSpeed * _DeltaTime);
+	//}
 }
 
 void Player::RollEnd()
@@ -1199,7 +1308,7 @@ void Player::FallUpdate(float _DeltaTime)
 	// 땅이아니라면
 	else if (false == PixelCollider::PixelCol->GroundCheck(this))
 	{
-		GetTransform()->AddLocalPosition(float4{ 0 , -1 } *300.0f * _DeltaTime);
+		GetTransform()->AddLocalPosition(float4{ 0 , -1 } *250.0f * _DeltaTime);
 	}
 
 	// 이렇게 해주는게 무빙이 안이상함 

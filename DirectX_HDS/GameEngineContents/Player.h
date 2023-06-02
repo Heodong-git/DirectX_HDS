@@ -125,9 +125,11 @@ private:
 	// 점프
 	bool m_IsJumping = false;					// 점프상태인지
 	float m_JumpPower = 450.0f;					// 점프하는 힘 
-	float m_JumpMoveSpeed = 300.0f;				// 점프중 이동속도  
+	float m_JumpMoveSpeed = 400.0f;				// 점프중 이동속도  
 	float m_CurrentVerticalVelocity = 0.0f;	    // 현재 점프파워  
 	float m_FallPower = 700.0f;					// 낙하하는 힘 
+	float m_MaxJumpHeight = 95.0f;				// 최대점프높이
+	float m_JumpCutLine = 0.0f;
 
 	// Roll 
 	bool m_RightRoll = false;
