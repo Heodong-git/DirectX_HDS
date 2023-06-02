@@ -133,33 +133,7 @@ GameEnginePixelColor PixelCollider::PixelCollision(const float4& _Pos)
 
 	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
 
-	if (g_BlackPixel == ColPixel)
-	{
-		return g_BlackPixel;
-	}
-
-	// y 축으로 이동한값 
-	int UpCount = 0;
-	if (g_BlackPixel == ColPixel)
-	{
-		// true 여야 빠져나온거임.
-		while (true)
-		{
-			// 아 - 해줘야되지
-			--CheckY;
-			++UpCount;
-			ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
-			if (g_WhitePixel == ColPixel)
-			{
-				Player::MainPlayer->GetTransform()->AddLocalPosition({ 0 , static_cast<float>(UpCount) });
-				break;
-			}
-		}
-
-		return g_WhitePixel;
-	}
-
-	return g_WhitePixel;
+	return ColPixel;
 }
 
 

@@ -108,6 +108,8 @@ private:
 	float  m_MoveSpeed = 500.0f;
 	float  m_StartMoveSpeed = 400.0f;
 
+	std::shared_ptr<GameEngineTransform> m_NextTrans = nullptr;
+
 	// 렌더러 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	// 충돌체 

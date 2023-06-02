@@ -7,5 +7,4 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
-// ÄÁÅÙÃ÷
 #include "ContentsEnum.h"

@@ -27,6 +27,7 @@
 #include "IronDoor.h"
 #include "FadeEffect.h"
 
+
 ClubLevel_00::ClubLevel_00()
 {
 }

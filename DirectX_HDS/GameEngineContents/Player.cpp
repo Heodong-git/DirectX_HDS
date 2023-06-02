@@ -167,9 +167,12 @@ void Player::LoadAndCreateAnimation()
 
 void Player::Update(float _DeltaTime)
 {
-	DirCheck();
+
 	SkillUpdate(_DeltaTime);
 	
+	// 상태업데이트 이전에 위치를 동일하게 고정시킨다.
+	m_NextTrans->SetLocalPosition(GetTransform()->GetWorldPosition());
+
 	// 상태업데이트
 	UpdateState(_DeltaTime);
 
@@ -212,6 +215,9 @@ void Player::ComponentSetting()
 {
 	// 픽셀충돌 
 	CreateComponent<PixelCollider>();
+
+	// 넥스트포스체크용 트랜스폼
+	m_NextTrans = std::make_shared<GameEngineTransform>();
 
 	// 메인렌더 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER);
@@ -627,9 +633,9 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 내위치의 픽셀체크를 해서, 내 위치가 흰색 픽셀 일때만 이동이 가능하다. 
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
+		DirCheck();
 		if (true == GameEngineInput::IsPress("player_left_move"))
 		{
 			return;
@@ -637,34 +643,43 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			DirCheck();
-			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
-		}
-		return;
-	}
-
-	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-	{
-		if (true == GameEngineInput::IsPress("player_left_move"))
-		{
-			
-			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition() + float4{-1,0}))
-			{
-				
-				if (true == GameEngineInput::IsPress("player_right_move"))
-				{
-					return;
-				}
-
-				DirCheck();
-				GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
-				return;
-				
-			}
-		}
-	}
-
+			m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 	
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+			return;
+		}
+	}
+
+	if (true == GameEngineInput::IsPress("player_left_move"))
+	{
+		DirCheck();
+		if (true == GameEngineInput::IsPress("player_right_move"))
+		{
+			return;
+		}
+
+		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		{
+			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+			m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+
+			// 그 위치가 검은색 픽셀이라면 이동하지 않고
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			// 그게 아니라면 진짜 나의 위치를 이동해
+			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			return;
+		}
+	}
 }
 
 void Player::IdleToRunEnd()
@@ -704,40 +719,52 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 내가 오른쪽으로 이동하려고해
-	if (true == GameEngineInput::IsPress("player_right_Move"))
+	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
-		if (true == GameEngineInput::IsDown("player_left_move"))
+		DirCheck();
+		if (true == GameEngineInput::IsPress("player_left_move"))
 		{
 			return;
 		}
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			DirCheck();
-			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			{
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 			return;
 		}
 	}
 
-	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		if (true == GameEngineInput::IsPress("player_left_move"))
+		DirCheck();
+		if (true == GameEngineInput::IsPress("player_right_move"))
 		{
+			return;
+		}
 
-			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition() + float4{ -5,0 }))
+		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		{
+			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+			m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			
+			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
+			// 그 위치가 검은색 픽셀이라면 이동하지 않고
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { -m_RenderPivot , m_RenderPivot }))
 			{
-
-				if (true == GameEngineInput::IsPress("player_right_move"))
-				{
-					return;
-				}
-
-				DirCheck();
-				GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
 				return;
-
 			}
+
+			// 그게 아니라면 진짜 나의 위치를 이동해
+			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			return;
 		}
 	}
 }
@@ -770,6 +797,8 @@ void Player::SlashUpdate(float _DeltaTime)
 		return;
 	}
 
+
+	// 로직 
 	float4 MyPos = GetTransform()->GetWorldPosition();
 
 	// 공격포지션이 내오른쪽이면 정위치 
@@ -784,7 +813,7 @@ void Player::SlashUpdate(float _DeltaTime)
 		//	m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-	// 공격 방향을 구한다. 
+	// 공격 방향만 구하고, 거기로 이동하는게 아니라 무조건 그 방향으로 특정거리만큼 이동해야함
 	float4 MoveDir = m_AttackPos - MyPos;
 	float4 MoveDirOrigin = MoveDir;
 	MoveDir.Normalize();
@@ -1010,7 +1039,6 @@ void Player::RollUpdate(float _DeltaTime)
 
 	else if (true == m_LeftRoll)
 	{
-		// 플립 애니메이션이 종료 되었다면
 		if (true == m_Render->IsAnimationEnd())
 		{
 			// 내위치가 땅이라면 
