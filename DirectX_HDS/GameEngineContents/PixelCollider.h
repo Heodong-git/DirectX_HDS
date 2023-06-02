@@ -52,8 +52,6 @@ public:
 	// À§ Ã¼Å© 
 	bool TopPixelCheck();
 
-	
-	
 protected:
 	void Start() override;
 private:
