@@ -102,11 +102,13 @@ private:
 
 	// 마우스를 클릭했을 때의 좌표를 저장
 	float4 m_AttackPos = {};
+	float4 m_MyOriginPos = {};
 
 	// 콜리전 크기 (임시) 
 	float4 m_ColScale = { 75.0f , 75.0f , 0.0f };
 	float  m_MoveSpeed = 500.0f;
 	float  m_StartMoveSpeed = 400.0f;
+	float  m_AttSpeed = 700.0f;
 
 	std::shared_ptr<GameEngineTransform> m_NextTrans = nullptr;
 

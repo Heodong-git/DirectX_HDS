@@ -773,93 +773,89 @@ void Player::MoveEnd()
 {
 }
 
+// 여기진행중
 void Player::SlashStart()
 {
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+	m_MyOriginPos = GetTransform()->GetLocalPosition();
 	m_Render->ChangeAnimation("player_attack");
 	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
 
-// 마우스찍은 위치에 도착해서 오래 머물경우 애니메이션 버그있음. 
 void Player::SlashUpdate(float _DeltaTime)
-{
-	// fall에서는 어차피 내가 땅이라면 알아서 아이들로 바꾼다. 
+{ 
 	if (true == m_Render->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::FALL);
 		return;
 	}
-
-	// 내 머리통 픽셀이 검은색이라면
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
 	{
 		ChangeState(PlayerState::FALL);
 		return;
 	}
 
-
-	// 로직 
-	float4 MyPos = GetTransform()->GetWorldPosition();
+	float4 AttDir = m_AttackPos - m_MyOriginPos;
+	AttDir.Normalize();
 
 	// 공격포지션이 내오른쪽이면 정위치 
-	if (MyPos.x <= m_AttackPos.x)
+	if (m_MyOriginPos.x <= m_AttackPos.x)
 	{
-		//m_Direction = true;
+		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 	// 내 왼쪽이면 반대 
-	else if (MyPos.x > m_AttackPos.x)
+	else if (m_MyOriginPos.x > m_AttackPos.x)
 	{
-		//	m_Direction = false;
+		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-	// 공격 방향만 구하고, 거기로 이동하는게 아니라 무조건 그 방향으로 특정거리만큼 이동해야함
-	float4 MoveDir = m_AttackPos - MyPos;
-	float4 MoveDirOrigin = MoveDir;
-	MoveDir.Normalize();
-	MoveDirOrigin.Normalize();
 
+	GetTransform()->AddLocalPosition(AttDir * m_AttSpeed * _DeltaTime);
+
+	// 이제 여기서 픽셀충돌 체크해서 예외처리
 	// 내 왼쪽이나 오른쪽이 벽인 상태에서
 	// 내가 벽쪽으로 공격지점을 찍는다면. 
-	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) ||
-		PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
-	{
-		if (m_AttackPos.x < MyPos.x)
-		{
-			MoveDir.x = 0.0f;
-		}
+	//if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) ||
+	//	PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
+	//{
+	//	if (m_AttackPos.x < MyPos.x)
+	//	{
+	//		MoveDir.x = 0.0f;
+	//	}
 
-		// 공격위치가 나보다 낮다면 y축은 움직이지 않고 x축만 움직인다. 
-		if (m_AttackPos.y < MyPos.y)
-		{
-			MoveDir.y = 0.0f;
-		}
-	}
+	//	// 공격위치가 나보다 낮다면 y축은 움직이지 않고 x축만 움직인다. 
+	//	if (m_AttackPos.y < MyPos.y)
+	//	{
+	//		MoveDir.y = 0.0f;
+	//	}
+	//}
 
-	// 업데이트중 만약 내 아래가 검은색 픽셀이라면 바닥에 닿았다는 것. y축은 움직이지 않는다.
-	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
-	{
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
-			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
-		{
-			// 공격위치가 나보다 높다면 x축은 움직이지 않고 y축만 움직인다. 
-			if (m_AttackPos.y < MyPos.y)
-			{
-				MoveDirOrigin.y = 0.0f;
-			}
+	//// 업데이트중 만약 내 아래가 검은색 픽셀이라면 바닥에 닿았다는 것. y축은 움직이지 않는다.
+	//if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	//{
+	//	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
+	//		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Left->GetTransform()->GetWorldPosition()))
+	//	{
+	//		// 공격위치가 나보다 높다면 x축은 움직이지 않고 y축만 움직인다. 
+	//		if (m_AttackPos.y < MyPos.y)
+	//		{
+	//			MoveDirOrigin.y = 0.0f;
+	//		}
 
-			GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDirOrigin.y * 1.2f } *m_MoveSpeed * _DeltaTime);
-			return;
-		}
-	}
+	//		GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDirOrigin.y * 1.2f } *m_MoveSpeed * _DeltaTime);
+	//		return;
+	//	}
+	//}
 
-	GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDir.y * 1.2f } *m_MoveSpeed * _DeltaTime);
+	//GetTransform()->AddLocalPosition(float4{ MoveDir.x * 1.5f , MoveDir.y * 1.2f } *m_MoveSpeed * _DeltaTime);
 }
 
 // 공격이 종료되면 공격위치를 초기화 
 void Player::SlashEnd()
 {
 	m_AttackPos = { 0 , 0 };
+	m_MyOriginPos = { 0 , 0 };
 }
 
 
