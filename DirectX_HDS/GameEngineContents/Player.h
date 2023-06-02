@@ -135,7 +135,7 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-	float4 m_DebugRenderScale = { 1, 1 };
+	float4 m_DebugRenderScale = { 10, 10 };
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom_Down = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;

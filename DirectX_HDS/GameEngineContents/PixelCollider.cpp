@@ -125,7 +125,6 @@ GameEnginePixelColor PixelCollider::PixelCollision(const float4& _Pos)
 
 	// 체크할 위치
 	float4 CheckPos = _Pos;
-
 	float WidthHalf = static_cast<float>(m_CurColMap->GetWidth() / 2);
 	float HeightHalf = static_cast<float>(m_CurColMap->GetHeight() / 2);
 
@@ -134,7 +133,6 @@ GameEnginePixelColor PixelCollider::PixelCollision(const float4& _Pos)
 
 	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
 
-	// 
 	if (g_BlackPixel == ColPixel)
 	{
 		return g_BlackPixel;

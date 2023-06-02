@@ -643,20 +643,28 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_left_move"))
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 	{
-		if (true == GameEngineInput::IsPress("player_right_move"))
+		if (true == GameEngineInput::IsPress("player_left_move"))
 		{
-			return;
+			
+			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition() + float4{-1,0}))
+			{
+				
+				if (true == GameEngineInput::IsPress("player_right_move"))
+				{
+					return;
+				}
+
+				DirCheck();
+				GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+				return;
+				
+			}
 		}
-		// true 이면 맵 밖인걸로
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			DirCheck();
-			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
-		}
-		return;
 	}
+
+	
 }
 
 void Player::IdleToRunEnd()
@@ -706,29 +714,31 @@ void Player::MoveUpdate(float _DeltaTime)
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			m_Direction = true;
-			GetTransform()->SetLocalPositiveScaleX();
+			DirCheck();
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 			return;
 		}
 	}
 
-	if (true == GameEngineInput::IsPress("player_left_Move"))
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 	{
-		if (true == GameEngineInput::IsDown("player_right_move"))
+		if (true == GameEngineInput::IsPress("player_left_move"))
 		{
-			return;
+
+			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition() + float4{ -5,0 }))
+			{
+
+				if (true == GameEngineInput::IsPress("player_right_move"))
+				{
+					return;
+				}
+
+				DirCheck();
+				GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+				return;
+
+			}
 		}
-		// 뒤집히니까 라이트를 검사하는게 맞나? 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			m_Direction = false;
-			GetTransform()->SetLocalNegativeScaleX();
-			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-			return;
-		}
-		
-		return;
 	}
 }
 
@@ -923,8 +933,10 @@ void Player::CrouchUpdate(float _DeltaTime)
 		return;
 	}
 	
+	// 크라우치 상태에서 우측키 Down, 
 	if (true == GameEngineInput::IsDown("player_right_move"))
 	{
+		// 내 오른쪽이 벽이라면 return
 		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
 			return;
@@ -950,6 +962,7 @@ void Player::CrouchEnd()
 {
 }
 
+// 얘부터 다시 
 void Player::RollStart()
 {
 	m_Render->ChangeAnimation("player_roll");
