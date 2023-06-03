@@ -14,7 +14,8 @@ enum class PlayerState
 	JUMP,			// 점프
 	SLASH,			// 공격 
 	CROUCH,			// 크라우치 (웅크리기)
-	FLIP,			// 벽타고 구르기 
+	RIGHTFLIP,
+	LEFTFLIP,// 벽타고 구르기 
 	FALL,			// 낙하 
 	RIGHTWALL,		// 벽타기 
 	LEFTWALL,
@@ -114,7 +115,8 @@ private:
 
 	// 렌더러 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
-	float m_RenderPivot = 36.0f;
+	const float m_RenderPivot = 36.0f;
+	const float m_RightRenderPivot = 29.0f;
 
 	// 충돌체 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
@@ -143,6 +145,10 @@ private:
 	float4 m_LeftRollDir =  float4 {-200.0f , 0.0f};
 	float4 m_RightRollDir = float4 { 200.0f , 0.0f};
 
+	// Flip , 
+	float4 m_LeftFlipDir = float4{ -200.0f, 400.0f };
+	float4 m_RightFlipDir = float4{ 200.0f , 400.0f };
+
 	// 중력 
 	const float m_GravityPower = 1000.0f;
 
@@ -154,8 +160,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
-
-	
 
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
@@ -212,9 +216,13 @@ private:
 	void RollUpdate(float _DeltaTime);
 	void RollEnd();
 
-	void FlipStart();
-	void FlipUpdate(float _DeltaTime);
-	void FlipEnd();
+	void RightFlipStart();
+	void RightFlipUpdate(float _DeltaTime);
+	void RightFlipEnd();
+
+	void LeftFlipStart();
+	void LeftFlipUpdate(float _DeltaTime);
+	void LeftFlipEnd();
 
 	void FallStart();
 	void FallUpdate(float _DeltaTime);

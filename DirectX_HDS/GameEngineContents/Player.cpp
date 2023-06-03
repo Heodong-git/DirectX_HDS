@@ -443,8 +443,11 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::CROUCH:
 		CrouchUpdate(_DeltaTime);
 		break;
-	case PlayerState::FLIP:
-		FlipUpdate(_DeltaTime);
+	case PlayerState::RIGHTFLIP:
+		RightFlipUpdate(_DeltaTime);
+		break;
+	case PlayerState::LEFTFLIP:
+		LeftFlipUpdate(_DeltaTime);
 		break;
 	case PlayerState::FALL:
 		FallUpdate(_DeltaTime);
@@ -493,8 +496,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::CROUCH:
 		CrouchStart();
 		break;
-	case PlayerState::FLIP:
-		FlipStart();
+	case PlayerState::RIGHTFLIP:
+		RightFlipStart();
+		break;
+	case PlayerState::LEFTFLIP:
+		LeftFlipStart();
 		break;
 	case PlayerState::FALL:
 		FallStart();
@@ -534,8 +540,11 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::CROUCH:
 		CrouchEnd();
 		break;
-	case PlayerState::FLIP:
-		FlipEnd();
+	case PlayerState::RIGHTFLIP:
+		RightFlipEnd();
+		break;
+	case PlayerState::LEFTFLIP:
+		LeftFlipEnd();
 		break;
 	case PlayerState::FALL:
 		FallEnd();
@@ -990,7 +999,6 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 	
-	
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		DirCheck();
@@ -1002,9 +1010,20 @@ void Player::JumpUpdate(float _DeltaTime)
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
 			m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+			
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot};
 
-			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 			{
+				// 만약 내 다음 이동 위치가 BlackPixel 이고 완료
+				
+				// 그 픽셀의 위, 아래를 검사했을 때 둘다 검은색 픽셀이라면
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Down))
+				{
+					ChangeState(PlayerState::RIGHTWALL);
+					return;
+				}
 				return;
 			}
 
@@ -1119,7 +1138,6 @@ void Player::CrouchEnd()
 {
 }
 
-// 4일 여기부터 다시 
 void Player::RollStart()
 {
 	if (true == m_RightRoll)
@@ -1283,22 +1301,69 @@ void Player::RollEnd()
 	m_RollEndPos = float4::Null;
 }
 
-void Player::FlipStart()
+void Player::RightFlipStart()
+{
+	m_Render->ChangeAnimation("player_flip");
+	GetTransform()->SetLocalPositiveScaleX();
+}
+
+
+void Player::RightFlipUpdate(float _DeltaTime)
+{
+	// 흰색일 때 이동
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	{
+		float4 MoveDir = m_RightFlipDir.NormalizeReturn();
+		// 화이트픽셀일 때 이동하고, 만약 이동한 위치가 검은픽셀이라면
+		m_NextTrans->AddLocalPosition(MoveDir * m_RollSpeed * _DeltaTime);
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+		{
+			ChangeState(PlayerState::RIGHTWALL);
+			return;
+		}
+
+		GetTransform()->AddLocalPosition(MoveDir * m_RollSpeed * _DeltaTime);
+	}
+
+	else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	{
+		ChangeState(PlayerState::RIGHTWALL);
+		return;
+	}
+}
+
+void Player::RightFlipEnd()
 {
 	
 }
 
-// 플립상태에서는 무적이기 때문에 충돌체 off 처리 예정
-// 좌우측 픽셀검사로 벽이면 이동 ㄴㄴ 추가해야함 
-// 이녀석이 플립이 아니라 롤이었구나 
-void Player::FlipUpdate(float _DeltaTime)
+void Player::LeftFlipStart()
 {
-	
+	// 이때 무조건 왼쪽으로 그려 
+	m_Render->ChangeAnimation("player_flip");
+	GetTransform()->SetLocalNegativeScaleX();
 }
 
-void Player::FlipEnd()
+void Player::LeftFlipUpdate(float _DeltaTime)
 {
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	{
+		float4 MoveDir = m_LeftFlipDir.NormalizeReturn();
+		// 화이트픽셀일 때 이동하고, 만약 이동한 위치가 검은픽셀이라면
+		m_NextTrans->AddLocalPosition(MoveDir * m_RollSpeed * _DeltaTime);
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+		{
 
+			ChangeState(PlayerState::LEFTWALL);
+			return;
+		}
+		
+		GetTransform()->AddLocalPosition(MoveDir * m_RollSpeed * _DeltaTime);
+	}
+}
+
+void Player::LeftFlipEnd()
+{
 }
 
 void Player::FallStart()
@@ -1379,38 +1444,107 @@ void Player::FallEnd()
 
 void Player::RightWallStart()
 {
-	//m_Render->ChangeAnimation("player_wallslide");
+	// 애니메이션변경 
+	m_Render->ChangeAnimation("player_wallslide");
+	// 렌더러, 컬리전 피봇
+	m_Render->GetTransform()->AddLocalPosition(float4{ m_RightRenderPivot , 0.0f });
+	m_Collision->GetTransform()->AddLocalPosition(float4{ m_RightRenderPivot, 0.0f });
+	GetTransform()->SetLocalPositiveScaleX();
 }
 
+// 내려가다가 내가 더이상 벽이 아니라는걸 어떻게 알 수 있을까....
 void Player::RightWallUpdate(float _DeltaTime)
 {
-	/*if (true == PixelCollider::PixelCol->GroundCheck(this))
+	if (true == GameEngineInput::IsDown("player_slash"))
 	{
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("player_left_move"))
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("player_jump"))
+	{
+		// 단순하게 그냥 누르면 현재위치에서 그 방향으로 이동해 헛짓거리하지말고 
+		// 점프키 누르면 그냥 state 바꿔
+		ChangeState(PlayerState::LEFTFLIP);
+		return;
+	}
+
+	// 만약 내 바닥픽셀이 블랙이라면 
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		// 위로올려주고
+		PixelCollider::PixelCol->GroundCheck(this);
+		// 변경
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
-	else
-	{
-		GetTransform()->AddLocalPosition(float4::Down * 200.0f * _DeltaTime);
-		return;
-	}*/
+	// 기본은 아래로 내려가고 
+	GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 6.0f) * _DeltaTime);
 }
 
 void Player::RightWallEnd()
 {
+	// 잘되고 
+	m_Render->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot , 0.0f });
+	m_Collision->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot, 0.0f });
 }
 
 void Player::LeftWallStart()
 {
+	m_Render->ChangeAnimation("player_wallslide");
+	m_Render->GetTransform()->AddLocalPosition(float4{ m_RightRenderPivot , 0.0f });
+	m_Collision->GetTransform()->AddLocalPosition(float4{ m_RightRenderPivot, 0.0f });
+	GetTransform()->SetLocalNegativeScaleX();
 }
 
 void Player::LeftWallUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("player_left_move"))
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+
+	// 라이트월 상태에서 점프키를 누른다면. 레프트플립으로 전환
+	if (true == GameEngineInput::IsDown("player_jump"))
+	{
+		// 헛소리하지말고 그냥 라이트플립으로 변경
+		ChangeState(PlayerState::RIGHTFLIP);
+		return;
+	}
+
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		// 위로올려주고
+		PixelCollider::PixelCol->GroundCheck(this);
+		// 변경
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	// 기본은 아래로 내려가고 
+	GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 5.0f) * _DeltaTime);
 }
 
 void Player::LeftWallEnd()
 {
+	// 잘되고 
+	m_Render->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot , 0.0f });
+	m_Collision->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot, 0.0f });
 }
 
 // 일단 보류

@@ -121,9 +121,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::SameLine();
                 ImGui::Text("Crouch");
                 break;
-            case PlayerState::FLIP:
+            case PlayerState::RIGHTFLIP:
                 ImGui::SameLine();
-                ImGui::Text("Flip");
+                ImGui::Text("RightFlip");
+                break;
+            case PlayerState::LEFTFLIP:
+                ImGui::SameLine();
+                ImGui::Text("LeftFlip");
                 break;
             case PlayerState::FALL:
                 ImGui::SameLine();

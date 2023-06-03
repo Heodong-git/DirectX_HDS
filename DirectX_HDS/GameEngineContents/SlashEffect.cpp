@@ -73,14 +73,14 @@ void SlashEffect::ComponentSetting()
 	const float4 AttackPos = Player::MainPlayer->GetAttackPos();
 
 	float4 Dir = AttackPos - PlayerPos;
-	float Angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
-	m_Render->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
+	m_Angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
+	m_Render->GetTransform()->SetLocalRotation({ 0 , 0 , m_Angle });
 
 	// 충돌체 
 	// 스케일은 임시크기 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLAYER_ATTACK);
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
-	m_Collision->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
+	m_Collision->GetTransform()->SetLocalRotation({ 0 , 0 , m_Angle });
 	m_Collision->DebugOn();
 }
 
