@@ -5,6 +5,7 @@ GameEngineRenderUnit GameEngineRenderTarget::MergeUnit;
 
 void GameEngineRenderTarget::RenderTargetUnitInit()
 {
+	MergeUnit.SetMesh("FullRect");
 	MergeUnit.SetPipeLine("Merge");
 }
 

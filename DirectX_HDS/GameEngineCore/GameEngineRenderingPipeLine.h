@@ -31,8 +31,8 @@ public:
 		return PixelShaderPtr;
 	}
 
-	void SetVertexBuffer(const std::string_view& _Value);
-	void SetIndexBuffer(const std::string_view& _Value);
+	/*void SetVertexBuffer(const std::string_view& _Value);
+	void SetIndexBuffer(const std::string_view& _Value);*/
 	void SetVertexShader(const std::string_view& _Value);
 	void SetRasterizer(const std::string_view& _Value);
 	void SetPixelShader(const std::string_view& _Value);
@@ -60,14 +60,14 @@ protected:
 private:
 	bool IsCloneValue = false;
 	// 각 정점에 대한 정보 준비
-	void InputAssembler1();
+	//void InputAssembler1();
 	// 정점에 대한 연산, 가상의 3D로 입력되어 있는 좌표를 2D로 변환하는 작업
 	// 1. 버텍스의 로컬좌표계를 월드좌표계로 변환
 	// 2. 카메라 행렬과의 곱을 통해 카메라의 중심점에서 얼만큼 떨어져 있는지를 표현
 	// 3. 프로젝션 행렬을 곱해줌으로써 원근감 부여  
 	void VertexShader();
 	// 정점의 정보를 토대로 어떤 순서로 그릴지 정하고 조립한다. 
-	void InputAssembler2();
+	//void InputAssembler2();
 
 	// 여기부터 지오메트리쉐이더 까지는 테셀레이션
 	// lod (레벨오브디테일) 과 관련된 내용으로 현 프로젝트에서는 없어도 무관
@@ -90,10 +90,10 @@ private:
 	void OutputMerger();
 
 	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	//D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	// 렌더링 파이프라인에서 사용할 데이터를 저장한다. 
-	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
+	//std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
 	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
 	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
 	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;

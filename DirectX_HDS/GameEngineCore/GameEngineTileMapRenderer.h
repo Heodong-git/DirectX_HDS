@@ -27,6 +27,8 @@ public:
 	GameEngineTileMapRenderer& operator=(const GameEngineTileMapRenderer& _Other) = delete;
 	GameEngineTileMapRenderer& operator=(GameEngineTileMapRenderer&& _Other) noexcept = delete;
 
+	ColorOption ColorOptionValue;
+
 	void CreateTileMap(int _X, int _Y, const float4& _TileSize);
 
 	void Clear();
@@ -58,7 +60,7 @@ private:
 
 	std::vector<std::vector<Tile>> Tiles;
 	float4 MapCount;
-	ColorOption ColorOptionValue;
+	
 	float4 AtlasData;
 	float4 TileSize;
 

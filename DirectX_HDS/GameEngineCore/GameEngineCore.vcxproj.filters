@@ -140,11 +140,17 @@
     <ClInclude Include="GameEngineTileMapRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineFSM.h">
-      <Filter>ContentPattern</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineUIRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h">
+      <Filter>Contents\Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineButton.h">
+      <Filter>Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h">
+      <Filter>Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -282,11 +288,17 @@
     <ClCompile Include="GameEngineTileMapRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineFSM.cpp">
-      <Filter>ContentPattern</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineUIRenderer.cpp">
       <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp">
+      <Filter>Contents\Pattern</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineButton.cpp">
+      <Filter>Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp">
+      <Filter>Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,9 +307,6 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{c16991ef-8e9a-49d8-b420-853cff2955d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{b420b215-6a8f-4fa5-bec3-c52265a46089}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Rendering">
       <UniqueIdentifier>{4125e805-1a91-4f37-a667-e239ca98c105}</UniqueIdentifier>
@@ -359,8 +368,17 @@
     <Filter Include="UI\SubWindow">
       <UniqueIdentifier>{7b5fbd23-2c0f-471c-ac35-4b8a570e2ba8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ContentPattern">
+    <Filter Include="Contents">
       <UniqueIdentifier>{0c37ff06-d2b9-44e3-9961-f8f2fa642c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Pattern">
+      <UniqueIdentifier>{91bcb70e-7285-463b-b34e-d51f27e75a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\UI">
+      <UniqueIdentifier>{0bad7f32-d7c0-4696-8650-0076bf826ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{e72105da-d41a-45e7-9940-5f3db0b498cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

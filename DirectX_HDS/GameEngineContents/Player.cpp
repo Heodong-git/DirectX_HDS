@@ -227,7 +227,7 @@ void Player::ComponentSetting()
 	// ÄÝ¸®Àü 
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
-	m_Collision->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
+	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 
 	// --------------------------- Debug Render ------------------------------
 
@@ -277,6 +277,19 @@ void Player::DebugUpdate()
 	if (true == GameEngineInput::IsDown("player_debugswitch"))
 	{
 		DebugSwitch();
+
+		if (nullptr != m_Collision)
+		{
+			if (true == m_Collision->IsDebug())
+			{
+				m_Collision->DebugOff();
+			}
+
+			else
+			{
+				m_Collision->DebugOn();
+			}
+		}
 	}
 
 	if (true == IsDebug())

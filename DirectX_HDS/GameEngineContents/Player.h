@@ -105,7 +105,8 @@ private:
 	float4 m_MyOriginPos = {};
 
 	// 콜리전 크기 (임시) 
-	float4 m_ColScale = { 75.0f , 75.0f , 0.0f };
+	float4 m_ColScale = { 40.0f , 65.0f , 1.0f };
+	float  m_ColPivot = 33.0f;
 	float  m_MoveSpeed = 500.0f;
 	float  m_StartMoveSpeed = 400.0f;
 	float  m_AttSpeed = 700.0f;

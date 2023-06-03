@@ -7,4 +7,6 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+#include <GameEngineCore/GameEngineDebug3D.h>
+
 #include "ContentsEnum.h"

@@ -13,6 +13,7 @@ void MySpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
+	SetMesh("Rect");
 	SetPipeLine("My2DTexture");
 
 	AtlasData.x = 0.0f;

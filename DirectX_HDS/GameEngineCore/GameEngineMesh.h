@@ -2,11 +2,44 @@
 #include "GameEngineResource.h"
 #include <vector>
 #include <GameEngineBase/GameEngineMath.h>
+#include "GameEngineVertexBuffer.h"
+#include "GameEngineIndexBuffer.h"
 
-// 설명 : 입자의 크기에 대하여 나타내는 표준 단위적인 의미가 있다. 
+// 설명 :
 class GameEngineMesh : public GameEngineResource<GameEngineMesh>
 {
+	friend class GameEngineRenderUnit;
+
 public:
+	static std::shared_ptr<GameEngineMesh> Create(const std::string_view& _Name)
+	{
+		return Create(_Name, _Name, _Name);
+	}
+
+	static std::shared_ptr<GameEngineMesh> Create(const std::string_view& _Name, const std::string_view& _VtxName, const std::string_view& _IdxName)
+	{
+		std::shared_ptr<GameEngineMesh> Res = GameEngineResource::Create(_Name);
+		Res->VertexBufferPtr = GameEngineVertexBuffer::Find(_VtxName);
+		Res->IndexBufferPtr = GameEngineIndexBuffer::Find(_IdxName);
+
+		if ((nullptr == Res->VertexBufferPtr) || (nullptr == Res->IndexBufferPtr))
+		{
+			MsgAssert("매쉬를 만드는데 실패했습니다.");
+		}
+
+		return Res;
+	}
+
+	std::shared_ptr<GameEngineVertexBuffer> GetVertexBuffer()
+	{
+		return VertexBufferPtr;
+	}
+
+	void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _TOPOLOGY)
+	{
+		TOPOLOGY = _TOPOLOGY;
+	}
+
 	// constrcuter destructer
 	GameEngineMesh();
 	~GameEngineMesh();
@@ -17,22 +50,25 @@ public:
 	GameEngineMesh& operator=(const GameEngineMesh& _Other) = delete;
 	GameEngineMesh& operator=(GameEngineMesh&& _Other) noexcept = delete;
 
-	/*static void Create(const std::string_view& _Name, const std::vector<float4>& _Vertexs)
-	{
-		std::shared_ptr<GameEngineMesh> NewMesh = GameEngineResource::Create(_Name);
-	}*/
-
 protected:
+	void Setting() override;
+
+	void InputAssembler1();
+	void InputAssembler2();
 
 private:
-	// 소프트웨어 렌더링
-	// Vertexs <-- 정점, 또는 위치를 의미하는 개념 
-	// 사각형을 그린다고 치면 4개의 점을 표현한다고 볼 수 있..나? 
-
-	// 최초의 버텍스의 위치를 로컬공간이라고 한다. 
-	// 대부분의 모든 메쉬는 1크기로 해서 넣을 수 있도록 만든다. 아닌곳도 있음 
-	std::vector<float4> Vertexs;
+	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	std::shared_ptr<GameEngineVertexBuffer> VertexBufferPtr;
+	std::shared_ptr<GameEngineIndexBuffer> IndexBufferPtr;
 };
+
+
+// 소프트웨어 렌더링
+// Vertexs <-- 정점, 또는 위치를 의미하는 개념 
+// 사각형을 그린다고 치면 4개의 점을 표현한다고 볼 수 있..나? 
+
+// 최초의 버텍스의 위치를 로컬공간이라고 한다. 
+// 대부분의 모든 메쉬는 1크기로 해서 넣을 수 있도록 만든다. 아닌곳도 있음 
 
 // 메쉬 회전시키기
 // Angle * 값 <--- 회전속도(?) 

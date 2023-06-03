@@ -20,6 +20,10 @@ public:
 	void ResCreate(std::shared_ptr<class GameEngineVertexBuffer> _Info, std::shared_ptr<class GameEngineVertexShader> _Shader);
 	void Setting() override;
 
+	bool IsCreate()
+	{
+		return nullptr != InputLayOut;
+	}
 
 protected:
 

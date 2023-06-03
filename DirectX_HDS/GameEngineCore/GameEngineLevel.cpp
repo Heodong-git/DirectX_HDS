@@ -4,9 +4,10 @@
 #include "GameEngineCamera.h"
 #include "GameEngineGUI.h"
 #include "GameEngineCollision.h"
+#include "GameEngineDebug3D.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
-bool GameEngineLevel::IsDebugRender = false;
+bool GameEngineLevel::IsDebugRender = true;
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -111,44 +112,44 @@ void GameEngineLevel::ActorLevelChangeEnd()
 	}
 }
 
-void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
-{
-
-	{
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
-
-		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-		{
-			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
-
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
-
-			for (; ObjectStart != ObjectEnd; ++ObjectStart)
-			{
-				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
-
-				if (nullptr == CollisionObject)
-				{
-					continue;
-				}
-
-				if (false == CollisionObject->IsUpdate())
-				{
-					continue;
-				}
-
-				if (CollisionObject->DebugCamera != _Camera)
-				{
-					continue;
-				}
-
-				CollisionObject->DebugRender(_Delta);
-			}
-		}
-	}
-}
+//void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
+//{
+//
+//	{
+//		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+//		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+//
+//		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+//		{
+//			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+//
+//			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+//			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+//
+//			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+//			{
+//				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+//
+//				if (nullptr == CollisionObject)
+//				{
+//					continue;
+//				}
+//
+//				if (false == CollisionObject->IsUpdate())
+//				{
+//					continue;
+//				}
+//
+//				if (CollisionObject->DebugCamera != _Camera)
+//				{
+//					continue;
+//				}
+//
+//				CollisionObject->DebugRender(_Delta);
+//			}
+//		}
+//	}
+//}
 
 
 void GameEngineLevel::ActorRender(float _DeltaTime)
@@ -167,7 +168,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 			continue;
 		}
 
-		CollisionDebugRender(Cam.get(), _DeltaTime);
+		GameEngineDebug::DebugRender(Cam.get(), _DeltaTime);
 	}
 
 	LastTarget->Clear();

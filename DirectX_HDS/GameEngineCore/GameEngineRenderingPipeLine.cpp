@@ -12,7 +12,7 @@
 
 GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 {
-	InputLayOutPtr = std::make_shared<GameEngineInputLayOut>();
+	
 }
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
@@ -22,27 +22,27 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 // 매쉬 + 머티리얼
 
 // (Vertex) 정점에 대한 정보를 준비한다.
-void GameEngineRenderingPipeLine::InputAssembler1()
-{
-	if (nullptr == InputLayOutPtr)
-	{
-		MsgAssert("인풋 레이아웃이 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
-		return;
-	}
-
-	InputLayOutPtr->Setting();
-
-	if (nullptr == VertexBufferPtr)
-	{
-		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
-		return;
-	}
-
-	VertexBufferPtr->Setting();
-	
-	// 012 023 3개씩 끊어서 한면으로 만들어라 라는 내용을 여기서 처리
-	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
-}
+//void GameEngineRenderingPipeLine::InputAssembler1()
+//{
+//	if (nullptr == InputLayOutPtr)
+//	{
+//		MsgAssert("인풋 레이아웃이 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
+//		return;
+//	}
+//
+//	InputLayOutPtr->Setting();
+//
+//	if (nullptr == VertexBufferPtr)
+//	{
+//		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
+//		return;
+//	}
+//
+//	VertexBufferPtr->Setting();
+//	
+//	// 012 023 3개씩 끊어서 한면으로 만들어라 라는 내용을 여기서 처리
+//	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
+//}
 
 // 각 정점(Vertex)에 대한 연산수행 
 // InputAssembler 단계에서 출력되는 premitive 의 각 vertex에 대한 연산 수행
@@ -66,18 +66,18 @@ void GameEngineRenderingPipeLine::VertexShader()
 // 메모리에서 기하자료 (index , vertex data) 를 읽어서 기하학적 기본도형을 조립한다. 
 // 프리미티브 : 프로그래밍에서의 어떤 프로그램을 만드는데 사용할 수 있는 언어의 가장 기본적인 단위 문자,숫자, 요소 등
 // 정점이란 : 공간적위치, 위치 값 이외의 정보를 담고 있으며 이를 통해 좀더 복잡한 렌더링 효과를 구현할 수 있다. 
-void GameEngineRenderingPipeLine::InputAssembler2()
-{
-	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
-
-	if (nullptr == IndexBufferPtr)
-	{
-		MsgAssert("인덱스 버퍼가 존재하지 않아서 인풋 어셈블러2 과정을 실행할 수 없습니다.");
-		return;
-	}
-
-	IndexBufferPtr->Setting();
-}
+//void GameEngineRenderingPipeLine::InputAssembler2()
+//{
+//	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
+//
+//	if (nullptr == IndexBufferPtr)
+//	{
+//		MsgAssert("인덱스 버퍼가 존재하지 않아서 인풋 어셈블러2 과정을 실행할 수 없습니다.");
+//		return;
+//	}
+//
+//	IndexBufferPtr->Setting();
+//}
 
 // 여기서부터
 void GameEngineRenderingPipeLine::HullShader()
@@ -158,37 +158,37 @@ void GameEngineRenderingPipeLine::OutputMerger()
 }
 
 
-void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value)
-{
-	std::string UpperName = GameEngineString::ToUpper(_Value);
-	VertexBufferPtr = GameEngineVertexBuffer::Find(UpperName);
-
-	if (nullptr == VertexBufferPtr)
-	{
-		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
-	}
-
-	// 버텍스버퍼를 세팅할때 버텍스쉐이더가 세팅되어있다면 InputLayOut 리소스를 생성하고
-	// 세팅되어있지 않다면 return 
-	if (nullptr == VertexShaderPtr)
-	{
-		return;
-	}
-
-	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
-}
-
-
-void GameEngineRenderingPipeLine::SetIndexBuffer(const std::string_view& _Value)
-{
-	std::string UpperName = GameEngineString::ToUpper(_Value);
-	IndexBufferPtr = GameEngineIndexBuffer::Find(UpperName);
-
-	if (nullptr == IndexBufferPtr)
-	{
-		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
-	}
-}
+//void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value)
+//{
+//	std::string UpperName = GameEngineString::ToUpper(_Value);
+//	VertexBufferPtr = GameEngineVertexBuffer::Find(UpperName);
+//
+//	if (nullptr == VertexBufferPtr)
+//	{
+//		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
+//	}
+//
+//	// 버텍스버퍼를 세팅할때 버텍스쉐이더가 세팅되어있다면 InputLayOut 리소스를 생성하고
+//	// 세팅되어있지 않다면 return 
+//	if (nullptr == VertexShaderPtr)
+//	{
+//		return;
+//	}
+//
+//	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
+//}
+//
+//
+//void GameEngineRenderingPipeLine::SetIndexBuffer(const std::string_view& _Value)
+//{
+//	std::string UpperName = GameEngineString::ToUpper(_Value);
+//	IndexBufferPtr = GameEngineIndexBuffer::Find(UpperName);
+//
+//	if (nullptr == IndexBufferPtr)
+//	{
+//		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
+//	}
+//}
 
 
 void GameEngineRenderingPipeLine::SetVertexShader(const std::string_view& _Value)
@@ -206,7 +206,7 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string_view& _Value
 		return;
 	}
 
-	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
+	//InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 void GameEngineRenderingPipeLine::SetPixelShader(const std::string_view& _Value)
@@ -257,9 +257,9 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 
 void GameEngineRenderingPipeLine::RenderingPipeLineSetting()
 {
-	InputAssembler1();
+	//InputAssembler1();
 	VertexShader();
-	InputAssembler2();
+	//InputAssembler2();
 	HullShader();
 	Tessellator();
 	DomainShader();
@@ -277,8 +277,8 @@ void GameEngineRenderingPipeLine::Render()
 {
 	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데
 	// 무조건 인덱스 버퍼를 사용할거임.
-	UINT IndexCount = IndexBufferPtr->GetIndexCount();
-	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
+	/*UINT IndexCount = IndexBufferPtr->GetIndexCount();
+	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);*/
 
 
 	// 메쉬 <= 외형이 어떻게 보일것인가.
@@ -294,9 +294,9 @@ std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderingPipeLine::Clone(
 {
 	std::shared_ptr<GameEngineRenderingPipeLine> ClonePipe = std::make_shared<GameEngineRenderingPipeLine>();
 
-	ClonePipe->InputLayOutPtr = InputLayOutPtr;
+	//ClonePipe->InputLayOutPtr = InputLayOutPtr;
 	ClonePipe->VertexBufferPtr = VertexBufferPtr;
-	ClonePipe->IndexBufferPtr = IndexBufferPtr;
+	//ClonePipe->IndexBufferPtr = IndexBufferPtr;
 	ClonePipe->VertexShaderPtr = VertexShaderPtr;
 	ClonePipe->RasterizerPtr = RasterizerPtr;
 	ClonePipe->PixelShaderPtr = PixelShaderPtr;

@@ -90,7 +90,6 @@ public:
 		return LastTarget;
 	}
 
-	void CollisionDebugRender(GameEngineCamera* _Camera, float _Delta);
 
 protected:
 	virtual void LevelChangeStart();

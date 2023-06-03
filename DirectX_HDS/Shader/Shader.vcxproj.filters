@@ -5,6 +5,6 @@
     <FxCompile Include="BlinkShader.hlsl" />
     <FxCompile Include="TranslucentShader.hlsl" />
     <FxCompile Include="MergeShader.hlsl" />
-    <FxCompile Include="CollisionDebugShader.hlsl" />
+    <FxCompile Include="DebugMeshRender.hlsl" />
   </ItemGroup>
 </Project>
