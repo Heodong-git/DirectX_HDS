@@ -930,13 +930,6 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
-	// 
-	/*if (m_JumpCutLine < GetTransform()->GetLocalPosition().y)
-	{
-		ChangeState(PlayerState::FALL);
-		return;
-	}*/
-
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
 	{
 		ChangeState(PlayerState::FALL);
@@ -1276,7 +1269,6 @@ void Player::RollEnd()
 	m_RollEndPos = float4::Null;
 }
 
-// 플립부터 다시시작.
 void Player::FlipStart()
 {
 	
@@ -1300,16 +1292,16 @@ void Player::FallStart()
 	m_Render->ChangeAnimation("player_fall");
 }
 
-// 왼쪽오른쪽 픽셀체크 추가해야함 
 void Player::FallUpdate(float _DeltaTime)
 {
-	// 현재 땅이라면
-	if (true == PixelCollider::PixelCol->GroundCheck(this))
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
+		PixelCollider::PixelCol->GroundCheck(this);
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
+	// 만약 나의 픽셀, 그리고 아래픽셀이 둘다 흰색이라면 중력이 작용해야함
 
 	// 땅이아니라면
 	else if (false == PixelCollider::PixelCol->GroundCheck(this))
