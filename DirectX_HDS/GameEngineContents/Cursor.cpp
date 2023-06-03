@@ -67,7 +67,7 @@ void Cursor::Start()
 
 	// ·»´õ·¯ Á¤Áß¾ÓÀÇ µð¹ö±× ·»´õ·¯ 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender->GetTransform()->SetLocalScale( { 4, 4 });
+	m_DebugRender->GetTransform()->SetLocalScale( { 8, 8 });
 	m_DebugRender->Off();
 }
 

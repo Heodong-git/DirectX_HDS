@@ -40,7 +40,6 @@ protected:
 
 	void DebugUpdate();
 
-
 private:
 	// 만약 온을 두번호출한 상태에서 오프를 한번 호출하게 되면 
 	// 그대로 온 상태이기 때문에 횟수를 주의해야함

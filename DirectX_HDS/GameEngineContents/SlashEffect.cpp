@@ -18,6 +18,11 @@ SlashEffect::~SlashEffect()
 
 void SlashEffect::Start()
 {
+	if (false == GameEngineInput::IsKey("SlashEffect_DebugSwitch"))
+	{
+		GameEngineInput::CreateKey("SlashEffect_DebugSwitch", 'Q');
+	}
+
 	// 스프라이트네임이 nullptr 일때만 
 	if (nullptr == GameEngineSprite::Find("slash"))
 	{
@@ -39,6 +44,7 @@ void SlashEffect::Start()
 
 void SlashEffect::Update(float _DeltaTime)
 {
+	DebugUpdate();
 	MoveUpdate(_DeltaTime);
 	CollisionUpdate(_DeltaTime);
 }
@@ -48,10 +54,13 @@ void SlashEffect::Render(float _DeltaTime)
 	
 }
 
+void SlashEffect::DebugUpdate()
+{
+}
+
 void SlashEffect::ComponentSetting()
 {
-	// 컴포넌트 생성
-	// 렌더러 
+	// 완
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->CreateAnimation({ .AnimationName = "slash_effect", .SpriteName = "slash", .Start = 0, .End = 4 ,
@@ -70,12 +79,15 @@ void SlashEffect::ComponentSetting()
 	// 충돌체 
 	// 스케일은 임시크기 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLAYER_ATTACK);
-	m_Collision->GetTransform()->SetLocalScale({ 100, 50 });
+	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
+	m_Collision->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
+	m_Collision->DebugOn();
 }
 
 void SlashEffect::CollisionUpdate(float _DeltaTime)
 {
 	// 이펙트가 몬스터와 충돌했다면 
+	// 개그지같이만들엇네 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 
 	// 여기 들어오면 충돌 한거고. 
@@ -137,8 +149,13 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	float RenderPivot = Player::MainPlayer->GetRenderPivot();
-	const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
-	m_Render->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot });
-	m_Collision->GetTransform()->SetLocalPosition({ PlayerPos.x , PlayerPos.y + RenderPivot });
+	m_PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	m_Render->GetTransform()->SetLocalPosition({ m_PlayerPos.x , m_PlayerPos.y + m_RenderPivot });	
+	if (false == Player::MainPlayer->GetDir())
+	{
+		m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + -m_ColPivot , m_PlayerPos.y + m_RenderPivot });
+		return;
+	}
+
+	m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + m_ColPivot , m_PlayerPos.y + m_RenderPivot });
 }
