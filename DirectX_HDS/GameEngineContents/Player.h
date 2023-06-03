@@ -132,9 +132,12 @@ private:
 	float m_JumpCutLine = 0.0f;
 
 	// Roll 
+	float4 m_RollEndPos = { 0.0f , 0.0f };
 	bool m_RightRoll = false;
 	bool m_LeftRoll = false;
-	float m_RollSpeed = 1000.0f;
+	float m_RollSpeed = 800.0f;
+	float4 m_LeftRollDir =  float4 {-200.0f , 0.0f};
+	float4 m_RightRollDir = float4 { 200.0f , 0.0f};
 
 	// ม฿ทย 
 	const float m_GravityPower = 1000.0f;

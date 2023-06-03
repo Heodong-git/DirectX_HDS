@@ -22,7 +22,7 @@ GameEnginePixelColor PixelCollider::g_WhitePixel = { static_cast<char>(255), sta
 GameEnginePixelColor PixelCollider::g_GreenPixel = { static_cast<char>(0), static_cast<char>(255) , static_cast<char>(0) ,
 									static_cast<char>(255) };
 
-GameEnginePixelColor PixelCollider::g_ErrorPixel = { static_cast<char>(255), static_cast<char>(0) , static_cast<char>(255) ,
+GameEnginePixelColor PixelCollider::g_ErrorPixel = { static_cast<char>(204), static_cast<char>(204) , static_cast<char>(204) ,
 									static_cast<char>(255) };
 
 PixelCollider::PixelCollider()
@@ -131,7 +131,12 @@ GameEnginePixelColor PixelCollider::PixelCollision(const float4& _Pos)
 	int CheckX = static_cast<int>(CheckPos.x + WidthHalf);
 	int CheckY = static_cast<int>(HeightHalf - CheckPos.y);
 
-	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
+	GameEnginePixelColor ColPixel = m_CurColMap->GetPixel(CheckX, CheckY , GameEnginePixelColor::Black);
+
+	if (ColPixel != g_BlackPixel && ColPixel != g_WhitePixel)
+	{
+		return g_ErrorPixel;
+	}
 
 	return ColPixel;
 }
