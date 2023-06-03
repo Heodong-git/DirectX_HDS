@@ -161,6 +161,12 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Right = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Left = nullptr;
+
+	const float m_WallDebugPivotX = 10.0f;
+	const float m_WallDebugPivotY = 36.0f;
+
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
 	// 스킬 사용가능 시간 
