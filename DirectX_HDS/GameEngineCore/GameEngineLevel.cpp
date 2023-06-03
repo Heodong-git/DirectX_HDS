@@ -6,6 +6,8 @@
 #include "GameEngineCollision.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
+bool GameEngineLevel::IsDebugRender = false;
+
 GameEngineLevel::GameEngineLevel()
 {
 	MainCamera = CreateActor<GameEngineCamera>();
@@ -109,6 +111,46 @@ void GameEngineLevel::ActorLevelChangeEnd()
 	}
 }
 
+void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
+{
+
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+			{
+				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+
+				if (nullptr == CollisionObject)
+				{
+					continue;
+				}
+
+				if (false == CollisionObject->IsUpdate())
+				{
+					continue;
+				}
+
+				if (CollisionObject->DebugCamera != _Camera)
+				{
+					continue;
+				}
+
+				CollisionObject->DebugRender(_Delta);
+			}
+		}
+	}
+}
+
+
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	//GetMainCamera()->Setting();
@@ -119,6 +161,13 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
 		Cam->CamTarget->Effect(_DeltaTime);
+
+		if (false == IsDebugRender)
+		{
+			continue;
+		}
+
+		CollisionDebugRender(Cam.get(), _DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -131,9 +180,8 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		LastTarget->Merge(Target);
 	}
 
-	// 이시점에서 렌더타겟을 가져온다..? 
-
 	LastTarget->Effect(_DeltaTime);
+	LastTarget->Setting();
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
 	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
@@ -311,6 +359,23 @@ std::shared_ptr<GameEngineCamera> GameEngineLevel::GetCamera(int _CameraOrder)
 
 	return Camera;
 }
+
+void GameEngineLevel::TextureUnLoad(GameEngineLevel* _NextLevel)
+{
+	for (const std::pair<std::string, std::string>& Pair : LoadEndPath)
+	{
+		if (nullptr != _NextLevel && true == _NextLevel->TexturePath.contains(Pair.first))
+		{
+			continue;
+		}
+
+		GameEngineTexture::UnLoad(Pair.first);
+		TexturePath.insert(std::make_pair(Pair.first, Pair.second));
+	}
+
+	LoadEndPath.clear();
+}
+
 
 void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 {

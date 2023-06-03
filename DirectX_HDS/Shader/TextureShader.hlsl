@@ -88,7 +88,7 @@ Texture2D DiffuseTex : register(t0);
 
 // 샘플러
 // 텍스쳐를 어떻게 불러들이겠냐는 설정, 
-SamplerState WRAPSAMPLER : register(s0);
+SamplerState CLAMPSAMPLER : register(s0);
 
 struct OutColor
 {
@@ -107,7 +107,7 @@ float4 Texture_PS(Output _Value) : SV_Target0
     // float4
     // float4.xy == float2
     // float4.xyz == float3 
-    float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
   
     Color *= MulColor;
     Color += PlusColor;

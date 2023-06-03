@@ -1,9 +1,14 @@
 #pragma once
+#include "GameEngineRenderer.h"
 #include "GameEngineComponent.h"
 
 // 설명 :
 class GameEngineCollision : public GameEngineComponent
 {
+	friend class GameEngineLevel;
+
+	static GameEngineRenderUnit DebugUnit;
+
 public:
 	// constrcuter destructer
 	GameEngineCollision();
@@ -33,12 +38,30 @@ public:
 
 	void SetOrder(int _Order) override;
 
+	void SetColType(ColType _Type)
+	{
+		Type = _Type;
+	}
+
+	// 나를 디버깅해줄 카메라를 변경하는 기능.
+	void SetDebugCamera(GameEngineCamera* _DebugCamera)
+	{
+		DebugCamera = _DebugCamera;
+	}
+
 protected:
 	void Start() override;
 
 private:
 	ColType Type = ColType::SPHERE3D;
+
+	//#ifdef _DEBUG
+	GameEngineCamera* DebugCamera = nullptr;
+
+	void DebugRender(float _DeltaTime);
+	//#endif
 };
+
 
 // 1. 액터생성, 생성시 오더지정
 // 2. 컬리전 생성 , 생성시 오더 , 컬리전타입 지정

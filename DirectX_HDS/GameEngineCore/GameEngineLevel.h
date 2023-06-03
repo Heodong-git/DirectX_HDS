@@ -19,6 +19,11 @@ class GameEngineLevel : public GameEngineObject
 	friend class GameEngineTexture;
 
 public:
+	static void IsDebugSwitch()
+	{
+		IsDebugRender = !IsDebugRender;
+	}
+
 	GameEngineTimeEvent TimeEvent;
 
 	// constrcuter destructer
@@ -85,6 +90,8 @@ public:
 		return LastTarget;
 	}
 
+	void CollisionDebugRender(GameEngineCamera* _Camera, float _Delta);
+
 protected:
 	virtual void LevelChangeStart();
 	virtual void LevelChangeEnd();
@@ -94,6 +101,7 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	static bool IsDebugRender;
 	// 모든 카메라의 내용이 다 종합된.
 	std::shared_ptr<GameEngineRenderTarget> LastTarget;
 	//      이름           경로
@@ -123,7 +131,6 @@ private:
 	void ActorLevelChangeEnd();
 
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
-
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 };
 

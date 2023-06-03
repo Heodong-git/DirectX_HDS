@@ -299,7 +299,6 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.FrontCounterClockwise = FALSE;
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
-
 		// π›≈ı∏Ì
 		std::shared_ptr<GameEngineRasterizer> Res1 = GameEngineRasterizer::Create("2DTranslucent", Desc);
 		// ±Ù∫˝¿Ã 
