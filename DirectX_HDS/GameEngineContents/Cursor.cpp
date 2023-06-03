@@ -67,16 +67,12 @@ void Cursor::Start()
 
 	// ·»´õ·¯ Á¤Áß¾ÓÀÇ µð¹ö±× ·»´õ·¯ 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender->GetTransform()->SetLocalScale( { 2, 2 });
+	m_DebugRender->GetTransform()->SetLocalScale( { 4, 4 });
+	m_DebugRender->Off();
 }
 
 void Cursor::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("cursor_DebugSwitch"))
-	{
-		DebugSwitch();
-	}
-
 	DebugUpdate();
 	FollowCursor();
 
@@ -116,14 +112,19 @@ void Cursor::LevelChangeEnd()
 
 void Cursor::DebugUpdate()
 {
-	if (true == IsDebug())
+	if (true == GameEngineInput::IsDown("cursor_DebugSwitch"))
 	{
-		m_DebugRender->On();
-	}
+		DebugSwitch();
 
-	else if (false == IsDebug())
-	{
-		m_DebugRender->Off();
+		if (true == IsDebug())
+		{
+			m_DebugRender->On();
+		}
+
+		else if (false == IsDebug())
+		{
+			m_DebugRender->Off();
+		}
 	}
 }
 

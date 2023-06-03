@@ -84,17 +84,32 @@ void Monster_Gangster::DebugUpdate()
 	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
 	{
 		DebugSwitch();
+
+		if (nullptr != m_Collision)
+		{
+			if (true == m_Collision->IsDebug())
+			{
+				m_Collision->DebugOff();
+			}
+
+			else
+			{
+				m_Collision->DebugOn();
+			}
+		}
+
+		if (true == IsDebug())
+		{
+			m_DebugRender->On();
+		}
+
+		else if (false == IsDebug())
+		{
+			m_DebugRender->Off();
+		}
 	}
 
-	if (true == IsDebug())
-	{
-		m_DebugRender->On();
-	}
 
-	else if (false == IsDebug())
-	{
-		m_DebugRender->Off();
-	}
 }
 
 void Monster_Gangster::ComponentSetting()
@@ -103,11 +118,10 @@ void Monster_Gangster::ComponentSetting()
 	
 	// 렌더러, 충돌체 생성
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
-	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , 38.0f});
+	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot });
 	// m_MainRender->GetTransform()->SetLocalScale({ 200.0f , 200.0f });
 	m_MainRender->SetScaleRatio(2.0f);
 
-	// 총렌더 생성 ㅡㅡ 음.. 이미지세팅으로  
 	m_GunRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
 	// 피봇추가해야함 
 	m_GunRender->GetTransform()->SetLocalPosition(MyPos);
@@ -116,12 +130,14 @@ void Monster_Gangster::ComponentSetting()
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
-	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 50.0f });
-	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 50.0f });
+	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
+	m_Collision->GetTransform()->SetLocalPosition({ 0.0, m_ColPivot });
+	m_Collision->DebugOff();
 
 	// 디버그렌더 생성
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
+	m_DebugRender->Off();
 }
 
 void Monster_Gangster::LoadAndCreateAnimation()

@@ -53,7 +53,7 @@ void Player::Start()
 
 	// 컴포넌트 세팅
 	ComponentSetting();
-	// 필요한 리소스 로드및 애니메이션 생성
+	// 필요한 리소스 로드및 애니메이션 생성	
 	LoadAndCreateAnimation();
 
 	if (false == GameEngineInput::IsKey("player_slash"))
@@ -228,32 +228,33 @@ void Player::ComponentSetting()
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
+	m_Collision->DebugOff();
 
 	// --------------------------- Debug Render ------------------------------
 
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Bottom->Off();
 
 	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
+	m_DebugRender_Bottom_Down->Off();
 
 	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
+	m_DebugRender_Left->Off();
 	
 	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
+	m_DebugRender_Right->Off();
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
-
-	// 흠.. 
-	m_DebugRender_WallRight = CreateComponent<GameEngineSpriteRenderer>();
-	m_DebugRender_WallRight->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_WallRight->GetTransform()->SetLocalPosition({ 2.0f , m_RenderPivot });
+	m_DebugRender_Top->Off();
 }
 
 void Player::DirCheck()
@@ -290,27 +291,27 @@ void Player::DebugUpdate()
 				m_Collision->DebugOn();
 			}
 		}
+
+		if (true == IsDebug())
+		{
+			m_DebugRender_Bottom->On();
+			m_DebugRender_Left->On();
+			m_DebugRender_Right->On();
+			m_DebugRender_Top->On();
+			m_DebugRender_Bottom_Down->On();
+		}
+
+		else if (false == IsDebug())
+		{
+			m_DebugRender_Bottom->Off();
+			m_DebugRender_Left->Off();
+			m_DebugRender_Right->Off();
+			m_DebugRender_Top->Off();
+			m_DebugRender_Bottom_Down->Off();
+		}
 	}
 
-	if (true == IsDebug())
-	{
-		m_DebugRender_Bottom->On();
-		m_DebugRender_Left->On();
-		m_DebugRender_Right->On();
-		m_DebugRender_Top->On();
-		m_DebugRender_WallRight->On();
-		m_DebugRender_Bottom_Down->On();
-	}
-
-	else if (false == IsDebug())
-	{
-		m_DebugRender_Bottom->Off();
-		m_DebugRender_Left->Off();
-		m_DebugRender_Right->Off();
-		m_DebugRender_Top->Off();
-		m_DebugRender_WallRight->Off();
-		m_DebugRender_Bottom_Down->Off();
-	}
+	
 }
 
 // 후순위

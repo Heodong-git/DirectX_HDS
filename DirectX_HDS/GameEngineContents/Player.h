@@ -92,6 +92,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 리셋 
 	virtual void Reset() override;
 
 	// 렌더러생성 및 세팅
@@ -104,9 +105,7 @@ private:
 	float4 m_AttackPos = {};
 	float4 m_MyOriginPos = {};
 
-	// 콜리전 크기 (임시) 
-	float4 m_ColScale = { 40.0f , 65.0f , 1.0f };
-	float  m_ColPivot = 33.0f;
+	// 이동
 	float  m_MoveSpeed = 500.0f;
 	float  m_StartMoveSpeed = 400.0f;
 	float  m_AttSpeed = 700.0f;
@@ -115,8 +114,12 @@ private:
 
 	// 렌더러 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	float m_RenderPivot = 36.0f;
+
 	// 충돌체 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	float4 m_ColScale = { 40.0f , 65.0f , 1.0f };
+	float  m_ColPivot = 33.0f;
 
 	// 방향체크, true = 오른쪽 , false = 왼쪽 
 	bool m_Direction = true; 
@@ -152,9 +155,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Top = nullptr;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_WallRight = nullptr;
-
-	float m_RenderPivot = 36.0f;
+	
 
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------

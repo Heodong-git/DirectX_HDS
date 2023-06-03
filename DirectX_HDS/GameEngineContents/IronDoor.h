@@ -44,6 +44,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
 private:
+	float m_RenderPivotY = 62.0f;
+	float m_RenderPivotX = 25.0f;
+	float m_ColPivot = 50.0f;
+	float4 m_ColScale = { 50.0f, 100.0f , 1.0f };
+
 	// 상태값 변경
 	void ChangeState(IronDoorState _State);
 	// 현재 상태값에 따른 업데이트 

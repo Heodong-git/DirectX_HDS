@@ -49,6 +49,11 @@ private:
 private:
 	float m_HitEffectPivot = 20.0f;
 
+	// ·»´õ 
+	float m_RenderPivot = 38.0f;
+	float m_ColPivot = 32.0f;
+	float4 m_ColScale = { 45.0f, 65.0f , 1.0f };
+
 	// ¸®¼Â
 	virtual void Reset() override;
 	inline void ResetDir()

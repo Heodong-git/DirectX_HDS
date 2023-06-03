@@ -77,33 +77,48 @@ void Monster_Grunt::DebugUpdate()
 	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
 	{
 		DebugSwitch();
-	}
 
-	if (true == IsDebug())
-	{
-		m_DebugRender->On();
-	}
+		if (nullptr != m_Collision)
+		{
+			if (true == m_Collision->IsDebug())
+			{
+				m_Collision->DebugOff();
+			}
 
-	else if (false == IsDebug())
-	{
-		m_DebugRender->Off();
+			else
+			{
+				m_Collision->DebugOn();
+			}
+		}
+
+		if (true == IsDebug())
+		{
+			m_DebugRender->On();
+		}
+
+		else if (false == IsDebug())
+		{
+			m_DebugRender->Off();
+		}
 	}
 }
 
 void Monster_Grunt::ComponentSetting()
 {
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
-	m_MainRender->GetTransform()->SetLocalPosition({ 0, 35.0f });
+	m_MainRender->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 	m_MainRender->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
-	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 50.0f });
-	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 50.0f });
+	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
+	m_Collision->GetTransform()->SetLocalPosition({ 0.0f, m_ColPivot });
+	m_Collision->DebugOff();
 
 	// 디버그렌더
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4,  4 });
+	m_DebugRender->Off();
 }
 
 void Monster_Grunt::LoadAndCreateAnimation()

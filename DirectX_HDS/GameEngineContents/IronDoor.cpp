@@ -43,31 +43,43 @@ void IronDoor::DebugUpdate()
 	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
 	{
 		DebugSwitch();
-	}
 
-	if (true == IsDebug())
-	{
-		m_DebugRender->On();
-	}
+		if (nullptr != m_Collision)
+		{
+			if (true == m_Collision->IsDebug())
+			{
+				m_Collision->DebugOff();
+			}
 
-	else if (false == IsDebug())
-	{
-		m_DebugRender->Off();
+			else
+			{
+				m_Collision->DebugOn();
+			}
+		}
+
+		if (true == IsDebug())
+		{
+			m_DebugRender->On();
+		}
+
+		else if (false == IsDebug())
+		{
+			m_DebugRender->Off();
+		}
 	}
 }
 
 void IronDoor::ComponentSetting()
 {
-	float4 MyPos = GetTransform()->GetLocalPosition();
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DOOR);
-	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f, MyPos.y + 62.0f });
+	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivotY });
 	//m_MainRender->GetTransform()->SetLocalScale({ 50.0f , 100.0f });
 	m_MainRender->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::DOOR);
-	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 100.0f });
-	m_Collision->GetTransform()->SetLocalPosition({ 0.0, 50.0f });
+	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
+	m_Collision->GetTransform()->SetLocalPosition({ -m_ColPivot, m_ColPivot });
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
