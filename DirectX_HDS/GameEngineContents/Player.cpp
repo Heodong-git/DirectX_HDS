@@ -232,29 +232,39 @@ void Player::ComponentSetting()
 
 	// --------------------------- Debug Render ------------------------------
 
-	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom->Off();
 
-	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
 	m_DebugRender_Bottom_Down->Off();
 
-	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
 	m_DebugRender_Left->Off();
 	
-	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
 	m_DebugRender_Right->Off();
 
-	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>();
+	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
 	m_DebugRender_Top->Off();
+
+	m_DebugRender_Wall_Right = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Wall_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Wall_Right->GetTransform()->SetLocalPosition({ m_WallDebugPivotX , m_WallDebugPivotY });
+	m_DebugRender_Wall_Right->Off();
+	
+	m_DebugRender_Wall_Left = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Wall_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Wall_Left->GetTransform()->SetLocalPosition({ -m_WallDebugPivotX , m_WallDebugPivotY });
+	m_DebugRender_Wall_Left->Off();
 }
 
 void Player::DirCheck()
@@ -294,11 +304,16 @@ void Player::DebugUpdate()
 
 		if (true == IsDebug())
 		{
+			// player 
 			m_DebugRender_Bottom->On();
 			m_DebugRender_Left->On();
 			m_DebugRender_Right->On();
 			m_DebugRender_Top->On();
 			m_DebugRender_Bottom_Down->On();
+
+			// wall check
+			m_DebugRender_Wall_Right->On();
+			m_DebugRender_Wall_Left->On();
 		}
 
 		else if (false == IsDebug())
@@ -308,6 +323,9 @@ void Player::DebugUpdate()
 			m_DebugRender_Right->Off();
 			m_DebugRender_Top->Off();
 			m_DebugRender_Bottom_Down->Off();
+
+			m_DebugRender_Wall_Right->Off();
+			m_DebugRender_Wall_Left->Off();
 		}
 	}
 
@@ -999,6 +1017,8 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 	
+
+	// 점프시 우측, 좌측키를 누르고 있다면
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		DirCheck();
@@ -1007,12 +1027,14 @@ void Player::JumpUpdate(float _DeltaTime)
 			return;
 		}
 
+		// 나의 우측 픽셀을 기준으로 해서 검사하는데. 여기를 새로 추가한 wall 우측체크 디버그픽셀로 검사한다. 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
 			m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 			
 			float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot};
 
+			// 내 다음 픽셀이 검은색이라면 
 			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 			{
 				// 만약 내 다음 이동 위치가 BlackPixel 이고 완료
