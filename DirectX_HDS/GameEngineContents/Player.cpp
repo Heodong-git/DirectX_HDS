@@ -647,6 +647,14 @@ void Player::IdleToRunStart()
 
 void Player::IdleToRunUpdate(float _DeltaTime)
 {
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
 	if (true == m_Render->IsAnimationEnd())
 	{
 		// 애니메이션이 종료된 시점에 왼쪽키나 오른쪽키가 눌려있다면
@@ -1135,7 +1143,33 @@ void Player::JumpUpdate(float _DeltaTime)
 		// 우측키를 눌렀을 때 처음부터 blackpixel 이라면  
 		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
 		{
-			int a = 0;
+			// 나의 우측 디버그 픽셀의 로컬위치를 받아온다. 
+			float4 RightDebugPos = m_DebugRender_Wall_Right->GetTransform()->GetLocalPosition();
+
+			// 나의 NextPos 를 다음 위치로 이동시키고 
+			m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+			// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + RightDebugPos;
+
+			// 우측 wall 픽셀이 검은색일 경우  
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
+			{
+				// 상,하단을 체크해서 둘다 검은색 픽셀이라면 
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Down))
+				{
+					// 여기서 위치보정을 어떻게하지
+					float4 MyPos = GetTransform()->GetLocalPosition();
+					ChangeState(PlayerState::RIGHTWALL);
+					return;
+				}
+
+				// 단순히 우측 픽셀만 검은색이라면 암것도 안함 
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+			return;
 		}
 	}
 
@@ -1172,6 +1206,36 @@ void Player::JumpUpdate(float _DeltaTime)
 
 			// 그게 아니라면 진짜 나의 위치를 이동해
 			GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+			return;
+		}
+
+		// 우측키를 눌렀을 때 처음부터 blackpixel 이라면  
+		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+		{
+			
+			// 나의 NextPos 를 다음 위치로 이동시키고 
+			m_NextTrans->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+			// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot ,0.0f };
+
+			// 우측 wall 픽셀이 검은색일 경우  
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
+			{
+				// 상,하단을 체크해서 둘다 검은색 픽셀이라면 
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Down))
+				{
+					// 여기서 위치보정을 어떻게하지
+					float4 MyPos = GetTransform()->GetLocalPosition();
+					ChangeState(PlayerState::LEFTWALL);
+					return;
+				}
+
+				// 단순히 우측 픽셀만 검은색이라면 암것도 안함 
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 			return;
 		}
 	}
@@ -1611,7 +1675,33 @@ void Player::FallUpdate(float _DeltaTime)
 		// 우측키를 눌렀을 때 처음부터 blackpixel 이라면  
 		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
 		{
-			int a = 0;
+			// 나의 우측 디버그 픽셀의 로컬위치를 받아온다. 
+			float4 RightDebugPos = m_DebugRender_Wall_Right->GetTransform()->GetLocalPosition();
+
+			// 나의 NextPos 를 다음 위치로 이동시키고 
+			m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+			// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + RightDebugPos;
+
+			// 우측 wall 픽셀이 검은색일 경우  
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
+			{
+				// 상,하단을 체크해서 둘다 검은색 픽셀이라면 
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Down))
+				{
+					// 여기서 위치보정을 어떻게하지
+					float4 MyPos = GetTransform()->GetLocalPosition();
+					ChangeState(PlayerState::RIGHTWALL);
+					return;
+				}
+
+				// 단순히 우측 픽셀만 검은색이라면 암것도 안함 
+				return;
+			}
+
+			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+			return;
 		}
 	}
 
@@ -1651,12 +1741,45 @@ void Player::FallUpdate(float _DeltaTime)
 			return;
 		}
 	}
+
+	// 우측키를 눌렀을 때 처음부터 blackpixel 이라면  
+	else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+	{
+
+		// 나의 NextPos 를 다음 위치로 이동시키고 
+		m_NextTrans->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+		// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
+		float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot ,0.0f };
+
+		// 우측 wall 픽셀이 검은색일 경우  
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
+		{
+			// 상,하단을 체크해서 둘다 검은색 픽셀이라면 
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
+				PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Down))
+			{
+				// 여기서 위치보정을 어떻게하지
+				float4 MyPos = GetTransform()->GetLocalPosition();
+				ChangeState(PlayerState::LEFTWALL);
+				return;
+			}
+
+			// 단순히 우측 픽셀만 검은색이라면 암것도 안함 
+			return;
+		}
+
+		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+		return;
+	}
 }
 
 void Player::FallEnd()
 {
 	// 착지이펙트 
-	GetLevel()->CreateActor<LandEffect>();
+	if (PlayerState::IDLE == m_NextState)
+	{
+		GetLevel()->CreateActor<LandEffect>();
+	}
 }
 
 void Player::RightWallStart()
@@ -1682,6 +1805,7 @@ void Player::RightWallUpdate(float _DeltaTime)
 		return;
 	}
 
+
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
 		ChangeState(PlayerState::LEFTFLIP);
@@ -1696,32 +1820,17 @@ void Player::RightWallUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
-	{
-		// 기본은 아래로 내려가고 
-		GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 6.0f) * _DeltaTime);
+	GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 6.0f) * _DeltaTime);
 
-		// 내려가다가 체크픽셀이 둘다 흰색이 되었다면. 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()) &&
-			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			ChangeState(PlayerState::FALL);
-			return;
-		}
-	}
-
-	// 현재 나의 우측 픽셀이 흰색일 때 
+	// 현재 나의 좌측 픽셀이 흰색일 때 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
 	{
-		// 나의 우측 디버그 픽셀의 로컬위치를 받아온다. 
-		float4 RightDebugPos = m_DebugRender_Wall_Right->GetTransform()->GetLocalPosition();
-
 		// 나의 NextPos 를 다음 위치로 이동시키고 
 		m_NextTrans->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 		// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
-		float4 CheckPos = m_NextTrans->GetWorldPosition() + RightDebugPos;
+		float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ m_WallDebugPivotX , m_WallDebugPivotY };
 
-		// 이동한 위치의 우측디버그픽셀이 검은색이고, 이동한 위치의 나의 픽셀이 아직도 흰색이라면 
+		// 이동한 위치의 좌측(리버스임) 디버그픽셀이 검은색이고, 이동한 위치의 나의 픽셀이 아직도 흰색이라면 
 		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos) &&
 			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
 		{
@@ -1731,6 +1840,36 @@ void Player::RightWallUpdate(float _DeltaTime)
 		}
 
 		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
+
+		// 
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(MyPos + float4{ m_RenderPivot, m_WallDebugPivotY }) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(MyPos + float4{ m_WallDebugPivotX, m_WallDebugPivotY }))
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+
+		return;
+	}
+
+
+	else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+	{
+		float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ m_RenderPivot, m_WallDebugPivotY };
+		float4 CheckPos1 = m_NextTrans->GetLocalPosition() + float4{ m_WallDebugPivotX, m_WallDebugPivotY };
+
+		GameEnginePixelColor color1 = PixelCollider::PixelCol->PixelCollision(CheckPos);
+		GameEnginePixelColor color2 = PixelCollider::PixelCol->PixelCollision(CheckPos1);
+		// 여기서 검사 
+		// 다음 이동 위치가 둘다 흰색이라면 fall로 전환 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(CheckPos) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(CheckPos1))
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+
 		return;
 	}
 }
@@ -1832,8 +1971,6 @@ void Player::LeftWallUpdate(float _DeltaTime)
 
 		return;
 	}
-
-
 }
 
 void Player::LeftWallEnd()
