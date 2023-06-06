@@ -736,6 +736,16 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+	// 만약 이동중, 내아래픽셀,내픽셀이 흰색이라면 공중상태로 전환
+	// 대각선 이동은 여기서 예외처리를 두면 될 거같다. 
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -859,6 +869,17 @@ void Player::SlashUpdate(float _DeltaTime)
 
 	float4 AttDir = m_AttackPos - m_MyOriginPos;
 	AttDir.Normalize();
+
+	// 만약 이전 상태가 fall 인 상태에서 y축 공격좌표가 나보다 높다면 
+	if (PlayerState::FALL == m_PrevState && m_MyOriginPos.y <= m_AttackPos.y)
+	{
+		AttDir.y = 0.0f;
+	}
+	// 나보다 공격좌표가 나보다 낮다면 
+	else if (PlayerState::FALL == m_PrevState && m_MyOriginPos.y > m_AttackPos.y)
+	{
+		int a = 0;
+	}
 
 	// 공격포지션이 내오른쪽이면 정위치 
 	if (m_MyOriginPos.x <= m_AttackPos.x)
@@ -1242,6 +1263,15 @@ void Player::RollStart()
 
 void Player::RollUpdate(float _DeltaTime)
 {
+	// 우측, 나, 내아래가 흰색이라면 
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
+		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
 		ChangeState(PlayerState::JUMP);
@@ -1493,6 +1523,12 @@ void Player::FallUpdate(float _DeltaTime)
 	else if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
 	{
 		GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 4.0f) * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsDown("player_slash"))
+	{
+		ChangeState(PlayerState::SLASH);
+		return;
 	}
 
 
