@@ -1992,6 +1992,7 @@ void Player::LeftWallUpdate(float _DeltaTime)
 	// 내가 우측벽인 상태에서 바로 왼쪽이 벽일리가 없으니까 바로 이동시켜도 될듯 함. 
 	if (true == GameEngineInput::IsDown("player_right_move"))
 	{
+		GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed * _DeltaTime);
 		ChangeState(PlayerState::FALL);
 		return;
 	}	
