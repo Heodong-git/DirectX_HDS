@@ -1811,10 +1811,35 @@ void Player::RightWallStart()
 {
 	m_Render->ChangeAnimation("player_wallslide");
 	GetTransform()->SetLocalPositiveScaleX();
+
+	if (true == GameEngineInput::IsPress("player_jump"))
+	{
+		float PressTime = GameEngineInput::GetPressTime("player_jump");
+		m_WallJumpPower = 630.0f;
+	}
 }
 
 void Player::RightWallUpdate(float _DeltaTime)
 {
+	// 내머리위의 픽셀이 검은색이 아닐때만 
+	if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
+	{
+		if (true == GameEngineInput::IsPress("player_jump"))
+		{
+			if (0.0f >= m_WallPressTime)
+			{
+				m_WallJumpPower = 0.0f;
+			}
+
+			m_WallPressTime -= _DeltaTime;
+			m_NextTrans->AddWorldPosition(float4::Up * m_WallJumpPower * _DeltaTime);
+			if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ 0.0f,  m_RenderPivot * 4.0f }))
+			{
+				GetTransform()->AddLocalPosition(float4::Up * m_WallJumpPower * _DeltaTime);
+			}
+		}
+	}
+
 	// 만약 내 바닥픽셀이 블랙이라면. 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
@@ -1901,19 +1926,45 @@ void Player::RightWallUpdate(float _DeltaTime)
 
 void Player::RightWallEnd()
 {
-	// 잘되고 
-	/*m_Render->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot , 0.0f });
-	m_Collision->GetTransform()->AddLocalPosition(float4{ -m_RightRenderPivot, 0.0f });*/
+	m_WallJumpPower = 0.0f;
+	m_WallPressTime = m_WallPressInitTime;
 }
 
 void Player::LeftWallStart()
 {
 	m_Render->ChangeAnimation("player_wallslide");
 	GetTransform()->SetLocalNegativeScaleX();
+
+	if (true == GameEngineInput::IsPress("player_jump"))
+	{
+		float PressTime = GameEngineInput::GetPressTime("player_jump");
+		m_WallJumpPower = 630.0f;
+	}
 }
 
 void Player::LeftWallUpdate(float _DeltaTime)
 {
+	// 내머리위의 픽셀이 검은색이 아닐때만 
+	if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
+	{
+		if (true == GameEngineInput::IsPress("player_jump"))
+		{
+			if (0.0f >= m_WallPressTime)
+			{
+				m_WallJumpPower = 0.0f;
+			}
+
+			m_WallPressTime -= _DeltaTime;
+
+			// 내 다음위치의 Top 이 검은색이 아닐 때만.
+			// 넥스트포스 사용 해야함 
+			m_NextTrans->AddWorldPosition(float4::Up * m_WallJumpPower * _DeltaTime);
+			if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{0.0f,  m_RenderPivot * 4.0f}))
+			{
+				GetTransform()->AddLocalPosition(float4::Up * m_WallJumpPower * _DeltaTime);
+			}
+		}
+	}
 	// 만약 내 바닥픽셀이 블랙이라면. 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
@@ -2000,6 +2051,8 @@ void Player::LeftWallUpdate(float _DeltaTime)
 
 void Player::LeftWallEnd()
 {
+	m_WallJumpPower = 0.0f;
+	m_WallPressTime = m_WallPressInitTime;
 }
 
 // 일단 보류
