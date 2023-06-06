@@ -1885,7 +1885,7 @@ void Player::RightWallUpdate(float _DeltaTime)
 			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
 		{
 			// 보다 약한 힘으로 
-			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed / 30.0f * _DeltaTime);
+			GetTransform()->AddLocalPosition(float4::Right * m_JumpMoveSpeed / 10.0f * _DeltaTime);
 			return;
 		}
 
@@ -2010,7 +2010,7 @@ void Player::LeftWallUpdate(float _DeltaTime)
 			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
 		{
 			// 보다 약한 힘으로 
-			GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed / 30.0f * _DeltaTime);
+			GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed / 10.0f * _DeltaTime);
 			return;
 		}
 
