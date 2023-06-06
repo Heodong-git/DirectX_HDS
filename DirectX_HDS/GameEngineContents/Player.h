@@ -146,8 +146,8 @@ private:
 	float4 m_RightRollDir = float4 { 200.0f , 0.0f};
 
 	// Flip , 
-	float4 m_LeftFlipDir = float4{ -200.0f, 400.0f };
-	float4 m_RightFlipDir = float4{ 200.0f , 400.0f };
+	float4 m_LeftFlipDir = float4{ -200.0f, 200.0f };
+	float4 m_RightFlipDir = float4{ 200.0f , 200.0f };
 
 	// ม฿ทย 
 	const float m_GravityPower = 1000.0f;
@@ -164,7 +164,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Left = nullptr;
 
-	const float m_WallDebugPivotX = 10.0f;
+	const float m_WallDebugPivotX = 17.0f;
 	const float m_WallDebugPivotY = 36.0f;
 
 	// -------------------------------------------------------------------
