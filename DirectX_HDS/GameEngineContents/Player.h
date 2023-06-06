@@ -148,6 +148,9 @@ private:
 	// Flip , 
 	float4 m_LeftFlipDir = float4{ -200.0f, 220.0f };
 	float4 m_RightFlipDir = float4{ 200.0f , 220.0f };
+	const float m_FlipMaxTime = 0.25f;
+	float m_FlipTime = 0.25f;
+	
 
 	// ม฿ทย 
 	const float m_GravityPower = 1000.0f;

@@ -744,8 +744,6 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
-	// 만약 이동중, 내아래픽셀,내픽셀이 흰색이라면 공중상태로 전환
-	// 대각선 이동은 여기서 예외처리를 두면 될 거같다. 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
@@ -789,8 +787,8 @@ void Player::MoveUpdate(float _DeltaTime)
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
+			// 넥스트포스 체크하고
 			m_NextTrans->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-
 			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
 			{
 				return;
@@ -1500,6 +1498,19 @@ void Player::RightFlipStart()
 
 void Player::RightFlipUpdate(float _DeltaTime)
 {
+	// 만약 플립지속시간동안 벽을 만나지 않았고, 내가 흰색픽셀이라면 
+	m_FlipTime -= _DeltaTime;
+	if (0 >= m_FlipTime)
+	{
+		m_FlipTime = m_FlipMaxTime;
+		
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+	}
+
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -1537,7 +1548,7 @@ void Player::RightFlipUpdate(float _DeltaTime)
 
 void Player::RightFlipEnd()
 {
-	
+	m_FlipTime = m_FlipMaxTime;
 }
 
 void Player::LeftFlipStart()
@@ -1549,6 +1560,19 @@ void Player::LeftFlipStart()
 
 void Player::LeftFlipUpdate(float _DeltaTime)
 {
+	// 만약 플립지속시간동안 벽을 만나지 않았고, 내가 흰색픽셀이라면 
+	m_FlipTime -= _DeltaTime;
+	if (0 >= m_FlipTime)
+	{
+		m_FlipTime = m_FlipMaxTime;
+
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+	}
+
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		ChangeState(PlayerState::SLASH);
@@ -1586,6 +1610,7 @@ void Player::LeftFlipUpdate(float _DeltaTime)
 
 void Player::LeftFlipEnd()
 {
+	m_FlipTime = m_FlipMaxTime;
 }
 
 void Player::FallStart()
