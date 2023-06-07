@@ -144,7 +144,7 @@ void BaseLevel::LevelClearCheck()
 			break;
 			case LevelType::CLUBMAP1:
 			{
-				m_ColObj->GetTransform()->SetLocalPosition({ 653.0f, 48.0f});
+				m_ColObj->GetTransform()->SetLocalPosition({ 636.0f, 48.0f});
 			}
 			break;
 			case LevelType::CLUBMAP2:
