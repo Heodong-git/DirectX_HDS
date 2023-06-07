@@ -598,6 +598,12 @@ void Player::IdleStart()
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
+	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(GetTransform()->GetLocalPosition()))
+	{
+		// 만약 내 픽셀이 검은색이라면 위로 올려준다.
+		PixelCollider::PixelCol->GroundCheck(this);
+	}
+
 	m_Render->ChangeAnimation("player_idle");
 
 	// 이전 상태가 점프였는데, Idle로 변경 되었다면 내가 땅이라는 뜻이기 때문에 착지이펙트 생성
@@ -1101,7 +1107,6 @@ void Player::JumpUpdate(float _DeltaTime)
 	{
 		// 값 초기화 후 아이들로 변경
 		m_CurrentVerticalVelocity = 0.0f;
-		PixelCollider::PixelCol->GroundCheck(this);
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
@@ -1634,7 +1639,6 @@ void Player::FallUpdate(float _DeltaTime)
 	// 나를 땅으로 올려주고 IDLE로 전환. 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		PixelCollider::PixelCol->GroundCheck(this);
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
@@ -1855,7 +1859,6 @@ void Player::RightWallUpdate(float _DeltaTime)
 	// 만약 내 바닥픽셀이 블랙이라면. 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		PixelCollider::PixelCol->GroundCheck(this);
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
