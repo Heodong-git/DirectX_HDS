@@ -93,6 +93,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void TimeOutCheck();
+
 	// ¸®¼Â 
 	virtual void Reset() override;
 
@@ -111,6 +113,7 @@ private:
 	float  m_StartMoveSpeed = 400.0f;
 	float  m_AttSpeed = 700.0f;
 
+	void NextPosUpdate();
 	std::shared_ptr<GameEngineTransform> m_NextTrans = nullptr;
 
 	// ·»´õ·¯ 

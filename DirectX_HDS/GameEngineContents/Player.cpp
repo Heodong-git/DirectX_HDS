@@ -698,53 +698,53 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_right_move"))
-	{
-		DirCheck();
-		if (true == GameEngineInput::IsPress("player_left_move"))
-		{
-			return;
-		}
-
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
-	
-			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
-			{
-				return;
-			}
-
-			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
-			return;
-		}
-	}
-
+if (true == GameEngineInput::IsPress("player_right_move"))
+{
+	DirCheck();
 	if (true == GameEngineInput::IsPress("player_left_move"))
 	{
-		DirCheck();
-		if (true == GameEngineInput::IsPress("player_right_move"))
-		{
-			return;
-		}
-
-		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
-		{
-			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
-			m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
-
-			// 그 위치가 검은색 픽셀이라면 이동하지 않고
-			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
-			{
-				return;
-			}
-
-			// 그게 아니라면 진짜 나의 위치를 이동해
-			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
-			return;
-		}
+		return;
 	}
+
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	{
+		m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+		{
+			return;
+		}
+
+		GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+		return;
+	}
+}
+
+if (true == GameEngineInput::IsPress("player_left_move"))
+{
+	DirCheck();
+	if (true == GameEngineInput::IsPress("player_right_move"))
+	{
+		return;
+	}
+
+	// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
+	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+	{
+		// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+		m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+
+		// 그 위치가 검은색 픽셀이라면 이동하지 않고
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+		{
+			return;
+		}
+
+		// 그게 아니라면 진짜 나의 위치를 이동해
+		GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+		return;
+	}
+}
 }
 
 void Player::IdleToRunEnd()
@@ -753,12 +753,12 @@ void Player::IdleToRunEnd()
 
 void Player::MoveStart()
 {
-	// GetLevel()->CreateActor<DashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 	m_Render->ChangeAnimation("player_run");
 }
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+	// 이동중 공중상태가 된다면 fall로 전환 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
@@ -785,19 +785,37 @@ void Player::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (false == GameEngineInput::IsPress("player_left_move") && 
+	if (false == GameEngineInput::IsPress("player_left_move") &&
 		false == GameEngineInput::IsPress("player_right_move"))
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
+	// 우측키를 누르고 있을때, 우측 이동만 체크 
 	if (true == GameEngineInput::IsPress("player_right_move"))
 	{
 		DirCheck();
+		// 만약 우측키를 누른 상태에서 좌클릭 입력이 되어있을 경우,
 		if (true == GameEngineInput::IsPress("player_left_move"))
 		{
-			return;
+			DirCheck();
+			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+			{
+				// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
+				m_NextTrans->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+
+				float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
+				// 그 위치가 검은색 픽셀이라면 이동하지 않고
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+				{
+					return;
+				}
+
+				// 그게 아니라면 진짜 나의 위치를 이동해
+				GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+				return;
+			}
 		}
 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
@@ -819,9 +837,20 @@ void Player::MoveUpdate(float _DeltaTime)
 		DirCheck();
 		if (true == GameEngineInput::IsPress("player_right_move"))
 		{
-			return;
-		}
+			DirCheck();
+			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+			{
+				// 넥스트포스 체크하고
+				m_NextTrans->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+				{
+					return;
+				}
 
+				GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+				return;
+			}
+		}
 		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
@@ -902,13 +931,11 @@ void Player::SlashUpdate(float _DeltaTime)
 		int a = 0;
 	}
 
-	// 공격포지션이 내오른쪽이면 정위치 
 	if (m_MyOriginPos.x <= m_AttackPos.x)
 	{
 		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 	}
-	// 내 왼쪽이면 반대 
 	else if (m_MyOriginPos.x > m_AttackPos.x)
 	{
 		m_Direction = false;
