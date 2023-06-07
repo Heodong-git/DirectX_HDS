@@ -402,7 +402,7 @@ void PlaySupporter::SaveCameraRange()
 	{
 		// 확인해서 추가 
 		std::vector<float4> Ranges = std::vector<float4>();
-		float4 LeftTop = { -632.63f, 389.24f };
+		float4 LeftTop = { -638.82f, 389.24f };
 		float4 RightTop = { 634.63f, 389.24f };
 		float4 LeftBottom = { -638.82f , -384.76f };
 		float4 RightBottom = { 634.63f, -384.76f };
