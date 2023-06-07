@@ -54,11 +54,7 @@ void PlaySupporter::Update(float _DeltaTime)
 	}
 
 	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 
-	if (true == RangeOverCheck(_DeltaTime))
-	{
-		return;
-	}
-
+	// 이렇게 체크하는게 아니라 그냥 카메라 무브먼트에서 무빙까지 한번에 하는게 맞다 
 	CameraMovement(_DeltaTime);
 }
 
@@ -68,32 +64,13 @@ void PlaySupporter::Render(float _DeltaTime)
 
 void PlaySupporter::CameraMovement(float _DeltaTime)
 {
-	if (nullptr == Player::MainPlayer)
-	{
-		MsgAssert("플레이어가 nullptr 입니다.");
-		return;
-	}
-
-	// 카메라 범위 안일 경우
-	// 카메라는 플레이어의 위치를 받아와서 그 방향으로 이동 하기전에 범위체크 
-	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
-	float4 CameraPos = m_MainCamera->GetTransform()->GetLocalPosition();
-
-	float4 Dir = PlayerPos - CameraPos;
-	Dir.y = 0.0f;
-	Dir.Normalize();
-	m_MainCamera->GetTransform()->AddLocalPosition(Dir * m_MoveSpeed * _DeltaTime);
-}
-
-bool PlaySupporter::RangeOverCheck(float _DeltaTime)
-{
 	std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
 	BaseLevel* CastLevel = dynamic_cast<BaseLevel*>(CurLevel.get());
 
 	// 만약 null 이면 return
 	if (nullptr == CastLevel)
 	{
-		return true;
+		return;
 	}
 
 	// 현재 레벨의 타입도 가져와
@@ -102,7 +79,7 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 	if (LevelType::NONE == CurLevelType)
 	{
 		MsgAssert("레벨의 타입이 세팅되지 않았습니다.");
-		return true;
+		return;
 	}
 
 	// 픽셀컬라이더의 충돌맵을 가져오고, 어차피 실제 사용하는 맵과 크기는 동일
@@ -111,7 +88,7 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 	if (nullptr == CurMap)
 	{
 		// MsgAssert("현재 맵이 nullptr 입니다.");
-		return true;
+		return;
 	}
 
 	// 맵의 크기를 받아온다.
@@ -122,12 +99,6 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 	{
 	case LevelType::CLUBMAP0:
 	{
-		//// 이부분이 뭔가 맘에 안들어.. 
-		//if (nullptr == m_MainCamera)
-		//{
-		//	return true;
-		//}
-
 		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(static_cast<int>(LevelType::CLUBMAP0));
 		if (m_MapRanges.end() == FindIter)
 		{
@@ -144,27 +115,69 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 		float4 CameraPos = m_MainCamera->GetTransform()->GetLocalPosition();
 		float4 Dir = PlayerPos - CameraPos;
 		Dir.Normalize();
+		Dir.y = 0.0f;
 		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
 
 		// 이동할 위치가 카메라의 이동가능범위를 벗어나면 이동하지 않음
 		if (NextPos.x < LeftTop.x || NextPos.x > RightTop.x)
 		{
-			return true;
+			Dir.x = 0.0f;
 		}
 
-		// 이동이 가능하다면 false 반환, 
-		return false;
+		m_MainCamera->GetTransform()->AddLocalPosition(Dir * m_MoveSpeed * _DeltaTime);
+		return;
 	}
 		break;
 	case LevelType::CLUBMAP1:
 	{
-		// 피봇 에 전체가 다 잡히기 때문에 필요 없음. 
-		return true;
+		// 카메라 이동 X 
+		return;
 	}
 		break;
 	case LevelType::CLUBMAP2:
 	{
-		int a = 0;
+		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(static_cast<int>(LevelType::CLUBMAP2));
+		if (m_MapRanges.end() == FindIter)
+		{
+			MsgAssert("맵 범위 저장 벡터가 비어있습니다.");
+		}
+
+		std::vector<float4> Vector = FindIter->second;
+		float4 LeftTop = Vector[0];
+		float4 RightTop = Vector[1];
+		float4 LeftBottom = Vector[2];
+		float4 RightBottom = Vector[3];
+
+		float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+		float4 CameraPos = m_MainCamera->GetTransform()->GetLocalPosition();
+
+		// 이동방향 
+		float4 Dir = PlayerPos - CameraPos;
+		Dir.Normalize();
+		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
+
+		// 범위체크 
+		if (NextPos.x < LeftTop.x || NextPos.x > RightTop.x)
+		{
+			Dir.x = 0.0f;
+		}
+
+		if (NextPos.y < LeftBottom.y || NextPos.y > RightTop.y)
+		{
+			Dir.y = 0.0f;
+		}
+
+		// 만약 플레이어가 벽타기 상태라면 x 축은 움직이지 않음
+		if (PlayerState::RIGHTWALL == Player::MainPlayer->GetCurState() ||
+			PlayerState::LEFTWALL == Player::MainPlayer->GetCurState())
+		{
+			Dir.x = 0.0f;
+		}
+
+		// 범위체크후 카메라 이동을 여기서 하고 카메라무브먼트 함수는 삭제 후 이 함수 이름 변경
+		m_MainCamera->GetTransform()->AddLocalPosition(Dir* m_MoveSpeed* _DeltaTime);
+		// 이동이 가능하다면 false 반환, 
+		return;
 	}
 		break;
 	case LevelType::CLUBMAP3:
@@ -176,8 +189,6 @@ bool PlaySupporter::RangeOverCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
-	return true;
 }
 
 bool PlaySupporter::PlayerDeathCheck()
@@ -273,7 +284,18 @@ void PlaySupporter::SaveCameraRange()
 	}
 
 	{
+		// 확인해서 추가 
+		std::vector<float4> Ranges = std::vector<float4>();
+		float4 LeftTop = { -335.0f, 84.18f }; 
+		float4 RightTop = { 329.0f , 84.18f };
+		float4 LeftBottom = { -355.0f , -250.f };
+		float4 RightBottom = { 326.0f , -250.0f };
 
+		Ranges.push_back(LeftTop);
+		Ranges.push_back(RightTop);
+		Ranges.push_back(LeftBottom);
+		Ranges.push_back(RightBottom);
+		m_MapRanges.insert(make_pair(static_cast<int>(LevelType::CLUBMAP2), Ranges));
 	}
 }
 

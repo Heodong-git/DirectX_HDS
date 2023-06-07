@@ -4,10 +4,13 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineTransform.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 #include "BaseLevel.h"
 #include "Player.h"
 #include "Cursor.h"
+
+#include "PixelCollider.h"
 
 StageEditer::StageEditer()
 {
@@ -22,7 +25,8 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 	// 플레이어 디버그 
 	if (nullptr != Player::MainPlayer)
 	{
-		float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+        Player* mainplayer = Player::MainPlayer;
+		float4 PlayerPos = mainplayer->GetTransform()->GetLocalPosition();
 		PlayerState CurState = Player::MainPlayer->GetCurState();
         bool PlayerDir = Player::MainPlayer->GetDir();
 
@@ -88,6 +92,134 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 
             ImGui::Columns(1);
             ImGui::Separator();
+
+            // 각 픽셀 컬러 
+            // 플레이어 위치 정보
+            ImGui::Text("Pixel Color :");
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetWindowWidth() * 0.27f);
+            ImGui::Text("Debug Pixel:");
+            ImGui::Separator();
+
+            ImGui::Columns(4, nullptr, true);
+            ImGui::SetColumnWidth(0, 60);
+            ImGui::SetColumnWidth(1, 80);
+            ImGui::SetColumnWidth(2, 60);
+            ImGui::SetColumnWidth(3, 80);
+
+            const std::vector<std::shared_ptr<GameEngineSpriteRenderer>>& Renders = mainplayer->GetDebugRenders();
+
+            if (0 != Renders.size())
+            {
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[0]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Bottom :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[1]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Top :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[2]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Left :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[3]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Right :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[4]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Wall L :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[5]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("Wall R :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                {
+                    GameEnginePixelColor Color = PixelCollider::PixelCol->PixelCollision(Renders[6]->GetTransform()->GetWorldPosition());
+
+                    ImGui::Text("B Down :");
+                    ImGui::NextColumn();
+                    if (PixelCollider::g_BlackPixel == Color)
+                    {
+                        ImGui::Text("Black");
+                    }
+                    else
+                    {
+                        ImGui::Text("White");
+                    }
+                    ImGui::NextColumn();
+                }
+                ImGui::Columns(1);
+                ImGui::Separator();
+            }
+           
 
             // 플레이어 상태
             ImGui::Text("Player State: ");
@@ -228,6 +360,8 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::Text("%.2d", CastLevel->GetMonsterCount());
             }
             
+            // 여기서 각 디버그 픽셀의 컬러 
+
             ImGui::End();
         }
 

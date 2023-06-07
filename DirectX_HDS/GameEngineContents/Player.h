@@ -87,6 +87,11 @@ public:
 		m_SkillLimitTime = 9.0f;
 	}
 
+	inline const std::vector<std::shared_ptr<class GameEngineSpriteRenderer>>& GetDebugRenders()
+	{
+		return m_DebugRenders;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -173,6 +178,8 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Right = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Wall_Left = nullptr;
+
+	std::vector<std::shared_ptr<class GameEngineSpriteRenderer>> m_DebugRenders = std::vector<std::shared_ptr<class GameEngineSpriteRenderer>>();
 
 	const float m_WallDebugPivotX = 17.0f;
 	const float m_WallDebugPivotY = 36.0f;

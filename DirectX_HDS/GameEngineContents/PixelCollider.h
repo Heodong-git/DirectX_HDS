@@ -50,14 +50,6 @@ public:
 	// 위 체크 
 	bool TopPixelCheck();
 
-protected:
-	void Start() override;
-private:
-	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
-	ColMapName m_CurColMapName = ColMapName::COLMAP0;
-
-	static std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
-
 	// 땅
 	static GameEnginePixelColor g_BlackPixel;
 
@@ -68,5 +60,14 @@ private:
 
 	// 에러
 	static GameEnginePixelColor g_ErrorPixel;
+protected:
+	void Start() override;
+private:
+	std::shared_ptr<class GameEngineTexture> m_CurColMap = nullptr;
+	ColMapName m_CurColMapName = ColMapName::COLMAP0;
+
+	static std::vector<std::shared_ptr<class GameEngineTexture>> m_ColMaps;
+
+	
 
 };

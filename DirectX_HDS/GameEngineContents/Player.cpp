@@ -12,9 +12,6 @@
 #include <GameEngineCore/GameEngineResource.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-// 타입인포 
-#include <typeinfo>
-
 // 레벨이 추가될때마다 헤더추가 후 Reset 함수에 추가.. 
 #include "ClubLevel_00.h"
 #include "ClubLevel_01.h"
@@ -38,7 +35,6 @@ Player* Player::MainPlayer = nullptr;
 
 Player::Player()
 {
-	// 플레이어는 어차피 하나 
 	MainPlayer = this;
 }
 
@@ -166,6 +162,11 @@ void Player::LoadAndCreateAnimation()
 	m_Render->ChangeAnimation("player_idle");
 }
 
+void Player::NextPosUpdate()
+{
+	m_NextTrans->SetLocalPosition(GetTransform()->GetWorldPosition());
+}
+
 void Player::Update(float _DeltaTime)
 {
 	// 디버그용 임시 
@@ -175,14 +176,19 @@ void Player::Update(float _DeltaTime)
 		GetTransform()->SetLocalPosition(MovePos);
 	}
 
+	// 디버그 업데이트
+	DebugUpdate();
 
+	// 제한시간 초과 체크 
+	TimeOutCheck();
 
+	// 스킬 업데이트 
 	SkillUpdate(_DeltaTime);
-	
-	// 상태업데이트 이전에 위치를 동일하게 고정시킨다.
-	m_NextTrans->SetLocalPosition(GetTransform()->GetWorldPosition());
 
-	// 상태업데이트
+	// nextpos 현재 플레이어 위치로 이동
+	NextPosUpdate();
+	
+	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
 	// 카메라무브 업데이트
@@ -190,10 +196,14 @@ void Player::Update(float _DeltaTime)
 	{
 		PlaySupporter::MainSupporter->Update(_DeltaTime);
 	}
+}
 
-	// 디버그 업데이트
-	DebugUpdate();
+void Player::Render(float _DeltaTime)
+{
+}
 
+void Player::TimeOutCheck()
+{
 	// 데스체크, 만약 스테이지 제한시간을 넘어섰다면 
 	if (0.0f >= GetReturnCastLevel()->GetLimitTime())
 	{
@@ -206,9 +216,6 @@ void Player::Update(float _DeltaTime)
 	}
 }
 
-void Player::Render(float _DeltaTime)
-{
-}
 
 void Player::Reset()
 {
@@ -241,40 +248,47 @@ void Player::ComponentSetting()
 
 	// --------------------------- Debug Render ------------------------------
 
+	m_DebugRenders.reserve(8);
 	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom->Off();
-
-	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
-	m_DebugRender_Bottom_Down->Off();
-
-	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
-	m_DebugRender_Left->Off();
-	
-	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
-	m_DebugRender_Right->Off();
+	m_DebugRenders.push_back(m_DebugRender_Bottom);
 
 	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
 	m_DebugRender_Top->Off();
+	m_DebugRenders.push_back(m_DebugRender_Top);
 
-	// wall check 픽셀
-	m_DebugRender_Wall_Right = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender_Wall_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Wall_Right->GetTransform()->SetLocalPosition({ m_WallDebugPivotX , m_WallDebugPivotY });
-	m_DebugRender_Wall_Right->Off();
+	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
+	m_DebugRender_Left->Off();
+	m_DebugRenders.push_back(m_DebugRender_Left);
 	
+	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
+	m_DebugRender_Right->Off();
+	m_DebugRenders.push_back(m_DebugRender_Right);
+
 	m_DebugRender_Wall_Left = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalPosition({ -m_WallDebugPivotX , m_WallDebugPivotY });
 	m_DebugRender_Wall_Left->Off();
+	m_DebugRenders.push_back(m_DebugRender_Wall_Left);
+
+	m_DebugRender_Wall_Right = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Wall_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Wall_Right->GetTransform()->SetLocalPosition({ m_WallDebugPivotX , m_WallDebugPivotY });
+	m_DebugRender_Wall_Right->Off();
+	m_DebugRenders.push_back(m_DebugRender_Wall_Right);
+	
+	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
+	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
+	m_DebugRender_Bottom_Down->Off();
+	m_DebugRenders.push_back(m_DebugRender_Bottom_Down);
 }
 
 void Player::DirCheck()
@@ -342,7 +356,6 @@ void Player::DebugUpdate()
 	
 }
 
-// 후순위
 void Player::SkillUpdate(float _DeltaTime)
 {
 	if (PlayerState::DEATH == m_CurState)
@@ -491,7 +504,6 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	}
 }
-
 
 // state 변경, 변경될 상태의 start, 이전 상태의 end 수행
 void Player::ChangeState(PlayerState _State)

@@ -31,7 +31,6 @@ protected:
 
 private:
 	void CameraMovement(float _DeltaTime);
-	bool RangeOverCheck(float _DeltaTime);
 	bool PlayerDeathCheck();
 	void LevelResetCheck();
 
