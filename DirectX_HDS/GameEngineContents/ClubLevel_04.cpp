@@ -52,8 +52,23 @@ void ClubLevel_04::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	std::shared_ptr<Player> NewPlayer = (CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player"));
-	float4 InitPos = {0.0f , 0.0f };
+	float4 InitPos = float4 { -1142.82f, -682.76 };
 	ActorInit(NewPlayer, InitPos);
+
+	// UI 
+	CreateActor<Hud>(static_cast<int>(RenderOrder::UI), "Hud");
+	Push_ResetActor(CreateActor<Battery>(static_cast<int>(RenderOrder::UI), "Battery"));
+	Push_ResetActor(CreateActor<Timer>(static_cast<int>(RenderOrder::UI), "Timer"));
+	CreateActor<Inven>(static_cast<int>(RenderOrder::UI), "Inven");
+
+	// 서포터, 커서
+	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
+	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
+
+	CreateObjAndInit();
+
+	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
+	SetState(BaseLevel::LevelState::PLAY);
 }
 
 void ClubLevel_04::LevelChangeEnd()
@@ -76,6 +91,9 @@ void ClubLevel_04::ActorLoad()
 {
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_04.png");
+
+
+	
 }
 
 void ClubLevel_04::KeyUpdate()

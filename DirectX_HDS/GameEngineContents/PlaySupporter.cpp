@@ -227,6 +227,50 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 	}
 		break;
 	case LevelType::CLUBMAP4:
+	{
+		std::map<int, std::vector<float4>>::iterator FindIter = m_MapRanges.find(static_cast<int>(LevelType::CLUBMAP4));
+		if (m_MapRanges.end() == FindIter)
+		{
+			MsgAssert("맵 범위 저장 벡터가 비어있습니다.");
+		}
+
+		std::vector<float4> Vector = FindIter->second;
+		float4 LeftTop = Vector[0];
+		float4 RightTop = Vector[1];
+		float4 LeftBottom = Vector[2];
+		float4 RightBottom = Vector[3];
+
+		float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+		float4 CameraPos = m_MainCamera->GetTransform()->GetLocalPosition();
+
+		// 이동방향 
+		float4 Dir = PlayerPos - CameraPos;
+		Dir.Normalize();
+		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
+
+		// 범위체크 
+		if (NextPos.x < LeftTop.x || NextPos.x > RightTop.x)
+		{
+			Dir.x = 0.0f;
+		}
+
+		if (NextPos.y < LeftBottom.y || NextPos.y > RightTop.y)
+		{
+			Dir.y = 0.0f;
+		}
+
+		// 만약 플레이어가 벽타기 상태라면 x 축은 움직이지 않음
+		if (PlayerState::RIGHTWALL == Player::MainPlayer->GetCurState() ||
+			PlayerState::LEFTWALL == Player::MainPlayer->GetCurState())
+		{
+			Dir.x = 0.0f;
+		}
+
+		// 범위체크후 카메라 이동을 여기서 하고 카메라무브먼트 함수는 삭제 후 이 함수 이름 변경
+		m_MainCamera->GetTransform()->AddLocalPosition(Dir * m_MoveSpeed * _DeltaTime);
+		// 이동이 가능하다면 false 반환, 
+		return;
+	}
 		break;
 	case LevelType::NONE:
 		break;
@@ -344,9 +388,9 @@ void PlaySupporter::SaveCameraRange()
 	{
 		// 확인해서 추가 
 		std::vector<float4> Ranges = std::vector<float4>();
-		float4 LeftTop = { -72.0f, 356.0f };
+		float4 LeftTop = { -135.52f, 356.0f };
 		float4 RightTop = { 105.71f, 356.0f };
-		float4 LeftBottom = { -72.0f , -353.06f };
+		float4 LeftBottom = { -135.52f , -353.06f };
 		float4 RightBottom = { 105.71f, -353.06f };
 
 		Ranges.push_back(LeftTop);
@@ -354,6 +398,20 @@ void PlaySupporter::SaveCameraRange()
 		Ranges.push_back(LeftBottom);
 		Ranges.push_back(RightBottom);
 		m_MapRanges.insert(make_pair(static_cast<int>(LevelType::CLUBMAP3), Ranges));
+	}
+	{
+		// 확인해서 추가 
+		std::vector<float4> Ranges = std::vector<float4>();
+		float4 LeftTop = { -632.63f, 389.24f };
+		float4 RightTop = { 634.63f, 389.24f };
+		float4 LeftBottom = { -638.82f , -384.76f };
+		float4 RightBottom = { 634.63f, -384.76f };
+
+		Ranges.push_back(LeftTop);
+		Ranges.push_back(RightTop);
+		Ranges.push_back(LeftBottom);
+		Ranges.push_back(RightBottom);
+		m_MapRanges.insert(make_pair(static_cast<int>(LevelType::CLUBMAP4), Ranges));
 	}
 }
 

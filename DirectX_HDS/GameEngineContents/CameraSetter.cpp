@@ -116,11 +116,11 @@ void CameraSetter::Start()
 	{
 		m_CameraPivots.reserve(8);
 
-		m_CameraPivots.push_back(float4{ -360 , 34 , 0 });    // 0 
+		m_CameraPivots.push_back(float4{ -360.0f , 34.0f , 0 });    // 0 
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 1 
-		m_CameraPivots.push_back(float4{ -335 , -250 , 0 });  // 2
-		m_CameraPivots.push_back(float4{ -72 , 356 , 0 });		  // 3		여기부터 설정
-		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });        // 4
+		m_CameraPivots.push_back(float4{ -335.0f , -250.0f , 0 });  // 2
+		m_CameraPivots.push_back(float4{ -135.52f, 356.0f });	  // 3		여기부터 설정
+		m_CameraPivots.push_back(float4{ -638.82f , -384.76f});        // 4
 		m_CameraPivots.push_back(float4{ 0 , 0 , 0 });		  // 5 
 	}
 

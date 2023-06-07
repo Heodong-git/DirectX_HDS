@@ -1959,6 +1959,7 @@ void Player::RightWallUpdate(float _DeltaTime)
 		// 다음 이동위치의 픽셀이 흰색이라면 fall 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 		{
+			GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 6.0f) * _DeltaTime);
 			ChangeState(PlayerState::FALL);
 			return;
 		}
@@ -2003,7 +2004,7 @@ void Player::LeftWallUpdate(float _DeltaTime)
 			// 내 다음위치의 Top 이 검은색이 아닐 때만.
 			// 넥스트포스 사용 해야함 
 			m_NextTrans->AddWorldPosition(float4::Up * m_WallJumpPower * _DeltaTime);
-			if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{0.0f,  m_RenderPivot * 4.0f}))
+			if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{0.0f,  m_RenderPivot * 2.0f}))
 			{
 				GetTransform()->AddLocalPosition(float4::Up * m_WallJumpPower * _DeltaTime);
 			}
@@ -2075,6 +2076,7 @@ void Player::LeftWallUpdate(float _DeltaTime)
 		// 다음 이동위치의 픽셀이 흰색이라면 fall 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 		{
+			GetTransform()->AddLocalPosition(float4::Down * (m_GravityPower / 6.0f) * _DeltaTime);
 			ChangeState(PlayerState::FALL);
 			return;
 		}

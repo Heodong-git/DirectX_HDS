@@ -120,10 +120,15 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if(PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
                     }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
+                    }
+                    
                     ImGui::NextColumn();
                 }
                 {
@@ -135,9 +140,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
                     }
                     ImGui::NextColumn();
                 }
@@ -150,9 +159,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
                     }
                     ImGui::NextColumn();
                 }
@@ -165,9 +178,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
                     }
                     ImGui::NextColumn();
                 }
@@ -180,9 +197,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
                     }
                     ImGui::NextColumn();
                 }
@@ -195,9 +216,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text(" ??? ");
                     }
                     ImGui::NextColumn();
                 }
@@ -210,9 +235,13 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                     {
                         ImGui::Text("Black");
                     }
-                    else
+                    else if (PixelCollider::g_WhitePixel == Color)
                     {
                         ImGui::Text("White");
+                    }
+                    else
+                    {
+                        ImGui::Text("Error");
                     }
                     ImGui::NextColumn();
                 }
