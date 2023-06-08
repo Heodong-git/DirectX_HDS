@@ -704,7 +704,7 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_jump"))
+	if (true == GameEngineInput::IsDown("player_jump"))
 	{
 		ChangeState(PlayerState::JUMP);
 		return;
