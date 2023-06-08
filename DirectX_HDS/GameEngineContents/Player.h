@@ -164,6 +164,9 @@ private:
 	float m_WallPressInitTime = 0.18f;
 	float m_WallJumpPower = 0.0f;
 
+	// diagonal
+	float m_DiagonalPivot = 5.0f;
+
 	// ม฿ทย 
 	const float m_GravityPower = 1000.0f;
 

@@ -720,13 +720,24 @@ if (true == GameEngineInput::IsPress("player_right_move"))
 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 	{
-		m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+		// 만약 내 바로 다음 픽셀이 검은색일 경우
+		// 추가로 내 위로 다섯칸이 흰색이라면 
+		float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Right;
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
+			PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Right)) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+		{
+			// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+			GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
+			PixelCollider::PixelCol->GroundCheck(this);
+			return;
+		}
 
+		m_NextTrans->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
 		{
 			return;
 		}
-
 		GetTransform()->AddLocalPosition(float4::Right * m_StartMoveSpeed * _DeltaTime);
 		return;
 	}
@@ -743,9 +754,19 @@ if (true == GameEngineInput::IsPress("player_left_move"))
 	// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 	{
+		float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Left;
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
+			PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Left)) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+		{
+			// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+			GetTransform()->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
+			PixelCollider::PixelCol->GroundCheck(this);
+			return;
+		}
+
 		// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
 		m_NextTrans->AddLocalPosition(float4::Left * m_StartMoveSpeed * _DeltaTime);
-
 		// 그 위치가 검은색 픽셀이라면 이동하지 않고
 		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
 		{
@@ -814,10 +835,21 @@ void Player::MoveUpdate(float _DeltaTime)
 			DirCheck();
 			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 			{
+				float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Left;
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Left)) &&
+					PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+				{
+					// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+					GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+					PixelCollider::PixelCol->GroundCheck(this);
+					return;
+				}
+
 				// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
 				m_NextTrans->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-
 				float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
+
 				// 그 위치가 검은색 픽셀이라면 이동하지 않고
 				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
 				{
@@ -830,15 +862,31 @@ void Player::MoveUpdate(float _DeltaTime)
 			}
 		}
 
+		// right 
+		// 내우측 체크픽셀이 흰색일 때 이동할건데 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
-			// 넥스트포스 체크하고
+			// 만약 내 바로 다음 픽셀이 검은색일 경우
+			// 추가로 내 위로 다섯칸이 흰색이라면 
+			float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Right;
+			if(PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) || 
+			   PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Right)) &&
+			   PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+			{
+				// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+				GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+				PixelCollider::PixelCol->GroundCheck(this);
+				return;
+			}
+			// 다음위치로 이동시키고.
 			m_NextTrans->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
-			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
+			// 다음 위치의 우측체크픽셀을 검사해서 
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot };
+			// 그 픽셀이 검은색이라면 움직이지 않을거야
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 			{
 				return;
 			}
-
 			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 			return;
 		}
@@ -852,6 +900,17 @@ void Player::MoveUpdate(float _DeltaTime)
 			DirCheck();
 			if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 			{
+				float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Right;
+				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
+					PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Right)) &&
+					PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+				{
+					// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+					GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+					PixelCollider::PixelCol->GroundCheck(this);
+					return;
+				}
+
 				// 넥스트포스 체크하고
 				m_NextTrans->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
 				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ m_RenderPivot , m_RenderPivot }))
@@ -866,9 +925,19 @@ void Player::MoveUpdate(float _DeltaTime)
 		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
+			float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Left;
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
+				PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Left)) &&
+				PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
+			{
+				// 이동시키고, 땅에쳐박혀있다면 올려준다. 
+				GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+				PixelCollider::PixelCol->GroundCheck(this);
+				return;
+			}
+
 			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
 			m_NextTrans->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
-			
 			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
 			// 그 위치가 검은색 픽셀이라면 이동하지 않고
 			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { -m_RenderPivot , m_RenderPivot }))
