@@ -19,6 +19,7 @@ enum class PlayerState
 	FALL,			// 낙하 
 	RIGHTWALL,		// 벽타기 
 	LEFTWALL,
+	DOORBREAK,
 	DEATH,			// 쥬금
 };
 
@@ -98,6 +99,12 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 특정 충돌체와의 충돌체크
+	bool DoorColCheck();
+
+	// 이펙트생성 함수로 만들어서 사용 
+	void CreateSlashEffect();
+
 	void TimeOutCheck();
 
 	// 리셋 
@@ -172,7 +179,7 @@ private:
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();
-	float4 m_DebugRenderScale = { 10, 10 };
+	float4 m_DebugRenderScale = { 4, 4 };
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Bottom_Down = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Left = nullptr;
@@ -261,6 +268,10 @@ private:
 	void LeftWallStart();
 	void LeftWallUpdate(float _DeltaTime);
 	void LeftWallEnd();
+
+	void DoorBreakStart();
+	void DoorBreakUpdate(float _DeltaTime);
+	void DoorBreakEnd();
 	
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);

@@ -79,7 +79,7 @@ void IronDoor::ComponentSetting()
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::DOOR);
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
-	m_Collision->GetTransform()->SetLocalPosition({ -m_ColPivot, m_ColPivot });
+	m_Collision->GetTransform()->SetLocalPosition({ -m_ColPivot / 2.0f , m_ColPivot });
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });

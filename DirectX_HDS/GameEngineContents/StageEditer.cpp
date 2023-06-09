@@ -306,6 +306,14 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::SameLine();
                 ImGui::Text("LeftWall");
                 break;
+            case PlayerState::DEATH:
+                ImGui::SameLine();
+                ImGui::Text("Death");
+                break;
+            case PlayerState::DOORBREAK:
+                ImGui::SameLine();
+                ImGui::Text("DoorBreak");
+                break;
             }
 
             ImGui::Text("Dir : ");

@@ -31,6 +31,8 @@
 #include "LandEffect.h"
 #include "DashEffect.h"
 
+#include "IronDoor.h"
+
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
@@ -130,7 +132,7 @@ void Player::LoadAndCreateAnimation()
 						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_doorbreak_full", .SpriteName = "player_doorbreak_full", .Start = 0, .End = 9,
-						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
+						  .FrameInter = 0.035f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_dooropen_gentle", .SpriteName = "player_dooropen_gentle", .Start = 0, .End = 8,
 						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
@@ -160,6 +162,10 @@ void Player::LoadAndCreateAnimation()
 					  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->ChangeAnimation("player_idle");
+
+	// 이벤트추가 
+	// std::bind, 1번인자 : 멤버함수의 포인터 / 2번인자 : this 포인터
+	m_Render->SetAnimationStartEvent("player_attack", static_cast<size_t>(1), std::bind(&Player::CreateSlashEffect, this));
 }
 
 void Player::NextPosUpdate()
@@ -202,6 +208,22 @@ void Player::Render(float _DeltaTime)
 {
 }
 
+bool Player::DoorColCheck()
+{
+	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != DoorCol)
+	{
+		return true;
+	}
+
+	return false; 
+}
+
+void Player::CreateSlashEffect()
+{
+	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
+}
+
 void Player::TimeOutCheck()
 {
 	// 데스체크, 만약 스테이지 제한시간을 넘어섰다면 
@@ -219,6 +241,7 @@ void Player::TimeOutCheck()
 
 void Player::Reset()
 {
+	// ?? 
 	float4 SetPos = GetInitPos();
 
 	GetTransform()->SetLocalPosition(SetPos);
@@ -502,6 +525,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::DEATH:
 		DeathUpdate(_DeltaTime);
 		break;
+	case PlayerState::DOORBREAK:
+		DoorBreakUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -554,6 +580,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::DEATH:
 		DeathStart();
 		break;
+	case PlayerState::DOORBREAK:
+		DoorBreakStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -598,6 +627,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::DEATH:
 		DeathEnd();
 		break;
+	case PlayerState::DOORBREAK:
+		DoorBreakEnd();
+		break;
 	}
 }
 
@@ -630,6 +662,12 @@ void Player::IdleUpdate(float _DeltaTime)
 	// 공격, 마우스 좌클릭 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
+		if (true == DoorColCheck())
+		{
+			ChangeState(PlayerState::DOORBREAK);
+			return;
+		}
+
 		ChangeState(PlayerState::SLASH);
 		return;
 	}
@@ -637,6 +675,11 @@ void Player::IdleUpdate(float _DeltaTime)
 	// 점프키 , w
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
+		if (true == DoorColCheck())
+		{
+			return;
+		}
+
 		ChangeState(PlayerState::JUMP);
 		return;
 	}
@@ -645,6 +688,12 @@ void Player::IdleUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
 		ChangeState(PlayerState::CROUCH);
+		return;
+	}
+
+	// 동시에 눌러져있을 경우 아무것도 수행하지 않음 
+	if (true == GameEngineInput::IsPress("player_right_move") && true == GameEngineInput::IsPress("player_left_move"))
+	{
 		return;
 	}
 
@@ -700,17 +749,28 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 
 if (true == GameEngineInput::IsDown("player_slash"))
 {
+	if (true == DoorColCheck())
+	{
+		ChangeState(PlayerState::DOORBREAK);
+		return;
+	}
+
 	ChangeState(PlayerState::SLASH);
 	return;
 }
 
 if (true == GameEngineInput::IsDown("player_jump"))
 {
+	if (true == DoorColCheck())
+	{
+		return;
+	}
+
 	ChangeState(PlayerState::JUMP);
 	return;
 }
 
-if (true == GameEngineInput::IsPress("player_right_move"))
+if (true == GameEngineInput::IsPress("player_right_move") && false == DoorColCheck())
 {
 	DirCheck();
 	if (true == GameEngineInput::IsPress("player_left_move"))
@@ -802,12 +862,23 @@ void Player::MoveUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
+		if (true == DoorColCheck())
+		{
+			ChangeState(PlayerState::DOORBREAK);
+			return;
+		}
+
 		ChangeState(PlayerState::SLASH);
 		return;
 	}
 
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
+		if (true == DoorColCheck())
+		{
+			return;
+		}
+
 		ChangeState(PlayerState::JUMP);
 		return;
 	}
@@ -815,6 +886,13 @@ void Player::MoveUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("player_crouch"))
 	{
 		ChangeState(PlayerState::CROUCH);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("player_left_move") &&
+		true == GameEngineInput::IsPress("player_right_move"))
+	{
+		ChangeState(PlayerState::IDLE);
 		return;
 	}
 
@@ -826,7 +904,7 @@ void Player::MoveUpdate(float _DeltaTime)
 	}
 
 	// 우측키를 누르고 있을때, 우측 이동만 체크 
-	if (true == GameEngineInput::IsPress("player_right_move"))
+	if (true == GameEngineInput::IsPress("player_right_move") &&  false == GameEngineInput::IsPress("player_left_move") && false == DoorColCheck())
 	{
 		DirCheck();
 		// 만약 우측키를 누른 상태에서 좌클릭 입력이 되어있을 경우,
@@ -892,7 +970,7 @@ void Player::MoveUpdate(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsPress("player_left_move"))
+	if (true == GameEngineInput::IsPress("player_left_move") && false == GameEngineInput::IsPress("player_right_move"))
 	{
 		DirCheck();
 		if (true == GameEngineInput::IsPress("player_right_move"))
@@ -965,7 +1043,6 @@ void Player::SlashStart()
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	m_MyOriginPos = GetTransform()->GetLocalPosition();
 	m_Render->ChangeAnimation("player_attack");
-	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
 
 void Player::SlashUpdate(float _DeltaTime)
@@ -1164,10 +1241,6 @@ void Player::JumpStart()
 		// true 로 만들어준다. 
 		m_IsJumping = true;
 		m_CurrentVerticalVelocity = m_JumpPower;
-
-		// 보류
-		//float4 MyPos = GetTransform()->GetLocalPosition();
-		//m_JumpCutLine = MyPos.y + m_MaxJumpHeight;
 	}
 
 	m_Render->ChangeAnimation("player_jump");
@@ -1191,6 +1264,13 @@ void Player::JumpUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("player_crouch"))
 	{
+		ChangeState(PlayerState::FALL);
+		return;
+	}
+
+	if (true == DoorColCheck())
+	{
+		// 만약 문과 충돌했다면 fall 상태로 변경
 		ChangeState(PlayerState::FALL);
 		return;
 	}
@@ -1408,6 +1488,12 @@ void Player::CrouchUpdate(float _DeltaTime)
 				return;
 			}
 
+			// 만약 문과 충돌중이라면 아무동작도 수행하지 않음 
+			if (true == DoorColCheck())
+			{
+				return;
+			}
+
 			// 검은픽셀이 아니라면 스테이트변경
 			m_RightRoll = true;
 			ChangeState(PlayerState::ROLL);
@@ -1517,6 +1603,12 @@ void Player::RollUpdate(float _DeltaTime)
 	// 내가 라이트롤 상태일 때 
 	if (false == m_LeftRoll && true == m_RightRoll)
 	{
+		if (true == DoorColCheck())
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+
 		// 내오른쪽 픽셀이 흰색일 때 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
@@ -1743,7 +1835,6 @@ void Player::FallStart()
 	m_Render->ChangeAnimation("player_fall");
 }
 
-// 여기부터 수정하자 
 void Player::FallUpdate(float _DeltaTime)
 {
 	// 단순하게. 내아래픽셀이 검은색이라면.
@@ -1781,7 +1872,7 @@ void Player::FallUpdate(float _DeltaTime)
 	}
 
 	// 점프시 우측, 좌측키를 누르고 있을때 
-	if (true == GameEngineInput::IsPress("player_right_move"))
+	if (true == GameEngineInput::IsPress("player_right_move") && false == DoorColCheck())
 	{
 		DirCheck();
 		if (true == GameEngineInput::IsPress("player_left_move"))
@@ -2162,6 +2253,38 @@ void Player::LeftWallEnd()
 {
 	m_WallJumpPower = 0.0f;
 	m_WallPressTime = m_WallPressInitTime;
+}
+
+void Player::DoorBreakStart()
+{
+	DirCheck();
+	m_Render->ChangeAnimation("player_doorbreak_full");
+}
+
+void Player::DoorBreakUpdate(float _DeltaTime)
+{
+	if (true == m_Render->IsAnimationEnd())
+	{
+		// 애니메이션이끝나면 
+		// 현재 충돌해있는 문을 가져와서 애니메이션을 변경시킨다. 
+		std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
+		if (nullptr != DoorCol)
+		{
+			std::shared_ptr<IronDoor> Door = DoorCol->GetActor()->DynamicThis<IronDoor>();
+			if (nullptr != Door)
+			{
+				Door->ChangeState(IronDoorState::OPEN);
+				DoorCol->Off();
+			}
+		}
+
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+}
+
+void Player::DoorBreakEnd()
+{
 }
 
 // 일단 보류

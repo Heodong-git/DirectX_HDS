@@ -82,6 +82,9 @@ void SlashEffect::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalRotation({ 0 , 0 , m_Angle });
 	m_Collision->DebugOn();
+
+	// 이벤트추가
+	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(2), std::bind(&SlashEffect::CollisionOff, this));
 }
 
 void SlashEffect::CollisionUpdate(float _DeltaTime)
@@ -143,9 +146,11 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 		}
 	}
 
+	// 충돌체는 이펙트의 3번프레임에서 제거
+
 	if (nullptr == Player::MainPlayer)
 	{
-		MsgAssert("플레이어가 nullptr 입니다. ㄷㄷ ");
+		MsgAssert("플레이어가 nullptr 입니다.");
 		return;
 	}
 
@@ -158,4 +163,12 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 	}
 
 	m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + m_ColPivot , m_PlayerPos.y + m_RenderPivot });
+}
+
+void SlashEffect::CollisionOff()
+{
+	if (nullptr != m_Collision)
+	{
+		m_Collision->Off();
+	}
 }
