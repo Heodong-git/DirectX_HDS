@@ -127,6 +127,21 @@ bool GameEngineObject::IsUpdate()
 	return GameEngineObjectBase::IsUpdate();
 }
 
+void GameEngineObject::Death()
+{
+	GameEngineObjectBase::Death();
+
+	GameEngineTransform* Trans = GetTransform();
+
+	std::list<GameEngineTransform*>::iterator LoopIter = Trans->Child.begin();
+	std::list<GameEngineTransform*>::iterator EndIter = Trans->Child.end();
+
+	for (; LoopIter != EndIter; ++LoopIter)
+	{
+		(*LoopIter)->GetMaster()->Death();
+	}
+}
+
 void GameEngineObject::AllLevelChangeStart()
 {
 	LevelChangeStart();

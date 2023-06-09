@@ -29,17 +29,19 @@ public:
 		Order = _Order;
 	}
 
-	void On()
+	// 자식에서 해당 함수 호출시, 수행할 작업이 있다면
+	// 오버라이드하여 사용하기 위해 virtual  
+	virtual void On()
 	{
 		UpdateValue = true;
 	}
 
-	void Off()
+	virtual void Off()
 	{
 		UpdateValue = false;
 	}
 
-	void Death()
+	virtual void Death()
 	{
 		DeathValue = true;
 	}
