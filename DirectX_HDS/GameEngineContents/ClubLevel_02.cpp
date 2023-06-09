@@ -17,6 +17,7 @@
 #include "Inven.h"
 #include "Timer.h"
 #include "Monster_Grunt.h"
+#include "Laser.h"
 
 ClubLevel_02::ClubLevel_02()
 {
@@ -95,6 +96,8 @@ void ClubLevel_02::ActorLoad()
 {
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_02.png");
+
+
 }
 
 void ClubLevel_02::CreateObjAndInit()
@@ -108,6 +111,11 @@ void ClubLevel_02::CreateObjAndInit()
 		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
 		float4 InitPos = { -54.0f , -137.0f };
 		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		float4 InitPos = float4{ 137.0f, 91.0f };
+		ActorInit(NewLaser, InitPos);
 	}
 }
 

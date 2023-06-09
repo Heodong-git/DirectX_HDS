@@ -8,6 +8,7 @@ enum class RenderOrder
 	MONSTER,
 	BOSS,
 	UI,
+	LASER,
 	PLAYER,
 	PLAYER_EFFECT,
 	EFFECT,
@@ -28,4 +29,5 @@ enum class ColOrder
 	DOOR,
 	STAGE_COL_OBJ,
 	PLATFORM,
+	LASER,
 };

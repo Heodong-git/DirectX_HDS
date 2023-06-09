@@ -26,19 +26,6 @@ Battery::~Battery()
 
 void Battery::Start()
 {
-	/*if (nullptr == GameEngineSprite::Find("battery_state"))
-	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("katanazero_resources");
-		Dir.Move("katanazero_resources");
-		Dir.Move("Texture");
-		Dir.Move("ClubLevel");
-		Dir.Move("battery");
-
-		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("battery_state").GetFullPath());
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
-	}*/
-
 	{
 		if (nullptr == GameEngineTexture::Find("Battery_00.png"))
 		{

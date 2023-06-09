@@ -199,6 +199,10 @@ void Player::Update(float _DeltaTime)
 	{
 		ChangeState(PlayerState::FALL);
 	}
+
+	// 레이저 충돌체크
+	LaserColCheck();
+
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
@@ -226,9 +230,22 @@ bool Player::DoorColCheck()
 
 bool Player::PlatformColCheck()
 {
-	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
-	if (nullptr != DoorCol)
+	std::shared_ptr<GameEngineCollision> PlatformCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != PlatformCol)
 	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Player::LaserColCheck()
+{
+	std::shared_ptr<GameEngineCollision> LaserCol = m_Collision->Collision(ColOrder::LASER, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != LaserCol)
+	{
+		ChangeState(PlayerState::DEATH);
+		m_Collision->Off();
 		return true;
 	}
 
@@ -263,6 +280,7 @@ void Player::Reset()
 	GetTransform()->SetLocalPosition(SetPos);
 	ResetSkillLimitTime();
 	ResetDir();	
+	m_Collision->On();
 	ChangeState(PlayerState::IDLE);
 }
 
@@ -1598,6 +1616,8 @@ void Player::CrouchEnd()
 
 void Player::RollStart()
 {
+	m_Collision->Off();
+
 	if (true == m_RightRoll)
 	{
 		m_RollEndPos = GetTransform()->GetLocalPosition() + m_RightRollDir;
@@ -1773,6 +1793,8 @@ void Player::RollUpdate(float _DeltaTime)
 
 void Player::RollEnd()
 {
+	m_Collision->On();
+
 	m_RightRoll = false;
 	m_LeftRoll = false;
 	m_RollEndPos = float4::Null;
@@ -1780,6 +1802,7 @@ void Player::RollEnd()
 
 void Player::RightFlipStart()
 {
+	m_Collision->Off();
 	m_Render->ChangeAnimation("player_flip");
 	GetTransform()->SetLocalPositiveScaleX();
 }
@@ -1837,11 +1860,13 @@ void Player::RightFlipUpdate(float _DeltaTime)
 
 void Player::RightFlipEnd()
 {
+	m_Collision->On();
 	m_FlipTime = m_FlipMaxTime;
 }
 
 void Player::LeftFlipStart()
 {
+	m_Collision->Off();
 	// 이때 무조건 왼쪽으로 그려 
 	m_Render->ChangeAnimation("player_flip");
 	GetTransform()->SetLocalNegativeScaleX();
@@ -1899,6 +1924,7 @@ void Player::LeftFlipUpdate(float _DeltaTime)
 
 void Player::LeftFlipEnd()
 {
+	m_Collision->On();
 	m_FlipTime = m_FlipMaxTime;
 }
 
@@ -2364,6 +2390,7 @@ void Player::DoorBreakEnd()
 // 죽었을때 좀 예쁘게 날아가게 바꿔야함
 void Player::DeathStart()
 {
+	// 이때 뭐에죽었는지 구분해서 상황에 따라서 애니메이션 변경 
 	DirCheck();
 	m_Render->ChangeAnimation("player_die");
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });

@@ -144,6 +144,9 @@
     <ClInclude Include="SlashLaser_Effect.h">
       <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClInclude>
+    <ClInclude Include="Laser.h">
+      <Filter>02.Actor\12.Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -288,6 +291,9 @@
     <ClCompile Include="SlashLaser_Effect.cpp">
       <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClCompile>
+    <ClCompile Include="Laser.cpp">
+      <Filter>02.Actor\12.Laser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -412,6 +418,9 @@
     </Filter>
     <Filter Include="02.Actor\01.Player\Effect\Slash">
       <UniqueIdentifier>{15a03c91-0d8f-4433-b5ef-219858a0604b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\12.Laser">
+      <UniqueIdentifier>{f11857e8-2548-4eff-a7d0-3a7d8eb343ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

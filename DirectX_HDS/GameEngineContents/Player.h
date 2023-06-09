@@ -102,6 +102,7 @@ private:
 	// 특정 충돌체와의 충돌체크
 	bool DoorColCheck();
 	bool PlatformColCheck();
+	bool LaserColCheck();
 
 	// 이펙트생성 함수로 만들어서 사용 
 	void CreateSlashEffect();
