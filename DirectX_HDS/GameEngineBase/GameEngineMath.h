@@ -324,6 +324,10 @@ public:
 	float4 QuaternionToEulerDeg();
 	float4 QuaternionToEulerRad();
 
+	// 점과 점사이의 거리계산 
+	float XYDistance(float4 _Value);
+	float XYZDistance(float4 _Value);
+
 	void RotationXDeg(float _Deg)
 	{
 		RotationXRad(_Deg * GameEngineMath::DegToRad);

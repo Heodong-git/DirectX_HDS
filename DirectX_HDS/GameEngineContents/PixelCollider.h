@@ -35,28 +35,22 @@ public:
 		return m_CurColMap;
 	}
 
-	GameEnginePixelColor PixelCollision(const float4& _Pos);
-
-	// 검사하기전 현재 레벨에 따라서 검사할 충돌맵을 확인한다.
 	bool ColMapSetting();
-
+	GameEnginePixelColor PixelCollision(const float4& _Pos);
 	bool GroundCheck(class GameEngineObject* _Object);
+	
+	// 안쓸수도 
 	bool FallCheck();
-
-	// 오른쪽 체크 
-	bool RightPixelCheck();
-	float4 RightWallCheck(float4& _Pos);
-	// 왼쪽 체크 
-	bool LeftPixelCheck();
-	// 위 체크 
+	
 	bool TopPixelCheck();
 
 	// 땅
 	static GameEnginePixelColor g_BlackPixel;
 
+	// 공중
 	static GameEnginePixelColor g_WhitePixel;
-
-	// 벽
+	
+	// 일단 안씀 
 	static GameEnginePixelColor g_GreenPixel;
 
 	// 에러
