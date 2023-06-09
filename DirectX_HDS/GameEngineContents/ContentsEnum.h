@@ -27,4 +27,5 @@ enum class ColOrder
 	CURSOR,
 	DOOR,
 	STAGE_COL_OBJ,
+	PLATFORM,
 };

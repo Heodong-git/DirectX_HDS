@@ -41,8 +41,9 @@ private:
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
-	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class DoorEffect> m_Effect = nullptr;
 
 private:
 	float m_RenderPivotY = 62.0f;

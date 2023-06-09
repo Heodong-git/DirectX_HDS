@@ -72,26 +72,11 @@
     <ClInclude Include="ClubLevel_04.h">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClInclude>
-    <ClInclude Include="JumpEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClInclude>
-    <ClInclude Include="LandEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DashEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClInclude>
     <ClInclude Include="MySpriteRenderer.h">
       <Filter>06.Shader</Filter>
     </ClInclude>
     <ClInclude Include="Boss_HeadHunter.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
-    </ClInclude>
-    <ClInclude Include="RollEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClInclude>
-    <ClInclude Include="FadeEffect.h">
-      <Filter>02.Actor\08.Effect\10.Camera</Filter>
     </ClInclude>
     <ClInclude Include="PlaySupporter.h">
       <Filter>02.Actor\01.Player\Supporter</Filter>
@@ -129,14 +114,35 @@
     <ClInclude Include="Go_UI.h">
       <Filter>02.Actor\05.UI\05.Go</Filter>
     </ClInclude>
-    <ClInclude Include="SlashEffect.h">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    <ClInclude Include="Platform.h">
+      <Filter>02.Actor\11.Platform</Filter>
     </ClInclude>
-    <ClInclude Include="SlashLaser_Effect.h">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    <ClInclude Include="DoorEffect.h">
+      <Filter>02.Actor\09.Door\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DashEffect.h">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpEffect.h">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="LandEffect.h">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RollEffect.h">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <Filter>02.Actor\08.CameraEffect\FadeInOut</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClInclude>
     <ClInclude Include="SlashHit_Effect.h">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashLaser_Effect.h">
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,26 +219,11 @@
     <ClCompile Include="ClubLevel_04.cpp">
       <Filter>01.Level\02.Club\00.Basic</Filter>
     </ClCompile>
-    <ClCompile Include="JumpEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="LandEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="DashEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClCompile>
     <ClCompile Include="MySpriteRenderer.cpp">
       <Filter>06.Shader</Filter>
     </ClCompile>
     <ClCompile Include="Boss_HeadHunter.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter</Filter>
-    </ClCompile>
-    <ClCompile Include="RollEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="FadeEffect.cpp">
-      <Filter>02.Actor\08.Effect\10.Camera</Filter>
     </ClCompile>
     <ClCompile Include="PlaySupporter.cpp">
       <Filter>02.Actor\01.Player\Supporter</Filter>
@@ -267,14 +258,35 @@
     <ClCompile Include="Go_UI.cpp">
       <Filter>02.Actor\05.UI\05.Go</Filter>
     </ClCompile>
-    <ClCompile Include="SlashEffect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    <ClCompile Include="Platform.cpp">
+      <Filter>02.Actor\11.Platform</Filter>
     </ClCompile>
-    <ClCompile Include="SlashLaser_Effect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+    <ClCompile Include="DoorEffect.cpp">
+      <Filter>02.Actor\09.Door\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DashEffect.cpp">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpEffect.cpp">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="LandEffect.cpp">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RollEffect.cpp">
+      <Filter>02.Actor\01.Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>02.Actor\08.CameraEffect\FadeInOut</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClCompile>
     <ClCompile Include="SlashHit_Effect.cpp">
-      <Filter>02.Actor\08.Effect\00.Player\Slash</Filter>
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashLaser_Effect.cpp">
+      <Filter>02.Actor\01.Player\Effect\Slash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +356,6 @@
     <Filter Include="02.Actor\07.BackGround">
       <UniqueIdentifier>{8ebb710d-9c39-493b-9569-e3a9887b4aaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\08.Effect">
-      <UniqueIdentifier>{777e7068-da3d-43fa-8c35-0b9e0d0120ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Actor\09.Door">
       <UniqueIdentifier>{69f8e230-090e-4f3b-bd1f-2e671831beac}</UniqueIdentifier>
     </Filter>
@@ -356,17 +365,11 @@
     <Filter Include="05.PixelCollider\00.Collider">
       <UniqueIdentifier>{dd1b81cb-3ab8-44ee-a3a0-5b377153d422}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\08.Effect\00.Player">
-      <UniqueIdentifier>{dbdd5df2-4125-4306-b149-8dfb0f22a748}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06.Shader">
       <UniqueIdentifier>{d8a620c5-e0c4-42d4-bb2b-fcfdf3f2c9c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter">
       <UniqueIdentifier>{8539d0e0-241c-4851-9ce4-e686a86f3c43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Actor\08.Effect\10.Camera">
-      <UniqueIdentifier>{ab016246-b013-4210-8fc3-43825fdca11e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Actor\01.Player\Supporter">
       <UniqueIdentifier>{e68ca898-7f6c-420a-9c55-7f3860d3e9f7}</UniqueIdentifier>
@@ -392,8 +395,23 @@
     <Filter Include="02.Actor\05.UI\05.Go">
       <UniqueIdentifier>{da7f92de-0853-4e75-aaf8-3a317ab19013}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\08.Effect\00.Player\Slash">
-      <UniqueIdentifier>{dfe80819-ee58-4ddc-92f6-0d6a527e5fd7}</UniqueIdentifier>
+    <Filter Include="02.Actor\11.Platform">
+      <UniqueIdentifier>{178071cb-511a-492f-b5db-e7be40b89014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\09.Door\Effect">
+      <UniqueIdentifier>{933c94ad-9bc1-491b-ab1d-433789db421e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\01.Player\Effect">
+      <UniqueIdentifier>{da5ee946-29e1-4ef2-8c7e-3c53e3fcf7c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect">
+      <UniqueIdentifier>{777e7068-da3d-43fa-8c35-0b9e0d0120ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect\FadeInOut">
+      <UniqueIdentifier>{ab016246-b013-4210-8fc3-43825fdca11e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\01.Player\Effect\Slash">
+      <UniqueIdentifier>{15a03c91-0d8f-4433-b5ef-219858a0604b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

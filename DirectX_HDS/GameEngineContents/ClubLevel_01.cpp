@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "PlaySupporter.h"
 #include "Player.h"
@@ -20,6 +21,7 @@
 #include "Inven.h"
 #include "Monster_Gangster.h"
 #include "Monster_Grunt.h"
+#include "Platform.h"
 
 ClubLevel_01::ClubLevel_01()
 {
@@ -118,6 +120,11 @@ void ClubLevel_01::CreateObjAndInit()
 		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
 		float4 InitPos = { 493.0f , 32.0f };
 		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLAYER), "platform");
+		NewPlatform->GetTransform()->SetLocalPosition(float4{ 170.0f , 100.0f });
+		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 500.0f, 10.0f });
 	}
 }
 

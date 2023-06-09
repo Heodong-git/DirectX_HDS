@@ -1,12 +1,8 @@
 #pragma once
 #include "BaseActor.h"
-
 // 설명 :
 class Platform : public BaseActor
 {
-	// 테스트
-public:
-	static Platform* MainPlatform;
 public:
 	// constrcuter destructer
 	Platform();
@@ -18,12 +14,20 @@ public:
 	Platform& operator=(const Platform& _Other) = delete;
 	Platform& operator=(Platform&& _Other) noexcept = delete;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	std::shared_ptr<class GameEngineCollision> GetCollision()
+	{
+		return m_Collision;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
-	void DebugUpdate();
 private:
+	void DebugUpdate();
+
+	void ComponentSetting();
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 };

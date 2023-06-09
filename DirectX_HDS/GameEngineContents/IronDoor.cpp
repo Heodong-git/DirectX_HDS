@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "DoorEffect.h"
+
 IronDoor::IronDoor()
 {
 }
@@ -16,13 +18,15 @@ void IronDoor::Start()
 {
 	ComponentSetting();
 	LoadAndCreateAnimation();
+
+	m_Effect = GetLevel()->CreateActor<DoorEffect>(static_cast<int>(RenderOrder::EFFECT));
+	m_Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { -67.0f , -30.0f });
 }
 
 void IronDoor::Update(float _DeltaTime)
 {
 	DebugUpdate();
 	UpdateState(_DeltaTime);
-	
 }
 
 void IronDoor::Render(float _DeltaTime)
@@ -32,9 +36,11 @@ void IronDoor::Render(float _DeltaTime)
 void IronDoor::Reset()
 {
 	// 만약 내가 오픈상태라면 클로즈 상태로 변경 
+	// 이펙트꺼져있다면 on 
 	if (IronDoorState::OPEN == m_CurState)
 	{
 		ChangeState(IronDoorState::CLOSE);
+		m_Effect->On();
 	}
 }
 
@@ -184,6 +190,7 @@ void IronDoor::CloseEnd()
 void IronDoor::OpenStart()
 {
 	m_MainRender->SetAnimPauseOff();
+	m_Effect->Off();
 }
 
 void IronDoor::OpenUpdate(float _DeltaTime)

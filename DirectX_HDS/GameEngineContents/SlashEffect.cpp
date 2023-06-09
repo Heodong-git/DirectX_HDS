@@ -84,7 +84,7 @@ void SlashEffect::ComponentSetting()
 	m_Collision->DebugOn();
 
 	// 이벤트추가
-	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(2), std::bind(&SlashEffect::CollisionOff, this));
+	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(3), std::bind(&SlashEffect::CollisionOff, this));
 }
 
 void SlashEffect::CollisionUpdate(float _DeltaTime)

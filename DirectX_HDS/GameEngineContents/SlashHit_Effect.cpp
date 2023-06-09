@@ -1,7 +1,5 @@
 #include "PrecompileHeader.h"
 #include "SlashHit_Effect.h"
-
-#include <GameEngineCore/GameEngineComponent.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
 SlashHit_Effect::SlashHit_Effect()

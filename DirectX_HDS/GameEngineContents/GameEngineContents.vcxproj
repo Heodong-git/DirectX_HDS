@@ -172,12 +172,20 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="DoorEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Go_UI.h" />
     <ClInclude Include="GruntEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="IronDoor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -341,9 +349,11 @@
   <ItemGroup>
     <ClCompile Include="Boss_HeadHunter.cpp" />
     <ClCompile Include="ColEventObj.cpp" />
+    <ClCompile Include="DoorEffect.cpp" />
     <ClCompile Include="Go_UI.cpp" />
     <ClCompile Include="GruntEffect.cpp" />
     <ClCompile Include="IronDoor.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
     <ClCompile Include="ClubDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp" />

@@ -194,6 +194,11 @@ void Player::Update(float _DeltaTime)
 	// nextpos 현재 플레이어 위치로 이동
 	NextPosUpdate();
 	
+	// 만약 플랫폼과 충돌중인 상태에서 아래키 입력시 상태전환 
+	if (true == PlatformColCheck() && GameEngineInput::IsDown("player_crouch"))
+	{
+		ChangeState(PlayerState::FALL);
+	}
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
@@ -217,6 +222,17 @@ bool Player::DoorColCheck()
 	}
 
 	return false; 
+}
+
+bool Player::PlatformColCheck()
+{
+	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != DoorCol)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Player::CreateSlashEffect()
@@ -718,6 +734,7 @@ void Player::IdleEnd()
 
 void Player::IdleToRunStart()
 {
+	DirCheck();
 	m_Render->ChangeAnimation("player_idle_to_run");
 }
 
@@ -727,6 +744,21 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
+		std::shared_ptr<GameEngineCollision> PlatformCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
+
+		// 이때 만약, 내가 왼쪽키를 누르고 있고 플랫폼과 충돌중이라면 무시하고 이동한다. 
+		if (true == GameEngineInput::IsPress("player_left_move") && nullptr != PlatformCol)
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
+
+		else if (true == GameEngineInput::IsPress("player_right_move") && nullptr != PlatformCol)
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
+
 		ChangeState(PlayerState::FALL);
 		return;
 	}
@@ -856,8 +888,43 @@ void Player::MoveUpdate(float _DeltaTime)
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		ChangeState(PlayerState::FALL);
-		return;
+		// 얘가 nullptr이 아니라면 
+		std::shared_ptr<GameEngineCollision> PlatformCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
+
+	
+		if (true == GameEngineInput::IsDown("player_slash"))
+		{
+			ChangeState(PlayerState::SLASH);
+			return;
+		}
+
+		if (true == GameEngineInput::IsDown("player_jump"))
+		{
+			ChangeState(PlayerState::JUMP);
+			return;
+		}
+
+		// 이때 만약, 내가 왼쪽키를 누르고 있고 플랫폼과 충돌중이라면 무시하고 이동한다. 
+		if (true == GameEngineInput::IsPress("player_left_move") && nullptr != PlatformCol)
+		{
+			DirCheck();
+			GetTransform()->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
+			return;
+		}
+
+		else if (true == GameEngineInput::IsPress("player_right_move") && nullptr != PlatformCol)
+		{
+			DirCheck();
+			GetTransform()->AddLocalPosition(float4::Right * m_MoveSpeed * _DeltaTime);
+			return;
+		}
+
+		else if (nullptr == PlatformCol)
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+		
 	}
 
 	if (true == GameEngineInput::IsDown("player_slash"))
@@ -1089,6 +1156,7 @@ void Player::SlashUpdate(float _DeltaTime)
 	// 나보다 공격좌표가 나보다 낮다면 
 	else if (PlayerState::FALL == m_PrevState && m_MyOriginPos.y > m_AttackPos.y)
 	{
+		//? 
 		int a = 0;
 	}
 
@@ -1551,8 +1619,12 @@ void Player::RollUpdate(float _DeltaTime)
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		ChangeState(PlayerState::FALL);
-		return;
+		if (false == PlatformColCheck())
+		{
+			ChangeState(PlayerState::FALL);
+			return;
+		}
+		
 	}
 
 	if (true == GameEngineInput::IsDown("player_jump"))
