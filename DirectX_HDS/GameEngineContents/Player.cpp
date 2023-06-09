@@ -698,17 +698,17 @@ void Player::IdleToRunUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsDown("player_slash"))
-	{
-		ChangeState(PlayerState::SLASH);
-		return;
-	}
+if (true == GameEngineInput::IsDown("player_slash"))
+{
+	ChangeState(PlayerState::SLASH);
+	return;
+}
 
-	if (true == GameEngineInput::IsDown("player_jump"))
-	{
-		ChangeState(PlayerState::JUMP);
-		return;
-	}
+if (true == GameEngineInput::IsDown("player_jump"))
+{
+	ChangeState(PlayerState::JUMP);
+	return;
+}
 
 if (true == GameEngineInput::IsPress("player_right_move"))
 {
@@ -922,10 +922,13 @@ void Player::MoveUpdate(float _DeltaTime)
 				return;
 			}
 		}
+
 		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
 		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
 		{
 			float4 NextPixelPos = GetTransform()->GetWorldPosition() + float4::Left;
+
+			// 이동한 위치가 검은색, 이동한 위치의 다음 픽셀이 검은색, 그위쪽 픽셀을 특정범위를 지정해서. 거기가 흰색이면 위로이동이잖아 ?
 			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos) ||
 				PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Left)) &&
 				PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(NextPixelPos + (float4::Up * m_DiagonalPivot)))
@@ -935,7 +938,7 @@ void Player::MoveUpdate(float _DeltaTime)
 				PixelCollider::PixelCol->GroundCheck(this);
 				return;
 			}
-
+			
 			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
 			m_NextTrans->AddLocalPosition(float4::Left * m_MoveSpeed * _DeltaTime);
 			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };

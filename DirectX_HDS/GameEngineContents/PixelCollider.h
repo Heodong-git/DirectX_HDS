@@ -41,6 +41,7 @@ public:
 	bool ColMapSetting();
 
 	bool GroundCheck(class GameEngineObject* _Object);
+	bool FallCheck();
 
 	// 오른쪽 체크 
 	bool RightPixelCheck();
