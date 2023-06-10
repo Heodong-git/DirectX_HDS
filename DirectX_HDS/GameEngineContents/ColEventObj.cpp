@@ -53,24 +53,6 @@ void ColEventObj::CollisionUpdate(float _DeltaTime)
 		// 일정 시간 뒤에 레벨체인지를 하는걸로 여기서 액터를 만들어 
 		GetLevel()->CreateActor<YouCanDoThis>();
 		m_Collision->Off();
-		/*switch (CurLevelType)
-		{
-		case LevelType::CLUBMAP0:
-			GameEngineCore::ChangeLevel("ClubLevel_01");
-			break;
-		case LevelType::CLUBMAP1:
-			GameEngineCore::ChangeLevel("ClubLevel_02");
-			break;
-		case LevelType::CLUBMAP2:
-			GameEngineCore::ChangeLevel("ClubLevel_03");
-			break;
-		case LevelType::CLUBMAP3:
-			GameEngineCore::ChangeLevel("ClubLevel_04");
-			break;
-		case LevelType::CLUBMAP4:
-			GameEngineCore::ChangeLevel("ClubLevel_05");
-			break;
-		}*/
 	}
 }
 

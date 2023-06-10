@@ -74,6 +74,7 @@ void ClubLevel_00::LevelChangeEnd()
 {
 	SetState(BaseLevel::LevelState::WAIT);
 
+
 	// GUI Off 
 	// GUI 를 사용중이라면 Off
 	if (nullptr != m_GUI)
