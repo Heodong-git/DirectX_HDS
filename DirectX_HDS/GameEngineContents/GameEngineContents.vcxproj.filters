@@ -147,6 +147,9 @@
     <ClInclude Include="Laser.h">
       <Filter>02.Actor\12.Laser</Filter>
     </ClInclude>
+    <ClInclude Include="FanBlade.h">
+      <Filter>02.Actor\13.FanBlade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -294,6 +297,9 @@
     <ClCompile Include="Laser.cpp">
       <Filter>02.Actor\12.Laser</Filter>
     </ClCompile>
+    <ClCompile Include="FanBlade.cpp">
+      <Filter>02.Actor\13.FanBlade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -421,6 +427,9 @@
     </Filter>
     <Filter Include="02.Actor\12.Laser">
       <UniqueIdentifier>{f11857e8-2548-4eff-a7d0-3a7d8eb343ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\13.FanBlade">
+      <UniqueIdentifier>{133a99b0-356d-4853-9a67-a7da293f8c74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

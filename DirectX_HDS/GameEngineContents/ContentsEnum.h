@@ -8,6 +8,7 @@ enum class RenderOrder
 	MONSTER,
 	BOSS,
 	UI,
+	FANBLADE,
 	LASER,
 	PLAYER,
 	PLAYER_EFFECT,
@@ -30,4 +31,5 @@ enum class ColOrder
 	STAGE_COL_OBJ,
 	PLATFORM,
 	LASER,
+	FANBLADE,
 };

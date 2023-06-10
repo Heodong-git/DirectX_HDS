@@ -35,7 +35,7 @@ void Laser::Reset()
 
 void Laser::DebugUpdate()
 {
-	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
+	if (true == GameEngineInput::IsDown("player_debugswitch"))
 	{
 		DebugSwitch();
 

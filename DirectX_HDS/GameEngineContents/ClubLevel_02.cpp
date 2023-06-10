@@ -18,6 +18,7 @@
 #include "Timer.h"
 #include "Monster_Grunt.h"
 #include "Laser.h"
+#include "FanBlade.h"
 
 ClubLevel_02::ClubLevel_02()
 {
@@ -117,6 +118,12 @@ void ClubLevel_02::CreateObjAndInit()
 		float4 InitPos = float4{ 137.0f, 91.0f };
 		ActorInit(NewLaser, InitPos);
 	}
+	{
+		std::shared_ptr<FanBlade> NewFanBlade = CreateActor<FanBlade>(static_cast<int>(RenderOrder::FANBLADE), "FanBlade");
+		float4 InitPos = float4{ 634.0f, 144.0f };
+		ActorInit(NewFanBlade, InitPos);
+	}
+
 }
 
 void ClubLevel_02::KeyUpdate()
