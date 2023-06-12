@@ -92,7 +92,7 @@ void Laser::LoadAndCreateAnimation()
 							.FrameInter = 0.03f , .Loop = true , .ScaleToTexture = false });
 
 		m_LaserRender->CreateAnimation({ .AnimationName = "laser_col", .SpriteName = "laser_col", .Start = 0, .End = 1 ,
-							.FrameInter = 0.1f , .Loop = true , .ScaleToTexture = false });
+							.FrameInter = 0.075f , .Loop = true , .ScaleToTexture = false });
 	}
 
 	m_LaserRender->ChangeAnimation("laser_idle");

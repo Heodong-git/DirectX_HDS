@@ -1503,15 +1503,19 @@ void Player::JumpUpdate(float _DeltaTime)
 			return;
 		}
 
-		// 내 왼쪽 체크 픽셀이 흰색이 ( negative 적용으로 right 픽셀체크 ) 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()))
+		// 현재 나의 우측 픽셀이 흰색일 때
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
 		{
-			// 더미를 이동시켰을 때 의 위치를 한번더 검사해서 
-			m_NextTrans->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+			// 나의 우측 디버그 픽셀의 로컬위치를 받아온다. 
+			float4 DebugPos = m_DebugRender_Wall_Right->GetTransform()->GetLocalPosition();
 
-			float4 CheckPos = m_NextTrans->GetLocalPosition() + float4{ -m_RenderPivot ,0.0f };
-			// 그 위치가 검은색 픽셀이라면 이동하지 않고
-			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4{ -m_RenderPivot , m_RenderPivot }))
+			// 나의 NextPos 를 다음 위치로 이동시키고 
+			m_NextTrans->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
+			// 이동한 위치의 우측 디버그 픽셀 위치를 체크해서 
+			float4 CheckPos = m_NextTrans->GetWorldPosition() + DebugPos;
+
+			// 우측 wall 픽셀이 검은색일 경우  
+			if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos))
 			{
 				// 상,하단을 체크해서 둘다 검은색 픽셀이라면 
 				if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(CheckPos + float4::Up) &&
@@ -1523,10 +1527,10 @@ void Player::JumpUpdate(float _DeltaTime)
 					return;
 				}
 
+				// 단순히 우측 픽셀만 검은색이라면 암것도 안함 
 				return;
 			}
 
-			// 그게 아니라면 진짜 나의 위치를 이동해
 			GetTransform()->AddLocalPosition(float4::Left * m_JumpMoveSpeed * _DeltaTime);
 			return;
 		}
