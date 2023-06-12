@@ -117,6 +117,8 @@ void ClubLevel_02::CreateObjAndInit()
 		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
 		float4 InitPos = float4{ 137.0f, 91.0f };
 		ActorInit(NewLaser, InitPos);
+		float4 Scale = float4{ 4.0f , 460.0f };
+		NewLaser->SetLaserScale(Scale);
 	}
 	{
 		std::shared_ptr<FanBlade> NewFanBlade = CreateActor<FanBlade>(static_cast<int>(RenderOrder::FANBLADE), "FanBlade");

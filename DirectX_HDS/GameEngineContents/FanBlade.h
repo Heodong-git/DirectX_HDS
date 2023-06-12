@@ -21,6 +21,12 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void Reset();
+
+	void CorrectionRenderPos();
+
+	void PlayerSkillCheck();
+
 	void DebugUpdate();
 
 	// 렌더러생성 및 세팅
@@ -36,4 +42,5 @@ private:
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
+	float4 m_FanRenderInitPos = {};
 };

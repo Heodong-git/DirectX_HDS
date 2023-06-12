@@ -8,6 +8,9 @@ enum class LaserState
 	COLLISION,
 };
 
+
+// 얘는 만들때, 스케일을 세팅해주면 탑의 위치를 스케일에 비례해서 자동으로 위쪽에 세팅되게.. 
+
 // 설명 :
 class Laser : public BaseActor
 {
@@ -22,12 +25,16 @@ public:
 	Laser& operator=(const Laser& _Other) = delete;
 	Laser& operator=(Laser&& _Other) noexcept = delete;
 
+	// 그냥 SetScale을하면, 그 크기로 변경하고, 탑의 위치도 알아서 조정되는 걸로 바꿔 
+	void SetLaserScale(float4& _Scale);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+
 	// 리셋 
 	virtual void Reset() override;
 
@@ -42,6 +49,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_TopRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_LaserRender = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+
+	// 스케일 
+	float4 m_LaserScale = {};
 
 	// 상태값 변경
 	void ChangeState(LaserState _State);

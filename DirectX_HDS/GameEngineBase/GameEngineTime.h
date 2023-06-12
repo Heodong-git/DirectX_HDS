@@ -39,7 +39,7 @@ public:
 	template<typename EnumType>
 	void SetUpdateOrderTimeScale(EnumType _Order, float _Time)
 	{
-		SetOrderTimeScale(static_cast<int>(_Order), _Time);
+		SetUpdateOrderTimeScale(static_cast<int>(_Order), _Time);
 	}
 
 	void SetUpdateOrderTimeScale(int _Order, float _Time)

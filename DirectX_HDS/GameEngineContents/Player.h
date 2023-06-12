@@ -100,9 +100,10 @@ protected:
 
 private:
 	// 특정 충돌체와의 충돌체크
-	bool DoorColCheck();
-	bool PlatformColCheck();
-	bool LaserColCheck();
+	bool DoorColCheck();		 // 문 
+	bool PlatformColCheck();	 // 플랫폼
+	bool LaserColCheck();		 // 레이저
+	bool FanBladeColCheck();	 // 팬 블레이드 
 
 	// 이펙트생성 함수로 만들어서 사용 
 	void CreateSlashEffect();
@@ -137,6 +138,9 @@ private:
 
 	// 충돌체 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+
+	// 펜블레이드 체크용
+	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 	float4 m_ColScale = { 40.0f , 65.0f , 1.0f };
 	float  m_ColPivot = 33.0f;
 

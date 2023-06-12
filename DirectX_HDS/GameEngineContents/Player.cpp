@@ -197,11 +197,18 @@ void Player::Update(float _DeltaTime)
 	// 만약 플랫폼과 충돌중인 상태에서 아래키 입력시 상태전환 
 	if (true == PlatformColCheck() && GameEngineInput::IsDown("player_crouch"))
 	{
-		ChangeState(PlayerState::FALL);
+		// 나의 아래 픽셀이 검은색이 아니라면 fall로 전환 
+		if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
+		{
+			ChangeState(PlayerState::FALL);
+		}
 	}
 
 	// 레이저 충돌체크
 	LaserColCheck();
+
+	// 환풍기 충돌체크 
+	FanBladeColCheck();
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
@@ -252,6 +259,20 @@ bool Player::LaserColCheck()
 	return false;
 }
 
+bool Player::FanBladeColCheck()
+{
+	std::shared_ptr<GameEngineCollision> FanCol = m_SubCollision->Collision(ColOrder::FANBLADE, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != FanCol)
+	{
+		ChangeState(PlayerState::DEATH);
+		m_Collision->Off();
+		m_SubCollision->Off();
+		return true;
+	}
+
+	return false;
+}
+
 void Player::CreateSlashEffect()
 {
 	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
@@ -274,13 +295,13 @@ void Player::TimeOutCheck()
 
 void Player::Reset()
 {
-	// ?? 
 	float4 SetPos = GetInitPos();
 
 	GetTransform()->SetLocalPosition(SetPos);
 	ResetSkillLimitTime();
 	ResetDir();	
 	m_Collision->On();
+	m_SubCollision->On();
 	ChangeState(PlayerState::IDLE);
 }
 
@@ -302,6 +323,12 @@ void Player::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_Collision->DebugOff();
+
+	// 서브 콜리전 체크용 이게 맞는진 모르겠는데 일단 이렇게 
+	m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
+	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
+	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
+	m_SubCollision->DebugOff();
 
 	// --------------------------- Debug Render ------------------------------
 
@@ -375,11 +402,13 @@ void Player::DebugUpdate()
 			if (true == m_Collision->IsDebug())
 			{
 				m_Collision->DebugOff();
+				m_SubCollision->DebugOff();
 			}
 
 			else
 			{
 				m_Collision->DebugOn();
+				m_SubCollision->DebugOn();
 			}
 		}
 
@@ -505,12 +534,16 @@ void Player::Slow()
 	if (true == m_IsSkill)
 	{
 		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
+
+		 //팬블레이드는 여기서 더느리게 만들어 
+		 GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 0.1f);
 	}
 }
 
 void Player::SlowReset()
 {
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
+	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 1.0f);
 }
 
 

@@ -15,6 +15,14 @@
 #include "Map.h"
 #include "Cursor.h"
 
+// Monster
+#include "Monster_Grunt.h"
+#include "Monster_Gangster.h"
+#include "Monster_Pomp.h"
+
+// Door
+#include "IronDoor.h"
+
 ClubLevel_04::ClubLevel_04()
 {
 }
@@ -91,9 +99,6 @@ void ClubLevel_04::ActorLoad()
 {
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_04.png");
-
-
-	
 }
 
 void ClubLevel_04::KeyUpdate()
@@ -106,6 +111,41 @@ void ClubLevel_04::CreateKey()
 
 void ClubLevel_04::CreateObjAndInit()
 {
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { -462.0f, -237.62f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { 167.28f, -236.51f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+		float4 InitPos = { 106.0f, 20.24f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
+		float4 InitPos = { -656.37f, 275.24f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
+		float4 InitPos = { -170.0f, 274.24f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		float4 InitPos = { 1147.0f, 467.24f };
+		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
+		float4 InitPos = {-18.0f, 435.0f };
+		ActorInit(Monster, InitPos);
+	}
 }
 
 void ClubLevel_04::GUISetting()

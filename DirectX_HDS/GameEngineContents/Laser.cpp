@@ -12,6 +12,13 @@ Laser::~Laser()
 {
 }
 
+void Laser::SetLaserScale(float4& _Scale)
+{
+	m_LaserScale = _Scale;
+	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
+	m_TopRender->GetTransform()->SetLocalScale(float4{ 0.0f, m_LaserScale.y / 2.0f });
+}
+
 void Laser::Start()
 {
 	ComponentSetting();
@@ -85,13 +92,14 @@ void Laser::LoadAndCreateAnimation()
 							.FrameInter = 0.03f , .Loop = true , .ScaleToTexture = false });
 
 		m_LaserRender->CreateAnimation({ .AnimationName = "laser_col", .SpriteName = "laser_col", .Start = 0, .End = 1 ,
-							.FrameInter = 0.03f , .Loop = true , .ScaleToTexture = false });
+							.FrameInter = 0.1f , .Loop = true , .ScaleToTexture = false });
 	}
 
 	m_LaserRender->ChangeAnimation("laser_idle");
 	m_LaserRender->GetTransform()->SetLocalScale(float4{ 4.0f, 460.0f });
 	m_TopRender->SetScaleToTexture("laser_on_00.png");
-	m_TopRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 227.0f });
+	// y 축을 스케일 y의 절반으로 하는게.. 
+	m_TopRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 230.0f });
 }
 
 void Laser::UpdateState(float _DeltaTime)
@@ -144,7 +152,13 @@ void Laser::IdleStart()
 
 void Laser::IdleUpdate(float _DeltaTime)
 {
-	int a = 0;
+	// 만약 내가 플레이어의 서브충돌체와 충돌중이라면 콜리전상태로 변경
+	std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != PlayerSubCol)
+	{
+		ChangeState(LaserState::COLLISION);
+		return;
+	}
 }
 
 void Laser::IdleEnd()
@@ -154,12 +168,32 @@ void Laser::IdleEnd()
 void Laser::CollisionStart()
 {
 	m_LaserRender->ChangeAnimation("laser_col");
+	m_LaserRender->GetTransform()->SetLocalScale(float4{ m_LaserScale.x * 3.0f  , m_LaserScale.y });
 }
 
 void Laser::CollisionUpdate(float _DeltaTime)
 {
+	// 애니메이션이 종료 되었을 때 충돌중이 아니라면 idle로 변경
+	if (true == m_LaserRender->IsAnimationEnd())
+	{
+		// 만약 내가 플레이어의 서브충돌체와 충돌중이라면 콜리전상태로 변경
+		std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER, ColType::AABBBOX2D, ColType::AABBBOX2D);
+		if (nullptr != PlayerSubCol)
+		{
+			return;
+		}
+		// 충돌중이 아니라면 idle로 전환 
+		else if (nullptr == PlayerSubCol)
+		{
+			ChangeState(LaserState::IDLE);
+			return;
+		}
+	}
+
+
 }
 
 void Laser::CollisionEnd()
 {
+	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
 }

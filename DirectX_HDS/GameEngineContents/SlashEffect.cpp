@@ -162,7 +162,7 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + m_ColPivot , m_PlayerPos.y + m_RenderPivot });
+	m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + m_ColPivot , m_PlayerPos.y + m_RenderPivot - 10.0f });
 }
 
 void SlashEffect::CollisionOff()
