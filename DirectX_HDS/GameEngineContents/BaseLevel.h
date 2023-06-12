@@ -149,7 +149,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime);
 
-	void LevelChangeStart() override;
+	void LevelChangeStart() override {};
 	void LevelChangeEnd() override {};
 
 	BaseLevel::LevelState m_CurState = BaseLevel::LevelState::WAIT;

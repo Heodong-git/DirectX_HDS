@@ -86,11 +86,11 @@ namespace GameEngineDebug
 			case GameEngineDebug::DebugDrawType::Sphere:
 				DebugRenderUnit.SetMesh("DebugSphere");
 				DrawData.Scale = { DrawData.Scale.x, DrawData.Scale.x, DrawData.Scale.x };
-				DrawData.LocalCalculration();
+				DrawData.LocalCalculation();
 				DrawData.WorldMatrix = DrawData.LocalWorldMatrix;
 				if (nullptr != CurData.Trans->GetParent())
 				{
-					DrawData.WorldCalculration(CurData.Trans->GetParent()->GetWorldMatrixRef(), CurData.Trans->IsAbsoluteScale(), CurData.Trans->IsAbsoluteRotation(), CurData.Trans->IsAbsolutePosition());
+					DrawData.WorldCalculation(CurData.Trans->GetParent()->GetWorldMatrixRef(), CurData.Trans->IsAbsoluteScale(), CurData.Trans->IsAbsoluteRotation(), CurData.Trans->IsAbsolutePosition());
 				}
 				DrawData.SetViewAndProjection(_Camera->GetView(), _Camera->GetProjection());
 				break;

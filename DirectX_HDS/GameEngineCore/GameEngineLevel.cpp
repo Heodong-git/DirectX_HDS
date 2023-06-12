@@ -11,16 +11,22 @@ bool GameEngineLevel::IsDebugRender = false;
 
 GameEngineLevel::GameEngineLevel()
 {
-	MainCamera = CreateNewCamera(0);
-	std::shared_ptr<GameEngineCamera> UICamera = CreateNewCamera(100);
-	UICamera->SetProjectionType(CameraType::Orthogonal);
-	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
+	LevelCameraInit();
 }
 
 GameEngineLevel::~GameEngineLevel()
 {
 }
 
+void GameEngineLevel::LevelCameraInit()
+{
+	MainCamera = CreateNewCamera(0);
+
+	std::shared_ptr<GameEngineCamera> UICamera = CreateNewCamera(100);
+	UICamera->SetProjectionType(CameraType::Orthogonal);
+
+	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
+}
 
 
 void GameEngineLevel::Start()
@@ -317,6 +323,7 @@ void GameEngineLevel::ActorRelease()
 					continue;
 				}
 
+				RelaseActor->AllDestroy();
 				RelaseActor->Release();
 				ActorStart = ActorList.erase(ActorStart);
 			}
@@ -431,4 +438,31 @@ void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 	}
 
 	TexturePath.clear();
+}
+
+void GameEngineLevel::AllActorDestroy()
+{
+	{
+		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; ++ActorStart)
+			{
+				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+				Actor->Death();
+			}
+		}
+
+		ActorRelease();
+	}
+
+	LevelCameraInit();
 }

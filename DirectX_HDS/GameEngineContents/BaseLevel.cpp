@@ -85,11 +85,6 @@ void BaseLevel::Update(float _DeltaTime)
 	// GameEngineLevel::Update(_DeltaTime);
 }
 
-void BaseLevel::LevelChangeStart()
-{
-	
-}
-
 // 액터생성후 벡터에 푸시
 void BaseLevel::Push_ResetActor(std::shared_ptr<class BaseActor> _Actor)
 {

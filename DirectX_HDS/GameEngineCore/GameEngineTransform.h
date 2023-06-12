@@ -76,9 +76,9 @@ struct TransformData
 	float4x4 ViewPort;
 	float4x4 WorldViewProjectionMatrix;
 
-	void WorldCalculration(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
+	void WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
 
-	void LocalCalculration();
+	void LocalCalculation();
 
 	void SetViewAndProjection(const float4x4& _View, const float4x4& _Projection);
 

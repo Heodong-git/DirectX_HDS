@@ -40,7 +40,7 @@ public:
 
 InitColFunction InitFunction;
 
-void TransformData::LocalCalculration()
+void TransformData::LocalCalculation()
 {
 	ScaleMatrix.Scale(Scale);
 
@@ -52,7 +52,7 @@ void TransformData::LocalCalculration()
 	LocalWorldMatrix = ScaleMatrix * RotationMatrix * PositionMatrix;
 }
 
-void TransformData::WorldCalculration(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
+void TransformData::WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
 {
 	float4 PScale, PRotation, PPosition;
 	_Parent.Decompose(PScale, PRotation, PPosition);
@@ -243,7 +243,7 @@ GameEngineTransform::~GameEngineTransform()
 
 void GameEngineTransform::TransformUpdate()
 {
-	TransData.LocalCalculration();
+	TransData.LocalCalculation();
 
 	if (nullptr == Parent)
 	{
@@ -263,7 +263,7 @@ void GameEngineTransform::TransformUpdate()
 void GameEngineTransform::WorldCalculation()
 {
 	float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-	TransData.WorldCalculration(ParentWorldMatrix, AbsoluteScale, AbsoluteRotation, AbsolutePosition);
+	TransData.WorldCalculation(ParentWorldMatrix, AbsoluteScale, AbsoluteRotation, AbsolutePosition);
 }
 
 void GameEngineTransform::LocalDecompose()

@@ -74,6 +74,7 @@ void ClubLevel_00::LevelChangeEnd()
 {
 	SetState(BaseLevel::LevelState::WAIT);
 
+	Player::MainPlayer->Death();
 
 	// GUI Off 
 	// GUI 를 사용중이라면 Off

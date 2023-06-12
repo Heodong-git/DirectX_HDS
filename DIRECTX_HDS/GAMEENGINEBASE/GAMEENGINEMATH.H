@@ -683,7 +683,7 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
-	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos) const
 	{
 		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
 	}
