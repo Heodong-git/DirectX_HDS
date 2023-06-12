@@ -347,7 +347,6 @@ void PlaySupporter::ComponentSetting()
 	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
 }
 
-// 생각해보니 레프트탑 라이트바텀만 있으면 되는거아닌가 ? 
 void PlaySupporter::SaveCameraRange()
 {
 	{

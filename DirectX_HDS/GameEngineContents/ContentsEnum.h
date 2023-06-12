@@ -10,6 +10,7 @@ enum class RenderOrder
 	UI,
 	FANBLADE,
 	LASER,
+	PLATFORM,
 	PLAYER,
 	PLAYER_EFFECT,
 	EFFECT,

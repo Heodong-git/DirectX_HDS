@@ -1676,6 +1676,9 @@ void Player::RollUpdate(float _DeltaTime)
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
+		// fall 검사 할때만 On 시켜서 체크한다. 
+		m_Collision->On(); 
+		// 플랫폼과 충돌중이 아닐때만 
 		if (false == PlatformColCheck())
 		{
 			ChangeState(PlayerState::FALL);

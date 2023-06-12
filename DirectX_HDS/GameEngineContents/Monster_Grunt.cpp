@@ -48,19 +48,25 @@ void Monster_Grunt::Update(float _DeltaTime)
 	}
 
 	DirCheck();
+
 	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 
+	// 충돌했다면 얘가 nullptr 이 아닐거고 
 	if (nullptr != Col)
 	{
+		// 충돌한 충돌체의 부모를  받아오고 
 		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
+		// 이건 수정해야할듯 
 		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
 		float4 MyPos = GetTransform()->GetLocalPosition();
 		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+
 		m_Collision->Off();
 
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
+		// 상태변경후 데스애니메이션 
 		ChangeState(GruntState::HITGROUND);
 	}
 

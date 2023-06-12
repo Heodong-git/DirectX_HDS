@@ -33,4 +33,7 @@ private:
 
 	virtual void GUISetting() override;
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
+
+	std::shared_ptr<class Laser> m_LaserRight = nullptr;
+	std::shared_ptr<class Laser> m_LaserLeft = nullptr;
 };

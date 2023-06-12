@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "StageEditer.h"
 #include "PlaySupporter.h"
@@ -14,13 +15,11 @@
 #include "Timer.h"
 #include "Map.h"
 #include "Cursor.h"
-
-// Monster
+#include "Platform.h"
 #include "Monster_Grunt.h"
 #include "Monster_Gangster.h"
 #include "Monster_Pomp.h"
-
-// Door
+#include "Laser.h"
 #include "IronDoor.h"
 
 ClubLevel_04::ClubLevel_04()
@@ -146,6 +145,56 @@ void ClubLevel_04::CreateObjAndInit()
 		float4 InitPos = {-18.0f, 435.0f };
 		ActorInit(Monster, InitPos);
 	}
+
+	// 첫번째 
+	{
+		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
+		NewPlatform->GetTransform()->SetLocalPosition(float4{ -320.0f , -179.0f });
+		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 150.0f, 10.0f });
+	}
+
+	// 두번째
+	{
+		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
+		NewPlatform->GetTransform()->SetLocalPosition(float4{ 339.0f , 82.0f });
+		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 450.0f, 10.0f });
+	}
+
+	// 세번째 
+	{
+		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
+		NewPlatform->GetTransform()->SetLocalPosition(float4{ -457.0f , 334.0f });
+		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 430.0f, 10.0f });
+	}
+
+	// 레이저를 오른쪽에 네개, 좌측에 네개 만들고 각각 부모를 세팅해준다.
+	{
+		m_LaserRight = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		m_LaserRight->GetTransform()->SetLocalPosition(float4{ 300.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		m_LaserRight->SetLaserScale(Scale);
+	}
+
+	// 우측 레이저에 세개 더붙여준다
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ 270.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ 240.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ 210.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	
 }
 
 void ClubLevel_04::GUISetting()

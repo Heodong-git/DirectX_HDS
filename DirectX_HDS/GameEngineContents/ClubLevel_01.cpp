@@ -122,7 +122,7 @@ void ClubLevel_01::CreateObjAndInit()
 		ActorInit(Monster, InitPos);
 	}
 	{
-		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLAYER), "platform");
+		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
 		NewPlatform->GetTransform()->SetLocalPosition(float4{ 170.0f , 100.0f });
 		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 500.0f, 10.0f });
 	}

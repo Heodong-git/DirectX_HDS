@@ -17,6 +17,7 @@ void Laser::SetLaserScale(float4& _Scale)
 	m_LaserScale = _Scale;
 	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
 	m_TopRender->GetTransform()->SetLocalPosition(float4{ 0.0f, m_LaserScale.y / 2.0f });
+	m_Collision->GetTransform()->SetLocalScale(float4{ m_LaserScale.x / 2.0f , m_LaserScale.y });
 }
 
 void Laser::Start()
@@ -87,17 +88,18 @@ void Laser::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("laser_off").GetFullPath());
 
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+	}
 
-		m_LaserRender->CreateAnimation({ .AnimationName = "laser_idle", .SpriteName = "laser_idle", .Start = 0, .End = 3 ,
+	m_LaserRender->CreateAnimation({ .AnimationName = "laser_idle", .SpriteName = "laser_idle", .Start = 0, .End = 3 ,
 							.FrameInter = 0.03f , .Loop = true , .ScaleToTexture = false });
 
-		m_LaserRender->CreateAnimation({ .AnimationName = "laser_col", .SpriteName = "laser_col", .Start = 0, .End = 1 ,
-							.FrameInter = 0.075f , .Loop = true , .ScaleToTexture = false });
-	}
+	m_LaserRender->CreateAnimation({ .AnimationName = "laser_col", .SpriteName = "laser_col", .Start = 0, .End = 1 ,
+						.FrameInter = 0.075f , .Loop = true , .ScaleToTexture = false });
 
 	m_LaserRender->ChangeAnimation("laser_idle");
 	m_LaserRender->GetTransform()->SetLocalScale(float4{ 4.0f, 460.0f });
 	m_TopRender->SetScaleToTexture("laser_on_00.png");
+	m_TopRender->GetTransform()->SetLocalScale(float4{ 18.0f , 16.0f });
 	// y 축을 스케일 y의 절반으로 하는게.. 
 	m_TopRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 230.0f });
 }
