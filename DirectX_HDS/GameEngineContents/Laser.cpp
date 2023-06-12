@@ -16,7 +16,7 @@ void Laser::SetLaserScale(float4& _Scale)
 {
 	m_LaserScale = _Scale;
 	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
-	m_TopRender->GetTransform()->SetLocalScale(float4{ 0.0f, m_LaserScale.y / 2.0f });
+	m_TopRender->GetTransform()->SetLocalPosition(float4{ 0.0f, m_LaserScale.y / 2.0f });
 }
 
 void Laser::Start()
@@ -66,7 +66,7 @@ void Laser::ComponentSetting()
 	m_LaserRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::LASER);
 	m_TopRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::LASER);
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::LASER);
-	m_Collision->GetTransform()->SetLocalScale(float4{ 4.0f, 460.0f });
+	m_Collision->GetTransform()->SetLocalScale(float4{ 2.0f, 460.0f });
 }
 
 void Laser::LoadAndCreateAnimation()
