@@ -175,13 +175,6 @@ void Player::NextPosUpdate()
 
 void Player::Update(float _DeltaTime)
 {
-	// 디버그용 임시 
-	if (true == GameEngineInput::IsDown("player_debug_move"))
-	{
-		float4 MovePos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
-		GetTransform()->SetLocalPosition(MovePos);
-	}
-
 	// 디버그 업데이트
 	DebugUpdate();
 
@@ -393,6 +386,13 @@ void Player::DirCheck()
 // ---------------------------------------- Debug -----------------------------------------
 void Player::DebugUpdate()
 {
+	// 디버그용
+	if (true == GameEngineInput::IsDown("player_debug_move"))
+	{
+		float4 MovePos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
+		GetTransform()->SetLocalPosition(MovePos);
+	}
+
 	if (true == GameEngineInput::IsDown("player_debugswitch"))
 	{
 		DebugSwitch();

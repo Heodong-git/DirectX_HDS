@@ -40,6 +40,60 @@ public:
 
 InitColFunction InitFunction;
 
+void TransformData::LocalCalculration()
+{
+	ScaleMatrix.Scale(Scale);
+
+	Rotation.w = 0.0f;
+	Quaternion = Rotation.EulerDegToQuaternion();
+	RotationMatrix = Quaternion.QuaternionToRotationMatrix();
+	PositionMatrix.Pos(Position);
+
+	LocalWorldMatrix = ScaleMatrix * RotationMatrix * PositionMatrix;
+}
+
+void TransformData::WorldCalculration(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
+{
+	float4 PScale, PRotation, PPosition;
+	_Parent.Decompose(PScale, PRotation, PPosition);
+
+
+	if (true == AbsoluteScale)
+	{
+		PScale = float4::One;
+	}
+	if (true == AbsoluteRotation)
+	{
+		// 부모의 회전 
+		PRotation = float4::Zero;
+		PRotation.EulerDegToQuaternion();
+	}
+	if (true == AbsolutePosition)
+	{
+		PPosition = float4::Zero;
+	}
+
+	float4x4 MatScale, MatRot, MatPos;
+
+	//scale
+	MatScale.Scale(PScale);
+
+	//rot
+	MatRot = PRotation.QuaternionToRotationMatrix();
+
+	//pos
+	MatPos.Pos(PPosition);
+
+	WorldMatrix = LocalWorldMatrix * (MatScale * MatRot * MatPos);
+}
+
+void TransformData::SetViewAndProjection(const float4x4& _View, const float4x4& _Projection)
+{
+	View = _View;
+	Projection = _Projection;
+	WorldViewProjectionMatrix = WorldMatrix * View * Projection;
+}
+
 bool GameEngineTransform::SphereToSpehre(const CollisionData& _Left, const CollisionData& _Right)
 {
 	return _Left.SPHERE.Intersects(_Right.SPHERE);
@@ -189,15 +243,7 @@ GameEngineTransform::~GameEngineTransform()
 
 void GameEngineTransform::TransformUpdate()
 {
-	TransData.ScaleMatrix.Scale(TransData.Scale);
-
-	TransData.Rotation.w = 0.0f;
-	TransData.Quaternion = TransData.Rotation.EulerDegToQuaternion();
-	TransData.RotationMatrix = TransData.Quaternion.QuaternionToRotationMatrix();
-	TransData.PositionMatrix.Pos(TransData.Position);
-
-	TransData.LocalWorldMatrix = TransData.ScaleMatrix * TransData.RotationMatrix * TransData.PositionMatrix;
-
+	TransData.LocalCalculration();
 
 	if (nullptr == Parent)
 	{
@@ -217,37 +263,7 @@ void GameEngineTransform::TransformUpdate()
 void GameEngineTransform::WorldCalculation()
 {
 	float4x4 ParentWorldMatrix = Parent->GetWorldMatrixRef();
-	float4 PScale, PRotation, PPosition;
-	ParentWorldMatrix.Decompose(PScale, PRotation, PPosition);
-
-
-	if (true == AbsoluteScale)
-	{
-		PScale = float4::One;
-	}
-	if (true == AbsoluteRotation)
-	{
-		// 부모의 회전 
-		PRotation = float4::Zero;
-		PRotation.EulerDegToQuaternion();
-	}
-	if (true == AbsolutePosition)
-	{
-		PPosition = float4::Zero;
-	}
-
-	float4x4 MatScale, MatRot, MatPos;
-
-	//scale
-	MatScale.Scale(PScale);
-
-	//rot
-	MatRot = PRotation.QuaternionToRotationMatrix();
-
-	//pos
-	MatPos.Pos(PPosition);
-
-	TransData.WorldMatrix = TransData.LocalWorldMatrix * (MatScale * MatRot * MatPos);
+	TransData.WorldCalculration(ParentWorldMatrix, AbsoluteScale, AbsoluteRotation, AbsolutePosition);
 }
 
 void GameEngineTransform::LocalDecompose()

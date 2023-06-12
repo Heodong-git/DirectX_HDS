@@ -51,13 +51,14 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _Delta) override;
 
 private:
 	ColType Type = ColType::OBBBOX2D;
 
 	//#ifdef _DEBUG
 	GameEngineCamera* DebugCamera = nullptr;
+
+	void DebugRender(float _DeltaTime);
 };
 
 

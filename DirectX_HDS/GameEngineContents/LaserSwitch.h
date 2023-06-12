@@ -30,8 +30,6 @@ private:
 		m_IsOn = !m_IsOn;
 	}
 
-
-
 	// ¸®¼Â 
 	virtual void Reset() override;
 

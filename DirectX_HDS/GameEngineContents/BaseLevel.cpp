@@ -32,7 +32,9 @@ void BaseLevel::Start()
 {
 	if (false == GameEngineInput::IsKey("SetLimitTime"))
 	{
+		// 디버그용 
 		GameEngineInput::CreateKey("SetLimitTime", VK_F2);
+		GameEngineInput::CreateKey("DebugRenderSwitch", 'Q');
 	}
 
 	// 카메라위치, 투영, Sort 세팅
@@ -105,6 +107,11 @@ void BaseLevel::DebugUpdate()
 	if (true == GameEngineInput::IsDown("SetLimitTime"))
 	{
 		SetLimitTime(1.0f);
+	}
+
+	if (true == GameEngineInput::IsDown("DebugRenderSwitch"))
+	{
+		IsDebugSwitch();
 	}
 
 	// Q 만 여기서. 

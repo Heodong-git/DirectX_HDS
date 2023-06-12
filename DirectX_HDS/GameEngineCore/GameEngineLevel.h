@@ -64,7 +64,7 @@ public:
 			Name = Info.name();
 			Name.replace(0, 6, "");
 		}
-
+		
 		// 생성한 액터 초기화
 		ActorInit(NewActor, _Order, this);
 

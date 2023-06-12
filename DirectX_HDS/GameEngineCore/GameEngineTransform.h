@@ -4,12 +4,13 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include "GameEngineObjectBase.h"
 
-// 충돌의 타입을 명시할 enum class 
 enum class ColType
 {
-	SPHERE2D,		// z를 0으로 만들고 충돌
-	AABBBOX2D,		// z를 0으로 만들고 충돌
-	OBBBOX2D,		// z를 0으로 만들고 충돌
+	// 캡슐
+	// 2D에서의 충돌은 모두가 한축이 같아야 한다.
+	SPHERE2D, // z를 0으로 만들고 충돌
+	AABBBOX2D, // z를 0으로 만들고 충돌
+	OBBBOX2D, // z를 0으로 만들고 충돌
 	SPHERE3D,
 	AABBBOX3D,
 	OBBBOX3D,
@@ -21,7 +22,6 @@ class CollisionData
 public:
 	union
 	{
-		// 컬리전데이터 자체는 유니온을 활용하여 각각의 타입으로 볼 수 있다. 
 		DirectX::BoundingSphere SPHERE;
 		DirectX::BoundingBox AABB;
 		DirectX::BoundingOrientedBox OBB;
@@ -43,9 +43,7 @@ public:
 class CollisionParameter
 {
 public:
-	// 충돌할 트랜스폼의 정보 
 	class GameEngineTransform* _OtherTrans = nullptr;
-	// this 와 other 의 충돌 기본값은 구 충돌을 기본으로 한다. 
 	ColType ThisType = ColType::SPHERE3D;
 	ColType OtherType = ColType::SPHERE3D;
 };
@@ -77,6 +75,13 @@ struct TransformData
 	float4x4 Projection;
 	float4x4 ViewPort;
 	float4x4 WorldViewProjectionMatrix;
+
+	void WorldCalculration(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
+
+	void LocalCalculration();
+
+	void SetViewAndProjection(const float4x4& _View, const float4x4& _Projection);
+
 
 public:
 	TransformData()
@@ -174,6 +179,7 @@ public:
 		AbsolutePosition = false;
 		TransData.Position = _Value;
 
+
 		TransformUpdate();
 		CalChild();
 	}
@@ -207,6 +213,7 @@ public:
 	{
 		SetWorldPosition(TransData.Position + _Value);
 	}
+
 
 	float4 GetWorldForwardVector()
 	{
@@ -263,24 +270,6 @@ public:
 		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
 
-
-
-	//float4 GetWorldPosition()
-	//{
-	//	return WorldPosition;
-	//}
-
-	//float4 GetWorldScale()
-	//{
-	//	return WorldScale;
-	//}
-
-	//float4 GetWorldRotation()
-	//{
-	//	return WorldRotation;
-	//}
-
-
 	float4x4 GetLocalWorldMatrix()
 	{
 		return TransData.LocalWorldMatrix;
@@ -313,9 +302,7 @@ public:
 
 	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
-		TransData.View = _View;
-		TransData.Projection = _Projection;
-		TransData.WorldViewProjectionMatrix = TransData.WorldMatrix * TransData.View * TransData.Projection;
+		TransData.SetViewAndProjection(_View, _Projection);
 	}
 
 	inline const void SetViewPort(const float4x4& _ViewPort)
@@ -327,6 +314,21 @@ public:
 	void CalChild();
 
 	void SetParent(GameEngineTransform* _Parent, bool _IsParentWorld = true);
+
+	bool IsAbsoluteScale()
+	{
+		return  AbsoluteScale;
+	}
+	bool IsAbsoluteRotation()
+	{
+		return  AbsoluteRotation;
+	}
+	bool IsAbsolutePosition()
+	{
+		return  AbsolutePosition;
+	}
+
+
 
 	GameEngineTransform* GetParent()
 	{
@@ -351,11 +353,14 @@ public:
 protected:
 
 private:
+
 	void WorldDecompose();
 	void LocalDecompose();
-	
+
 	void WorldCalculation();
+
 	void AbsoluteReset();
+
 	void TransformUpdate();
 
 	TransformData TransData;
@@ -366,7 +371,6 @@ private:
 
 	GameEngineTransform* Parent = nullptr;
 	std::list<GameEngineTransform*> Child;
-
 
 private:
 	void AllAccTime(float _DeltaTime);
@@ -388,8 +392,9 @@ private:
 
 	GameEngineObject* Master = nullptr;
 
-	public:
-		bool Collision(const CollisionParameter& Data);
+
+public:
+	bool Collision(const CollisionParameter& Data);
 
 private:
 	friend class InitColFunction;
