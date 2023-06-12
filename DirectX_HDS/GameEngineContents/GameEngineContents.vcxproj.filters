@@ -150,6 +150,9 @@
     <ClInclude Include="FanBlade.h">
       <Filter>02.Actor\13.FanBlade</Filter>
     </ClInclude>
+    <ClInclude Include="LaserSwitch.h">
+      <Filter>02.Actor\12.Laser\Switch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -300,6 +303,9 @@
     <ClCompile Include="FanBlade.cpp">
       <Filter>02.Actor\13.FanBlade</Filter>
     </ClCompile>
+    <ClCompile Include="LaserSwitch.cpp">
+      <Filter>02.Actor\12.Laser\Switch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -430,6 +436,9 @@
     </Filter>
     <Filter Include="02.Actor\13.FanBlade">
       <UniqueIdentifier>{133a99b0-356d-4853-9a67-a7da293f8c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\12.Laser\Switch">
+      <UniqueIdentifier>{8cd8fdef-bda5-4454-ba60-d70806bc6df1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

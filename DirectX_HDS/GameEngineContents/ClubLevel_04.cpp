@@ -176,6 +176,7 @@ void ClubLevel_04::CreateObjAndInit()
 	}
 
 	// 우측 레이저에 세개 더붙여준다
+	// 부모까지 세팅해주어야함 
 	{
 		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
 		NewLaser->GetTransform()->SetLocalPosition(float4{ 270.0f , 370.0f });
@@ -195,6 +196,49 @@ void ClubLevel_04::CreateObjAndInit()
 		NewLaser->SetLaserScale(Scale);
 	}
 	
+	// 좌측 
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -815.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -840.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -865.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -890.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -915.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -940.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Laser> NewLaser = CreateActor<Laser>(static_cast<int>(RenderOrder::LASER), "Laser");
+		NewLaser->GetTransform()->SetLocalPosition(float4{ -965.0f , 370.0f });
+		float4 Scale = float4{ 5.0f , 190.0f };
+		NewLaser->SetLaserScale(Scale);
+	}
 }
 
 void ClubLevel_04::GUISetting()

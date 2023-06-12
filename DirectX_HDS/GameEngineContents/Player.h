@@ -167,8 +167,8 @@ private:
 	float4 m_RightRollDir = float4 { 200.0f , 0.0f};
 
 	// Flip , 
-	float4 m_LeftFlipDir = float4{ -200.0f, 220.0f };
-	float4 m_RightFlipDir = float4{ 200.0f , 220.0f };
+	float4 m_LeftFlipDir = float4{ -200.0f, 170.0f };
+	float4 m_RightFlipDir = float4{ 200.0f , 170.0f };
 	const float m_FlipMaxTime = 0.25f;
 	float m_FlipTime = 0.25f;
 
