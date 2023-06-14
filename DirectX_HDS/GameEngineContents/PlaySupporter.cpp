@@ -343,8 +343,9 @@ void PlaySupporter::ComponentSetting()
 	g_ClearRender->GetTransform()->SetLocalScale(ScreenSize);
 	g_ClearRender->Off();
 
+	// 일단 임시로 크기를 키워둠 
 	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
-	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize);
+	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize * 4.0f);
 }
 
 void PlaySupporter::SaveCameraRange()

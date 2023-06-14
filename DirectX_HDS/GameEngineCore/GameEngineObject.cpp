@@ -121,7 +121,10 @@ bool GameEngineObject::IsUpdate()
 
 void GameEngineObject::AllDestroy()
 {
-	Destroy();
+	if (true == IsDeath())
+	{
+		Destroy();
+	}
 
 	for (std::shared_ptr<GameEngineObject> Object : Childs)
 	{
