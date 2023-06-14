@@ -4,6 +4,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineCamera.h>
 
 #include "BaseLevel.h"
 #include "Player.h"
@@ -61,6 +62,7 @@ void PlaySupporter::Update(float _DeltaTime)
 void PlaySupporter::Render(float _DeltaTime)
 {
 }
+
 
 void PlaySupporter::CameraMovement(float _DeltaTime)
 {

@@ -47,9 +47,14 @@ public:
 	}
 
 	// 플레이어의 메인렌더러 반환 
-	std::shared_ptr<class GameEngineSpriteRenderer> GetRender() const
+	const std::shared_ptr<class GameEngineSpriteRenderer> GetRender() const
 	{
 		return m_Render;
+	}
+
+	const std::shared_ptr<class GameEngineCollision> GetCollision() const
+	{
+		return m_Collision;
 	}
 
 	inline const bool GetDir() const

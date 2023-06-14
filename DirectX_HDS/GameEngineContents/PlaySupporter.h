@@ -30,7 +30,10 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 
+
 	void CameraMovement(float _DeltaTime);
+	
 	bool PlayerDeathCheck();
 	void LevelResetCheck();
 
@@ -38,10 +41,8 @@ private:
 	const float m_MoveSpeed = 200.0f;
 	
 	void ComponentSetting();
-
 	void SaveCameraRange();
 	void LoadResources();
-
 
 	// 좌상단, 우상단, 좌하단 , 우하단 순서로 
 	std::map<int, std::vector<float4>> m_MapRanges = std::map<int, std::vector<float4>>();

@@ -59,6 +59,7 @@ void Monster_Gangster::Update(float _DeltaTime)
 	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 	if (nullptr != Col)
 	{
+		GetLevel()->GetMainCamera()->SetZoomRatio(0.9f);
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();

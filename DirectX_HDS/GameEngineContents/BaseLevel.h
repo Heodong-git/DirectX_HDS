@@ -174,7 +174,12 @@ protected:
 	std::shared_ptr<class Map> m_Map = nullptr;
 	// 푸시액터
 	void Push_ResetActor(std::shared_ptr<class BaseActor> _Actor);
+
 	// 리셋이 필요한 액터를 저장, 액터생성시에 초기화해야하는 액터를 자료구조에 저장한다.
+	std::vector <std::shared_ptr<class BaseActor>>& GetResetActors()
+	{
+		return m_ResetActors;
+	}
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
 	
 private:

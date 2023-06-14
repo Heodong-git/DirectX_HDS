@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "Player.h"
+#include "PlaySupporter.h"
 
 #include "SlashLaser_Effect.h"
 
@@ -90,11 +91,7 @@ void SlashEffect::ComponentSetting()
 
 void SlashEffect::CollisionUpdate(float _DeltaTime)
 {
-	// 이펙트가 몬스터와 충돌했다면 
-	// 개그지같이만들엇네 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
-	// 여기 들어오면 충돌 한거고. 
 	if (nullptr != Col)
 	{
 		// 충돌한 몬스터의 좌표 

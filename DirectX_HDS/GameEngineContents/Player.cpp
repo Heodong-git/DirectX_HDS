@@ -936,14 +936,11 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
-	// 이동중 공중상태가 된다면 fall로 전환 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
 	{
-		// 얘가 nullptr이 아니라면 
 		std::shared_ptr<GameEngineCollision> PlatformCol = m_Collision->Collision(ColOrder::PLATFORM, ColType::AABBBOX2D, ColType::AABBBOX2D);
-
 	
 		if (true == GameEngineInput::IsDown("player_slash"))
 		{
