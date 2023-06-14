@@ -39,6 +39,8 @@ void Laser::Render(float _DeltaTime)
 void Laser::Reset()
 {
 	m_CurState = LaserState::IDLE;
+	m_LaserRender->ChangeAnimation("laser_idle");
+	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
 }
 
 void Laser::DebugUpdate()
