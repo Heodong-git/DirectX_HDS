@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 
+// 단순하게 레벨별 카메라 초기위치만 세팅 
 class CameraSetter : public BaseActor
 {
 public:

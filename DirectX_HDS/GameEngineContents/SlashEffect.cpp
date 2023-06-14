@@ -89,11 +89,19 @@ void SlashEffect::ComponentSetting()
 	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(3), std::bind(&SlashEffect::CollisionOff, this));
 }
 
+// 현재 몬스터, 문은 경직완료 
 void SlashEffect::CollisionUpdate(float _DeltaTime)
 {
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Col)
 	{
+		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+		PlaySupporter::MainSupporter->CameraZoomEffect(0.99f);
+
+		// 그리고 한프레임만 델타타임을 느리게 하고싶은데 
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 0.45f);
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 0.27f);
+
 		// 충돌한 몬스터의 좌표 
 		float4 ColPos = Col->GetTransform()->GetParent()->GetLocalPosition();
 		const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
@@ -130,6 +138,14 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 		Effect->GetTransform()->SetLocalPosition({ EffectX , EffectY });
 		Effect->SetMovePos(ColPos);
 	}
+
+	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != DoorCol)
+	{
+		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+		PlaySupporter::MainSupporter->CameraZoomEffect(0.99f);
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 0.27f);
+	}
 }
 
 void SlashEffect::MoveUpdate(float _DeltaTime)
@@ -140,6 +156,9 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 		if (m_Render->IsAnimationEnd())
 		{
 			this->Death();
+			PlaySupporter::MainSupporter->CameraZoomEffect(1.0f);
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 1.0f);
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 1.0f);
 			return;
 		}
 	}

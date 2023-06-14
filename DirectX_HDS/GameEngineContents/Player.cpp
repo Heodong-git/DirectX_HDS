@@ -2395,6 +2395,7 @@ void Player::LeftWallEnd()
 void Player::DoorBreakStart()
 {
 	DirCheck();
+	GetLevel()->GetMainCamera()->SetZoomRatio(0.975f);
 	m_Render->ChangeAnimation("player_doorbreak_full");
 }
 
@@ -2422,6 +2423,8 @@ void Player::DoorBreakUpdate(float _DeltaTime)
 
 void Player::DoorBreakEnd()
 {
+	// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+	GetLevel()->GetMainCamera()->SetZoomRatio(1.00f);
 }
 
 // 일단 보류

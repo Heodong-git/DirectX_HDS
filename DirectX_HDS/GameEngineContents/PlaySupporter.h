@@ -24,14 +24,13 @@ public:
 	static std::shared_ptr<class GameEngineUIRenderer> g_ClearRender;
 	static std::shared_ptr<class GameEngineCollision>  g_MouseCheckCollision;
 
+	void CameraZoomEffect(const float _Ratio);
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	// 
-
 	void CameraMovement(float _DeltaTime);
 	
 	bool PlayerDeathCheck();
