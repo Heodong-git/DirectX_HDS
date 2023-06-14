@@ -61,5 +61,6 @@ void ColEventObj::ComponentSetting()
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::STAGE_COL_OBJ);
 	m_Collision->GetTransform()->SetLocalScale({ 50.0f, 200.0f });
 	m_Collision->GetTransform()->AddLocalPosition({ 0.0f, 75.0f });
+	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOn();
 }

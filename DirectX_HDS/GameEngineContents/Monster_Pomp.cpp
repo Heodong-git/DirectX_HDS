@@ -120,6 +120,7 @@ void Monster_Pomp::ComponentSetting()
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, m_ColPivot });
+	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOff();
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();

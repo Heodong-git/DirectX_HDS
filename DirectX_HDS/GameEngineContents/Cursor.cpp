@@ -86,6 +86,7 @@ void Cursor::Update(float _DeltaTime)
 				m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::CURSOR));
 				m_Collision->GetTransform()->SetLocalPosition(GetReturnCastLevel()->GetMainCamera()->GetTransform()->GetLocalPosition());
 				m_Collision->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize());
+				m_Collision->SetColType(ColType::OBBBOX3D);
 			}
 			
 			else if (nullptr != m_Collision)

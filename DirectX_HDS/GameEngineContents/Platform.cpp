@@ -62,6 +62,7 @@ void Platform::DebugUpdate()
 void Platform::ComponentSetting()
 {
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLATFORM);
+	m_Collision->SetColType(ColType::OBBBOX3D);
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale(float4{ 2 , 2 });

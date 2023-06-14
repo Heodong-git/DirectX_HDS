@@ -346,6 +346,7 @@ void PlaySupporter::ComponentSetting()
 	// 일단 임시로 크기를 키워둠 
 	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
 	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize * 4.0f);
+	g_MouseCheckCollision->SetColType(ColType::OBBBOX3D);
 }
 
 void PlaySupporter::SaveCameraRange()

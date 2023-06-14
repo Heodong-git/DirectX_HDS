@@ -444,6 +444,8 @@ void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 
 void GameEngineLevel::AllActorDestroy()
 {
+	DestroyCamera();
+
 	{
 		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
@@ -468,3 +470,13 @@ void GameEngineLevel::AllActorDestroy()
 
 	LevelCameraInit();
 }
+
+void GameEngineLevel::DestroyCamera()
+{
+	for (std::pair<int, std::shared_ptr<GameEngineCamera>> _Cam : Cameras)
+	{
+		_Cam.second->Renderers.clear();
+	}
+	Cameras.clear();
+}
+

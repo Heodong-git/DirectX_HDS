@@ -68,6 +68,7 @@ void Laser::ComponentSetting()
 	m_TopRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::LASER);
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::LASER);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 2.0f, 460.0f });
+	m_Collision->SetColType(ColType::OBBBOX3D);
 }
 
 void Laser::LoadAndCreateAnimation()

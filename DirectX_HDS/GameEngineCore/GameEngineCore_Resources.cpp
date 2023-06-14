@@ -238,8 +238,8 @@ void GameEngineCore::CoreResourcesInit()
 
 		VBVector.push_back(V);
 
-		UINT iStackCount = 40; // 가로 분할 개수입니다.
-		UINT iSliceCount = 40; // 세로분할 개수
+		UINT iStackCount = 16; // 가로 분할 개수입니다.
+		UINT iSliceCount = 16; // 세로분할 개수
 
 		float yRotAngle = GameEngineMath::PIE / (float)iStackCount;
 		float zRotAngle = (GameEngineMath::PIE * 2) / (float)iSliceCount;

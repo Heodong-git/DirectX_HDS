@@ -112,6 +112,7 @@ protected:
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);
 
+	void AllActorDestroy();
 private:
 	static bool IsDebugRender;
 	// 모든 카메라의 내용이 다 종합된.
@@ -143,8 +144,8 @@ private:
 	void ActorLevelChangeEnd();
 
 	void LevelCameraInit();
-	void AllActorDestroy();
 
+	void DestroyCamera();
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 };

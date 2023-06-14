@@ -81,8 +81,9 @@ void SlashEffect::ComponentSetting()
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::PLAYER_ATTACK);
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalRotation({ 0 , 0 , m_Angle });
+	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOn();
-
+	
 	// 이벤트추가
 	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(3), std::bind(&SlashEffect::CollisionOff, this));
 }

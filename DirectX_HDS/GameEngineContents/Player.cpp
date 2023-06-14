@@ -315,12 +315,14 @@ void Player::ComponentSetting()
 	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
+	m_Collision->SetColType(ColType::OBBBOX2D);
 	m_Collision->DebugOff();
 
 	// 서브 콜리전 체크용 이게 맞는진 모르겠는데 일단 이렇게 
 	m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
+	m_SubCollision->SetColType(ColType::OBBBOX3D);
 	m_SubCollision->DebugOff();
 
 	// --------------------------- Debug Render ------------------------------

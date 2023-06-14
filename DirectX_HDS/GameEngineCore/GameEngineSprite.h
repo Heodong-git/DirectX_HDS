@@ -92,14 +92,14 @@ public:
 		return ReLoad(_Path, NewPath.GetFileName());
 	}
 
-
 	static std::shared_ptr<GameEngineSprite> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineSprite> NewTexture = GameEngineResource<GameEngineSprite>::Find(_Name);
 
 		if (nullptr == NewTexture)
-		{
-			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
+		{	
+			// 리로드할 스프라이트가 존재하지 않는다면 로드폴더를 하도록 수정 
+			return LoadFolder(_Name.data(), _Path);
 		}
 
 		NewTexture->ReLoad();

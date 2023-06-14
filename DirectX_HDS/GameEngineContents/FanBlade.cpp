@@ -131,6 +131,7 @@ void FanBlade::ComponentSetting()
 	m_FanRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::FANBLADE);
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::FANBLADE);
+	m_Collision->SetColType(ColType::OBBBOX3D);
 
 	m_Collision->GetTransform()->SetLocalScale(float4{ 50.0f, 120.0f });
 	m_Collision->GetTransform()->AddLocalPosition(float4{ -2.0f, 77.0f });
