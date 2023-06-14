@@ -63,6 +63,7 @@ void Monster_Grunt::Update(float _DeltaTime)
 		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
 
 		m_Collision->Off();
+		m_ChaseCollision->Off();
 
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
@@ -122,6 +123,12 @@ void Monster_Grunt::ComponentSetting()
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOff();
 
+	m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
+	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 200.0f, 0.5f });
+	m_ChaseCollision->GetTransform()->SetLocalPosition({ 100.0f, m_ColPivot });
+	m_ChaseCollision->SetColType(ColType::OBBBOX3D);
+	m_ChaseCollision->DebugOff();
+
 	// 디버그렌더
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4,  4 });
@@ -174,8 +181,24 @@ void Monster_Grunt::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "grunt_walk", .SpriteName = "grunt_walk", .Start = 0, .End = 9 ,
 							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
 
-	m_MainRender->ChangeAnimation("grunt_turn");
+	m_MainRender->ChangeAnimation("grunt_idle");
 }
+
+bool Monster_Grunt::ChaseRangeCheck()
+{
+	// 플레이어와 나의 체이스용 충돌체가 충돌했는지 확인 
+	if (nullptr != m_ChaseCollision)
+	{
+		std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PLAYER , ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != Col)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 void Monster_Grunt::Reset()
 {
@@ -185,6 +208,7 @@ void Monster_Grunt::Reset()
 	if (false == m_Collision->IsUpdate())
 	{
 		m_Collision->On();
+		m_ChaseCollision->On();
 	}
 	ResetDir();
 }
@@ -305,6 +329,11 @@ void Monster_Grunt::IdleStart()
 
 void Monster_Grunt::IdleUpdate(float _DeltaTime)
 {
+	if (true == ChaseRangeCheck())
+	{
+		ChangeState(GruntState::CHASE);
+		return;
+	}
 }
 
 void Monster_Grunt::IdleEnd()
@@ -325,10 +354,37 @@ void Monster_Grunt::WalkEnd()
 
 void Monster_Grunt::ChaseStart()
 {
+	DirCheck();
+	m_MainRender->ChangeAnimation("grunt_run");
 }
 
 void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 {
+	// 이렇게 쫓아가다가 플레이어가 범위 내 에 들어오게 되면 공격 스테이트로 전환 
+	// 일단 쫓아가게 
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float4 MoveDir = PlayerPos - MyPos;
+
+	// 이때 x 값이 나보다 크다면
+	if (PlayerPos.x > MyPos.x)
+	{
+		m_Direction = 1;
+		GetTransform()->SetLocalPositiveScaleX();
+
+	}
+	else if (PlayerPos.x <= MyPos.x)
+	{
+		m_Direction = -1;
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	MoveDir.y = 0.0f;
+	MoveDir.Normalize();
+
+	
+
+	GetTransform()->AddWorldPosition(MoveDir * m_MoveSpeed * _DeltaTime);
 }
 
 void Monster_Grunt::ChaseEnd()
@@ -337,6 +393,7 @@ void Monster_Grunt::ChaseEnd()
 
 void Monster_Grunt::HitGroundStart()
 {
+	DirCheck();
 	m_MainRender->ChangeAnimation("grunt_hurtground");
 }
 

@@ -42,12 +42,20 @@ private:
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
-	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
+
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
+	
 private:
+	bool ChaseRangeCheck();
+
 	// È÷Æ®ÀÌÆåÆ® ÇÇº¿
 	float m_HitEffectPivot = 20.0f;
+
+	// ´É·ÂÄ¡
+	float m_MoveSpeed = 200.0f;
 
 	// ·»´õ 
 	float m_RenderPivot = 38.0f;
