@@ -334,6 +334,13 @@ void Monster_Grunt::IdleUpdate(float _DeltaTime)
 		ChangeState(GruntState::CHASE);
 		return;
 	}
+
+	// 생존시간이 2초가 넘었다면 
+	if (3.0f <= GetLiveTime())
+	{
+		ChangeState(GruntState::WALK);
+		return;
+	}
 }
 
 void Monster_Grunt::IdleEnd()
@@ -342,10 +349,16 @@ void Monster_Grunt::IdleEnd()
 
 void Monster_Grunt::WalkStart()
 {
+	m_MainRender->ChangeAnimation("grunt_walk");
 }
 
 void Monster_Grunt::WalkUpdate(float _DeltaTime)
 {
+	if (true == ChaseRangeCheck())
+	{
+		ChangeState(GruntState::CHASE);
+		return;
+	}
 }
 
 void Monster_Grunt::WalkEnd()
@@ -379,11 +392,10 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
+	// 만약, 플레이어가 공격범위 안에 있다면 Attack State 로 변경
+
 	MoveDir.y = 0.0f;
 	MoveDir.Normalize();
-
-	
-
 	GetTransform()->AddWorldPosition(MoveDir * m_MoveSpeed * _DeltaTime);
 }
 

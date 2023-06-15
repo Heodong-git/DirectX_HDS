@@ -399,7 +399,7 @@ void Player::DebugUpdate()
 	{
 		DebugSwitch();
 
-		if (nullptr != m_Collision)
+		/*if (nullptr != m_Collision)
 		{
 			if (true == m_Collision->IsDebug())
 			{
@@ -412,7 +412,7 @@ void Player::DebugUpdate()
 				m_Collision->DebugOn();
 				m_SubCollision->DebugOn();
 			}
-		}
+		}*/
 
 		if (true == IsDebug())
 		{
