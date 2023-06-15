@@ -82,11 +82,23 @@ public:
 		return Textures[_Index];
 	}
 
+	void DepthSettingOn()
+	{
+		DepthSetting = true;
+	}
+
+	void DepthSettingOff()
+	{
+		DepthSetting = false;
+	}
+
 protected:
 
 private:
 	static void RenderTargetUnitInit();
 	static GameEngineRenderUnit MergeUnit;
+
+	bool DepthSetting = true;
 
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
 

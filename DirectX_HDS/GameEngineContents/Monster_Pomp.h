@@ -58,13 +58,13 @@ private:
 	virtual void Reset() override;
 	inline void ResetDir()
 	{
-		m_Direction = -1;
+		m_Direction = true;
 	}
 
 	// 방향
 	// + 오른쪽 
 	// - 왼쪽
-	int m_Direction = -1;
+	bool m_Direction = true;
 	void DirCheck();
 
 	// 상태값 변경

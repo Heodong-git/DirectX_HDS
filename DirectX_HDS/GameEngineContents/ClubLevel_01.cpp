@@ -22,6 +22,7 @@
 #include "Monster_Gangster.h"
 #include "Monster_Grunt.h"
 #include "Platform.h"
+#include "Partition.h"
 
 ClubLevel_01::ClubLevel_01()
 {
@@ -125,6 +126,21 @@ void ClubLevel_01::CreateObjAndInit()
 		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
 		NewPlatform->GetTransform()->SetLocalPosition(float4{ 170.0f , 100.0f });
 		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 500.0f, 10.0f });
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -800.0f , 34.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 79.0f , 34.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 820.0f , 34.0f };
+		ActorInit(PartitionObj, InitPos);
 	}
 }
 

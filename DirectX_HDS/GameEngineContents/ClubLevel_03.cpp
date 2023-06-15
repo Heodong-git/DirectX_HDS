@@ -18,6 +18,7 @@
 #include "Monster_Grunt.h"
 #include "Monster_Gangster.h"
 #include "Monster_Pomp.h"
+#include "Partition.h"
 
 
 
@@ -161,6 +162,51 @@ void ClubLevel_03::CreateObjAndInit()
 		std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
 		float4 InitPos = { 329.61f, -518.93f };
 		ActorInit(Monster, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -709.0f , 173.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 573.0f , 173.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -709.0f , -172.2f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 673.0f  , -172.2f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -710.0f  , -518.93f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 743.0f  , -518.93f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 36.0f  , -172.2f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 36.0f  , -518.2f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 36.0f  , 171.2f };
+		ActorInit(PartitionObj, InitPos);
 	}
 }
 

@@ -19,6 +19,7 @@
 #include "Monster_Grunt.h"
 #include "Laser.h"
 #include "FanBlade.h"
+#include "Partition.h"
 
 ClubLevel_02::ClubLevel_02()
 {
@@ -124,6 +125,16 @@ void ClubLevel_02::CreateObjAndInit()
 		std::shared_ptr<FanBlade> NewFanBlade = CreateActor<FanBlade>(static_cast<int>(RenderOrder::FANBLADE), "FanBlade");
 		float4 InitPos = float4{ 634.0f, 144.0f };
 		ActorInit(NewFanBlade, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -537.0f , -137.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 219.0f , -137.0f };
+		ActorInit(PartitionObj, InitPos);
 	}
 
 }

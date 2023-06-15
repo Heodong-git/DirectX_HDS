@@ -82,6 +82,13 @@ void GameEngineRenderTarget::Setting()
 	ID3D11DepthStencilView* DSV
 		= DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
+	// false로 설정하면 깊이버퍼 사용 X 
+	if (false == DepthSetting)
+	{
+		DSV = nullptr;
+	}
+
+
 	// 현시점에서는 z 값 사용 X 
 	GameEngineDevice::GetContext()->OMSetRenderTargets(1, RTV, DSV);
 }

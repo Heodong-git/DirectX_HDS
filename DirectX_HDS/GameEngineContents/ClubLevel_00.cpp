@@ -28,6 +28,10 @@
 #include "FadeEffect.h"
 #include "Partition.h"
 
+// test 개잘됨 
+//#include <GameEngineCore/GameEngineFont.h>
+//#include <GameEngineCore/GameEngineFontRenderer.h>
+
 
 ClubLevel_00::ClubLevel_00()
 {
@@ -51,6 +55,15 @@ void ClubLevel_00::Start()
 	ActorLoad();
 
 	SetState(BaseLevel::LevelState::WAIT);
+
+
+	// 폰트사용시 인터페이스임 
+	/*GameEngineFont::Load("휴먼둥근헤드라인");
+	std::shared_ptr<GameEngineActor> dd = CreateActor<GameEngineActor>();
+	dd->CreateComponent<GameEngineSpriteRenderer>(10);
+	std::shared_ptr<GameEngineFontRenderer> FontRender = dd->CreateComponent<GameEngineFontRenderer>(300);
+	FontRender->SetFont("휴먼둥근헤드라인");
+	FontRender->SetText("죄송합니다~~~~~");*/
 }
 
 void ClubLevel_00::Update(float _DeltaTime)

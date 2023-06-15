@@ -200,13 +200,13 @@ void Monster_Pomp::DirCheck()
 	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함 ㅎㅎ 
 	// 방향체크 
 	// 오른쪽 
-	if (0 < m_Direction)
+	if (true == m_Direction)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	// 왼쪽 
-	else if (0 > m_Direction)
+	else if (false == m_Direction)
 	{
 		GetTransform()->SetLocalNegativeScaleX();
 	}

@@ -221,6 +221,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineEnum.h" />
+    <ClInclude Include="GameEngineFont.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineFontRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineFSM.h" />
     <ClInclude Include="GameEngineGUI.h">
       <SubType>
@@ -357,6 +365,8 @@
     <ClCompile Include="GameEngineDepthState.cpp" />
     <ClCompile Include="GameEngineDevice.cpp" />
     <ClCompile Include="GameEngineDirectBuffer.cpp" />
+    <ClCompile Include="GameEngineFont.cpp" />
+    <ClCompile Include="GameEngineFontRenderer.cpp" />
     <ClCompile Include="GameEngineFSM.cpp" />
     <ClCompile Include="GameEngineGUI.cpp" />
     <ClCompile Include="GameEngineIndexBuffer.cpp" />
@@ -404,14 +414,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl" />
-    <None Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </None>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
@@ -426,14 +438,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Library>
-    <Library Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </Library>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
