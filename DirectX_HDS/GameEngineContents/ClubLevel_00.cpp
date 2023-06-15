@@ -159,6 +159,7 @@ void ClubLevel_00::CreateObjAndInit()
 		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");
 		float4 InitPos = { 70.0f , -94.0f };
 		ActorInit(Monster, InitPos);
+		Monster->ChangeState(GruntState::WALK);
 	}
 	{
 		std::shared_ptr<Monster_Grunt> Monster = CreateActor<Monster_Grunt>(static_cast<int>(RenderOrder::MONSTER), "Grunt");

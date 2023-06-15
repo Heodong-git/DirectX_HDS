@@ -109,6 +109,7 @@ private:
 	bool PlatformColCheck();	 // 플랫폼
 	bool LaserColCheck();		 // 레이저
 	bool FanBladeColCheck();	 // 팬 블레이드 
+	bool HitCheck();			 // 히트체크 
 
 	// 이펙트생성 함수로 만들어서 사용 
 	void CreateSlashEffect();

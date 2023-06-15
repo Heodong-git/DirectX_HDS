@@ -27,6 +27,13 @@ public:
 	Monster_Grunt& operator=(const Monster_Grunt& _Other) = delete;
 	Monster_Grunt& operator=(Monster_Grunt&& _Other) noexcept = delete;
 
+	// 상태값 변경
+	void ChangeState(GruntState _State);
+
+	const bool GetDir() const
+	{
+		return m_Direction;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -47,9 +54,15 @@ private:
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
 	
 private:
+	void CreateEffect();
 	bool ChaseRangeCheck();
+	void Attack();
+	void AttackOff();
+
+	float m_AttackRange = 200.0f;
 
 	// 히트이펙트 피봇
 	float m_HitEffectPivot = 20.0f;
@@ -75,8 +88,7 @@ private:
 	bool m_Direction = false;
 	void DirCheck();
 
-	// 상태값 변경
-	void ChangeState(GruntState _State);
+	
 	// 현재 상태값에 따른 업데이트 
 	void UpdateState(float _DeltaTime);
 

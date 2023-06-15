@@ -20,6 +20,8 @@
 #include "ClubLevel_04.h"
 #include "ClubLevel_Boss.h"
 
+#include "Monster_Grunt.h"
+
 // 카메라
 #include "PlaySupporter.h"
 
@@ -181,6 +183,8 @@ void Player::Update(float _DeltaTime)
 	// 제한시간 초과 체크 
 	TimeOutCheck();
 
+	HitCheck();
+
 	// 스킬 업데이트 
 	SkillUpdate(_DeltaTime);
 
@@ -257,6 +261,21 @@ bool Player::FanBladeColCheck()
 	std::shared_ptr<GameEngineCollision> FanCol = m_SubCollision->Collision(ColOrder::FANBLADE, ColType::AABBBOX2D, ColType::AABBBOX2D);
 	if (nullptr != FanCol)
 	{
+		ChangeState(PlayerState::DEATH);
+		m_Collision->Off();
+		m_SubCollision->Off();
+		return true;
+	}
+
+	return false;
+}
+
+bool Player::HitCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	if (nullptr != Col)
+	{
+		// 나를 데스상태로 
 		ChangeState(PlayerState::DEATH);
 		m_Collision->Off();
 		m_SubCollision->Off();

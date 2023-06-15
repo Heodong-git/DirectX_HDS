@@ -16,7 +16,10 @@ public:
 	GruntEffect& operator=(GruntEffect&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
 
 private:
-
+	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 };
