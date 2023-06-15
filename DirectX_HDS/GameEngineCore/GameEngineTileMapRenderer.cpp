@@ -63,7 +63,7 @@ void GameEngineTileMapRenderer::Clear()
 	Tiles.clear();
 }
 
-void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(int _X, int _Y, const std::string_view& _SpriteName, size_t _Index)
 {
 	if (true == Tiles.empty())
 	{
@@ -181,7 +181,7 @@ void GameEngineTileMapRenderer::Render(float _Delta)
 }
 
 
-void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, int _Index)
+void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_view& _SpriteName, size_t _Index)
 {
 	int X = -1;
 	int Y = -1;
@@ -190,12 +190,12 @@ void GameEngineTileMapRenderer::SetTile(const float4& _Pos, const std::string_vi
 	switch (Mode)
 	{
 	case TileMapMode::Rect:
-		X = _Pos.x / TileSize.x;
-		Y = _Pos.y / TileSize.y;
+		X = static_cast<int>(_Pos.x / TileSize.x);
+		Y = static_cast<int>(_Pos.y / TileSize.y);
 		break;
 	case TileMapMode::Iso:
-		X = (_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2;
-		Y = (-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2;
+		X = static_cast<int>((_Pos.x / TileSizeH.x + -_Pos.y / TileSizeH.y) / 2);
+		Y = static_cast<int>((-_Pos.y / TileSizeH.y - (_Pos.x / TileSizeH.x)) / 2);
 		break;
 	default:
 		break;

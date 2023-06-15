@@ -152,6 +152,9 @@
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -380,6 +383,21 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{e72105da-d41a-45e7-9940-5f3db0b498cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Fw1Font">
+      <UniqueIdentifier>{4cfbfec3-6c08-42b6-bad7-3fd46d473845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin">
+      <UniqueIdentifier>{7864f90c-1bfa-4ea4-9ac8-3f1c1e2e24dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Debug">
+      <UniqueIdentifier>{2cfd4dc7-199f-4a00-8fc4-0c19572447f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Release">
+      <UniqueIdentifier>{95b956c7-bd55-42b3-80c1-e935802cc59e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\Header">
+      <UniqueIdentifier>{b2ed6466-d5f0-49f2-b852-314cd51f2d48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
@@ -391,5 +409,19 @@
     <None Include="ThirdParty\DirectXTex\lib\x64\Release\DirectXTex.lib">
       <Filter>ThirdParty\DirectXTex\bin\Release</Filter>
     </None>
+    <None Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </Library>
+    <Library Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </Library>
   </ItemGroup>
 </Project>

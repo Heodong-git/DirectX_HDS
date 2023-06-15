@@ -14,7 +14,7 @@ class Tile
 {
 public:
 	GameEngineSprite* Sprite;
-	int Index = 0;
+	size_t Index = 0;
 };
 
 // Ό³Έν :
@@ -37,9 +37,9 @@ public:
 
 	void Clear();
 
-	void SetTile(int _X, int _Y, const std::string_view& _SpriteName = "Error", int _Index = 0);
+	void SetTile(int _X, int _Y, const std::string_view& _SpriteName = "Error", size_t _Index = 0);
 
-	void SetTile(const float4& _Pos, const std::string_view& _SpriteName = "Error", int _Index = 0);
+	void SetTile(const float4& _Pos, const std::string_view& _SpriteName = "Error", size_t _Index = 0);
 
 	bool IsOver(int _X, int _Y) const;
 
