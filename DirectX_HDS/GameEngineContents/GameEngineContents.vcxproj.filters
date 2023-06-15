@@ -153,6 +153,9 @@
     <ClInclude Include="LaserSwitch.h">
       <Filter>02.Actor\12.Laser\Switch</Filter>
     </ClInclude>
+    <ClInclude Include="Partition.h">
+      <Filter>02.Actor\14.Partition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -306,6 +309,9 @@
     <ClCompile Include="LaserSwitch.cpp">
       <Filter>02.Actor\12.Laser\Switch</Filter>
     </ClCompile>
+    <ClCompile Include="Partition.cpp">
+      <Filter>02.Actor\14.Partition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -439,6 +445,9 @@
     </Filter>
     <Filter Include="02.Actor\12.Laser\Switch">
       <UniqueIdentifier>{8cd8fdef-bda5-4454-ba60-d70806bc6df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\14.Partition">
+      <UniqueIdentifier>{372e5317-8d78-4e2b-a9a7-66be954616b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

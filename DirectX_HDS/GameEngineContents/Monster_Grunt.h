@@ -55,7 +55,8 @@ private:
 	float m_HitEffectPivot = 20.0f;
 
 	// 능력치
-	float m_MoveSpeed = 200.0f;
+	float m_ChaseMoveSpeed = 250.0f;
+	float m_WalkMoveSpeed = 100.0f;
 
 	// 렌더 
 	float m_RenderPivot = 38.0f;
@@ -66,12 +67,12 @@ private:
 	virtual void Reset() override;
 	inline void ResetDir()
 	{
-		m_Direction = -1;
+		m_Direction = false;
 	}
 	// 방향
 	// + 오른쪽 
 	// - 왼쪽
-	int m_Direction = -1;
+	bool m_Direction = false;
 	void DirCheck();
 
 	// 상태값 변경

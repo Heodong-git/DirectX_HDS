@@ -34,4 +34,5 @@ enum class ColOrder
 	PLATFORM,
 	LASER,
 	FANBLADE,
+	PARTITION,
 };

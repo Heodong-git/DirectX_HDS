@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Monster_Grunt.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
@@ -219,13 +221,13 @@ void Monster_Grunt::DirCheck()
 	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함 ㅎㅎ 
 	// 방향체크 
 	// 오른쪽 
-	if (0 < m_Direction)
+	if (true == m_Direction)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	// 왼쪽 
-	else if (0 > m_Direction)
+	else if (false == m_Direction)
 	{
 		GetTransform()->SetLocalNegativeScaleX();
 	}
@@ -350,6 +352,19 @@ void Monster_Grunt::IdleEnd()
 void Monster_Grunt::WalkStart()
 {
 	m_MainRender->ChangeAnimation("grunt_walk");
+
+	// 여기서 왼쪽오른쪽을 랜덤하게 정해 
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(1,2);
+
+	if (1 == RandomValue)
+	{
+		m_Direction = true;
+	}
+
+	else if (2 == RandomValue)
+	{
+		m_Direction = false;
+	}
 }
 
 void Monster_Grunt::WalkUpdate(float _DeltaTime)
@@ -357,6 +372,19 @@ void Monster_Grunt::WalkUpdate(float _DeltaTime)
 	if (true == ChaseRangeCheck())
 	{
 		ChangeState(GruntState::CHASE);
+		return;
+	}
+
+	// 이때 파티션이나, 문에 충돌했다면 나의 진행방향을 변경한다. 
+	if (true == m_Direction)
+	{
+		GetTransform()->AddLocalPosition(float4::Right * m_WalkMoveSpeed * _DeltaTime);
+		return;
+	}
+
+	else if (false == m_Direction)
+	{
+		GetTransform()->AddLocalPosition(float4::Left * m_WalkMoveSpeed * _DeltaTime);
 		return;
 	}
 }
@@ -382,13 +410,13 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 	// 이때 x 값이 나보다 크다면
 	if (PlayerPos.x > MyPos.x)
 	{
-		m_Direction = 1;
+		m_Direction = true;
 		GetTransform()->SetLocalPositiveScaleX();
 
 	}
 	else if (PlayerPos.x <= MyPos.x)
 	{
-		m_Direction = -1;
+		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
@@ -396,7 +424,7 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 
 	MoveDir.y = 0.0f;
 	MoveDir.Normalize();
-	GetTransform()->AddWorldPosition(MoveDir * m_MoveSpeed * _DeltaTime);
+	GetTransform()->AddWorldPosition(MoveDir * m_ChaseMoveSpeed * _DeltaTime);
 }
 
 void Monster_Grunt::ChaseEnd()

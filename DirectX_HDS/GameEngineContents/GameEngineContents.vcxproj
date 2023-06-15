@@ -201,6 +201,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Partition.h" />
     <ClInclude Include="Platform.h">
       <SubType>
       </SubType>
@@ -372,6 +373,7 @@
     <ClCompile Include="IronDoor.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserSwitch.cpp" />
+    <ClCompile Include="Partition.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
     <ClCompile Include="ClubDoor.cpp" />

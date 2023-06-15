@@ -26,6 +26,7 @@
 #include "StageEditer.h"
 #include "IronDoor.h"
 #include "FadeEffect.h"
+#include "Partition.h"
 
 
 ClubLevel_00::ClubLevel_00()
@@ -168,6 +169,21 @@ void ClubLevel_00::CreateObjAndInit()
 		std::shared_ptr<IronDoor> Door = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
 		float4 InitPos = { -67.0f , -94.0f };
 		ActorInit(Door, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -52.0f , -94.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -973.0f , -94.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 897.0f , -94.0f };
+		ActorInit(PartitionObj, InitPos);
 	}
 }
 
