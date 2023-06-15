@@ -37,7 +37,7 @@ public:
 
 	}
 
-	GameEnginePixelColor(char _r, char _g, char _b, char _a)
+	GameEnginePixelColor(unsigned char  _r, unsigned char  _g, unsigned char  _b, unsigned char  _a)
 		: r(_r), g(_g), b(_b), a(_a)
 	{
 

@@ -13,17 +13,17 @@
 PixelCollider* PixelCollider::PixelCol = nullptr;
 std::vector<std::shared_ptr<class GameEngineTexture>> PixelCollider::m_ColMaps = std::vector<std::shared_ptr<class GameEngineTexture>>();
 
-GameEnginePixelColor PixelCollider::g_BlackPixel = { static_cast<char>(0), static_cast<char>(0) , static_cast<char>(0) ,
-										static_cast<char>(255) };
+GameEnginePixelColor PixelCollider::g_BlackPixel = { static_cast<unsigned char>(0), static_cast<unsigned char>(0) , static_cast<unsigned char>(0) ,
+										static_cast<unsigned char>(255) };
 
-GameEnginePixelColor PixelCollider::g_WhitePixel = { static_cast<char>(255), static_cast<char>(255) , static_cast<char>(255) ,
-									static_cast<char>(255) };
+GameEnginePixelColor PixelCollider::g_WhitePixel = { static_cast<unsigned char>(255), static_cast<unsigned char>(255) , static_cast<unsigned char>(255) ,
+									static_cast<unsigned char>(255) };
 
-GameEnginePixelColor PixelCollider::g_GreenPixel = { static_cast<char>(0), static_cast<char>(255) , static_cast<char>(0) ,
-									static_cast<char>(255) };
+GameEnginePixelColor PixelCollider::g_GreenPixel = { static_cast<unsigned char>(0), static_cast<unsigned char>(255) , static_cast<unsigned char>(0) ,
+									static_cast<unsigned char>(255) };
 
-GameEnginePixelColor PixelCollider::g_ErrorPixel = { static_cast<char>(204), static_cast<char>(204) , static_cast<char>(204) ,
-									static_cast<char>(255) };
+GameEnginePixelColor PixelCollider::g_ErrorPixel = { static_cast<unsigned char>(204), static_cast<unsigned char>(204) , static_cast<unsigned char>(204) ,
+									static_cast<unsigned char>(255) };
 
 PixelCollider::PixelCollider()
 {
