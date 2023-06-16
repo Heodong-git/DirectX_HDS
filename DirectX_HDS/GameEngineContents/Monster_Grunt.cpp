@@ -2,18 +2,15 @@
 #include "Monster_Grunt.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
-
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "BaseLevel.h"
 #include "Player.h"
-
 #include "SlashHit_Effect.h"
 #include "GruntEffect.h"
 #include "EnemyFollow_Effect.h"
 #include "IronDoor.h"
-
 #include "PixelCollider.h"
 
 Monster_Grunt::Monster_Grunt()
@@ -47,32 +44,12 @@ void Monster_Grunt::Update(float _DeltaTime)
 	}
 
 	DirCheck();
-
 	DebugUpdate();
-	DoorOpenCheck();
+	DoorOpenCheck();			// 문충돌체크 
 	UpdateState(_DeltaTime);
-	
 
-	// 본체와의 충돌
-	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	// 충돌했다면 얘가 nullptr 이 아닐거고 
-	if (nullptr != Col)
-	{
-		// 충돌한 충돌체의 부모를  받아오고 
-		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
-		// 이건 수정해야할듯 
-		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
-		float4 MyPos = GetTransform()->GetLocalPosition();
-		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
-
-		m_Collision->Off();
-		m_ChaseCollision->Off();
-
-		// 내가죽었으니까 -1 
-		GetReturnCastLevel()->DisCount();
-		// 상태변경후 데스애니메이션 
-		ChangeState(GruntState::HITGROUND);
-	}
+	// 내가 플레이어의 공격과 충돌했는지 확인 
+	DeathCheck();
 }
 
 void Monster_Grunt::Render(float _DeltaTime)
@@ -116,7 +93,6 @@ void Monster_Grunt::ComponentSetting()
 	m_MainRender->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 	m_MainRender->SetScaleRatio(2.0f);
 
-	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0f, m_ColPivot });
@@ -139,7 +115,6 @@ void Monster_Grunt::ComponentSetting()
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 
-	// 디버그렌더
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4,  4 });
 	m_DebugRender->Off();
@@ -147,28 +122,26 @@ void Monster_Grunt::ComponentSetting()
 
 void Monster_Grunt::LoadAndCreateAnimation()
 {
-	// 여기서 필요한 리소스 로드 후 애니메이션 만들어
+	if (nullptr == GameEngineSprite::Find("grunt_idle"))
 	{
-		if (nullptr == GameEngineSprite::Find("grunt_idle"))
-		{
-			GameEngineDirectory Dir;
-			Dir.MoveParentToDirectory("katanazero_resources");
-			Dir.Move("katanazero_resources");
-			Dir.Move("Texture");
-			Dir.Move("ClubLevel");
-			Dir.Move("grunt");
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("katanazero_resources");
+		Dir.Move("katanazero_resources");
+		Dir.Move("Texture");
+		Dir.Move("ClubLevel");
+		Dir.Move("grunt");
 
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_idle").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_walk").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_hurtground").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_run").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_attack").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_turn").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_fall").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_idle").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_walk").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_hurtground").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_run").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_attack").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_turn").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_fall").GetFullPath());
 
-			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
-		}
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
+	
 
 	m_MainRender->CreateAnimation({ .AnimationName = "grunt_idle", .SpriteName = "grunt_idle", .Start = 0, .End = 7 ,
 								  .FrameInter = 0.12f , .Loop = true , .ScaleToTexture = true });
@@ -191,11 +164,10 @@ void Monster_Grunt::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "grunt_walk", .SpriteName = "grunt_walk", .Start = 0, .End = 9 ,
 							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
 
-	// 이벤트추가 
+	// 애니메이션 프레임별 이벤트추가 
 	m_MainRender->SetAnimationStartEvent("grunt_attack", static_cast<size_t>(5), std::bind(&Monster_Grunt::Attack, this));
 	m_MainRender->SetAnimationStartEvent("grunt_attack", static_cast<size_t>(7), std::bind(&Monster_Grunt::AttackOff, this));
 	m_MainRender->SetAnimationStartEvent("grunt_attack", static_cast<size_t>(4), std::bind(&Monster_Grunt::CreateEffect, this));
-
 	m_MainRender->ChangeAnimation("grunt_idle");
 }
 
@@ -214,9 +186,9 @@ void Monster_Grunt::CreateEffect()
 	}
 }
 
-bool Monster_Grunt::ChaseRangeCheck()
+bool Monster_Grunt::ChaseCheck()
 {
-	// 플레이어와 나의 체이스용 충돌체가 충돌했는지 확인 
+	// 체이스 체크용 충돌체를 확인
 	if (nullptr != m_ChaseCollision)
 	{
 		std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PLAYER , ColType::OBBBOX3D, ColType::OBBBOX3D);
@@ -230,8 +202,8 @@ bool Monster_Grunt::ChaseRangeCheck()
 
 void Monster_Grunt::DoorOpenCheck()
 {
+	// Door 의 상태체크용 충돌체와 충돌중인 상태에서, 문이 OPEN 상태로 변경되면 나의 상태변경
 	std::shared_ptr<GameEngineCollision> OpenEventCol = m_Collision->Collision(ColOrder::DOOR_OPEN_EVENT, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	// 충돌했다면 얘가 nullptr 이 아닐거고 
 	if (nullptr != OpenEventCol)
 	{
 		std::shared_ptr<IronDoor> Door = OpenEventCol->GetActor()->DynamicThis<IronDoor>();
@@ -242,6 +214,49 @@ void Monster_Grunt::DoorOpenCheck()
 				ChangeState(GruntState::CHASE);
 			}
 		}
+	}
+}
+
+bool Monster_Grunt::DoorCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Monster_Grunt::PartitionCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Monster_Grunt::DeathCheck()
+{
+	// 본체와의 충돌
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		// 생성하는 이펙트 수정 할 수도. 
+		// 충돌한 충돌체의 부모를  받아오고 
+		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
+		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+
+		m_Collision->Off();
+		m_ChaseCollision->Off();
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
+		// 상태변경후 데스애니메이션 
+		ChangeState(GruntState::HITGROUND);
 	}
 }
 
@@ -269,31 +284,40 @@ void Monster_Grunt::AttackOff()
 
 void Monster_Grunt::Reset()
 {
-	// 나의 초기 세팅위치로 이동
+	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
+	// 상태 아이들로 변경하고 
 	ChangeState(GruntState::IDLE);
 	
+	// 초기화필요한 값들 전부 초기화 
+	ResetDir();
 	m_FollowEffectOn = false;
 	m_Collision->On();
 	m_ChaseCollision->On();
 	m_AttCollision->Off();
 	m_HitPos = float4{ 0.0f , 0.0f };
-
-	ResetDir();
 }
 
+inline void Monster_Grunt::ResetDir()
+{
+	int Random = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	if (0 == Random)
+	{
+		m_Direction = false;
+	}
+	else if (1 == Random)
+	{
+		m_Direction = true;
+	}
+}
 
 void Monster_Grunt::DirCheck()
 {
-	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함 ㅎㅎ 
-	// 방향체크 
-	// 오른쪽 
+	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함
 	if (true == m_Direction)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
-
-	// 왼쪽 
 	else if (false == m_Direction)
 	{
 		GetTransform()->SetLocalNegativeScaleX();
@@ -390,7 +414,6 @@ void Monster_Grunt::ChangeState(GruntState _State)
 	}
 }
 
-
 void Monster_Grunt::IdleStart()
 {
 	m_MainRender->ChangeAnimation("grunt_idle");
@@ -398,20 +421,19 @@ void Monster_Grunt::IdleStart()
 
 void Monster_Grunt::IdleUpdate(float _DeltaTime)
 {
+	// 플레이어가 데스상태라면 아무것도 안함. 
 	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
 	{
 		return;
 	}
 
-	// 체이스 충돌체가 문과 충돌중이 아닐 경우 
-	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (true == ChaseRangeCheck() && nullptr == DoorCol)
+	if (true == ChaseCheck() && false == DoorCollisionCheck())
 	{
 		ChangeState(GruntState::CHASE);
 		return;
 	}
 
-	// 생존시간이 2초가 넘었다면 
+	// 생존시간이 2초가 넘었다면 <-- 이건바꿔야함 
 	if (3.0f <= GetLiveTime())
 	{
 		ChangeState(GruntState::WALK);
@@ -427,33 +449,20 @@ void Monster_Grunt::WalkStart()
 {
 	m_MainRender->ChangeAnimation("grunt_walk");
 
-	// 여기서 왼쪽오른쪽을 랜덤하게 정해 
-	int RandomValue = GameEngineRandom::MainRandom.RandomInt(1,2);
-
-	if (1 == RandomValue)
-	{
-		m_Direction = true;
-	}
-
-	else if (2 == RandomValue)
-	{
-		m_Direction = false;
-	}
+	// 반반확률로 왼쪽오른쪽
+	ResetDir();
 }
 
 void Monster_Grunt::WalkUpdate(float _DeltaTime)
-{
-	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (true == ChaseRangeCheck() && nullptr == DoorCol)
+{ 
+	if (true == ChaseCheck() && false == DoorCollisionCheck())
 	{
 		ChangeState(GruntState::CHASE);
 		return;
 	}
 
-	// 이때 파티션이나, 문에 충돌했다면 나의 진행방향을 변경한다. 
-	// 충돌체크 
-	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PARTITION, ColType::AABBBOX2D, ColType::AABBBOX2D);
-	if (nullptr != Col)
+	// 파티션과 충돌했다면
+	if (true == PartitionCollisionCheck())
 	{
 		if (true == m_Direction)
 		{
@@ -470,6 +479,7 @@ void Monster_Grunt::WalkUpdate(float _DeltaTime)
 		}
 	}
 
+	// 충돌한 상태가 아니라면 현재 방향값에 따라서 이동시킨다. 
 	if (true == m_Direction)
 	{
 		GetTransform()->AddLocalPosition(float4::Right * m_WalkMoveSpeed * _DeltaTime);
@@ -541,13 +551,12 @@ void Monster_Grunt::HitGroundStart()
 {
 	DirCheck();
 	m_MainRender->ChangeAnimation("grunt_hurtground");
-
-	// 
+	m_HitPos = GetTransform()->GetLocalPosition();
 }
 
 void Monster_Grunt::HitGroundUpdate(float _DeltaTime)
 {
-	// 픽셀체크 해야함 
+	// 픽셀체크 해야함
 	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (4 <= m_MainRender->GetCurrentFrame() || PartitionCol != nullptr || DoorCol != nullptr)
@@ -584,6 +593,7 @@ void Monster_Grunt::HitGroundUpdate(float _DeltaTime)
 
 void Monster_Grunt::HitGroundEnd()
 {
+	m_HitPos = float4{ 0.0f, 0.0f };
 }
 
 void Monster_Grunt::AttackStart()

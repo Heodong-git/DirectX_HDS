@@ -13,7 +13,6 @@ enum class GruntState
 	TURN,		// 뒤돌기 
 };
 
-// 근육맨
 class Monster_Grunt : public BaseActor
 {
 public:
@@ -27,13 +26,14 @@ public:
 	Monster_Grunt& operator=(const Monster_Grunt& _Other) = delete;
 	Monster_Grunt& operator=(Monster_Grunt&& _Other) noexcept = delete;
 
-	// 상태값 변경
 	void ChangeState(GruntState _State);
 
+	// 방향반환 
 	const bool GetDir() const
 	{
 		return m_Direction;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -41,16 +41,11 @@ protected:
 
 private:
 	void DebugUpdate();
-
-	// 렌더러생성 및 세팅
 	void ComponentSetting();
-
-	// 애니메이션 리소스 로드및생성
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
-
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
@@ -58,43 +53,46 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 	
 private:
-	void CreateEffect();
-	bool ChaseRangeCheck();
-	void DoorOpenCheck();
+	void CreateEffect();		// 공격이펙트 생성
+	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
+	void DoorOpenCheck();		// 문이 열렸니
+	bool DoorCollisionCheck();	// 문 충돌체크 
+	bool PartitionCollisionCheck();
+	void DeathCheck();			// 내가 죽었는지 
+
+	// 애니메이션프레임에 추가 
 	void Attack();
 	void AttackOff();
 
-	bool m_FollowEffectOn = false;
-
 	// 히트이펙트 피봇
 	float m_HitEffectPivot = 20.0f;
-
-	// 능력치
-	float m_ChaseMoveSpeed = 250.0f;
-	float m_WalkMoveSpeed = 100.0f;
-	float m_FlyingSpeed = 1000.0f;
-
-	float4 m_HitPos = {};
 
 	// 렌더 
 	float m_RenderPivot = 38.0f;
 	float m_ColPivot = 32.0f;
 	float4 m_ColScale = { 45.0f, 65.0f , 1.0f };
 
-	// 리셋
+	// --------------------- 리셋 시 포함시켜야할 초기화값 ---------------------------
 	virtual void Reset() override;
-	inline void ResetDir()
-	{
-		m_Direction = false;
-	}
-	// 방향
-	// + 오른쪽 
-	// - 왼쪽
+	inline void ResetDir();
+
+	// 공격당했을 때의 위치 
+	float4 m_HitPos = {};
+
+	// 능력치
+	float m_ChaseMoveSpeed = 250.0f;
+	float m_WalkMoveSpeed = 100.0f;
+	float m_FlyingSpeed = 1000.0f;
+
+	// 적발견 이펙트 출력 확인용 변수 
+	bool m_FollowEffectOn = false;
+
+	// true = 오른쪽 , false = 왼쪽 
 	bool m_Direction = false;
 	void DirCheck();
 
-	
-	// 현재 상태값에 따른 업데이트 
+
+	// -------------------------------------- State -----------------------------------------------
 	void UpdateState(float _DeltaTime);
 
 	GruntState m_CurState = GruntState::NONE;
