@@ -43,10 +43,21 @@ private:
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
-	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
+
+	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
+
+
 private:
+	bool ChaseRangeCheck();
+	void DoorOpenCheck();
+
+	void Attack();
+	void AttackOff();
+
 	float m_HitEffectPivot = 20.0f;
 
 	// 렌더 
@@ -61,10 +72,14 @@ private:
 		m_Direction = true;
 	}
 
+	float m_WalkMoveSpeed = 150.0f;
+	float m_ChaseMoveSpeed = 250.0f;
+	bool m_FollowEffectOn = false;
+
 	// 방향
 	// + 오른쪽 
 	// - 왼쪽
-	bool m_Direction = true;
+	bool m_Direction = false;
 	void DirCheck();
 
 	// 상태값 변경
