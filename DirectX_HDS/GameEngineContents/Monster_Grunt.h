@@ -55,6 +55,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 	
 private:
 	void CreateEffect();
@@ -71,6 +72,9 @@ private:
 	// ´É·ÂÄ¡
 	float m_ChaseMoveSpeed = 250.0f;
 	float m_WalkMoveSpeed = 100.0f;
+	float m_FlyingSpeed = 1000.0f;
+
+	float4 m_HitPos = {};
 
 	// ·»´õ 
 	float m_RenderPivot = 38.0f;

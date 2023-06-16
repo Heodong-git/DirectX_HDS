@@ -99,7 +99,7 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 		PlaySupporter::MainSupporter->CameraZoomEffect(0.99f);
 
 		// 그리고 한프레임만 델타타임을 느리게 하고싶은데 
-		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 0.45f);
+		// GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 0.45f);
 		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 0.27f);
 
 		// 충돌한 몬스터의 좌표 

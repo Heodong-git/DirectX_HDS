@@ -134,12 +134,12 @@ void ClubLevel_01::CreateObjAndInit()
 	}
 	{
 		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
-		float4 InitPos = { 79.0f , 34.0f };
+		float4 InitPos = { -29.0f , 34.0f };
 		ActorInit(PartitionObj, InitPos);
 	}
 	{
 		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
-		float4 InitPos = { 820.0f , 34.0f };
+		float4 InitPos = { 650.0f , 34.0f };
 		ActorInit(PartitionObj, InitPos);
 	}
 }

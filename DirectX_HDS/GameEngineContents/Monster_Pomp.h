@@ -7,7 +7,7 @@ enum class PompState
 	IDLE,	     // 아이들
 	WALK,	     // 걷기
 	CHASE,	     // 뛰기 
-	HITGROUND,	 // 쳐맞음
+	HITGROUND,	 // 데스 
 	ATTACK,	     // 공격 
 	FALL,        // 날아감
 	TURN,		 // 턴 
@@ -49,7 +49,7 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
-
+	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 
 private:
 	bool ChaseRangeCheck();
@@ -72,8 +72,11 @@ private:
 		m_Direction = true;
 	}
 
+	float4 m_HitPos = {};
+
 	float m_WalkMoveSpeed = 150.0f;
 	float m_ChaseMoveSpeed = 250.0f;
+	float m_FlyingSpeed = 1500.0f;
 	bool m_FollowEffectOn = false;
 
 	// 방향

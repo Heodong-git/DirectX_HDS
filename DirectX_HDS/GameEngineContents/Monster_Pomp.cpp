@@ -144,8 +144,8 @@ void Monster_Pomp::ComponentSetting()
 	m_Collision->DebugOff();
 
 	m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
-	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 150.0f, 0.5f });
-	m_ChaseCollision->GetTransform()->SetLocalPosition({ 75.0f, m_ColPivot });
+	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 250.0f, 80.0f });
+	m_ChaseCollision->GetTransform()->SetLocalPosition({ 100.0f, m_ColPivot });
 	m_ChaseCollision->SetColType(ColType::OBBBOX3D);
 	m_ChaseCollision->DebugOff();
 
@@ -154,6 +154,10 @@ void Monster_Pomp::ComponentSetting()
 	m_AttCollision->GetTransform()->SetLocalPosition({ 0.0f, m_ColPivot });
 	m_AttCollision->SetColType(ColType::OBBBOX3D);
 	m_AttCollision->Off();
+
+	m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
+	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
+	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
@@ -282,6 +286,8 @@ void Monster_Pomp::Reset()
 		m_ChaseCollision->On();
 		m_AttCollision->Off();
 	}
+
+	m_HitPos = float4 { 0.0f , 0.0f };
 	ResetDir();
 }
 
@@ -415,7 +421,14 @@ void Monster_Pomp::IdleStart()
 
 void Monster_Pomp::IdleUpdate(float _DeltaTime)
 {
-	if (true == ChaseRangeCheck())
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		return;
+	}
+
+	// 체이스 충돌체가 문과 충돌중이 아닐 경우 
+	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (true == ChaseRangeCheck() && nullptr == DoorCol)
 	{
 		ChangeState(PompState::CHASE);
 		return;
@@ -453,7 +466,8 @@ void Monster_Pomp::WalkStart()
 
 void Monster_Pomp::WalkUpdate(float _DeltaTime)
 {
-	if (true == ChaseRangeCheck())
+	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (true == ChaseRangeCheck() && nullptr == DoorCol)
 	{
 		ChangeState(PompState::CHASE);
 		return;
@@ -545,17 +559,53 @@ void Monster_Pomp::ChaseEnd()
 {
 }
 
+// 이게 데스임
 void Monster_Pomp::HitGroundStart()
 {
 	m_MainRender->ChangeAnimation("pomp_hurtground");
+	
+	m_HitPos = GetTransform()->GetLocalPosition();
 }
 
 void Monster_Pomp::HitGroundUpdate(float _DeltaTime)
 {
+	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (3 <= m_MainRender->GetCurrentFrame() || PartitionCol != nullptr || DoorCol != nullptr)
+	{
+		// 나중에 추가할 거 있으면 추가 
+		return;
+	}
+
+	// 플레이어 x축 계산  
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float  FlyingSpeed = m_FlyingSpeed;
+	
+	float X = abs(MyPos.x - m_HitPos.x);
+	if (X >= 100.0f)
+	{
+		FlyingSpeed *= 0.67f;
+	}
+
+	// 이때 나의 x축이 플레이어의 x축보다 크다면 우측으로
+	// 아니라면 왼쪽으로
+	if (PlayerPos.x <= MyPos.x)
+	{
+		// 우측
+		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
+	}
+
+	else if (PlayerPos.x > MyPos.x)
+	{
+		// 좌측 
+		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+	}
 }
 
 void Monster_Pomp::HitGroundEnd()
 {
+	m_HitPos = float4{ 0.0f, 0.0f };
 }
 
 void Monster_Pomp::AttackStart()
