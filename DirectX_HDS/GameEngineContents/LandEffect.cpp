@@ -2,7 +2,6 @@
 #include "LandEffect.h"
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEngineCore/GameEngineComponent.h>
 #include "Player.h"
 
 LandEffect::LandEffect()

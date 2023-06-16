@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 
-// 설명 :
+// 설명 : 스테이지 클리어 후 충돌시 다음 이벤트 호출용
 class ColEventObj : public BaseActor
 {
 public:

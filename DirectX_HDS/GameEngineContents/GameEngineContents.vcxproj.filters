@@ -156,6 +156,9 @@
     <ClInclude Include="Partition.h">
       <Filter>02.Actor\14.Partition</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyFollow_Effect.h">
+      <Filter>02.Actor\02.Monster\MonsterEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -312,6 +315,9 @@
     <ClCompile Include="Partition.cpp">
       <Filter>02.Actor\14.Partition</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyFollow_Effect.cpp">
+      <Filter>02.Actor\02.Monster\MonsterEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -448,6 +454,9 @@
     </Filter>
     <Filter Include="02.Actor\14.Partition">
       <UniqueIdentifier>{372e5317-8d78-4e2b-a9a7-66be954616b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\MonsterEffect">
+      <UniqueIdentifier>{c3990f61-841f-4c15-afb3-51f4af49724d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

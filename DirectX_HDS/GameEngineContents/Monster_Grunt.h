@@ -59,10 +59,11 @@ private:
 private:
 	void CreateEffect();
 	bool ChaseRangeCheck();
+	void DoorOpenCheck();
 	void Attack();
 	void AttackOff();
 
-	float m_AttackRange = 200.0f;
+	bool m_FollowEffectOn = false;
 
 	// È÷Æ®ÀÌÆåÆ® ÇÇº¿
 	float m_HitEffectPivot = 20.0f;

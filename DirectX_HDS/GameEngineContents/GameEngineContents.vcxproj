@@ -180,6 +180,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EnemyFollow_Effect.h" />
     <ClInclude Include="FanBlade.h">
       <SubType>
       </SubType>
@@ -367,6 +368,7 @@
     <ClCompile Include="Boss_HeadHunter.cpp" />
     <ClCompile Include="ColEventObj.cpp" />
     <ClCompile Include="DoorEffect.cpp" />
+    <ClCompile Include="EnemyFollow_Effect.cpp" />
     <ClCompile Include="FanBlade.cpp" />
     <ClCompile Include="Go_UI.cpp" />
     <ClCompile Include="GruntEffect.cpp" />

@@ -11,6 +11,8 @@
 
 #include "SlashHit_Effect.h"
 #include "GruntEffect.h"
+#include "EnemyFollow_Effect.h"
+#include "IronDoor.h"
 
 Monster_Grunt::Monster_Grunt()
 {
@@ -22,16 +24,8 @@ Monster_Grunt::~Monster_Grunt()
 
 void Monster_Grunt::Start()
 {
-	if (false == GameEngineInput::IsKey("Grunt_DebugSwitch"))
-	{
-		GameEngineInput::CreateKey("Grunt_DebugSwitch", 'Q');
-	}
-
-	// 렌더러생성 및 세팅
 	ComponentSetting();
-	// 리소스 로드
 	LoadAndCreateAnimation();
-
 	ChangeState(GruntState::IDLE);
 }
 
@@ -53,17 +47,9 @@ void Monster_Grunt::Update(float _DeltaTime)
 	DirCheck();
 
 	DebugUpdate();
+	DoorOpenCheck();
 	UpdateState(_DeltaTime);
-
-	// 내가 플레이어의 공격과 충돌했다면을 먼저 검사해 
-	// 얘는 패링없이 , 폼프한테 쓰자 
-	std::shared_ptr<GameEngineCollision> AttCol = m_AttCollision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	// 충돌했다면 얘가 nullptr 이 아닐거고 
-	if (nullptr != AttCol)
-	{
-		// 패링
-		int a = 0;
-	}
+	
 
 	// 본체와의 충돌
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
@@ -85,8 +71,6 @@ void Monster_Grunt::Update(float _DeltaTime)
 		// 상태변경후 데스애니메이션 
 		ChangeState(GruntState::HITGROUND);
 	}
-
-
 }
 
 void Monster_Grunt::Render(float _DeltaTime)
@@ -95,7 +79,7 @@ void Monster_Grunt::Render(float _DeltaTime)
 
 void Monster_Grunt::DebugUpdate()
 {
-	if (true == GameEngineInput::IsDown("gangster_debugswitch"))
+	if (true == GameEngineInput::IsDown("player_DebugSwitch"))
 	{
 		DebugSwitch();
 
@@ -239,6 +223,24 @@ bool Monster_Grunt::ChaseRangeCheck()
 	return false;
 }
 
+void Monster_Grunt::DoorOpenCheck()
+{
+	std::shared_ptr<GameEngineCollision> OpenEventCol = m_Collision->Collision(ColOrder::DOOR_OPEN_EVENT, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	// 충돌했다면 얘가 nullptr 이 아닐거고 
+	if (nullptr != OpenEventCol)
+	{
+		std::shared_ptr<IronDoor> Door = OpenEventCol->GetActor()->DynamicThis<IronDoor>();
+		if (nullptr != Door && IronDoorState::OPEN == Door->GetCurState())
+		{
+			if (GruntState::CHASE != m_CurState)
+			{
+				ChangeState(GruntState::CHASE);
+			}
+		}
+	}
+}
+
+// ----------- 애니메이션 이벤트에 추가 되어있음 Attack , AttackOff----------- 
 void Monster_Grunt::Attack()
 {
 	if (true == m_Direction)
@@ -266,6 +268,7 @@ void Monster_Grunt::Reset()
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(GruntState::IDLE);
 	
+	m_FollowEffectOn = false;
 	m_Collision->On();
 	m_ChaseCollision->On();
 	m_AttCollision->Off();
@@ -479,6 +482,14 @@ void Monster_Grunt::ChaseStart()
 {
 	DirCheck();
 	m_MainRender->ChangeAnimation("grunt_run");
+
+	if (false == m_FollowEffectOn)
+	{
+		m_FollowEffectOn = true;
+		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f , 85.0f });
+	}
+	
 }
 
 void Monster_Grunt::ChaseUpdate(float _DeltaTime)

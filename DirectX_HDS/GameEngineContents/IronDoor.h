@@ -23,6 +23,13 @@ public:
 	IronDoor& operator=(const IronDoor& _Other) = delete;
 	IronDoor& operator=(IronDoor&& _Other) noexcept = delete;
 
+	IronDoorState GetCurState()
+	{
+		return m_CurState;
+	}
+
+	void SetEventColPos(float4& _Pos);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -43,6 +50,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_OpenEventCol = nullptr;
 	std::shared_ptr<class DoorEffect> m_Effect = nullptr;
 
 private:

@@ -14,6 +14,11 @@ IronDoor::~IronDoor()
 {
 }
 
+void IronDoor::SetEventColPos(float4& _Pos)
+{
+	m_OpenEventCol->GetTransform()->SetLocalPosition(m_DebugRender->GetTransform()->GetLocalPosition() + _Pos);
+}
+
 void IronDoor::Start()
 {
 	ComponentSetting();
@@ -87,6 +92,10 @@ void IronDoor::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ -m_ColPivot / 2.0f , m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
+
+	m_OpenEventCol = CreateComponent<GameEngineCollision>(ColOrder::DOOR_OPEN_EVENT);
+	m_OpenEventCol->GetTransform()->SetLocalScale(float4{ 600.0f , 10.0f });
+	m_OpenEventCol->SetColType(ColType::OBBBOX3D);
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
@@ -165,6 +174,7 @@ void IronDoor::CloseStart()
 	m_MainRender->ChangeAnimation("iron_door");
 	m_MainRender->SetAnimPauseOn();
 	m_Collision->On();
+	m_OpenEventCol->On();
 }
 
 void IronDoor::CloseUpdate(float _DeltaTime)
@@ -196,6 +206,10 @@ void IronDoor::OpenStart()
 
 void IronDoor::OpenUpdate(float _DeltaTime)
 {
+	if (m_MainRender->IsAnimationEnd())
+	{
+		m_OpenEventCol->Off();
+	}
 }
 
 void IronDoor::OpenEnd()

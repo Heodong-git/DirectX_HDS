@@ -183,6 +183,8 @@ void ClubLevel_00::CreateObjAndInit()
 		std::shared_ptr<IronDoor> Door = CreateActor<IronDoor>(static_cast<int>(RenderOrder::DOOR), "IronDoor");
 		float4 InitPos = { -67.0f , -94.0f };
 		ActorInit(Door, InitPos);
+		float4 EventColPos = { 270.0f , 0.0f };
+		Door->SetEventColPos(EventColPos);
 	}
 	{
 		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
