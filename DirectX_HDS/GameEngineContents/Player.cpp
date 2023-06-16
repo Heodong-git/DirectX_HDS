@@ -1705,6 +1705,14 @@ void Player::RollUpdate(float _DeltaTime)
 		
 	}
 
+	// 만약 내가 문과충돌상태라면 더이상 진행하지 않음 
+	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX2D, ColType::OBBBOX2D);
+	if (nullptr != DoorCol)
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
 	if (true == GameEngineInput::IsDown("player_jump"))
 	{
 		ChangeState(PlayerState::JUMP);

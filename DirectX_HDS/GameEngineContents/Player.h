@@ -145,7 +145,7 @@ private:
 	// 충돌체 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
-	// 펜블레이드 체크용
+	// 펜블레이드 , 오브젝트 체크용
 	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 	float4 m_ColScale = { 40.0f , 65.0f , 1.0f };
 	float  m_ColPivot = 33.0f;
