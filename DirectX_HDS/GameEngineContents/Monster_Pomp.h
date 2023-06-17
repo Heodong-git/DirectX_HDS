@@ -7,11 +7,11 @@ enum class PompState
 	IDLE,	     // 아이들
 	WALK,	     // 걷기
 	CHASE,	     // 뛰기 
-	HITGROUND,	 // 데스 
 	ATTACK,	     // 공격 
 	FALL,        // 날아감
 	TURN,		 // 턴 
 	KNOCKDOWN,	 // 넉다운 
+	HITGROUND,	 // 데스 
 };
 
 // 왜 Pomp인지 모름 , 모히칸악당
@@ -28,6 +28,9 @@ public:
 	Monster_Pomp& operator=(const Monster_Pomp& _Other) = delete;
 	Monster_Pomp& operator=(Monster_Pomp&& _Other) noexcept = delete;
 
+	// 상태값 변경
+	void ChangeState(PompState _State);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -35,16 +38,11 @@ protected:
 
 private:
 	void DebugUpdate();
-
-	// 렌더러생성 및 세팅
 	void ComponentSetting();
-
-	// 애니메이션 리소스 로드및생성
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
-
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
@@ -85,8 +83,8 @@ private:
 	bool m_Direction = false;
 	void DirCheck();
 
-	// 상태값 변경
-	void ChangeState(PompState _State);
+	
+	// --------------------------------------State ----------------------------------------------
 	// 현재 상태값에 따른 업데이트 
 	void UpdateState(float _DeltaTime);
 

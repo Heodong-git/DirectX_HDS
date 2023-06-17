@@ -186,6 +186,16 @@ void Monster_Grunt::CreateEffect()
 	}
 }
 
+void Monster_Grunt::CreateFollowEffect()
+{
+	if (false == m_FollowEffectOn)
+	{
+		m_FollowEffectOn = true;
+		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
+	}
+}
+
 bool Monster_Grunt::ChaseCheck()
 {
 	// 체이스 체크용 충돌체를 확인
@@ -500,15 +510,8 @@ void Monster_Grunt::WalkEnd()
 void Monster_Grunt::ChaseStart()
 {
 	DirCheck();
+	CreateFollowEffect();
 	m_MainRender->ChangeAnimation("grunt_run");
-
-	if (false == m_FollowEffectOn)
-	{
-		m_FollowEffectOn = true;
-		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
-		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f , 85.0f });
-	}
-	
 }
 
 void Monster_Grunt::ChaseUpdate(float _DeltaTime)
@@ -535,8 +538,6 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-
-	// 만약, 플레이어가 공격범위 안에 있다면 Attack State 로 변경
 
 	MoveDir.y = 0.0f;
 	MoveDir.Normalize();

@@ -7,9 +7,9 @@ enum class GruntState
 	IDLE,		// 아이들
 	WALK,		// 걷기
 	CHASE,		// 뛰기 
-	HITGROUND,	// 쳐맞음
 	ATTACK,		// 공격
 	FALL,		// 날아감
+	HITGROUND,	// 쳐맞음
 	TURN,		// 뒤돌기 
 };
 
@@ -54,12 +54,18 @@ private:
 	
 private:
 	void CreateEffect();		// 공격이펙트 생성
+	void CreateFollowEffect();  // 적발견 이펙트 생성
+
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
 	void DoorOpenCheck();		// 문이 열렸니
 	bool DoorCollisionCheck();	// 문 충돌체크 
 	bool PartitionCollisionCheck();
 	void DeathCheck();			// 내가 죽었는지 
 
+
+	// 바운스 
+	 
+	 
 	// 애니메이션프레임에 추가 
 	void Attack();
 	void AttackOff();
