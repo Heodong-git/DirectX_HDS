@@ -14,7 +14,6 @@ enum class PompState
 	HITGROUND,	 // 데스 
 };
 
-// 왜 Pomp인지 모름 , 모히칸악당
 class Monster_Pomp : public BaseActor
 {
 public:
@@ -50,8 +49,14 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
 
 private:
-	bool ChaseRangeCheck();
-	void DoorOpenCheck();
+	//void CreateEffect();		// 공격이펙트 생성
+	void CreateFollowEffect();  // 적발견 이펙트 생성
+	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
+	void DoorOpenCheck();		// 문이 열렸니
+	bool DoorCollisionCheck();	// 문 충돌체크 
+	bool PartitionCollisionCheck();
+	void ParryingCheck();		// 패링체크 
+	void DeathCheck();			// 내가 죽었는지 
 
 	void Attack();
 	void AttackOff();
@@ -65,10 +70,7 @@ private:
 
 	// 리셋
 	virtual void Reset() override;
-	inline void ResetDir()
-	{
-		m_Direction = true;
-	}
+	void ResetDir();
 
 	float4 m_HitPos = {};
 

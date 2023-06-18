@@ -80,7 +80,7 @@ private:
 
 	// --------------------- 리셋 시 포함시켜야할 초기화값 ---------------------------
 	virtual void Reset() override;
-	inline void ResetDir();
+	void ResetDir();
 
 	// 공격당했을 때의 위치 
 	float4 m_HitPos = {};

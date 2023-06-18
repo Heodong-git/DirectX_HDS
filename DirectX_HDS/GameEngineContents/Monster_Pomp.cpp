@@ -52,45 +52,11 @@ void Monster_Pomp::Update(float _DeltaTime)
 	}
 
 	DirCheck();
-
-	
-
 	DebugUpdate();
 	DoorOpenCheck();
 	UpdateState(_DeltaTime);
-
-	// 공격상태에서 나의 공격과 플레이어의 공격이 충돌했다면 
-	std::shared_ptr<GameEngineCollision> PlayerAttCol = m_AttCollision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (nullptr != PlayerAttCol)
-	{
-		// 플레이어의 공격충돌체의 업데이트를 false로 만들고 
-		PlayerAttCol->Off();
-		m_AttCollision->Off();
-		// 나는 그로기상태로 (넉다운) 
-		ChangeState(PompState::KNOCKDOWN);
-		return;
-	}
-
-	// 내가 플레이어의 공격과 충돌했다면 
-	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
-	// 뭔가가 들어왔다는건 충돌했다는거고 
-	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-	if (nullptr != Col)
-	{
-		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
-		// 나의 충돌체를 off
-		// 애니메이션 렌더를 데스애니메이션으로전환 
-		m_Collision->Off();
-		m_ChaseCollision->Off();
-		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
-		float4 MyPos = GetTransform()->GetLocalPosition();
-		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
-
-		// 내가죽었으니까 -1 
-		GetReturnCastLevel()->DisCount();
-		ChangeState(PompState::HITGROUND);
-	}
+	ParryingCheck();
+	DeathCheck();
 }
 
 void Monster_Pomp::Render(float _DeltaTime)
@@ -220,7 +186,7 @@ void Monster_Pomp::LoadAndCreateAnimation()
 	m_MainRender->ChangeAnimation("pomp_idle");
 }
 
-bool Monster_Pomp::ChaseRangeCheck()
+bool Monster_Pomp::ChaseCheck()
 {
 	// 플레이어와 나의 체이스용 충돌체가 충돌했는지 확인 
 	if (nullptr != m_ChaseCollision)
@@ -251,6 +217,64 @@ void Monster_Pomp::DoorOpenCheck()
 	}
 }
 
+bool Monster_Pomp::DoorCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Monster_Pomp::PartitionCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Monster_Pomp::ParryingCheck()
+{
+	// 공격상태에서 나의 공격과 플레이어의 공격이 충돌했다면 
+	std::shared_ptr<GameEngineCollision> PlayerAttCol = m_AttCollision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != PlayerAttCol)
+	{
+		// 플레이어의 공격충돌체의 업데이트를 false로 만들고 
+		PlayerAttCol->Off();
+		m_AttCollision->Off();
+		// 나는 그로기상태로 (넉다운) 
+		ChangeState(PompState::KNOCKDOWN);
+		return;
+	}
+}
+
+void Monster_Pomp::DeathCheck()
+{
+	// 본체와의 충돌
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		// 생성하는 이펙트 수정 할 수도. 
+		// 충돌한 충돌체의 부모를  받아오고 
+		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
+		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+
+		m_Collision->Off();
+		m_ChaseCollision->Off();
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
+		// 상태변경후 데스애니메이션 
+		ChangeState(PompState::HITGROUND);
+	}
+}
+
 void Monster_Pomp::Attack()
 {
 	if (true == m_Direction)
@@ -276,20 +300,43 @@ void Monster_Pomp::AttackOff()
 // 내리셋은 플레이어와 동일 
 void Monster_Pomp::Reset()
 {
-	// 나의 초기 세팅위치로 이동
+	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
+	// 상태 아이들로 변경하고 
 	ChangeState(PompState::IDLE);
-	if (false == m_Collision->IsUpdate())
-	{
-		m_FollowEffectOn = false;
-		m_Collision->On();
-		m_ChaseCollision->On();
-		m_AttCollision->Off();
-	}
 
-	m_HitPos = float4 { 0.0f , 0.0f };
+	// 초기화필요한 값들 전부 초기화 
 	ResetDir();
+	m_FollowEffectOn = false;
+	m_Collision->On();
+	m_ChaseCollision->On();
+	m_AttCollision->Off();
+	m_HitPos = float4{ 0.0f , 0.0f };
 }
+
+inline void Monster_Pomp::ResetDir()
+{
+	int Random = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	if (0 == Random)
+	{
+		m_Direction = false;
+	}
+	else if (1 == Random)
+	{
+		m_Direction = true;
+	}
+}
+
+void Monster_Pomp::CreateFollowEffect()
+{
+	if (false == m_FollowEffectOn)
+	{
+		m_FollowEffectOn = true;
+		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
+	}
+}
+
 
 void Monster_Pomp::DirCheck()
 {
@@ -349,12 +396,6 @@ void Monster_Pomp::ChangeState(PompState _State)
 	m_PrevState = m_CurState;
 	m_CurState = m_NextState;
 
-	//WALK,	 // 걷기
-	//	CHASE,	 // 뛰기 
-	//	HIT,	 // 쳐맞음
-	//	AIM,	 // 공격 
-
-	// start 
 	switch (m_NextState)
 	{
 	case PompState::IDLE:
@@ -426,9 +467,7 @@ void Monster_Pomp::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 체이스 충돌체가 문과 충돌중이 아닐 경우 
-	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (true == ChaseRangeCheck() && nullptr == DoorCol)
+	if (true == ChaseCheck() && false == DoorCollisionCheck())
 	{
 		ChangeState(PompState::CHASE);
 		return;
@@ -449,34 +488,18 @@ void Monster_Pomp::IdleEnd()
 void Monster_Pomp::WalkStart()
 {
 	m_MainRender->ChangeAnimation("pomp_walk");
-
-	// 여기서 왼쪽오른쪽을 랜덤하게 정해 
-	int RandomValue = GameEngineRandom::MainRandom.RandomInt(1, 2);
-
-	if (1 == RandomValue)
-	{
-		m_Direction = true;
-	}
-
-	else if (2 == RandomValue)
-	{
-		m_Direction = false;
-	}
+	ResetDir();
 }
 
 void Monster_Pomp::WalkUpdate(float _DeltaTime)
 {
-	std::shared_ptr<GameEngineCollision> DoorCol = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (true == ChaseRangeCheck() && nullptr == DoorCol)
+	if (true == ChaseCheck() && false == DoorCollisionCheck())
 	{
 		ChangeState(PompState::CHASE);
 		return;
 	}
 
-	// 이때 파티션이나, 문에 충돌했다면 나의 진행방향을 변경한다. 
-	// 충돌체크 
-	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PARTITION, ColType::AABBBOX2D, ColType::AABBBOX2D);
-	if (nullptr != Col)
+	if (true == PartitionCollisionCheck())
 	{
 		if (true == m_Direction)
 		{
@@ -514,13 +537,7 @@ void Monster_Pomp::ChaseStart()
 {
 	m_MainRender->ChangeAnimation("pomp_run");
 	DirCheck();
-
-	if (false == m_FollowEffectOn)
-	{
-		m_FollowEffectOn = true;
-		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
-		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
-	}
+	CreateFollowEffect();
 }
 
 void Monster_Pomp::ChaseUpdate(float _DeltaTime)
@@ -528,12 +545,6 @@ void Monster_Pomp::ChaseUpdate(float _DeltaTime)
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
 	float4 MyPos = GetTransform()->GetWorldPosition();
 	float4 MoveDir = PlayerPos - MyPos;
-
-	if (50.0f >= abs(PlayerPos.x - MyPos.x))
-	{
-		ChangeState(PompState::ATTACK);
-		return;
-	}
 
 	// 이때 x 값이 나보다 크다면
 	if (PlayerPos.x > MyPos.x)
@@ -548,7 +559,11 @@ void Monster_Pomp::ChaseUpdate(float _DeltaTime)
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 
-	// 만약, 플레이어가 공격범위 안에 있다면 Attack State 로 변경
+	if (50.0f >= abs(PlayerPos.x - MyPos.x))
+	{
+		ChangeState(PompState::ATTACK);
+		return;
+	}
 
 	MoveDir.y = 0.0f;
 	MoveDir.Normalize();
@@ -563,7 +578,6 @@ void Monster_Pomp::ChaseEnd()
 void Monster_Pomp::HitGroundStart()
 {
 	m_MainRender->ChangeAnimation("pomp_hurtground");
-	
 	m_HitPos = GetTransform()->GetLocalPosition();
 }
 
@@ -690,3 +704,4 @@ void Monster_Pomp::FallUpdate(float _DeltaTime)
 void Monster_Pomp::FallEnd()
 {
 }
+

@@ -520,12 +520,6 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 	float4 MyPos = GetTransform()->GetWorldPosition();
 	float4 MoveDir = PlayerPos - MyPos;
 
-	if (50.0f >= abs(PlayerPos.x - MyPos.x))
-	{
-		ChangeState(GruntState::ATTACK);
-		return;
-	}
-
 	// 이때 x 값이 나보다 크다면
 	if (PlayerPos.x > MyPos.x)
 	{
@@ -537,6 +531,12 @@ void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 	{
 		m_Direction = false;
 		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	if (50.0f >= abs(PlayerPos.x - MyPos.x))
+	{
+		ChangeState(GruntState::ATTACK);
+		return;
 	}
 
 	MoveDir.y = 0.0f;

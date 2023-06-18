@@ -2,15 +2,17 @@
 #include "Monster_Gangster.h"
 
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineBase/GameEngineRandom.h>
 
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "BaseLevel.h"
-
 #include "Player.h"
 #include "SlashHit_Effect.h"
+#include "EnemyFollow_Effect.h"
+#include "IronDoor.h"
 
 Monster_Gangster::Monster_Gangster()
 {
@@ -26,14 +28,11 @@ void Monster_Gangster::Start()
 	{
 		GameEngineInput::CreateKey("gangster_DebugSwitch", 'Q');
 	}
-	// 렌더러생성 및 세팅
+	
 	ComponentSetting();
-	// 리소스 로드
 	LoadAndCreateAnimation();
-
 	// aim 스테이트로 변경되면 방향확인해서 이미지세팅해줘야함 지금은 일단 띄워
 	// m_GunRender->SetTexture("gangster_gun_left.png");
-
 	ChangeState(GangsterState::IDLE);
 }
 
@@ -51,28 +50,12 @@ void Monster_Gangster::Update(float _DeltaTime)
 		m_MainRender->ColorOptionValue.MulColor.g = 1.0f;
 		m_MainRender->ColorOptionValue.MulColor.b = 1.0f;
 	}
-
-	// 내가 플레이어의 공격과 충돌했다면 
-	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
-	// 뭔가가 들어왔다는건 충돌했다는거고 
-	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-	if (nullptr != Col)
-	{
-		// 나의 충돌체를 off
-		// 애니메이션 렌더를 데스애니메이션으로전환 
-		m_Collision->Off();
-		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
-		float4 MyPos = GetTransform()->GetLocalPosition();
-		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
-		
-		// 내가죽었으니까 -1 
-		GetReturnCastLevel()->DisCount();
-		ChangeState(GangsterState::HITGROUND);
-	}
-
-	UpdateState(_DeltaTime);
+	
 	DebugUpdate();
+	AimRangeCheck();
+	DirCheck();
+	UpdateState(_DeltaTime);
+	DeathCheck();
 }
 
 void Monster_Gangster::Render(float _DeltaTime)
@@ -108,8 +91,6 @@ void Monster_Gangster::DebugUpdate()
 			m_DebugRender->Off();
 		}
 	}
-
-
 }
 
 void Monster_Gangster::ComponentSetting()
@@ -134,6 +115,23 @@ void Monster_Gangster::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOff();
+
+	m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
+	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 300.0f, 80.0f });
+	m_ChaseCollision->GetTransform()->SetLocalPosition({ 50.0f, m_ColPivot });
+	m_ChaseCollision->SetColType(ColType::OBBBOX3D);
+	m_ChaseCollision->DebugOff();
+
+	m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
+	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
+	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
+
+	m_AimCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_RANGE_CHECK);
+	m_AimCollision->GetTransform()->SetLocalScale(float4{ 550.0f , 20.0f });
+	m_AimCollision->GetTransform()->SetLocalPosition({ 275.0f, m_RenderPivot });
+	m_AimCollision->SetColType(ColType::OBBBOX3D);
+	m_AimCollision->DebugOff();
+
 
 	// 디버그렌더 생성
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
@@ -183,34 +181,135 @@ void Monster_Gangster::LoadAndCreateAnimation()
 	m_MainRender->ChangeAnimation("gangster_idle");
 }
 
+// 완성하면 리셋목록 확인해서 다시작성
 void Monster_Gangster::Reset()
 {
-	// 나의 초기 세팅위치로 이동
 	GetTransform()->SetLocalPosition(GetInitPos());
-	if (false == m_Collision->IsUpdate())
-	{
-		m_Collision->On();
-	}
 	ChangeState(GangsterState::IDLE);
 	ResetDir();
+	m_Collision->On();
+}
+
+void Monster_Gangster::ResetDir()
+{
+	int Random = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	if (0 == Random)
+	{
+		m_Direction = false;
+	}
+	else if (1 == Random)
+	{
+		m_Direction = true;
+	}
 }
 
 void Monster_Gangster::DirCheck()
 {
-	// 포지티브, 네거티브 함수 사용시에 렌더가 아니라 액터의 트랜스폼을 사용해야함 ㅎㅎ 
-	// 방향체크 
-	// 오른쪽 
-	if (0 < m_Direction)
+	if (true == m_Direction)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
 
 	// 왼쪽 
-	else if (0 > m_Direction)
+	else if (false == m_Direction)
 	{
 		GetTransform()->SetLocalNegativeScaleX();
 	}
 }
+
+void Monster_Gangster::CreateFollowEffect()
+{
+	if (false == m_FollowEffectOn)
+	{
+		m_FollowEffectOn = true;
+		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
+	}
+}
+
+void Monster_Gangster::AimRangeCheck()
+{
+	// 만약 플레이어와 충돌했다면 에임 상태로 전환 
+	std::shared_ptr<GameEngineCollision> PlayerCol = m_AimCollision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != PlayerCol)
+	{
+		ChangeState(GangsterState::AIM);
+	}
+}
+
+bool Monster_Gangster::ChaseCheck()
+{
+	// 체이스 체크용 충돌체를 확인
+	if (nullptr != m_ChaseCollision)
+	{
+		std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != Col)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void Monster_Gangster::DoorOpenCheck()
+{
+	// Door 의 상태체크용 충돌체와 충돌중인 상태에서, 문이 OPEN 상태로 변경되면 나의 상태변경
+	std::shared_ptr<GameEngineCollision> OpenEventCol = m_Collision->Collision(ColOrder::DOOR_OPEN_EVENT, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != OpenEventCol)
+	{
+		std::shared_ptr<IronDoor> Door = OpenEventCol->GetActor()->DynamicThis<IronDoor>();
+		if (nullptr != Door && IronDoorState::OPEN == Door->GetCurState())
+		{
+			if (GangsterState::CHASE != m_CurState)
+			{
+				ChangeState(GangsterState::CHASE);
+			}
+		}
+	}
+}
+
+bool Monster_Gangster::DoorCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Monster_Gangster::PartitionCollisionCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = m_ChaseCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != Col)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Monster_Gangster::DeathCheck()
+{
+	// 내가 플레이어의 공격과 충돌했다면 
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	// 뭔가가 들어왔다는건 충돌했다는거고 
+	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+	if (nullptr != Col)
+	{
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+		float4 MyPos = GetTransform()->GetLocalPosition();
+		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
+		ChangeState(GangsterState::HITGROUND);
+	}
+}
+
 
 // -------------------------------------------- State ----------------------------------------------------
 
@@ -244,11 +343,6 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 	m_NextState = _State;
 	m_PrevState = m_CurState;
 	m_CurState = m_NextState;
-
-	//WALK,	 // 걷기
-	//	CHASE,	 // 뛰기 
-	//	HIT,	 // 쳐맞음
-	//	AIM,	 // 공격 
 	
 	// start 
 	switch (m_NextState)
@@ -300,13 +394,19 @@ void Monster_Gangster::IdleStart()
 
 void Monster_Gangster::IdleUpdate(float _DeltaTime)
 {
-	if (true == m_MainRender->IsAnimationEnd())
+	// 플레이어가 데스상태라면 아무것도 안함. 
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		return;
+	}
+
+	// 일단 워크상태로 가고.
+	// 생존시간이 2초가 넘었다면 <-- 이건바꿔야함 
+	if (3.0f <= GetLiveTime())
 	{
 		ChangeState(GangsterState::WALK);
 		return;
 	}
-
-	DirCheck();
 }
 
 void Monster_Gangster::IdleEnd()
@@ -316,16 +416,51 @@ void Monster_Gangster::IdleEnd()
 
 void Monster_Gangster::WalkStart()
 {
-	m_MainRender->ChangeAnimation("gangster_run");
-	DirCheck();
+	m_MainRender->ChangeAnimation("gangster_walk");
+	ResetDir();
 }
 
 void Monster_Gangster::WalkUpdate(float _DeltaTime)
 {
-	DirCheck();
-	if (true == m_MainRender->IsAnimationEnd())
+	// chase col이 player 와 충돌하고, 문과 충돌상태가 아닐때 chase로 변경할거야
+	if (true == ChaseCheck() && false == DoorCollisionCheck())
 	{
-		ChangeState(GangsterState::IDLE);
+		ChangeState(GangsterState::CHASE);
+		return;
+	}
+
+	// 대신 여기서. 레인지체크를해서. 사거리 안에 들어왔다면. aim 상태로 전환 
+	// 사거리를 뭘로 체크할거냐? 
+
+
+	// 파티션과 충돌했다면
+	if (true == PartitionCollisionCheck())
+	{
+		if (true == m_Direction)
+		{
+			m_Direction = false;
+			GetTransform()->AddLocalPosition(float4::Left * m_WalkMoveSpeed * _DeltaTime);
+			return;
+		}
+
+		else if (false == m_Direction)
+		{
+			m_Direction = true;
+			GetTransform()->AddLocalPosition(float4::Right * m_WalkMoveSpeed * _DeltaTime);
+			return;
+		}
+	}
+
+	// 충돌한 상태가 아니라면 현재 방향값에 따라서 이동시킨다. 
+	if (true == m_Direction)
+	{
+		GetTransform()->AddLocalPosition(float4::Right * m_WalkMoveSpeed * _DeltaTime);
+		return;
+	}
+
+	else if (false == m_Direction)
+	{
+		GetTransform()->AddLocalPosition(float4::Left * m_WalkMoveSpeed * _DeltaTime);
 		return;
 	}
 
@@ -337,6 +472,7 @@ void Monster_Gangster::WalkEnd()
 
 void Monster_Gangster::ChaseStart()
 {
+	m_MainRender->ChangeAnimation("gangster_run");
 }
 
 void Monster_Gangster::ChaseUpdate(float _DeltaTime)
@@ -349,6 +485,7 @@ void Monster_Gangster::ChaseEnd()
 
 void Monster_Gangster::AimStart()
 {
+	// m_MainRender->ChangeAnimation("gangster_aim");
 }
 
 void Monster_Gangster::AimUpdate(float _DeltaTime)
@@ -388,3 +525,4 @@ void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 void Monster_Gangster::HitGroundEnd()
 {
 }
+
