@@ -157,7 +157,13 @@
       <Filter>02.Actor\14.Partition</Filter>
     </ClInclude>
     <ClInclude Include="EnemyFollow_Effect.h">
-      <Filter>02.Actor\02.Monster\MonsterEffect</Filter>
+      <Filter>02.Actor\02.Monster\FollowEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="FireEffect.h">
+      <Filter>02.Actor\02.Monster\Gangster\FireEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>02.Actor\15.Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -316,7 +322,13 @@
       <Filter>02.Actor\14.Partition</Filter>
     </ClCompile>
     <ClCompile Include="EnemyFollow_Effect.cpp">
-      <Filter>02.Actor\02.Monster\MonsterEffect</Filter>
+      <Filter>02.Actor\02.Monster\FollowEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="FireEffect.cpp">
+      <Filter>02.Actor\02.Monster\Gangster\FireEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>02.Actor\15.Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,8 +467,14 @@
     <Filter Include="02.Actor\14.Partition">
       <UniqueIdentifier>{372e5317-8d78-4e2b-a9a7-66be954616b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Actor\02.Monster\MonsterEffect">
+    <Filter Include="02.Actor\02.Monster\FollowEffect">
       <UniqueIdentifier>{c3990f61-841f-4c15-afb3-51f4af49724d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Gangster\FireEffect">
+      <UniqueIdentifier>{96855f22-f696-46a5-b93f-be7d881eafe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\15.Bullet">
+      <UniqueIdentifier>{541300b2-e9bd-4ea6-860b-488b9ec3acd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

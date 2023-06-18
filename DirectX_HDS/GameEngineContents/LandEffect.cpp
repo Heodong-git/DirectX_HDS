@@ -49,12 +49,6 @@ void LandEffect::Update(float _DeltaTime)
 			return;
 		}
 	}
-
-	if (nullptr == Player::MainPlayer)
-	{
-		MsgAssert("플레이어가 nullptr 입니다.");
-		return;
-	}
 }
 
 void LandEffect::Render(float _DeltaTime)

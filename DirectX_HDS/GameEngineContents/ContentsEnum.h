@@ -11,6 +11,7 @@ enum class RenderOrder
 	FANBLADE,
 	LASER,
 	PLATFORM,
+	BULLET,
 	PLAYER,
 	PLAYER_EFFECT,
 	EFFECT,
@@ -39,4 +40,5 @@ enum class ColOrder
 	LASER,
 	FANBLADE,
 	PARTITION,
+	BULLET,
 };

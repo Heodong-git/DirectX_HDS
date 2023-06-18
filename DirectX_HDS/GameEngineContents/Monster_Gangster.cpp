@@ -13,6 +13,7 @@
 #include "SlashHit_Effect.h"
 #include "EnemyFollow_Effect.h"
 #include "IronDoor.h"
+#include "FireEffect.h"
 
 Monster_Gangster::Monster_Gangster()
 {
@@ -31,8 +32,6 @@ void Monster_Gangster::Start()
 	
 	ComponentSetting();
 	LoadAndCreateAnimation();
-	// aim 스테이트로 변경되면 방향확인해서 이미지세팅해줘야함 지금은 일단 띄워
-	// m_GunRender->SetTexture("gangster_gun_left.png");
 	ChangeState(GangsterState::IDLE);
 }
 
@@ -52,7 +51,6 @@ void Monster_Gangster::Update(float _DeltaTime)
 	}
 	
 	DebugUpdate();
-	AimRangeCheck();
 	DirCheck();
 	UpdateState(_DeltaTime);
 	DeathCheck();
@@ -100,14 +98,7 @@ void Monster_Gangster::ComponentSetting()
 	// 렌더러, 충돌체 생성
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
 	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot });
-	// m_MainRender->GetTransform()->SetLocalScale({ 200.0f , 200.0f });
 	m_MainRender->SetScaleRatio(2.0f);
-
-	m_GunRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
-	// 피봇추가해야함 
-	m_GunRender->GetTransform()->SetLocalPosition(MyPos);
-	m_GunRender->GetTransform()->SetLocalScale({ 54.0f , 12.0f });
-	m_GunRender->Off();
 
 	// 콜리전 생성
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
@@ -131,7 +122,6 @@ void Monster_Gangster::ComponentSetting()
 	m_AimCollision->GetTransform()->SetLocalPosition({ 275.0f, m_RenderPivot });
 	m_AimCollision->SetColType(ColType::OBBBOX3D);
 	m_AimCollision->DebugOff();
-
 
 	// 디버그렌더 생성
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
@@ -157,7 +147,8 @@ void Monster_Gangster::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_hitground").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_run").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_turn").GetFullPath());
-			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_gun").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_fire_effect").GetFullPath());
+			
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -178,7 +169,10 @@ void Monster_Gangster::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "gangster_turn", .SpriteName = "gangster_turn", .Start = 0, .End = 5 ,
 								  .FrameInter = 0.09f , .Loop = true ,.ScaleToTexture = true });
 
-	m_MainRender->ChangeAnimation("gangster_idle");
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_aim", .SpriteName = "gangster_idle", .Start = 0, .End = 5 ,
+								  .FrameInter = 0.09f , .Loop = false ,.ScaleToTexture = true });
+
+	m_MainRender->ChangeAnimation("gangster_aim");
 }
 
 // 완성하면 리셋목록 확인해서 다시작성
@@ -225,6 +219,24 @@ void Monster_Gangster::CreateFollowEffect()
 		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
 		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
 	}
+}
+
+void Monster_Gangster::CreateFireEffect()
+{
+	std::shared_ptr<FireEffect> Effect = GetLevel()->CreateActor<FireEffect>();
+	float PivotX = 0.0f;
+	if (true == m_Direction)
+	{
+		PivotX = 56.0f;
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+	}
+	else if (false == m_Direction)
+	{
+		PivotX = -56.0f;
+		Effect->GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { PivotX, 39.0f });
 }
 
 void Monster_Gangster::AimRangeCheck()
@@ -400,13 +412,15 @@ void Monster_Gangster::IdleUpdate(float _DeltaTime)
 		return;
 	}
 
+	AimRangeCheck();
+
 	// 일단 워크상태로 가고.
 	// 생존시간이 2초가 넘었다면 <-- 이건바꿔야함 
-	if (3.0f <= GetLiveTime())
+	/*if (3.0f <= GetLiveTime())
 	{
 		ChangeState(GangsterState::WALK);
 		return;
-	}
+	}*/
 }
 
 void Monster_Gangster::IdleEnd()
@@ -486,15 +500,24 @@ void Monster_Gangster::ChaseEnd()
 
 void Monster_Gangster::AimStart()
 {
-	// m_MainRender->ChangeAnimation("gangster_aim");
+	m_MainRender->ChangeAnimation("gangster_aim");
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , 11.0f });
+	CreateFollowEffect();
+	CreateFireEffect();
 }
 
 void Monster_Gangster::AimUpdate(float _DeltaTime)
 {
+	// 공격로직을 짜야함. 에임 상태가 되었다면
+	// 세발을 간격을 두고 총알을 세발 발사한다. 
+	// 세발을 발사했다면 체이스상태로 변경하고, 체이스상태에서는 
+	// 사거리에 들어왔다면 다시 에임 상태로 변경한다. 
 }
 
 void Monster_Gangster::AimEnd()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , -11.0f });
+	
 }
 
 void Monster_Gangster::TurnStart()

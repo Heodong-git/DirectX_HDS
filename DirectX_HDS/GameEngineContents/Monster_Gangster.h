@@ -40,7 +40,6 @@ private:
 	void LoadAndCreateAnimation();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_GunRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
@@ -52,6 +51,7 @@ private:
 private:
 	// void CreateEffect();		// 공격이펙트 생성
 	void CreateFollowEffect();  // 적발견 이펙트 생성
+	void CreateFireEffect();
 
 	void AimRangeCheck();
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
