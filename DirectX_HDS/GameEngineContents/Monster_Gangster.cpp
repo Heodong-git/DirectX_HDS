@@ -477,6 +477,7 @@ void Monster_Gangster::ChaseStart()
 
 void Monster_Gangster::ChaseUpdate(float _DeltaTime)
 {
+	int a = 0;
 }
 
 void Monster_Gangster::ChaseEnd()

@@ -157,8 +157,8 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 		{
 			this->Death();
 			PlaySupporter::MainSupporter->CameraZoomEffect(1.0f);
-			/*GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 1.0f);
-			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 1.0f);*/
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 1.0f);
+			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 1.0f);
 			return;
 		}
 	}
