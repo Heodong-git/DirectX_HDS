@@ -66,6 +66,11 @@ public:
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
+	static float GetAngleVectorToVectorDeg360(const float4& _Left, const float4& _Right)
+	{
+		return GetAngleVectorToVectorRad360(_Left, _Right) * GameEngineMath::RadToDeg;
+	}
+
 	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
 	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
 	{
@@ -78,6 +83,24 @@ public:
 		float CosSeta = DotProduct3D(Left, Right);
 
 		float Angle = acosf(CosSeta);
+
+		return Angle;
+	}
+
+	static float GetAngleVectorToVectorRad360(const float4& _Left, const float4& _Right)
+	{
+		float4 Left = _Left;
+		float4 Right = _Right;
+
+		Left.Normalize();
+		Right.Normalize();
+
+		float CosSeta = DotProduct3D(Left, Right);
+
+
+		float Angle = 0.f;
+		(Left.y * Right.x + Left.x * Right.y > 0.0f) ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
+
 
 		return Angle;
 	}
@@ -294,7 +317,7 @@ public:
 		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
-	UINT ColorToUint()
+	UINT ColorToUint() const
 	{
 		UINT Return;
 
@@ -365,7 +388,7 @@ public:
 
 		float Result = acosf(AngleCheck.x);
 
-		if (AngleCheck.y > 0)
+		if (AngleCheck.y < 0)
 		{
 			Result = GameEngineMath::PIE2 - Result;
 		}
