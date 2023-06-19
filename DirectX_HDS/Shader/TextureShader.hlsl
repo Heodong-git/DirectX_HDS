@@ -1,9 +1,7 @@
-// 트랜스폼 데이터를 저장할 상수버퍼
+// 쉐이더를 짜게되면 다음의 규칙을 지켜야 한다.
 
-// 0~ 16번 슬롯이 있고
-// 선언해 놨다고 사용한다는 의미가 아니다.
-// 0번슬롯을 사용하겠다고 하는 의미가 된다. 
-// constantbuffer (상수버퍼) : 장면의 물체마다 달라지는 상수 데이터를 담기 위한 저장공간
+// 0~ 16번 슬롯 
+// 선언해 놨다고 쓰는게 아니에요.
 cbuffer TransformData : register(b0)
 {
     float4 Scale;
@@ -32,25 +30,24 @@ cbuffer TransformData : register(b0)
     float4x4 WorldViewProjectionMatrix;
 }
 
+// 어떤 정보가 들어올지 구조체로 만들어야 합니다.
+// 어디가 포지션이고 어디가 컬이고
+// 이름 마음대로
 struct Input
 {
-    // 버텍스셰이더에 입력될 정보
-	// 시맨틱 : 인풋 구조체의 변수들이 어떤 자료와 연결될 지 알려주는 것
     float4 Pos : POSITION;
-    // UV좌표계 : 3차원 공간에 폴리곤에 텍스쳐를 입히기 위한 기준이 되는 2차원 좌표계입니다. 
-    // UV좌표는 최소 0 최대 1의 좌표를 가지고 1을 넘어가거나 0 미만이 될 경우 텍스쳐가 반복되어 출력된다. 
-    // 최대값은 조정가능. 원하는 값으로 조정이 가능하다고함. 
     float4 UV : TEXCOORD;
 };
 
-struct Output
+struct OutPut
 {
-    // 픽셀셰이더에 입력 되고 계산되어
-    // 레스터라이저에 보내는 정보가 된다. 
-    // w 값으로 나눈 후 뷰포트 곱하고 픽셀을 건져낼 때 사용할 포지션 정보
+    // 레스터라이저야 이 포지션이
+    // w나눈 다음  뷰포트 곱하고 픽셀 건져낼때 쓸포지션 정보를 내가 보낸거야.
     float4 Pos : SV_Position;
-    float4 UV : TEXCOORD;
+    float4 UV : TEXCOORD0;
+    float4 ClipUV : TEXCOORD1;
 };
+
 
 cbuffer AtlasData : register(b1)
 {
@@ -61,33 +58,46 @@ cbuffer AtlasData : register(b1)
     // float4 AtlasUV;
 }
 
-// 버텍스셰이더에서 계산되어 반환되는 값이 Output struct
-// 이 구조체에 저장된 값을 픽셀셰이더에 넘겨준다. 
-Output Texture_VS(Input _Value)
+cbuffer ClipData : register(b2)
 {
-    Output OutputValue = (Output) 0;
+    float4 Clip;
+    // float4 AtlasUV;
+}
+
+// 월드뷰프로젝션
+
+OutPut Texture_VS(Input _Value)
+{
+    OutPut OutPutValue = (OutPut) 0;
 	
     _Value.Pos.w = 1.0f;
-    // 월드뷰프로젝션 곱 : mul 함수 사용
-    OutputValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
-    //OutPutValue.Pos = _Value.Pos;
-    OutputValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
-    OutputValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
-
-    return OutputValue;
+    OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
+    // OutPutValue.UV = _Value.UV;
+    
+    // [][]
+    // [][]
+    
+    // 0.5 0.0  0.5 0.5 
+    
+    // 0,0    1,0
+    //
+    //
+    // 0,1    1,1
+    OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
+    OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
+    
+    OutPutValue.ClipUV = _Value.UV;
+    
+    return OutPutValue;
 }
- 
+
 cbuffer ColorOption : register(b0)
 {
     float4 MulColor;
     float4 PlusColor;
 }
 
-// 텍스쳐를 사용하려면 
-Texture2D DiffuseTex : register(t0); 
-
-// 샘플러
-// 텍스쳐를 어떻게 불러들이겠냐는 설정, 
+Texture2D DiffuseTex : register(t0);
 SamplerState CLAMPSAMPLER : register(s0);
 
 struct OutColor
@@ -98,41 +108,44 @@ struct OutColor
     float4 Color3 : SV_Target3;
 };
 
-
-// 픽셀셰이더에서는 버텍스셰이더에서 반환한 값을 받아서
-// 픽셀을 건져낸다. 
-float4 Texture_PS(Output _Value) : SV_Target0
+float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    // 스위즐링 표현법
-    // float4
-    // float4.xy == float2
-    // float4.xyz == float3 
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
-  
+    
+    if (Clip.z == 0)
+    {
+        if (_Value.ClipUV.x > Clip.x)
+        {
+            clip(-1);
+        }
+    }
+    else
+    {
+        // 0~1
+        // 0.7
+        if (_Value.ClipUV.x < 1.0f - Clip.x)
+        {
+            clip(-1);
+        }
+    }
+    
+    if (Clip.w == 0)
+    {
+        if (_Value.ClipUV.y > Clip.y)
+        {
+            clip(-1);
+        }
+    }
+    else
+    {
+        if (_Value.ClipUV.y < 1.0f - Clip.y)
+        {
+            clip(-1);
+        }
+    }
+    
     Color *= MulColor;
     Color += PlusColor;
-   
+    
     return Color;
 }
-// clip <-- 한번확인해볼것 
-
-
-// 0번째 타겟에 출력하라는 의미가 된다. 
-//float4 Texture_PS(Output _Value) : SV_Target0
-//{
-//    return OutColor;
-//}
-
-// 아래 과정을 생략하여 위 코드처럼 작성이 가능하다. 
-//struct OutColor
-//{
-//    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
-//    float4 Color : SV_Target0;
-//};
-
-//OutColor Texture_PS(Output _Value)
-//{
-//    OutColor ReturnColor = (OutColor) 0;
-//    ReturnColor.Color = _Value.Color;
-//    return ReturnColor;
-//}

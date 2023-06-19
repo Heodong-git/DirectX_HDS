@@ -119,6 +119,13 @@ void GameEngineSpriteRenderer::Start()
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 {
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
+	std::shared_ptr<GameEngineTexture> FindTex = GameEngineTexture::Find(_Name);
+	if (nullptr == FindTex)
+	{
+		MsgAssert("존재하지 않는 이미지 입니다.");
+		return;
+	}
+	CurTexture = FindTex;
 }
 
 // X , Y 축 뒤집기 
@@ -149,6 +156,7 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 
 	float4 Scale = float4(static_cast<float>(FindTex->GetWidth()), static_cast<float>(FindTex->GetHeight()), 1);
 	GetTransform()->SetLocalScale(Scale);
+	CurTexture = FindTex;
 }
 
 // 아틀라스 이미지
@@ -160,6 +168,7 @@ void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, si
 	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
 	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
 	AtlasData = Info.CutData;
+	CurTexture = Info.Texture;
 }
 
 void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
@@ -169,6 +178,7 @@ void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
 	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
 	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
 	AtlasData = Info.CutData;
+	CurTexture = Info.Texture;
 }
 
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std::string_view& _Name)
@@ -341,26 +351,6 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
 
 		AtlasData = Info.CutData;
-		if (ClippingPercent != 1.0f)
-		{
-			switch (ScalePivot)
-			{
-			case Left:
-				AtlasData.PosX += (AtlasData.SizeX * (1 - ClippingPercent));
-				break;
-			case Right:
-				AtlasData.SizeX *= ClippingPercent;
-				break;
-			case Top:
-				AtlasData.PosY += (AtlasData.SizeY * (1 - ClippingPercent));
-				break;
-			case Bot:
-				AtlasData.SizeY *= ClippingPercent;
-				break;
-			default:
-				break;
-			}
-		}
 
 		if (true == CurAnimation->ScaleToTexture)
 		{
@@ -430,4 +420,44 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+	GetShaderResHelper().SetConstantBufferLink("ClipData", Clip);
+}
+
+// 내 눈에 보이는 이미지에서 0.1;
+void GameEngineSpriteRenderer::ImageClippingX(float _Ratio, ClipXDir _Dir)
+{
+	Clip.x = _Ratio;
+
+	if (_Dir == ClipXDir::Left)
+	{
+		Clip.z = 0;
+	}
+	else {
+		Clip.z = 1;
+	}
+
+	if (0.0f >= Clip.x)
+	{
+		Clip.x = 0.0f;
+	}
+}
+
+
+void GameEngineSpriteRenderer::ImageClippingY(float _Ratio, ClipYDir _Dir)
+{
+	Clip.y = _Ratio;
+
+	if (_Dir == ClipYDir::Top)
+	{
+		Clip.w = 0;
+	}
+	else {
+		Clip.w = 1;
+	}
+
+
+	if (0.0f >= Clip.y)
+	{
+		Clip.y = 0.0f;
+	}
 }
