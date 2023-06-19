@@ -70,7 +70,8 @@ HRESULT CFW1GlyphRenderStates::initRenderResources(
 	IFW1Factory *pFW1Factory,
 	ID3D11Device *pDevice,
 	bool wantGeometryShader,
-	bool anisotropicFiltering
+	bool anisotropicFiltering,
+	D3D11_BLEND_DESC blendDesc
 ) {
 	HRESULT hResult = initBaseObject(pFW1Factory);
 	if(FAILED(hResult))
@@ -117,7 +118,7 @@ HRESULT CFW1GlyphRenderStates::initRenderResources(
 	if(SUCCEEDED(hResult))
 		hResult = createConstantBuffer();
 	if(SUCCEEDED(hResult))
-		hResult = createRenderStates(anisotropicFiltering);
+		hResult = createRenderStates(anisotropicFiltering, blendDesc);
 	if(SUCCEEDED(hResult) && wantGeometryShader) {
 		hResult = createGlyphShaders();
 		if(FAILED(hResult))
@@ -757,22 +758,22 @@ HRESULT CFW1GlyphRenderStates::createConstantBuffer() {
 
 
 // Create render states
-HRESULT CFW1GlyphRenderStates::createRenderStates(bool anisotropicFiltering) {
+HRESULT CFW1GlyphRenderStates::createRenderStates(bool anisotropicFiltering, D3D11_BLEND_DESC blendDesc) {
 	// Create blend-state
-	D3D11_BLEND_DESC blendDesc;
+	// D3D11_BLEND_DESC blendDesc;
 	ID3D11BlendState *pBlendState;
 	
-	ZeroMemory(&blendDesc, sizeof(blendDesc));
-	for(int i=0; i < 4; ++i) {
-		blendDesc.RenderTarget[i].BlendEnable = TRUE;
-		blendDesc.RenderTarget[i].SrcBlend = D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[i].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-		blendDesc.RenderTarget[i].BlendOp = D3D11_BLEND_OP_ADD;
-		blendDesc.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[i].DestBlendAlpha = D3D11_BLEND_ZERO;
-		blendDesc.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-		blendDesc.RenderTarget[i].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	}
+	//ZeroMemory(&blendDesc, sizeof(blendDesc));
+	//for(int i=0; i < 4; ++i) {
+	//	blendDesc.RenderTarget[i].BlendEnable = TRUE;
+	//	blendDesc.RenderTarget[i].SrcBlend = D3D11_BLEND_ONE;
+	//	blendDesc.RenderTarget[i].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	//	blendDesc.RenderTarget[i].BlendOp = D3D11_BLEND_OP_ADD;
+	//	blendDesc.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND_ONE;
+	//	blendDesc.RenderTarget[i].DestBlendAlpha = D3D11_BLEND_ZERO;
+	//	blendDesc.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	//	blendDesc.RenderTarget[i].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	//}
 	
 	HRESULT hResult = m_pDevice->CreateBlendState(&blendDesc, &pBlendState);
 	if(FAILED(hResult)) {

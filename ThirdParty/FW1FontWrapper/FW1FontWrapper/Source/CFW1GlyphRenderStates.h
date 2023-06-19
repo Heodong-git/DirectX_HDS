@@ -34,7 +34,8 @@ class CFW1GlyphRenderStates : public CFW1Object<IFW1GlyphRenderStates> {
 			IFW1Factory *pFW1Factory,
 			ID3D11Device *pDevice,
 			bool wantGeometryShader,
-			bool anisotropicFiltering
+			bool anisotropicFiltering,
+			D3D11_BLEND_DESC blendDesc
 		);
 	
 	// Internal types
@@ -52,7 +53,7 @@ class CFW1GlyphRenderStates : public CFW1Object<IFW1GlyphRenderStates> {
 		HRESULT createGlyphShaders();
 		HRESULT createPixelShaders();
 		HRESULT createConstantBuffer();
-		HRESULT createRenderStates(bool anisotropicFiltering);
+		HRESULT createRenderStates(bool anisotropicFiltering, D3D11_BLEND_DESC blendDesc);
 	
 	// Internal data
 	private:

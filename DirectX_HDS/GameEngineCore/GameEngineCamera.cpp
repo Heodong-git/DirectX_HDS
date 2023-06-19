@@ -78,6 +78,11 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
 	{
+		if (GetLevel()->GetMainCamera().get() != this)
+		{
+			return;
+		}
+
 		FreeCamera = !FreeCamera;
 
 		if (true == FreeCamera)

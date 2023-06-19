@@ -61,6 +61,7 @@ ULONG STDMETHODCALLTYPE CFW1Factory::Release() {
 HRESULT STDMETHODCALLTYPE CFW1Factory::CreateFontWrapper(
 	ID3D11Device *pDevice,
 	LPCWSTR pszFontFamily,
+	D3D11_BLEND_DESC blendDesc,
 	IFW1FontWrapper **ppFontWrapper
 ) {
 	FW1_FONTWRAPPERCREATEPARAMS createParams;
@@ -81,7 +82,7 @@ HRESULT STDMETHODCALLTYPE CFW1Factory::CreateFontWrapper(
 	createParams.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
 	createParams.DefaultFontParams.pszLocale = L"";
 	
-	return CreateFontWrapper(pDevice, NULL, &createParams, ppFontWrapper);
+	return CreateFontWrapper(pDevice, NULL, blendDesc, &createParams, ppFontWrapper);
 }
 
 
@@ -89,6 +90,7 @@ HRESULT STDMETHODCALLTYPE CFW1Factory::CreateFontWrapper(
 HRESULT STDMETHODCALLTYPE CFW1Factory::CreateFontWrapper(
 	ID3D11Device *pDevice,
 	IDWriteFactory *pDWriteFactory,
+	D3D11_BLEND_DESC blendDesc,
 	const FW1_FONTWRAPPERCREATEPARAMS *pCreateParams,
 	IFW1FontWrapper **ppFontWrapper
 ) {
@@ -162,6 +164,7 @@ HRESULT STDMETHODCALLTYPE CFW1Factory::CreateFontWrapper(
 						
 						hResult = CreateGlyphRenderStates(
 							pDevice,
+							blendDesc,
 							pCreateParams->DisableGeometryShader,
 							pCreateParams->AnisotropicFiltering,
 							&pGlyphRenderStates
@@ -284,6 +287,7 @@ HRESULT STDMETHODCALLTYPE CFW1Factory::CreateGlyphVertexDrawer(
 // Create glyph render states
 HRESULT STDMETHODCALLTYPE CFW1Factory::CreateGlyphRenderStates(
 	ID3D11Device *pDevice,
+	D3D11_BLEND_DESC blendDesc,
 	BOOL DisableGeometryShader,
 	BOOL AnisotropicFiltering,
 	IFW1GlyphRenderStates **ppGlyphRenderStates
@@ -296,7 +300,8 @@ HRESULT STDMETHODCALLTYPE CFW1Factory::CreateGlyphRenderStates(
 		this,
 		pDevice,
 		(DisableGeometryShader == FALSE),
-		(AnisotropicFiltering != FALSE)
+		(AnisotropicFiltering != FALSE),
+		blendDesc
 	);
 	if(FAILED(hResult)) {
 		pGlyphRenderStates->Release();

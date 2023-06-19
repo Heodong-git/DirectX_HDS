@@ -19,11 +19,13 @@ class CFW1Factory : public IFW1Factory {
 		virtual HRESULT STDMETHODCALLTYPE CreateFontWrapper(
 			ID3D11Device *pDevice,
 			LPCWSTR pszFontFamily,
+			D3D11_BLEND_DESC blendDesc,
 			IFW1FontWrapper **ppFontWrapper
 		);
 		virtual HRESULT STDMETHODCALLTYPE CreateFontWrapper(
 			ID3D11Device *pDevice,
 			IDWriteFactory *pDWriteFactory,
+			D3D11_BLEND_DESC blendDesc,
 			const FW1_FONTWRAPPERCREATEPARAMS *pCreateParams,
 			IFW1FontWrapper **ppFontWrapper
 		);
@@ -44,6 +46,7 @@ class CFW1Factory : public IFW1Factory {
 		);
 		virtual HRESULT STDMETHODCALLTYPE CreateGlyphRenderStates(
 			ID3D11Device *pDevice,
+			D3D11_BLEND_DESC blendDesc,
 			BOOL DisableGeometryShader,
 			BOOL AnisotropicFiltering,
 			IFW1GlyphRenderStates **ppGlyphRenderStates
