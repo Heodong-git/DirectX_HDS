@@ -28,7 +28,7 @@ void Bullet::Start()
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BULLET);
-	m_Render->SetScaleToTexture("Bullet_00.png");
+	m_Render->SetTexture("Bullet_00.png");
 	m_Render->GetTransform()->SetLocalScale(float4{ 68.0f , 2.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BULLET);

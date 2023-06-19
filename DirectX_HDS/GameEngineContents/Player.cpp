@@ -347,8 +347,8 @@ void Player::ComponentSetting()
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOff();
 
-	// 서브 콜리전 체크용 이게 맞는진 모르겠는데 일단 이렇게 
-	m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
+	// 얘를 어떻게 할거니? 
+	m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER_SUB));
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_SubCollision->SetColType(ColType::OBBBOX3D);
@@ -1682,6 +1682,8 @@ void Player::CrouchEnd()
 void Player::RollStart()
 {
 	m_Collision->Off();
+
+	bool test = m_Collision->IsUpdate();
 
 	if (true == m_RightRoll)
 	{
