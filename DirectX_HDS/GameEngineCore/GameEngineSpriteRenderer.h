@@ -122,6 +122,25 @@ public:
 
 		ScalePivot = _ScalePivot;
 		PosPivot = _PosPivot;
+
+		AtlasData = float4(0, 0, 1, 1);
+		switch (ScalePivot)
+		{
+		case Left:
+			AtlasData.PosX += (AtlasData.SizeX * (1 - ClippingPercent));
+			break;
+		case Right:
+			AtlasData.SizeX *= ClippingPercent;
+			break;
+		case Top:
+			AtlasData.PosY += (AtlasData.SizeY * (1 - ClippingPercent));
+			break;
+		case Bot:
+			AtlasData.SizeY *= ClippingPercent;
+			break;
+		default:
+			break;
+		}
 	}
 
 	// 이미지 세팅시 크기의 비율 조정

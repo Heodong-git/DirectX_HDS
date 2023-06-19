@@ -29,7 +29,7 @@ void GameEngineButton::Update(float _Delta)
 	//                                               마우스
 
 	// 이카메라가 원근 투영이면
-	std::shared_ptr<GameEngineCamera> Camera = GetLevel()->GetCamera(100);
+	GameEngineCamera* Camera = Render->GetCamera();
 
 	// 랜더러 
 	float4x4 ViewPort = Camera->GetViewPort();

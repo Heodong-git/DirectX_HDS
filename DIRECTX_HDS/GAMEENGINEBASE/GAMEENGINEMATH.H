@@ -294,7 +294,7 @@ public:
 		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
-	UINT ColorToUint()
+	UINT ColorToUint() const
 	{
 		UINT Return;
 

@@ -64,6 +64,11 @@ public:
 	// Z sort 
 	void CalSortZ(class GameEngineCamera* _Camera);
 
+	GameEngineCamera* GetCamera()
+	{
+		return RenderCamera;
+	}
+
 protected:
 	void Start();
 	void Render(float _Delta) override;
@@ -73,6 +78,8 @@ private:
 	bool IsCameraCulling = false;
 
 	float CalZ = 0.0f;
+
+	GameEngineCamera* RenderCamera;
 
 	std::vector<std::shared_ptr<GameEngineRenderUnit>> Units;
 

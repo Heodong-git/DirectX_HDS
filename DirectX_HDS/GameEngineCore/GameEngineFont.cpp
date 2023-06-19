@@ -51,11 +51,11 @@ void GameEngineFont::LoadFont(const std::string_view& _Path)
 	}
 }
 
-void GameEngineFont::FontDraw(const std::string_view& _Text)
+void GameEngineFont::FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color)
 {
 	std::wstring Text = GameEngineString::AnsiToUniCode(_Text);
 
 	float4 Color = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	Font->DrawString(GameEngineDevice::GetContext(), Text.c_str(), 300.0f, 100.0f, 100.0f, Color.ColorToUint(), FW1_TOP);
+	Font->DrawString(GameEngineDevice::GetContext(), Text.c_str(), _FontScale, _Pos.x, _Pos.y, _Color.ColorToUint(), FW1_TOP);
 }

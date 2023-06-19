@@ -59,7 +59,7 @@ void SlashLaser_Effect::MoveUpdate(float _DeltaTime)
 	m_MainRender->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
 
 	Dir.Normalize();
-	m_MainRender->GetTransform()->AddLocalPosition(Dir * 15000.0f * _DeltaTime);
+	m_MainRender->GetTransform()->AddLocalPosition(Dir * 20000.0f * _DeltaTime);
 }
 
 void SlashLaser_Effect::ComponentSetting()

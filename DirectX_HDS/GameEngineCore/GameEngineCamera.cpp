@@ -252,6 +252,7 @@ void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 		return;
 	}
 
+	_Render->RenderCamera = this;
 	Renderers[_Render->GetOrder()].push_back(_Render);
 }
 
