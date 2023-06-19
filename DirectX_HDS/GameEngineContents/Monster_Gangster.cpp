@@ -14,6 +14,7 @@
 #include "EnemyFollow_Effect.h"
 #include "IronDoor.h"
 #include "FireEffect.h"
+#include "Bullet.h"
 
 Monster_Gangster::Monster_Gangster()
 {
@@ -182,6 +183,10 @@ void Monster_Gangster::Reset()
 	ChangeState(GangsterState::IDLE);
 	ResetDir();
 	m_Collision->On();
+	m_SubCollision->On();
+	m_AimCollision->On();
+	m_FireCount = 0;
+	m_FireTime = 0.0f;
 }
 
 void Monster_Gangster::ResetDir()
@@ -239,14 +244,37 @@ void Monster_Gangster::CreateFireEffect()
 	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { PivotX, 39.0f });
 }
 
-void Monster_Gangster::AimRangeCheck()
+void Monster_Gangster::CreateBullet()
+{
+	std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
+	float PivotX = 0.0f;
+	if (true == m_Direction)
+	{
+		PivotX = 56.0f;
+		Obj->GetTransform()->SetLocalPositiveScaleX();
+		Obj->SetMoveDir(float4::Right);
+	}
+	else if (false == m_Direction)
+	{
+		PivotX = -56.0f;
+		Obj->GetTransform()->SetLocalNegativeScaleX();
+		Obj->SetMoveDir(float4::Left);
+	}
+
+	Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { PivotX, 39.0f });
+}
+
+bool Monster_Gangster::AimRangeCheck()
 {
 	// 만약 플레이어와 충돌했다면 에임 상태로 전환 
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_AimCollision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != PlayerCol)
 	{
 		ChangeState(GangsterState::AIM);
+		return true;
 	}
+
+	return false;
 }
 
 bool Monster_Gangster::ChaseCheck()
@@ -416,11 +444,11 @@ void Monster_Gangster::IdleUpdate(float _DeltaTime)
 
 	// 일단 워크상태로 가고.
 	// 생존시간이 2초가 넘었다면 <-- 이건바꿔야함 
-	/*if (3.0f <= GetLiveTime())
+	if (3.0f <= GetLiveTime())
 	{
 		ChangeState(GangsterState::WALK);
 		return;
-	}*/
+	}
 }
 
 void Monster_Gangster::IdleEnd()
@@ -443,8 +471,7 @@ void Monster_Gangster::WalkUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 대신 여기서. 레인지체크를해서. 사거리 안에 들어왔다면. aim 상태로 전환 
-	// 사거리를 뭘로 체크할거냐? 
+	AimRangeCheck();
 
 
 	// 파티션과 충돌했다면
@@ -491,7 +518,32 @@ void Monster_Gangster::ChaseStart()
 
 void Monster_Gangster::ChaseUpdate(float _DeltaTime)
 {
-	int a = 0;
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float4 MoveDir = PlayerPos - MyPos;
+
+	// 이때 x 값이 나보다 크다면
+	if (PlayerPos.x > MyPos.x)
+	{
+		m_Direction = true;
+		GetTransform()->SetLocalPositiveScaleX();
+
+	}
+	else if (PlayerPos.x <= MyPos.x)
+	{
+		m_Direction = false;
+		GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	if (200.0f >= abs(PlayerPos.x - MyPos.x))
+	{
+		ChangeState(GangsterState::AIM);
+		return;
+	}
+
+	MoveDir.y = 0.0f;
+	MoveDir.Normalize();
+	GetTransform()->AddWorldPosition(MoveDir * m_ChaseMoveSpeed * _DeltaTime);
 }
 
 void Monster_Gangster::ChaseEnd()
@@ -503,20 +555,41 @@ void Monster_Gangster::AimStart()
 	m_MainRender->ChangeAnimation("gangster_aim");
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , 11.0f });
 	CreateFollowEffect();
-	CreateFireEffect();
+	
 }
 
 void Monster_Gangster::AimUpdate(float _DeltaTime)
 {
-	// 공격로직을 짜야함. 에임 상태가 되었다면
-	// 세발을 간격을 두고 총알을 세발 발사한다. 
-	// 세발을 발사했다면 체이스상태로 변경하고, 체이스상태에서는 
-	// 사거리에 들어왔다면 다시 에임 상태로 변경한다. 
+	if (3 == m_FireCount)
+	{
+		m_FireCount = 0;
+		m_FireTime = 0.0f;
+
+		if (true == AimRangeCheck())
+		{
+			ChangeState(GangsterState::AIM);
+			return;
+		}
+
+		ChangeState(GangsterState::CHASE);
+		return;
+	}
+
+	m_FireTime += _DeltaTime;
+	if (m_ShotCoolTime <= m_FireTime)
+	{
+		++m_FireCount;
+		m_FireTime = 0.0f;
+		CreateBullet();
+		CreateFireEffect();
+	}
 }
 
 void Monster_Gangster::AimEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , -11.0f });
+	m_FireCount = 0;
+	m_FireTime = 0.0f;
 	
 }
 

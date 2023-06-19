@@ -51,9 +51,11 @@ private:
 private:
 	// void CreateEffect();		// 공격이펙트 생성
 	void CreateFollowEffect();  // 적발견 이펙트 생성
-	void CreateFireEffect();
+	void CreateFireEffect();	// 
+	void CreateBullet();
 
-	void AimRangeCheck();
+
+	bool AimRangeCheck();
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
 	void DoorOpenCheck();		// 문이 열렸니
 	bool DoorCollisionCheck();	// 문 충돌체크 
@@ -61,12 +63,17 @@ private:
 	void DeathCheck();			// 내가 죽었는지 
 
 	float m_HitEffectPivot = 20.0f;
-
 	float m_RenderPivot = 38.0f;
 	float m_ColPivot = 33.0f;
 	float4 m_ColScale = { 45.0f, 65.0f , 1.0f };
 
 	float m_WalkMoveSpeed = 100.0f;
+	float m_ChaseMoveSpeed = 150.0f;
+	float m_ShotCoolTime = 0.45f;
+	float m_FireTime = 0.0f;
+	int m_FireCount = 0;
+
+
 
 	bool m_FollowEffectOn = false;
 

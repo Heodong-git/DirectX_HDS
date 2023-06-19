@@ -122,7 +122,7 @@ void Player::LoadAndCreateAnimation()
 								  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_roll", .SpriteName = "player_roll", .Start = 0, .End = 6 ,
-									  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
+									  .FrameInter = 0.02f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_crouch", .SpriteName = "player_crouch", .Start = 0, .End = 0 ,
 							  .FrameInter = 0.01f , .Loop = false , .ScaleToTexture = true });
