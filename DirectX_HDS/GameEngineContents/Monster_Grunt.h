@@ -34,6 +34,7 @@ public:
 		return m_Direction;
 	}
 
+	virtual void BulletCollision() override;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -55,6 +56,7 @@ private:
 private:
 	void CreateEffect();		// 공격이펙트 생성
 	void CreateFollowEffect();  // 적발견 이펙트 생성
+	void CreateHitEffect();
 
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
 	void DoorOpenCheck();		// 문이 열렸니

@@ -46,6 +46,16 @@ Player::~Player()
 {
 }
 
+// 총에 맞았다면 
+void Player::BulletCollision()
+{
+	if (PlayerState::DEATH != m_CurState)
+	{
+		m_Collision->Off();
+		ChangeState(PlayerState::DEATH);
+	}
+}
+
 void Player::Start()
 {
 	// 액터 스타트 기본인터페이스 구성

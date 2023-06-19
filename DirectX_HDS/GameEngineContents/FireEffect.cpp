@@ -25,8 +25,8 @@ void FireEffect::Start()
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
-	m_Render->CreateAnimation({ .AnimationName = "gangster_fire_effect", .SpriteName = "gangster_fire_effect", .Start = 0, .End = 5 ,
-							  .FrameInter = 0.02f , .Loop = false , .ScaleToTexture = true });
+	m_Render->CreateAnimation({ .AnimationName = "gangster_fire_effect", .SpriteName = "gangster_fire_effect", .Start = 0, .End = 7 ,
+							  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 	m_Render->SetScaleRatio(2.0f);
 
 	m_Render->ChangeAnimation("gangster_fire_effect");

@@ -3,6 +3,8 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include "ReflectEffect.h"
+
 
 Bullet::Bullet()
 {
@@ -34,22 +36,39 @@ void Bullet::Start()
 	m_Collision->SetColType(ColType::OBBBOX3D);
 }
 
-// 그리고 총알이. 충돌했다면 바로 삭제. 
 void Bullet::Update(float _DeltaTime)
 {
 	if (GetLiveTime() >= m_LiveTime)
 	{
-		this->Death();
+		if (false == IsUpdate())
+		{
+			this->Death();
+		}
 		return;
 	}
+
+	GetTransform()->AddLocalPosition(m_MoveDir * m_MoveSpeed * _DeltaTime);
 	
 	// 플레이어의 공격과 충돌했다면
-	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	
-	if (nullptr != PlayerCol)
+	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != DoorCol)
 	{
+		m_Collision->Off();
+		this->Death();
+	}
+
+	// 플레이어의 공격과 충돌했다면
+	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != AttCol)
+	{
+		// 내가 패링이 아닌상태에서
+		if (false == m_Parring)
+		{
+			CreateReflectEffect();
+		}
 		// 충돌을 했으면, 이제 콜리전의 액터가 있을거고 
-		Bullet* Obj = dynamic_cast<Bullet*>(PlayerCol->GetActor());
+		Bullet* Obj = dynamic_cast<Bullet*>(AttCol->GetActor());
+		// 여기서 리플렉트 이펙트 만들어 
 
 		// 그녀석을 다이나믹캐스트로 반환하여 받아봤을때. nullptr이면 Bullet이 아닌거고. 제대로 받아왔으면 불렛인거잖아?
 		// 불렛이면 패링안해 
@@ -60,11 +79,36 @@ void Bullet::Update(float _DeltaTime)
 		}
 	}
 
-	GetTransform()->AddLocalPosition(m_MoveDir * m_MoveSpeed * _DeltaTime);
+	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != PlayerCol)
+	{
+		// 그리고 여기서 리플렉트 이펙트도 만들어야함 
+		std::shared_ptr<BaseActor> Actor = PlayerCol->GetActor()->DynamicThis<BaseActor>();
+		Actor->BulletCollision();
+		this->Death();
+	}
+
+	// 이동시키는데, 내가 몬스터와 충돌했다면 나를 데스, 몬스터도 총알과 충돌했다면 데스
+	std::shared_ptr<GameEngineCollision> MonsterCol = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != MonsterCol && true == m_Parring)
+	{
+		// 충돌체의 액터를 받아와서, 액터의 오버라이드된 불릿충돌 함수 호출
+
+		// 그리고 여기서 리플렉트 이펙트도 만들어야함 
+		std::shared_ptr<BaseActor> Actor = MonsterCol->GetActor()->DynamicThis<BaseActor>();
+		Actor->BulletCollision();
+		this->Death();
+	}
 }
 
 void Bullet::Render(float _DeltaTime)
 {
+}
+
+void Bullet::CreateReflectEffect()
+{
+	std::shared_ptr<ReflectEffect> Effect = GetLevel()->CreateActor<ReflectEffect>();
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 }
 
 void Bullet::DirCorrection()
@@ -95,12 +139,7 @@ void Bullet::DirCorrection()
 			CurMoveDir.y = -CurMoveDir.y;
 		}
 
-		m_Collision->SetOrder(static_cast<int>(ColOrder::PLAYER_ATTACK));
+		m_Collision->SetOrder(static_cast<int>(ColOrder::PLAYER_BULLET));
 		m_MoveDir = CurMoveDir;
-	}
-
-	if (false == m_Parring)
-	{
-		
 	}
 }

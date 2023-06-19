@@ -12,6 +12,7 @@
 #include "SlashHit_Effect.h"
 #include "IronDoor.h"
 #include "EnemyFollow_Effect.h"
+#include "HitEffect.h"
 
 Monster_Pomp::Monster_Pomp()
 {
@@ -254,24 +255,58 @@ void Monster_Pomp::ParryingCheck()
 
 void Monster_Pomp::DeathCheck()
 {
-	// 본체와의 충돌
+	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineCollision> BulletCol = m_Collision->Collision(ColOrder::PLAYER_BULLET, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	if (nullptr != BulletCol)
+	{
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		CreateHitEffect();
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
+		ChangeState(PompState::HITGROUND);
+		return;
+	}
+	// 뭔가가 들어왔다는건 충돌했다는거고 
+	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 	if (nullptr != Col)
 	{
-		// 생성하는 이펙트 수정 할 수도. 
-		// 충돌한 충돌체의 부모를  받아오고 
-		GameEngineTransform* colobj = Col->GetTransform()->GetParent();
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		CreateHitEffect();
 		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
 		float4 MyPos = GetTransform()->GetLocalPosition();
 		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
 
-		m_Collision->Off();
-		m_ChaseCollision->Off();
-
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
-		// 상태변경후 데스애니메이션 
 		ChangeState(PompState::HITGROUND);
+		return;
+	}
+}
+
+void Monster_Pomp::CreateHitEffect()
+{
+	std::shared_ptr<HitEffect> Effect = GetLevel()->CreateActor<HitEffect>(static_cast<int>(RenderOrder::EFFECT));
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float4 MoveDir = PlayerPos - MyPos;
+
+	Effect->SetObject(this->DynamicThis<GameEngineObject>());
+	if (PlayerPos.x > MyPos.x)
+	{
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	else if (PlayerPos.x <= MyPos.x)
+	{
+
+		Effect->GetTransform()->SetLocalNegativeScaleX();
 	}
 }
 
@@ -452,6 +487,11 @@ void Monster_Pomp::ChangeState(PompState _State)
 		KnockDownEnd();
 		break;
 	}
+}
+
+void Monster_Pomp::BulletCollision()
+{
+	DeathCheck();
 }
 
 

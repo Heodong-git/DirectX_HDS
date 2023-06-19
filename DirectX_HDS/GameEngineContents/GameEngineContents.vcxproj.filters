@@ -165,6 +165,12 @@
     <ClInclude Include="Bullet.h">
       <Filter>02.Actor\15.Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="ReflectEffect.h">
+      <Filter>02.Actor\15.Bullet\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>02.Actor\16.Effect\HitEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -330,6 +336,12 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>02.Actor\15.Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="ReflectEffect.cpp">
+      <Filter>02.Actor\15.Bullet\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>02.Actor\16.Effect\HitEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -475,6 +487,15 @@
     </Filter>
     <Filter Include="02.Actor\15.Bullet">
       <UniqueIdentifier>{541300b2-e9bd-4ea6-860b-488b9ec3acd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\15.Bullet\Effect">
+      <UniqueIdentifier>{e8264c31-20b7-43e0-8eb8-407145f968e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\16.Effect">
+      <UniqueIdentifier>{64be276d-c096-4208-a79c-c3492196aa5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\16.Effect\HitEffect">
+      <UniqueIdentifier>{7284c6d5-dbfa-46c4-8db0-d9294fa4de24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

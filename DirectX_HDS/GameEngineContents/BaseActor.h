@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+// BaseState ???? 
+
 class BaseActor : public GameEngineActor
 {
 	// 레벨에서 초기상태로 리셋하게 될 경우
@@ -29,6 +31,8 @@ public:
 		return m_InitPos;
 	}
 
+	virtual void BulletCollision() {};
+	
 protected:
 	void Update(float _DeltaTime) override;
 

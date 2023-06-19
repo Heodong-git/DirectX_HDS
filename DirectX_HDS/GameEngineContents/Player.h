@@ -98,6 +98,8 @@ public:
 		return m_DebugRenders;
 	}
 
+	virtual void BulletCollision() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

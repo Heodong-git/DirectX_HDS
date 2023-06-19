@@ -25,6 +25,12 @@ public:
 	Monster_Gangster& operator=(const Monster_Gangster& _Other) = delete;
 	Monster_Gangster& operator=(Monster_Gangster&& _Other) noexcept = delete;
 
+	virtual void BulletCollision() override;
+
+	void SetDir(const bool _Dir)
+	{
+		m_Direction = _Dir;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -45,7 +51,6 @@ private:
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_ChaseCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_SubCollision = nullptr;
-
 	std::shared_ptr<class GameEngineCollision> m_AimCollision = nullptr;
 	
 private:
@@ -53,7 +58,7 @@ private:
 	void CreateFollowEffect();  // 적발견 이펙트 생성
 	void CreateFireEffect();	// 
 	void CreateBullet();
-
+	void CreateHitEffect();
 
 	bool AimRangeCheck();
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
@@ -69,10 +74,12 @@ private:
 
 	float m_WalkMoveSpeed = 100.0f;
 	float m_ChaseMoveSpeed = 150.0f;
-	float m_ShotCoolTime = 0.45f;
+	float m_ShotCoolTime = 0.75f;
 	float m_FireTime = 0.0f;
 	int m_FireCount = 0;
+	float m_FlyingSpeed = 800.0f;
 
+	float4 m_HitPos = float4{ 0.0f, 0.0f };
 
 
 	bool m_FollowEffectOn = false;

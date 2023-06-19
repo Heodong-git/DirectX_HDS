@@ -29,7 +29,7 @@ public:
 
 	// 상태값 변경
 	void ChangeState(PompState _State);
-
+	virtual void BulletCollision() override;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -57,6 +57,7 @@ private:
 	bool PartitionCollisionCheck();
 	void ParryingCheck();		// 패링체크 
 	void DeathCheck();			// 내가 죽었는지 
+	void CreateHitEffect();
 
 	void Attack();
 	void AttackOff();

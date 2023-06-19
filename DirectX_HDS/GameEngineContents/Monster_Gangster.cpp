@@ -15,6 +15,7 @@
 #include "IronDoor.h"
 #include "FireEffect.h"
 #include "Bullet.h"
+#include "HitEffect.h"
 
 Monster_Gangster::Monster_Gangster()
 {
@@ -22,6 +23,11 @@ Monster_Gangster::Monster_Gangster()
 
 Monster_Gangster::~Monster_Gangster()
 {
+}
+
+void Monster_Gangster::BulletCollision()
+{
+	DeathCheck();
 }
 
 void Monster_Gangster::Start()
@@ -264,6 +270,26 @@ void Monster_Gangster::CreateBullet()
 	Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { PivotX, 39.0f });
 }
 
+void Monster_Gangster::CreateHitEffect()
+{
+	std::shared_ptr<HitEffect> Effect = GetLevel()->CreateActor<HitEffect>(static_cast<int>(RenderOrder::EFFECT));
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float4 MoveDir = PlayerPos - MyPos;
+
+	Effect->SetObject(this->DynamicThis<GameEngineObject>());
+	if (PlayerPos.x > MyPos.x)
+	{
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	else if (PlayerPos.x <= MyPos.x)
+	{
+
+		Effect->GetTransform()->SetLocalNegativeScaleX();
+	}
+}
+
 bool Monster_Gangster::AimRangeCheck()
 {
 	// 만약 플레이어와 충돌했다면 에임 상태로 전환 
@@ -332,7 +358,20 @@ void Monster_Gangster::DeathCheck()
 {
 	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineCollision> BulletCol = m_Collision->Collision(ColOrder::PLAYER_BULLET, ColType::OBBBOX3D, ColType::OBBBOX3D);
 
+	if (nullptr != BulletCol)
+	{
+		// 나의 충돌체를 off
+		// 애니메이션 렌더를 데스애니메이션으로전환 
+		m_Collision->Off();
+		CreateHitEffect();
+
+		// 내가죽었으니까 -1 
+		GetReturnCastLevel()->DisCount();
+		ChangeState(GangsterState::HITGROUND);
+		return;
+	}
 	// 뭔가가 들어왔다는건 충돌했다는거고 
 	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 	if (nullptr != Col)
@@ -340,6 +379,7 @@ void Monster_Gangster::DeathCheck()
 		// 나의 충돌체를 off
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
+		CreateHitEffect();
 		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
 		float4 MyPos = GetTransform()->GetLocalPosition();
 		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
@@ -347,6 +387,7 @@ void Monster_Gangster::DeathCheck()
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
 		ChangeState(GangsterState::HITGROUND);
+		return;
 	}
 }
 
@@ -555,11 +596,16 @@ void Monster_Gangster::AimStart()
 	m_MainRender->ChangeAnimation("gangster_aim");
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , 11.0f });
 	CreateFollowEffect();
-	
 }
 
 void Monster_Gangster::AimUpdate(float _DeltaTime)
 {
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	{
+		ChangeState(GangsterState::IDLE);
+		return;
+	}
+
 	if (3 == m_FireCount)
 	{
 		m_FireCount = 0;
@@ -607,19 +653,50 @@ void Monster_Gangster::TurnEnd()
 
 void Monster_Gangster::HitGroundStart()
 {
+	m_HitPos = float4{ 0.0f, 0.0f };
 	DirCheck();
 	m_MainRender->ChangeAnimation("gangster_hitground");
 }
 
 void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 {
-	if (true == m_MainRender->IsAnimationEnd())
+	// 픽셀체크 해야함
+	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (4 <= m_MainRender->GetCurrentFrame() || PartitionCol != nullptr || DoorCol != nullptr)
 	{
-		int a = 0;
+		// 나중에 추가할 거 있으면 추가 
+		return;
+	}
+
+	// 플레이어 x축 계산  
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	float FlyingSpeed = m_FlyingSpeed;
+
+	float X = abs(MyPos.x - m_HitPos.x);
+	if (X >= 100.0f)
+	{
+		FlyingSpeed *= 0.67f;
+	}
+
+	// 이때 나의 x축이 플레이어의 x축보다 크다면 우측으로
+	// 아니라면 왼쪽으로
+	if (PlayerPos.x <= MyPos.x)
+	{
+		// 우측
+		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
+	}
+
+	else if (PlayerPos.x > MyPos.x)
+	{
+		// 좌측 
+		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
 	}
 }
 
 void Monster_Gangster::HitGroundEnd()
 {
+	m_HitPos = float4{ 0.0f, 0.0f };
 }
 
