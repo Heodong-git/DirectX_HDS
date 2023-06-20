@@ -280,9 +280,7 @@ void Monster_Pomp::DeathCheck()
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
 		CreateHitEffect();
-		std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
-		float4 MyPos = GetTransform()->GetLocalPosition();
-		Effect->GetTransform()->SetLocalPosition({ MyPos.x, MyPos.y + m_HitEffectPivot });
+		CreateSlashHitEffect();
 
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
@@ -309,6 +307,13 @@ void Monster_Pomp::CreateHitEffect()
 
 		Effect->GetTransform()->SetLocalNegativeScaleX();
 	}
+}
+
+void Monster_Pomp::CreateSlashHitEffect()
+{
+	std::shared_ptr<SlashHit_Effect> Effect = GetLevel()->CreateActor<SlashHit_Effect>(static_cast<int>(RenderOrder::EFFECT));
+	Effect->SetObject(DynamicThis<Monster_Pomp>());
+	Effect->SetPivot(float4{ 0.0f, 30.0f });
 }
 
 void Monster_Pomp::Attack()
@@ -370,6 +375,8 @@ void Monster_Pomp::CreateFollowEffect()
 		m_FollowEffectOn = true;
 		std::shared_ptr<EnemyFollow_Effect> Effect = GetLevel()->CreateActor<EnemyFollow_Effect>();
 		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 85.0f });
+		Effect->SetObject(DynamicThis<Monster_Pomp>());
+		Effect->SetPivot(float4{ 0.0f, 90.0f });
 	}
 }
 

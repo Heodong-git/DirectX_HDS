@@ -58,6 +58,7 @@ private:
 	void ParryingCheck();		// 패링체크 
 	void DeathCheck();			// 내가 죽었는지 
 	void CreateHitEffect();
+	void CreateSlashHitEffect();
 
 	void Attack();
 	void AttackOff();

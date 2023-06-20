@@ -35,8 +35,8 @@ protected:
 private:
 	bool m_Direction = false;
 	std::shared_ptr<GameEngineObject> m_FollowObj = nullptr;
-	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 
 	bool m_IsPivot = false;
 	float4 m_Pivot = {};
+	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 };

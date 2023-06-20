@@ -10,6 +10,16 @@ SlashHit_Effect::~SlashHit_Effect()
 {
 }
 
+void SlashHit_Effect::SetObject(std::shared_ptr<GameEngineObject> _Obj)
+{
+	if (nullptr == _Obj)
+	{
+		MsgAssert("오브젝트가 nullptr 입니다.");
+	}
+
+	m_FollowObj = _Obj;
+}
+
 void SlashHit_Effect::Start()
 {
 	if (nullptr == GameEngineSprite::Find("slash_hit"))
@@ -37,6 +47,17 @@ void SlashHit_Effect::Update(float _DeltaTime)
 			this->Death();
 			return;
 		}
+	}
+
+	if (nullptr != m_FollowObj)
+	{
+		if (true == m_IsPivot)
+		{
+			GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition() + m_Pivot);
+			return;
+		}
+
+		GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition());
 	}
 }
 

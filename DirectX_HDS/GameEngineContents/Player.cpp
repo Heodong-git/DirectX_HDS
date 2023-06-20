@@ -2536,22 +2536,28 @@ void Player::DeathUpdate(float _DeltaTime)
 	
 	if (true == m_Direction)
 	{
+		m_NextTrans->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+
 		// ÇöÀç ³ªÀÇ ÁÂÃø ÇÈ¼¿ÀÌ Èò»öÀÏ ¶§ 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()) ||
-			PixelCollider::g_ErrorPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { -m_RenderPivot, m_RenderPivot }) ||
+			PixelCollider::g_ErrorPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { -m_RenderPivot, m_RenderPivot }))
 		{
-			GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+			return;
 		}
-		
+
+		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
 	}
 	else if (false == m_Direction)
 	{
+		m_NextTrans->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
 		// ÇöÀç ³ªÀÇ ÁÂÃø ÇÈ¼¿ÀÌ Èò»öÀÏ ¶§ 
-		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()) ||
-			PixelCollider::g_ErrorPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+		if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { m_RenderPivot, m_RenderPivot }) ||
+			PixelCollider::g_ErrorPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { m_RenderPivot, m_RenderPivot }))
 		{
-			GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
+			return;
 		}
+
+		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
 	}
 	
 	

@@ -12,6 +12,16 @@ EnemyFollow_Effect::~EnemyFollow_Effect()
 {
 }
 
+void EnemyFollow_Effect::SetObject(std::shared_ptr<GameEngineObject> _Obj)
+{
+	if (nullptr == _Obj)
+	{
+		MsgAssert("오브젝트가 nullptr 입니다.");
+	}
+
+	m_FollowObj = _Obj;
+}
+
 void EnemyFollow_Effect::Start()
 {
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
@@ -45,6 +55,17 @@ void EnemyFollow_Effect::Update(float _DeltaTime)
 		{
 			m_Render = nullptr;
 		}
+	}
+
+	if (nullptr != m_FollowObj)
+	{
+		if (true == m_IsPivot)
+		{
+			GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition() + m_Pivot);
+			return;
+		}
+
+		GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition());
 	}
 }
 

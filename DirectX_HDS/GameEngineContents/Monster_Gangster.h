@@ -59,6 +59,7 @@ private:
 	void CreateFireEffect();	// 
 	void CreateBullet();
 	void CreateHitEffect();
+	void CreateSlashHitEffect();
 
 	bool AimRangeCheck();
 	bool ChaseCheck();			// chase 체크용 충돌체와 플레이어가 충돌했는지 확인
