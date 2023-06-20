@@ -34,7 +34,7 @@ private:
 	const float m_RenderPivot = 40.0f;
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
-	const float4 m_ColScale = { 85.0f , 75.0f };
+	const float4 m_ColScale = { 80.0f , 70.0f };
 	const float  m_ColPivot = 43.0f;
 	float m_Angle = 0.0f;
 

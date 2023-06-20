@@ -77,7 +77,8 @@ void Cursor::Update(float _DeltaTime)
 	FollowCursor();
 
 	// 플레이어가 데스상태고, 레벨이 대기상태일때만 작동
-	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState() && PlayerState::NONE == Player::MainPlayer->GetCurState())
+	// 플레이어 데스상태 조건은 제거함 
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		if (true == GameEngineInput::IsDown("cursor_leftclick"))
 		{

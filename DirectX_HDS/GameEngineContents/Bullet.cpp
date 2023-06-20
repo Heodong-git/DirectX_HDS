@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ReflectEffect.h"
 
+#include "Player.h"
 
 Bullet::Bullet()
 {
@@ -82,9 +83,8 @@ void Bullet::Update(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != PlayerCol)
 	{
-		// 그리고 여기서 리플렉트 이펙트도 만들어야함 
-		std::shared_ptr<BaseActor> Actor = PlayerCol->GetActor()->DynamicThis<BaseActor>();
-		Actor->BulletCollision();
+		Player::MainPlayer->BulletCollision();
+		Player::MainPlayer->CreateHitEffect(m_Collision);
 		this->Death();
 	}
 

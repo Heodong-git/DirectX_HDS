@@ -195,6 +195,7 @@ void Monster_Gangster::Reset()
 	m_AimCollision->On();
 	m_FireCount = 0;
 	m_FireTime = 0.0f;
+	m_FollowEffectOn = false;
 }
 
 void Monster_Gangster::ResetDir()
@@ -502,7 +503,8 @@ void Monster_Gangster::IdleEnd()
 void Monster_Gangster::WalkStart()
 {
 	m_MainRender->ChangeAnimation("gangster_walk");
-	ResetDir();
+	
+	DirCheck();
 }
 
 void Monster_Gangster::WalkUpdate(float _DeltaTime)

@@ -160,7 +160,7 @@ void ClubLevel_03::CreateObjAndInit()
 	}
 	{
 		std::shared_ptr<Monster_Gangster> Monster = CreateActor<Monster_Gangster>(static_cast<int>(RenderOrder::MONSTER), "Gangster");
-		float4 InitPos = { 329.61f, -516.2f };
+		float4 InitPos = { 379.61f, -516.2f };
 		ActorInit(Monster, InitPos);
 	}
 	{

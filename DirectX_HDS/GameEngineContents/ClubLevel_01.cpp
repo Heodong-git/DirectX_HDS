@@ -64,7 +64,7 @@ void ClubLevel_01::LevelChangeStart()
 
 	// 플레이어 위치세팅
 	std::shared_ptr<Player> NewPlayer = (CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player"));
-	float4 InitPos = { -538, -252 };
+	float4 InitPos = { -538, -256 };
 	ActorInit(NewPlayer, InitPos);
 
 	// UI 

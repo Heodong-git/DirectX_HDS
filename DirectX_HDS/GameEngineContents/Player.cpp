@@ -282,7 +282,9 @@ bool Player::FanBladeColCheck()
 
 bool Player::HitCheck()
 {
-	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	// ?? 뭐야 
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
 	if (nullptr != Col)
 	{
 		CreateHitEffect(Col);
@@ -331,7 +333,8 @@ void Player::TimeOutCheck()
 	// 데스체크, 만약 스테이지 제한시간을 넘어섰다면 
 	if (0.0f >= GetReturnCastLevel()->GetLimitTime())
 	{
-		if (PlayerState::DEATH == m_CurState)
+		if (PlayerState::DEATH == m_CurState ||
+			PlayerState::NONE == m_CurState)
 		{
 			return;
 		}
@@ -651,6 +654,9 @@ void Player::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::DOORBREAK:
 		DoorBreakUpdate(_DeltaTime);
+		break;
+	case PlayerState::NONE:
+		NoneUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -2510,16 +2516,10 @@ void Player::DeathStart()
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
-// 애니메이션이 데스로 바뀌었고.
-// 플레이어는 맞았으면 날아가야지? 
-// 
 void Player::DeathUpdate(float _DeltaTime)
 {
-	// 애니메이션이 종료됐거나, 
-	// 내 픽셀이 검은색 이거나, 
-	if (true == m_Render->IsAnimationEnd() ||
-		PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) ||
-		PixelCollider::g_ErrorPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
+	// 개이상함 바꿔야함  
+	if (true == m_Render->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::NONE);
 		return;
@@ -2533,17 +2533,28 @@ void Player::DeathUpdate(float _DeltaTime)
 		FlyingSpeed *= 0.67f;
 	}
 
-	// 현재 나의 방향 
+	
 	if (true == m_Direction)
 	{
-		// 좌측 
-		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+		// 현재 나의 좌측 픽셀이 흰색일 때 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()) ||
+			PixelCollider::g_ErrorPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+		{
+			GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+		}
+		
 	}
 	else if (false == m_Direction)
 	{
-		// 우측
-		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
+		// 현재 나의 좌측 픽셀이 흰색일 때 
+		if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()) ||
+			PixelCollider::g_ErrorPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Wall_Right->GetTransform()->GetWorldPosition()))
+		{
+			GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
+		}
 	}
+	
+	
 }
 
 void Player::DeathEnd()
@@ -2556,6 +2567,13 @@ void Player::NoneStart()
 {
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
+
+void Player::NoneUpdate(float _DeltaTime)
+{
+	
+}
+
+
 
 void Player::NoneEnd()
 {

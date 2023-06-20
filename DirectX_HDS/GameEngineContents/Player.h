@@ -6,7 +6,7 @@
 // 플레이어 상태값 
 enum class PlayerState
 {
-	NONE,			// None
+	NONE,			// Wait <-- 대기상태 
 	IDLETORUN,		// 아이들 -> 무브 전환 
 	IDLE,			// 아이들
 	MOVE,			// 무브 
@@ -100,6 +100,10 @@ public:
 
 	virtual void BulletCollision() override;
 
+	// 이펙트생성 함수로 만들어서 사용 
+	void CreateSlashEffect();
+	void CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -112,10 +116,6 @@ private:
 	bool LaserColCheck();		 // 레이저
 	bool FanBladeColCheck();	 // 팬 블레이드 
 	bool HitCheck();			 // 히트체크 
-
-	// 이펙트생성 함수로 만들어서 사용 
-	void CreateSlashEffect();
-	void CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col);
 
 	void TimeOutCheck();
 
@@ -295,6 +295,7 @@ private:
 	void DeathEnd();
 	
 	void NoneStart();
+	void NoneUpdate(float _DeltaTime);
 	void NoneEnd();
 };
 

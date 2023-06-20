@@ -26,6 +26,10 @@ public:
 
 	void ResetButtonOn();
 	void CameraZoomEffect(const float _Ratio);
+	
+	// 
+	void CameraShake(float _DeltaTime);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

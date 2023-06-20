@@ -76,6 +76,11 @@ void PlaySupporter::CameraZoomEffect(float _Ratio)
 	GetLevel()->GetMainCamera()->SetZoomRatio(_Ratio);
 }
 
+void PlaySupporter::CameraShake(float _DeltaTime)
+{
+	
+}
+
 void PlaySupporter::CameraMovement(float _DeltaTime)
 {
 	std::shared_ptr<GameEngineLevel> CurLevel = GameEngineCore::GetCurLevel();
