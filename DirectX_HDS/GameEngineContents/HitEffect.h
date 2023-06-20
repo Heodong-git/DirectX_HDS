@@ -20,6 +20,13 @@ public:
 	{
 		m_Direction = _Dir;
 	}
+
+	inline void SetPivot(const float4 _Pivot)
+	{
+		m_IsPivot = true;
+		m_Pivot = _Pivot;
+	}
+	
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -29,4 +36,7 @@ private:
 	bool m_Direction = false;
 	std::shared_ptr<GameEngineObject> m_FollowObj = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
+
+	bool m_IsPivot = false;
+	float4 m_Pivot = {};
 };

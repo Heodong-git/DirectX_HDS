@@ -11,6 +11,7 @@ HitEffect::~HitEffect()
 {
 }
 
+// ¾È¾¸
 void HitEffect::SetObject(std::shared_ptr<GameEngineObject> _Obj)
 {
 	if (nullptr == _Obj)
@@ -40,7 +41,7 @@ void HitEffect::Start()
 	m_MainRender->ColorOptionValue.MulColor.r = 0.7f;
 	m_MainRender->SetScaleRatio(2.0f);
 	m_MainRender->CreateAnimation({ .AnimationName = "hit_effect", .SpriteName = "hit_effect", .Start = 0, .End = 5 ,
-								  .FrameInter = 0.06f , .Loop = false , .ScaleToTexture = true });
+								  .FrameInter = 0.045f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->GetTransform()->SetLocalPosition(float4{ 47.0f, 30.0f });
 	m_MainRender->ChangeAnimation("hit_effect");
 }
@@ -58,6 +59,12 @@ void HitEffect::Update(float _DeltaTime)
 
 	if (nullptr != m_FollowObj)
 	{
+		if (true == m_IsPivot)
+		{
+			GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition() + m_Pivot);
+			return;
+		}
+
 		GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition());		
 	}
 }

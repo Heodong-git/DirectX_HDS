@@ -2,6 +2,7 @@
 #include "Go_UI.h"
 
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include "BaseLevel.h"
 
 Go_UI::Go_UI()
 {
@@ -70,7 +71,6 @@ void Go_UI::ComponentSetting()
 	m_MainRender->GetTransform()->SetLocalScale({ 78.0f , 40.0f });
 	m_SubRender->SetTexture("go_arrow.png");
 	m_SubRender->GetTransform()->SetLocalScale({ 62.0f , 38.0f });
-
 	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f, 40.0f , -1.0f });
 
 	GetTransform()->SetLocalPosition(m_StartPos);

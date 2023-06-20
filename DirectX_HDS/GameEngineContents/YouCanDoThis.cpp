@@ -44,6 +44,9 @@ void YouCanDoThis::Update(float _DeltaTime)
 		case LevelType::CLUBMAP3:
 			GameEngineCore::ChangeLevel("ClubLevel_04");
 			break;
+		case LevelType::CLUBMAP4:
+			GameEngineCore::ChangeLevel("ClubLevel_Boss");
+			break;
 		}
 
 		return;

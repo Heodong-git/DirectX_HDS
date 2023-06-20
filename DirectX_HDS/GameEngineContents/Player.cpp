@@ -32,7 +32,7 @@
 #include "JumpEffect.h"
 #include "LandEffect.h"
 #include "DashEffect.h"
-
+#include "HitEffect.h"
 #include "IronDoor.h"
 
 Player* Player::MainPlayer = nullptr;
@@ -285,6 +285,7 @@ bool Player::HitCheck()
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::AABBBOX2D, ColType::AABBBOX2D);
 	if (nullptr != Col)
 	{
+		CreateHitEffect(Col);
 		// 나를 데스상태로 
 		ChangeState(PlayerState::DEATH);
 		m_Collision->Off();
@@ -298,6 +299,31 @@ bool Player::HitCheck()
 void Player::CreateSlashEffect()
 {
 	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
+}
+
+void Player::CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col)
+{
+	// 이펙트만들고 
+	std::shared_ptr<HitEffect> Effect = GetLevel()->CreateActor<HitEffect>(static_cast<int>(RenderOrder::EFFECT));
+	Effect->SetPivot(float4{ 10.0f, -10.0f });
+	// 내위치 
+	float4 MyPos = GetTransform()->GetWorldPosition();
+	// 상대위치 
+	float4 ColActorPos = _Col->GetActor()->GetTransform()->GetLocalPosition();
+	float4 MoveDir = ColActorPos - MyPos;
+
+	Effect->SetObject(this->DynamicThis<GameEngineObject>());
+	if (ColActorPos.x > MyPos.x)
+	{
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+		m_Direction = true;
+	}
+
+	else if (ColActorPos.x <= MyPos.x)
+	{
+		m_Direction = false;
+		Effect->GetTransform()->SetLocalNegativeScaleX();
+	}
 }
 
 void Player::TimeOutCheck()
@@ -681,6 +707,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::DOORBREAK:
 		DoorBreakStart();
 		break;
+	case PlayerState::NONE:
+		NoneStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -728,14 +757,17 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::DOORBREAK:
 		DoorBreakEnd();
 		break;
+	case PlayerState::NONE:
+		NoneEnd();
+		break;
 	}
 }
 
 void Player::IdleStart()
 {
 	// 이전 스테이트가 데스라면 스테이지 미클리어,
-	// 난무조건 정방향 ( 오른쪽 ) 
-	if (PlayerState::DEATH == m_PrevState)
+	// 난무조건 정방향 ( 오른쪽 ) , 데스 후 NONE 상태로 변경됨 
+	if (PlayerState::NONE == m_PrevState)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
@@ -2472,30 +2504,60 @@ void Player::DoorBreakEnd()
 void Player::DeathStart()
 {
 	// 이때 뭐에죽었는지 구분해서 상황에 따라서 애니메이션 변경 
+	m_HitPos = GetTransform()->GetLocalPosition();
 	DirCheck();
 	m_Render->ChangeAnimation("player_die");
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
+// 애니메이션이 데스로 바뀌었고.
+// 플레이어는 맞았으면 날아가야지? 
+// 
 void Player::DeathUpdate(float _DeltaTime)
 {
-	if (true == m_Render->IsAnimationEnd())
+	// 애니메이션이 종료됐거나, 
+	// 내 픽셀이 검은색 이거나, 
+	if (true == m_Render->IsAnimationEnd() ||
+		PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) ||
+		PixelCollider::g_ErrorPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()))
 	{
+		ChangeState(PlayerState::NONE);
 		return;
 	}
 
-	if (false == PixelCollider::PixelCol->GroundCheck(this))
+	float FlyingSpeed = m_MoveSpeed * 1.3f;
+	float4 MyPos = GetTransform()->GetLocalPosition();
+	float X = abs(MyPos.x - m_HitPos.x);
+	if (X >= 60.0f)
 	{
-		if (true == PixelCollider::PixelCol->GroundCheck(this))
-		{
-			return;
-		}
+		FlyingSpeed *= 0.67f;
+	}
 
-		GetTransform()->AddLocalPosition(float4::Down * 50.0f * _DeltaTime);
+	// 현재 나의 방향 
+	if (true == m_Direction)
+	{
+		// 좌측 
+		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
+	}
+	else if (false == m_Direction)
+	{
+		// 우측
+		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
 	}
 }
 
 void Player::DeathEnd()
+{
+	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
+	m_HitPos = float4{ 0.0f, 0.0f };
+}
+
+void Player::NoneStart()
+{
+	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
+}
+
+void Player::NoneEnd()
 {
 	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 }

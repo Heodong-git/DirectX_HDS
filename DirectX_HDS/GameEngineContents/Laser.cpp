@@ -158,7 +158,7 @@ void Laser::IdleStart()
 void Laser::IdleUpdate(float _DeltaTime)
 {
 	// 만약 내가 플레이어의 서브충돌체와 충돌중이라면 콜리전상태로 변경
-	std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER, ColType::AABBBOX2D, ColType::AABBBOX2D);
+	std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER_SUB, ColType::AABBBOX2D, ColType::AABBBOX2D);
 	if (nullptr != PlayerSubCol)
 	{
 		ChangeState(LaserState::COLLISION);
@@ -182,7 +182,7 @@ void Laser::CollisionUpdate(float _DeltaTime)
 	if (true == m_LaserRender->IsAnimationEnd())
 	{
 		// 만약 내가 플레이어의 서브충돌체와 충돌중이라면 콜리전상태로 변경
-		std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER, ColType::AABBBOX2D, ColType::AABBBOX2D);
+		std::shared_ptr<GameEngineCollision> PlayerSubCol = m_Collision->Collision(ColOrder::PLAYER_SUB, ColType::AABBBOX2D, ColType::AABBBOX2D);
 		if (nullptr != PlayerSubCol)
 		{
 			return;

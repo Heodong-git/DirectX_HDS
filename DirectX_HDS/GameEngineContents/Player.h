@@ -115,6 +115,7 @@ private:
 
 	// 이펙트생성 함수로 만들어서 사용 
 	void CreateSlashEffect();
+	void CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col);
 
 	void TimeOutCheck();
 
@@ -156,6 +157,8 @@ private:
 	bool m_Direction = true; 
 	bool m_SlashDir = true;
 	void DirCheck();
+
+	float4 m_HitPos = {};
 
 	// 점프
 	bool m_IsJumping = false;					// 점프상태인지
@@ -290,6 +293,9 @@ private:
 	void DeathStart();
 	void DeathUpdate(float _DeltaTime);
 	void DeathEnd();
+	
+	void NoneStart();
+	void NoneEnd();
 };
 
 // 파일입출력이 필수다. 

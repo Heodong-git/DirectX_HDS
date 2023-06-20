@@ -25,9 +25,6 @@ void ColEventObj::Update(float _DeltaTime)
 {
 	DebugUpdate();
 	CollisionUpdate(_DeltaTime);
-
-
-
 }
 
 void ColEventObj::Render(float _DeltaTime)

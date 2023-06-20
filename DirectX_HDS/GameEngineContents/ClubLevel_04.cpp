@@ -21,6 +21,7 @@
 #include "Monster_Pomp.h"
 #include "Laser.h"
 #include "IronDoor.h"
+#include "Partition.h"
 
 ClubLevel_04::ClubLevel_04()
 {
@@ -137,15 +138,15 @@ void ClubLevel_04::CreateObjAndInit()
 	}
 	{
 		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		float4 InitPos = { 1147.0f, 467.24f };
+		float4 InitPos = { -365.0f, -684.0f };
 		ActorInit(Monster, InitPos);
 	}
 	{
 		std::shared_ptr<Monster_Pomp> Monster = CreateActor<Monster_Pomp>(static_cast<int>(RenderOrder::MONSTER), "Pomp");
-		float4 InitPos = {-18.0f, 435.0f };
+		float4 InitPos = { 1147.0f, 467.24f };
 		ActorInit(Monster, InitPos);
 	}
-
+	
 	// Ã¹¹øÂ° 
 	{
 		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
@@ -238,6 +239,61 @@ void ClubLevel_04::CreateObjAndInit()
 		NewLaser->GetTransform()->SetLocalPosition(float4{ -965.0f , 370.0f });
 		float4 Scale = float4{ 5.0f , 190.0f };
 		NewLaser->SetLaserScale(Scale);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -715.0f, -682.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -179.0f, -682.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -179.0f, -682.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -851.0f, -236.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 414.0f, -236.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 580.0f, 18.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -449.0f, 18.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { -782.0f, 275.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 835.0f, 275.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 861.0f, 471.0f };
+		ActorInit(PartitionObj, InitPos);
+	}
+	{
+		std::shared_ptr<Partition> PartitionObj = CreateActor<Partition>(static_cast<int>(RenderOrder::DEBUG), "Partition");
+		float4 InitPos = { 1420.0f, 471.0f };
+		ActorInit(PartitionObj, InitPos);
 	}
 }
 

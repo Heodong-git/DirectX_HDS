@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "BaseLevel.h"
+#include "PixelCollider.h"
 
 #include "Player.h"
 #include "SlashHit_Effect.h"
@@ -623,9 +624,12 @@ void Monster_Pomp::HitGroundStart()
 
 void Monster_Pomp::HitGroundUpdate(float _DeltaTime)
 {
+	// 픽셀체크 해야함
 	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (3 <= m_MainRender->GetCurrentFrame() || PartitionCol != nullptr || DoorCol != nullptr)
+	if (3 <= m_MainRender->GetCurrentFrame() || PartitionCol != nullptr || DoorCol != nullptr ||
+		PixelCollider::g_ErrorPixel == PixelCollider::PixelCol->PixelCollision(GetTransform()->GetLocalPosition() + float4::Up) ||
+		PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(GetTransform()->GetLocalPosition() + float4::Up))
 	{
 		// 나중에 추가할 거 있으면 추가 
 		return;
