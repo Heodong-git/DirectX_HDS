@@ -51,6 +51,41 @@ public:
 	static const float4 White;
 	static const float4 Black;
 
+	static float4 GetSafeScaleReciprocal(const float4& _InScale, float _Tolerance)
+	{
+		float4 SafeReciprocalScale;
+
+		if (std::fabsf(_InScale.x) <= _Tolerance)
+		{
+			SafeReciprocalScale.x = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.x = 1 / _InScale.x;
+		}
+
+		if (std::fabsf(_InScale.y) <= _Tolerance)
+		{
+			SafeReciprocalScale.y = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.y = 1 / _InScale.y;
+		}
+
+		if (std::fabsf(_InScale.z) <= _Tolerance)
+		{
+			SafeReciprocalScale.z = 0.f;
+		}
+		else
+		{
+			SafeReciprocalScale.z = 1 / _InScale.z;
+		}
+
+		return SafeReciprocalScale;
+	}
+
+
 	static float4 AngleToDirection2DToDeg(float _Deg)
 	{
 		return AngleToDirection2DToRad(_Deg * GameEngineMath::DegToRad);
@@ -66,9 +101,9 @@ public:
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
-	static float GetAngleVectorToVectorDeg360(const float4& _Left, const float4& _Right)
+	static float GetAngleVectorToVectorDeg360(const float4& _Pivot, const float4& _Other)
 	{
-		return GetAngleVectorToVectorRad360(_Left, _Right) * GameEngineMath::RadToDeg;
+		return GetAngleVectorToVectorRad360(_Pivot, _Other) * GameEngineMath::RadToDeg;
 	}
 
 	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
@@ -87,19 +122,19 @@ public:
 		return Angle;
 	}
 
-	static float GetAngleVectorToVectorRad360(const float4& _Left, const float4& _Right)
+	static float GetAngleVectorToVectorRad360(const float4& _Pivot, const float4& _Other)
 	{
-		float4 Left = _Left;
-		float4 Right = _Right;
+		float4 Pivot = _Pivot;
+		float4 Other = _Other;
 
-		Left.Normalize();
-		Right.Normalize();
+		Pivot.Normalize();
+		Other.Normalize();
 
-		float CosSeta = DotProduct3D(Left, Right);
+		float CosSeta = DotProduct3D(Pivot, Other);
 
 
 		float Angle = 0.f;
-		(Left.y * Right.x + Left.x * Right.y > 0.0f) ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
+		(Pivot.x * Other.y) - (Pivot.y * Other.x) > 0.0f ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
 
 
 		return Angle;
@@ -719,6 +754,13 @@ public:
 		Arr2D[3][1] = _Height * 0.5f + _Right;
 		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;
 		Arr2D[3][3] = 1.0f;
+	}
+
+	void Compose(const float4& _Scale, const float4& _RotQuaternion, const float4& _Pos)
+	{
+		float4 _Rot = _RotQuaternion;
+		_Rot.QuaternionToEulerDeg();
+		*this = DirectX::XMMatrixAffineTransformation(_Scale.DirectVector, _Rot.DirectVector, _RotQuaternion.DirectVector, _Pos.DirectVector);
 	}
 
 	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos) const
