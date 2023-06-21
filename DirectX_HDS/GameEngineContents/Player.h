@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
+
 #include <GameEngineCore/GameEngineTexture.h>
+
 #include "BaseActor.h"
 
 // 플레이어 상태값 
@@ -110,6 +112,10 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void SlashSoundPlay();
+	GameEngineSoundPlayer m_SoundPlayer;
+	GameEngineSoundPlayer m_MoveSoundPlayer;
+
 	// 특정 충돌체와의 충돌체크
 	bool DoorColCheck();		 // 문 
 	bool PlatformColCheck();	 // 플랫폼
@@ -127,6 +133,7 @@ private:
 
 	// 애니메이션 로드 및 생성
 	void LoadAndCreateAnimation();
+	void LoadSound();
 
 	// 마우스를 클릭했을 때의 좌표를 저장
 	float4 m_AttackPos = {};

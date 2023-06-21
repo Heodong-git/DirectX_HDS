@@ -1,6 +1,8 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineTransform.h>
+
 
 enum class LevelType
 {
@@ -114,6 +116,7 @@ public:
 	bool IsClear();
 
 protected:
+	virtual void LoadSound() {} ;
 	// 뭔가 기가막히게 필요 없는 듯 하지만 조금더 편해지니까.. 
 	template<typename ActorType>
 	void ActorInit(std::shared_ptr<ActorType>& _Actor, float4& _SetPos)
@@ -182,10 +185,13 @@ protected:
 	}
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
 	
+	GameEngineSoundPlayer m_SoundPlayer;
+
 private:
 	virtual void LevelReset();
 	void Reset();
 	void ResetColObj();
+	void ResetSound();
 	bool m_IsClear = false;
 
 	virtual void ResourcesLoad() {};

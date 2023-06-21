@@ -56,9 +56,9 @@ void Monster_Pomp::Update(float _DeltaTime)
 	DirCheck();
 	DebugUpdate();
 	DoorOpenCheck();
-	UpdateState(_DeltaTime);
-	ParryingCheck();
 	DeathCheck();
+	ParryingCheck();
+	UpdateState(_DeltaTime);
 }
 
 void Monster_Pomp::Render(float _DeltaTime)

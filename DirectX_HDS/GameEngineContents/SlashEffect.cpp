@@ -55,6 +55,12 @@ void SlashEffect::Render(float _DeltaTime)
 	
 }
 
+void SlashEffect::SlashSoundPlay()
+{
+	m_SoundPlayer = GameEngineSound::Play("death_sword.wav");
+	m_SoundPlayer.SetVolume(0.7f);
+}
+
 void SlashEffect::DebugUpdate()
 {
 }
@@ -95,7 +101,9 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Col)
 	{
+		Col->GetActor()->DynamicThis<BaseActor>()->SetDeath();
 		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+		SlashSoundPlay();
 		PlaySupporter::MainSupporter->CameraZoomEffect(0.99f);
 
 		// 그리고 한프레임만 델타타임을 느리게 하고싶은데 

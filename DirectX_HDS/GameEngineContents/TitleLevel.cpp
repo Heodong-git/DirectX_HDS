@@ -49,6 +49,9 @@ void TitleLevel::LevelChangeStart()
 	}
 	
 	m_GUI->Off();
+	BgmSound = GameEngineSound::Play("title_bgm.mp3");
+	BgmSound.SetVolume(0.7f);
+	BgmSound.SetLoop(-1);
 }
 
 void TitleLevel::LevelChangeEnd()
@@ -59,36 +62,53 @@ void TitleLevel::LevelChangeEnd()
 	}
 
 	SetState(BaseLevel::LevelState::WAIT);
+	BgmSound.Stop();
 }
 
 void TitleLevel::ResourcesLoad()
 {
-	// 디렉토리 클래스생성
-	GameEngineDirectory NewDir;
-	// 원하는 폴더를 가진 디렉터리로 이동
-	NewDir.MoveParentToDirectory("katanazero_resources");
-	// 그 폴더로 이동
-	NewDir.Move("katanazero_resources");
-	NewDir.Move("Texture");
-	NewDir.Move("TitleLevel");
-
-	// 파일 전체로드 
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd"});
-	for (size_t i = 0; i < File.size(); i++)
 	{
-		GameEngineTexture::Load(File[i].GetFullPath());
+		// 디렉토리 클래스생성
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("Texture");
+		NewDir.Move("TitleLevel");
+
+		// 파일 전체로드 
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".psd" });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+
+		if (nullptr == GameEngineSprite::Find("player_idle"))
+		{
+			GameEngineDirectory Dir;
+			Dir.MoveParentToDirectory("katanazero_resources");
+			Dir.Move("katanazero_resources");
+			Dir.Move("Texture");
+			Dir.Move("TitleSub");
+
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("Plants_Anim").GetFullPath());
+			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+		}
 	}
-
-	if (nullptr == GameEngineSprite::Find("player_idle"))
+	
+	// 사운드로드 
 	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("katanazero_resources");
-		Dir.Move("katanazero_resources");
-		Dir.Move("Texture");
-		Dir.Move("TitleSub");
+		// 디렉토리 클래스생성
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("sound");
+		NewDir.Move("TitleLevel");
 
-		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("Plants_Anim").GetFullPath());
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+		GameEngineSound::Load(NewDir.GetPlusFileName("title_bgm.mp3").GetFullPath());
 	}
 }
 

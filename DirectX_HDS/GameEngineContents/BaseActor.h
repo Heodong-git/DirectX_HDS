@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineActor.h>
 
 // BaseState ???? 
@@ -33,6 +34,11 @@ public:
 
 	virtual void BulletCollision() {};
 	
+	void SetDeath()
+	{
+		m_IsDeath = true;
+	}
+
 protected:
 	void Update(float _DeltaTime) override;
 
@@ -50,8 +56,10 @@ protected:
 		}
 	}
 
+	bool m_IsDeath = false;
 	
 private:
+
 	// BaseActor들은 전부 얘를 오버라이드 
 	virtual void Reset() {};
 	float4 m_InitPos = {};

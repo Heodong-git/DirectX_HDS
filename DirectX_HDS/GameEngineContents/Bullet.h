@@ -31,6 +31,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer m_SoundPlayer;
+
 	void CreateReflectEffect();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;

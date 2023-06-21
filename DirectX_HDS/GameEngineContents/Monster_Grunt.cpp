@@ -52,10 +52,10 @@ void Monster_Grunt::Update(float _DeltaTime)
 	DirCheck();
 	DebugUpdate();
 	DoorOpenCheck();			// 문충돌체크 
+	DeathCheck();
 	UpdateState(_DeltaTime);
 
 	// 내가 플레이어의 공격과 충돌했는지 확인 
-	DeathCheck();
 }
 
 void Monster_Grunt::Render(float _DeltaTime)

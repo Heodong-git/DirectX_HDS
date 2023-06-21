@@ -30,10 +30,10 @@ void Bullet::Start()
 	}
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BULLET);
 	m_Render->SetTexture("Bullet_00.png");
-	m_Render->GetTransform()->SetLocalScale(float4{ 68.0f , 2.0f });
+	m_Render->GetTransform()->SetLocalScale(float4{ 34.0f , 2.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BULLET);
-	m_Collision->GetTransform()->SetLocalScale(float4{ 68.0f , 2.0f });
+	m_Collision->GetTransform()->SetLocalScale(float4{ 34.0f , 2.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 }
 
@@ -62,27 +62,38 @@ void Bullet::Update(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != AttCol)
 	{
-		// 내가 패링이 아닌상태에서
-		if (false == m_Parring)
+		if (PlayerState::DEATH != Player::MainPlayer->GetCurState() ||
+			PlayerState::NONE != Player::MainPlayer->GetCurState())
 		{
-			CreateReflectEffect();
-		}
-		// 충돌을 했으면, 이제 콜리전의 액터가 있을거고 
-		Bullet* Obj = dynamic_cast<Bullet*>(AttCol->GetActor());
-		// 여기서 리플렉트 이펙트 만들어 
+			// 내가 패링이 아닌상태에서
+			if (false == m_Parring)
+			{
+				m_SoundPlayer = GameEngineSound::Play("slash_bullet_parring.wav");
+				m_SoundPlayer.SetVolume(0.7f);
+				CreateReflectEffect();
+			}
+			// 충돌을 했으면, 이제 콜리전의 액터가 있을거고 
+			Bullet* Obj = dynamic_cast<Bullet*>(AttCol->GetActor());
+			// 여기서 리플렉트 이펙트 만들어 
 
-		// 그녀석을 다이나믹캐스트로 반환하여 받아봤을때. nullptr이면 Bullet이 아닌거고. 제대로 받아왔으면 불렛인거잖아?
-		// 불렛이면 패링안해 
-		if (nullptr == Obj)
-		{
-			m_Parring = true;
-			DirCorrection();
+			// 그녀석을 다이나믹캐스트로 반환하여 받아봤을때. nullptr이면 Bullet이 아닌거고. 제대로 받아왔으면 불렛인거잖아?
+			// 불렛이면 패링안해 
+			if (nullptr == Obj)
+			{
+				m_Parring = true;
+				DirCorrection();
+			}
 		}
+		// 반사사운드 출력
+		
+
+		
 	}
 
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != PlayerCol)
 	{
+		GameEngineSound::Play("death_bullet.wav");
 		Player::MainPlayer->BulletCollision();
 		Player::MainPlayer->CreateHitEffect(m_Collision);
 		this->Death();
@@ -92,6 +103,7 @@ void Bullet::Update(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> MonsterCol = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != MonsterCol && true == m_Parring)
 	{
+		GameEngineSound::Play("death_bullet.wav");
 		// 충돌체의 액터를 받아와서, 액터의 오버라이드된 불릿충돌 함수 호출
 
 		// 그리고 여기서 리플렉트 이펙트도 만들어야함 

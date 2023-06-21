@@ -29,7 +29,7 @@ public:
 		return Res;
 	}
 
-	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color);
+	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color, FW1_TEXT_FLAG _FwTextPlag);
 
 protected:
 

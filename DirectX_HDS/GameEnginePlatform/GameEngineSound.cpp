@@ -17,10 +17,12 @@
 // FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고
 FMOD::System* SoundSystem = nullptr;
 
+std::unordered_map<std::string, std::shared_ptr<GameEngineSound>> GameEngineSound::AllSound;
+
 class SoundSystemCreator
 {
 public:
-	SoundSystemCreator() 
+	SoundSystemCreator()
 	{
 		FMOD::System_Create(&SoundSystem);
 
@@ -33,10 +35,10 @@ public:
 		{
 			MsgAssert("사운드 시스템 이니셜라이즈에 실패했습니다.");
 		}
-		
+
 	}
 
-	~SoundSystemCreator() 
+	~SoundSystemCreator()
 	{
 		SoundSystem->release();
 	}
@@ -55,15 +57,49 @@ void GameEngineSound::SoundUpdate()
 	SoundSystem->update();
 }
 
-GameEngineSound::GameEngineSound() 
+GameEngineSound::GameEngineSound()
 {
 }
 
-GameEngineSound::~GameEngineSound() 
+GameEngineSound::~GameEngineSound()
 {
+	if (nullptr == FMODSound)
+	{
+		FMODSound->release();
+	}
 }
 
-void GameEngineSound::SoundLoad(const std::string_view& _Path) 
+void GameEngineSound::Load(const std::string_view& _Path)
+{
+	GameEnginePath NewPath(_Path);
+	return Load(NewPath.GetFileName(), _Path);
+}
+
+void GameEngineSound::Load(const std::string_view& _Name, const std::string_view& _Path)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+	std::shared_ptr<GameEngineSound> NewSound = std::make_shared<GameEngineSound>();
+	NewSound->SoundLoad(_Path);
+	AllSound.insert(std::pair<std::string, std::shared_ptr<GameEngineSound>>(UpperName, NewSound));
+}
+
+GameEngineSoundPlayer GameEngineSound::Play(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+
+	std::unordered_map<std::string, std::shared_ptr<GameEngineSound>>::iterator Finditer = AllSound.find(UpperName);
+
+	if (Finditer == AllSound.end())
+	{
+		MsgAssert("존재하지 않는 사운드를 플레이하려고 했습니다.");
+		return nullptr;
+	}
+	FMOD::Channel* Channel = Finditer->second->SoundPlay();
+	Channel->setLoopCount(0);
+	return Channel;
+}
+
+void GameEngineSound::SoundLoad(const std::string_view& _Path)
 {
 	std::string UTF8Path = GameEngineString::AnsiToUTF8(_Path);
 
@@ -75,7 +111,8 @@ void GameEngineSound::SoundLoad(const std::string_view& _Path)
 	return;
 }
 
-FMOD::Channel* GameEngineSound::Play()
+
+FMOD::Channel* GameEngineSound::SoundPlay()
 {
 	if (nullptr == FMODSound)
 	{
@@ -87,4 +124,9 @@ FMOD::Channel* GameEngineSound::Play()
 	SoundSystem->playSound(FMODSound, nullptr, false, &Return);
 
 	return Return;
+}
+
+void GameEngineSound::ResourcesClear()
+{
+	AllSound.clear();
 }

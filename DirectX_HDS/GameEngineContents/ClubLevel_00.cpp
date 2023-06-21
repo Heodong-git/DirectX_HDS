@@ -57,6 +57,7 @@ void ClubLevel_00::Start()
 	SetState(BaseLevel::LevelState::WAIT);
 
 
+
 	// 폰트사용시 인터페이스임 
 	/*GameEngineFont::Load("휴먼둥근헤드라인");
 	std::shared_ptr<GameEngineActor> dd = CreateActor<GameEngineActor>();
@@ -72,8 +73,29 @@ void ClubLevel_00::Update(float _DeltaTime)
 }
 
 
+void ClubLevel_00::LoadSound()
+{
+	// 사운드로드 
+	{
+		// 디렉토리 클래스생성
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("sound");
+		NewDir.Move("playlevel");
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("Sneaky_Driver.mp3").GetFullPath());
+	}
+}
+
 void ClubLevel_00::LevelChangeStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("Sneaky_Driver.mp3");
+	m_SoundPlayer.SetLoop();
+	m_SoundPlayer.SetVolume(0.2f);
+
 	GUISetting();
 
 	// 카메라 피봇세팅

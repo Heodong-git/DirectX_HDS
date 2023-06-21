@@ -605,6 +605,7 @@ void GameEngineCore::CoreResourcesEnd()
 	// 원하는시점에 삭제되는 것을 확실히 하고, 여기서 제거되지 않는다면 문제가 있는 것이라고 판단하기 위해서. 
 	GameEngineMesh::ResourcesClear();
 	GameEngineBlend::ResourcesClear();
+	GameEngineSound::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
 	GameEngineDepthState::ResourcesClear();
 	GameEngineRasterizer::ResourcesClear();

@@ -39,7 +39,7 @@ void BaseLevel::Start()
 
 	// 카메라위치, 투영, Sort 세팅
 	CameraSetting();
-
+	LoadSound();
 	CreateKey();
 
 	// 리셋될 액터를 저장할 벡터 초기화
@@ -215,6 +215,7 @@ void BaseLevel::Reset()
 	SetLimitTime();
 	ResetMonsterCount();
 	ResetColObj();
+	ResetSound();
 	SetState(BaseLevel::LevelState::PLAY);
 }
 
@@ -226,6 +227,11 @@ void BaseLevel::ResetColObj()
 	}
 }
 
+void BaseLevel::ResetSound()
+{
+	m_SoundPlayer.SetPosition(0.0f);
+}
+
 bool BaseLevel::IsClear()
 {
 	if (0 == m_MonsterCount)
@@ -235,6 +241,7 @@ bool BaseLevel::IsClear()
 
 	return false;
 }
+
 
 // ----------------------------- Change Map -----------------------------------
 void BaseLevel::ChangeColMap()

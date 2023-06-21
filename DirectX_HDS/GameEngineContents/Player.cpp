@@ -1,9 +1,10 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineBase/GameEngineTime.h>
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -65,6 +66,8 @@ void Player::Start()
 	ComponentSetting();
 	// 필요한 리소스 로드및 애니메이션 생성	
 	LoadAndCreateAnimation();
+
+	LoadSound();
 
 	if (false == GameEngineInput::IsKey("player_slash"))
 	{
@@ -181,6 +184,40 @@ void Player::LoadAndCreateAnimation()
 	m_Render->SetAnimationStartEvent("player_attack", static_cast<size_t>(1), std::bind(&Player::CreateSlashEffect, this));
 }
 
+// 플레이어와 관련된 사운드는 전부 플레이어에서 로드 
+void Player::LoadSound()
+{
+	// 사운드로드 
+	{
+		// 디렉토리 클래스생성
+		GameEngineDirectory NewDir;
+		// 원하는 폴더를 가진 디렉터리로 이동
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("sound");
+		NewDir.Move("player");
+		
+		// 문
+		GameEngineSound::Load(NewDir.GetPlusFileName("door_open.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("gun_fire_00.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("death_sword.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("death_bullet.wav").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("slash_00.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("slash_01.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("slash_02.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_roll.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_jump.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_land.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_die.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_run.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_prerun.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("slash_bullet_parring.wav").GetFullPath());
+	}
+}
+
 void Player::NextPosUpdate()
 {
 	m_NextTrans->SetLocalPosition(GetTransform()->GetWorldPosition());
@@ -230,6 +267,26 @@ void Player::Update(float _DeltaTime)
 
 void Player::Render(float _DeltaTime)
 {
+}
+
+void Player::SlashSoundPlay()
+{
+	// 3개중에 랜덤한거. 
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
+	switch (RandomValue)
+	{
+	case 0:
+		m_SoundPlayer = GameEngineSound::Play("Slash_00.wav");
+		break;
+	case 1:
+		m_SoundPlayer = GameEngineSound::Play("Slash_01.wav");
+		break;
+	case 2:
+		m_SoundPlayer = GameEngineSound::Play("Slash_02.wav");
+		break;
+	}
+
+	m_SoundPlayer.SetVolume(0.7f);
 }
 
 bool Player::DoorColCheck()
@@ -871,6 +928,8 @@ void Player::IdleEnd()
 
 void Player::IdleToRunStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("player_prerun.wav");
+	m_SoundPlayer.SetVolume(0.6f);
 	DirCheck();
 	m_Render->ChangeAnimation("player_idle_to_run");
 }
@@ -1015,6 +1074,9 @@ void Player::IdleToRunEnd()
 
 void Player::MoveStart()
 {
+	m_MoveSoundPlayer = GameEngineSound::Play("player_run.wav");
+	m_MoveSoundPlayer.SetPitch(0.6f);
+	m_MoveSoundPlayer.SetLoop(-1);
 	m_Render->ChangeAnimation("player_run");
 }
 
@@ -1236,6 +1298,7 @@ void Player::MoveUpdate(float _DeltaTime)
 
 void Player::MoveEnd()
 {
+	m_MoveSoundPlayer.Stop();
 }
 
 // 일단 현시점에서는 버그 없음 완료
@@ -1244,6 +1307,7 @@ void Player::SlashStart()
 	m_AttackPos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 	m_MyOriginPos = GetTransform()->GetLocalPosition();
 	m_Render->ChangeAnimation("player_attack");
+	SlashSoundPlay();
 }
 
 void Player::SlashUpdate(float _DeltaTime)
@@ -1445,6 +1509,8 @@ void Player::JumpStart()
 		m_CurrentVerticalVelocity = m_JumpPower;
 	}
 
+	m_SoundPlayer = GameEngineSound::Play("player_jump.wav");
+	m_SoundPlayer.SetVolume(0.7f);
 	m_Render->ChangeAnimation("player_jump");
 	GetLevel()->CreateActor<JumpEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
@@ -1750,6 +1816,8 @@ void Player::RollStart()
 		m_RollEndPos = GetTransform()->GetLocalPosition() + m_LeftRollDir;
 	}
 
+	m_SoundPlayer = GameEngineSound::Play("player_roll.wav");
+	m_SoundPlayer.SetVolume(0.7f);
 	m_Render->ChangeAnimation("player_roll");
 	DirCheck();
 }
@@ -1935,6 +2003,8 @@ void Player::RollEnd()
 
 void Player::RightFlipStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("player_roll.wav");
+	m_SoundPlayer.SetVolume(0.7f);
 	m_Collision->Off();
 	m_Render->ChangeAnimation("player_flip");
 	GetTransform()->SetLocalPositiveScaleX();
@@ -1999,6 +2069,9 @@ void Player::RightFlipEnd()
 
 void Player::LeftFlipStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("player_roll.wav");
+	m_SoundPlayer.SetVolume(0.7f);
+
 	m_Collision->Off();
 	// 이때 무조건 왼쪽으로 그려 
 	m_Render->ChangeAnimation("player_flip");
@@ -2249,6 +2322,8 @@ void Player::FallEnd()
 	// 착지이펙트 
 	if (PlayerState::IDLE == m_NextState)
 	{
+		m_SoundPlayer = GameEngineSound::Play("player_land.wav");
+		m_SoundPlayer.SetVolume(0.7f);
 		GetLevel()->CreateActor<LandEffect>();
 	}
 }
@@ -2529,6 +2604,8 @@ void Player::DeathStart()
 	// 이때 뭐에죽었는지 구분해서 상황에 따라서 애니메이션 변경 
 	m_HitPos = GetTransform()->GetLocalPosition();
 	DirCheck();
+	m_SoundPlayer = GameEngineSound::Play("player_die.wav");
+	m_SoundPlayer.SetVolume(0.7f);
 	m_Render->ChangeAnimation("player_die");
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }

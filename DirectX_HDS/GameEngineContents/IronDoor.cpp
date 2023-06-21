@@ -200,6 +200,7 @@ void IronDoor::CloseEnd()
 
 void IronDoor::OpenStart()
 {
+	GameEngineSound::Play("door_open.wav");
 	m_MainRender->SetAnimPauseOff();
 	m_Effect->Off();
 }

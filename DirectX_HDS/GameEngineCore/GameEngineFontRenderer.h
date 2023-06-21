@@ -30,6 +30,11 @@ public:
 		FontColor = _FontColor;
 	}
 
+	inline void SetFontFlag(FW1_TEXT_FLAG _Flag)
+	{
+		FwTextFlag = _Flag;
+	}
+
 protected:
 	void Render(float _Delta) override;
 
@@ -42,5 +47,6 @@ private:
 	std::string Text;
 	std::shared_ptr<GameEngineFont> Font;
 
+	FW1_TEXT_FLAG FwTextFlag = FW1_TEXT_FLAG::FW1_TOP;
 };
 

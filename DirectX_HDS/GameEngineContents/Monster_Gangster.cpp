@@ -61,8 +61,8 @@ void Monster_Gangster::Update(float _DeltaTime)
 	
 	DebugUpdate();
 	DirCheck();
-	UpdateState(_DeltaTime);
 	DeathCheck();
+	UpdateState(_DeltaTime);
 }
 
 void Monster_Gangster::Render(float _DeltaTime)
@@ -637,6 +637,7 @@ void Monster_Gangster::AimUpdate(float _DeltaTime)
 	{
 		++m_FireCount;
 		m_FireTime = 0.0f;
+		GameEngineSound::Play("gun_fire_00.wav");
 		CreateBullet();
 		CreateFireEffect();
 	}

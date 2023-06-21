@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseLevel.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 
 // Ό³Έν :
 class TitleLevel : public BaseLevel
@@ -14,6 +15,8 @@ public:
 	TitleLevel(TitleLevel&& _Other) noexcept = delete;
 	TitleLevel& operator=(const TitleLevel& _Other) = delete;
 	TitleLevel& operator=(TitleLevel&& _Other) noexcept = delete;
+
+	GameEngineSoundPlayer BgmSound;
 
 protected:
 	void Start() override;

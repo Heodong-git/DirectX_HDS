@@ -76,12 +76,10 @@ struct TransformData
 	float4x4 ViewPort;
 	float4x4 WorldViewProjectionMatrix;
 
-	void WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
-
+	void WorldCalculation(const TransformData& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
 	void LocalCalculation();
 
 	void SetViewAndProjection(const float4x4& _View, const float4x4& _Projection);
-
 
 public:
 	TransformData()
@@ -156,10 +154,8 @@ public:
 
 	void SetLocalScale(const float4& _Value)
 	{
-
 		AbsoluteScale = false;
 		TransData.Scale = _Value;
-
 
 		TransformUpdate();
 		CalChild();
