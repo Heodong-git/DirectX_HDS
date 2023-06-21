@@ -31,6 +31,7 @@ public:
 	{
 		m_Direction = _Dir;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
