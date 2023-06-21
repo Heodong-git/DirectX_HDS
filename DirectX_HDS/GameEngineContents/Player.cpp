@@ -71,11 +71,12 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_DebugSwitch", 'Q');
 		GameEngineInput::CreateKey("player_slash", VK_LBUTTON);
 		GameEngineInput::CreateKey("player_skill_slow", VK_LSHIFT);
+		GameEngineInput::CreateKey("player_debug_move", VK_RBUTTON);
 		GameEngineInput::CreateKey("player_left_Move", 'A');
 		GameEngineInput::CreateKey("player_right_Move", 'D');
 		GameEngineInput::CreateKey("player_jump", 'W');
 		GameEngineInput::CreateKey("player_crouch", 'S');
-		GameEngineInput::CreateKey("player_debug_move", VK_RBUTTON);
+		GameEngineInput::CreateKey("player_invincibility", 'I');
 	}
 }
 
@@ -451,6 +452,22 @@ void Player::DebugUpdate()
 	{
 		float4 MovePos = Cursor::MainCursor->GetTransform()->GetLocalPosition();
 		GetTransform()->SetLocalPosition(MovePos);
+	}
+	
+	if (true == GameEngineInput::IsDown("player_invincibility"))
+	{
+		if (true == m_Collision->IsUpdate())
+		{
+			m_Collision->Off();
+			m_SubCollision->Off();
+		}
+
+		else
+		{
+			m_Collision->On();
+			m_SubCollision->On();
+		}
+	
 	}
 
 	if (true == GameEngineInput::IsDown("player_debugswitch"))

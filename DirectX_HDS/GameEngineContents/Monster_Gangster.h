@@ -75,7 +75,7 @@ private:
 
 	float m_WalkMoveSpeed = 100.0f;
 	float m_ChaseMoveSpeed = 150.0f;
-	float m_ShotCoolTime = 0.57f;
+	float m_ShotCoolTime = 0.5f;
 	float m_FireTime = 0.0f;
 	int m_FireCount = 0;
 	float m_FlyingSpeed = 800.0f;
