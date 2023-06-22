@@ -28,11 +28,12 @@ void HeadHunter_RifleEffect::Start()
 	}
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
-	m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 4.0f });
+	m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 2.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BOSS_ATTACK);
-	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 4.0f });
+	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
+	m_Collision->Off();
 
 	std::vector<float> vFrameTime = std::vector<float>();
 	vFrameTime.push_back(0.8f);
@@ -61,6 +62,23 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		{
 			m_Render = nullptr;
 		}
+		return;
+	}
+
+	size_t Frame = m_Render->GetCurrentFrame();
+	switch (Frame)
+	{
+	case 0:
+		m_Render->ColorOptionValue.MulColor.a -= _DeltaTime;
+	break;
+	case 1:
+		m_Render->ColorOptionValue.MulColor.a = 0.0f;
+		break;
+	default:
+		m_Render->ColorOptionValue.MulColor.a = 1.0f;
+		m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f });
+		m_Collision->On();
+		break;
 	}
 }
 

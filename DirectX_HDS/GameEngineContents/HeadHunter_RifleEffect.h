@@ -15,6 +15,11 @@ public:
 	HeadHunter_RifleEffect& operator=(const HeadHunter_RifleEffect& _Other) = delete;
 	HeadHunter_RifleEffect& operator=(HeadHunter_RifleEffect&& _Other) noexcept = delete;
 
+	std::shared_ptr<class GameEngineSpriteRenderer> GetRender()
+	{
+		return m_Render;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

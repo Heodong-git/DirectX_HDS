@@ -70,7 +70,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_intro", .SpriteName = "headhunter_intro", .Start = 0, .End = 2 ,
 									  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_takeout_rifle", .SpriteName = "headhunter_takeout_rifle", .Start = 0, .End = 7 ,
-								  .FrameInter = 0.055f , .Loop = true , .ScaleToTexture = true });
+								  .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 
 	m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(5), std::bind(&Boss_HeadHunter::CreateRifleEffect, this));
 
@@ -85,16 +85,16 @@ void Boss_HeadHunter::LoadSound()
 void Boss_HeadHunter::CreateRifleEffect()
 {
 	float4 MyPos = GetTransform()->GetLocalPosition();
-	std::shared_ptr<HeadHunter_RifleEffect> Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
+	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
 	
 	if (true == m_Dir)
 	{
-		Effect->GetTransform()->SetLocalPosition(MyPos + float4{ 540.0f , 53.0f });
+		m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x , m_RifleEffectPivot.y });
 	}
 	
 	else if (false == m_Dir)
 	{
-		Effect->GetTransform()->SetLocalPosition(MyPos + float4{ -540.0f ,53.0f });
+		m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y});
 	}
 }
 
@@ -252,9 +252,16 @@ void Boss_HeadHunter::RifleStart()
 
 void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 {
-	if (true == m_MainRender->IsAnimationEnd())
+	size_t Frame = 0;
+	if (nullptr != m_Effect)
 	{
-		// 임시 
+		Frame = m_Effect->GetRender()->GetCurrentFrame();
+	}
+
+	if (true == m_MainRender->IsAnimationEnd() &&  2 == Frame)
+	{
+		// 라이플애니메이션 종료, 
+		m_Effect = nullptr;
 		ChangeState(BossState::INTRO);
 		return;
 	}

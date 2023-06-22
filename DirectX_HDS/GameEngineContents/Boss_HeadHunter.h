@@ -46,8 +46,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	
+	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
 
 	void CreateRifleEffect();
+	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
 	void DebugUpdate();
 	
