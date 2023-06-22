@@ -257,12 +257,6 @@ void Player::Update(float _DeltaTime)
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
-
-	// 카메라무브 업데이트
-	if (nullptr != PlaySupporter::MainSupporter)
-	{
-		PlaySupporter::MainSupporter->Update(_DeltaTime);
-	}
 }
 
 void Player::Render(float _DeltaTime)
