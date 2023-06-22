@@ -57,7 +57,7 @@
     <ClInclude Include="PixelCollider.h">
       <Filter>05.PixelCollider\00.Collider</Filter>
     </ClInclude>
-    <ClInclude Include="ClubDoor.h">
+    <ClInclude Include="SlidingDoor.h">
       <Filter>02.Actor\09.Door</Filter>
     </ClInclude>
     <ClInclude Include="ClubLevel_01.h">
@@ -171,6 +171,9 @@
     <ClInclude Include="HitEffect.h">
       <Filter>02.Actor\16.Effect\HitEffect</Filter>
     </ClInclude>
+    <ClInclude Include="HeadHunter_RifleEffect.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -231,7 +234,7 @@
     <ClCompile Include="PixelCollider.cpp">
       <Filter>05.PixelCollider\00.Collider</Filter>
     </ClCompile>
-    <ClCompile Include="ClubDoor.cpp">
+    <ClCompile Include="SlidingDoor.cpp">
       <Filter>02.Actor\09.Door</Filter>
     </ClCompile>
     <ClCompile Include="ClubLevel_01.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
       <Filter>02.Actor\16.Effect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HeadHunter_RifleEffect.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +502,9 @@
     </Filter>
     <Filter Include="02.Actor\16.Effect\HitEffect">
       <UniqueIdentifier>{7284c6d5-dbfa-46c4-8db0-d9294fa4de24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect">
+      <UniqueIdentifier>{ccb0c86f-a9ff-4f8b-8c6a-284abaa79019}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

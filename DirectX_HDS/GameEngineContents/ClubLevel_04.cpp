@@ -103,10 +103,20 @@ void ClubLevel_04::ActorLoad()
 
 void ClubLevel_04::KeyUpdate()
 {
+	if (true == GameEngineInput::IsDown("ClubLevel04_ChangeLevel_ClubLevel_Boss"))
+	{
+		GameEngineCore::ChangeLevel("ClubLevel_Boss");
+		return;
+	}
 }
 
 void ClubLevel_04::CreateKey()
 {
+	if (false == GameEngineInput::IsKey("ClubLevel04_ChangeLevel_ClubLevel_Boss"))
+	{
+		GameEngineInput::CreateKey("ClubLevel04_ChangeLevel_ClubLevel_Boss", VK_F1);
+		return;
+	}
 }
 
 void ClubLevel_04::CreateObjAndInit()

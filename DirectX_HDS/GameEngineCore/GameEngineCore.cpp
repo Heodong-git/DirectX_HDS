@@ -184,7 +184,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
 	// 변환된 문자열로 맵에 동일한 이름의 레벨이 없다면
-	// 생성하지 않은 레벨, assert 처리
+	// 생성하지 않은 레벨d assert 처리
 	if (LevelMap.end() == LevelMap.find(UpperName))
 	{
 		MsgAssert("존재하지 않는 레벨로 체인지 하려고 했습니다.");

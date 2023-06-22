@@ -86,6 +86,15 @@ void CameraSetter::CameraSetting()
 		}
 	}
 		break;
+	case LevelType::CLUBBOSS0:
+	{
+		if (nullptr != Player::MainPlayer)
+		{
+			// 1번맵과 동일하게 그자리에서 보여주면 되기 때문에 1번맵의 피봇을 그대로 사용한다. 
+			CastLevel->GetMainCamera()->GetTransform()->SetLocalPosition(m_CameraPivots[static_cast<int>(LevelType::CLUBMAP1)]);
+		}
+	}
+		break;
 	}
 }
 

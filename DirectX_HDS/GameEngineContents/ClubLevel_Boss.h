@@ -15,6 +15,7 @@ public:
 	ClubLevel_Boss& operator=(const ClubLevel_Boss& _Other) = delete;
 	ClubLevel_Boss& operator=(ClubLevel_Boss&& _Other) noexcept = delete;
 
+	void CreateHeadHunter();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -34,4 +35,6 @@ private:
 	virtual void GUISetting() override;
 
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
+
+	bool m_Appear = false;
 };

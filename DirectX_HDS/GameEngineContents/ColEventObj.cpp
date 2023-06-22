@@ -7,6 +7,7 @@
 
 #include "BaseLevel.h"
 #include "YouCanDoThis.h"
+#include "ClubLevel_Boss.h"
 
 ColEventObj::ColEventObj()
 {
@@ -38,12 +39,21 @@ void ColEventObj::DebugUpdate()
 void ColEventObj::CollisionUpdate(float _DeltaTime)
 {
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::AABBBOX2D, ColType::AABBBOX2D);
-
 	// nullptr이 아니라면 플레이어와 충돌한거고 
 	if (nullptr != PlayerCol)
 	{
-		// 얘는 클리어 상태에서만 생성되니까
+		// 충돌했을때, 내가 보스레벨이라면 다르게 동작시킨다. 
+		// 1. 보스방에 존재하는 sldingdoor 상태 -> Close 
 		BaseLevel* CurLevel = GetReturnCastLevel();
+		if (BaseLevel::LevelState::WAIT == CurLevel->GetCurState() && LevelType::CLUBBOSS0 == CurLevel->GetLevelType())
+		{
+			CurLevel->SetState(BaseLevel::LevelState::PLAY);
+			std::shared_ptr<ClubLevel_Boss> BossLevel = CurLevel->DynamicThis<ClubLevel_Boss>();
+			BossLevel->CreateHeadHunter();
+			this->Death();
+			return;
+		}
+
 		LevelType CurLevelType = CurLevel->GetLevelType();
 
 		// 바로 체인지레벨을 하는게 아니라 클리어 화면 액터를 먼저띄우고

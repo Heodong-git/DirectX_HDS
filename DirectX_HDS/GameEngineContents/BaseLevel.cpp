@@ -130,6 +130,12 @@ void BaseLevel::DebugUpdate()
 
 void BaseLevel::LevelClearCheck()
 {
+	// 일단 안생기게해 
+	if (LevelType::CLUBBOSS0 == m_LevelType)
+	{
+		return;
+	}
+
 	if (true == IsClear() && LevelType::TITLE != m_LevelType)
 	{
 		if (false == m_IsClear)
@@ -216,6 +222,19 @@ void BaseLevel::Reset()
 	ResetMonsterCount();
 	ResetColObj();
 	ResetSound();
+
+	// 만약 레벨 타입이 보스레벨이라면, wait 
+	if (LevelType::CLUBBOSS0 == m_LevelType)
+	{
+		SetState(BaseLevel::LevelState::WAIT);
+		{
+			// -348 , - 200
+			std::shared_ptr<ColEventObj> Obj = CreateActor<ColEventObj>(static_cast<int>(RenderOrder::DOOR), "ColEventObj");
+			float4 InitPos = float4{ -380.0f, -203.0f };
+			ActorInit(Obj, InitPos);
+		}
+		return;
+	}
 	SetState(BaseLevel::LevelState::PLAY);
 }
 
@@ -274,6 +293,9 @@ void BaseLevel::ChangeColMap()
 	case LevelType::CLUBMAP4:
 		m_Map->GetRender()->SetScaleToTexture("Club_ColMap_04.png");
 		break;
+	case LevelType::CLUBBOSS0:
+		m_Map->GetRender()->SetScaleToTexture("Club_ColMap_Boss_00.png");
+		break;
 	case LevelType::NONE:
 	{
 		MsgAssert("현재 맵의 이름이 NONE 입니다. 레벨 타입을 세팅하세요.");
@@ -312,6 +334,10 @@ void BaseLevel::ChangeMap()
 	case LevelType::CLUBMAP4:
 		m_Map->GetRender()->SetScaleToTexture("ClubMap_04.png");
 		break;
+	case LevelType::CLUBBOSS0:
+		m_Map->GetRender()->SetScaleToTexture("ClubMap_Boss_00.png");
+		m_Map->GetRender()->GetTransform()->SetLocalScale(float4{ 1344.0f, 580.0f });
+		break;	
 	case LevelType::NONE:
 	{
 		MsgAssert("현재 맵의 이름이 NONE 입니다. 이름을 세팅하세요.");

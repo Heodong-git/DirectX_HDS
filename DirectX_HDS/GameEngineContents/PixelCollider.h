@@ -11,6 +11,7 @@ enum class ColMapName
 	COLMAP2,
 	COLMAP3,
 	COLMAP4,
+	COLMAPBOSS0,
 };
 
 // Ό³Έν :

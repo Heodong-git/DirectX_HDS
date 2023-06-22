@@ -15,6 +15,7 @@ public:
 	DoorEffect& operator=(const DoorEffect& _Other) = delete;
 	DoorEffect& operator=(DoorEffect&& _Other) noexcept = delete;
 
+protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
