@@ -14,7 +14,7 @@ enum class BossState
 	IDLE,		// 아이들 2
 	RIFLE,		// 라이플 3
 	GUN,		// 건(폭발탄) 4 
-
+	ROLL,		// 회피(구르기) 5
 	MAX,
 };
 
@@ -39,12 +39,19 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void NextTransUpdate();
+
 	void ComponentSetting();
 	void LoadAndCreateAnimation();
 	void LoadSound();
 
+	// next trans 
+	std::shared_ptr<GameEngineTransform> m_NextTrans = nullptr;
+	const float4 m_DebugPivot = float4{ 30.0f, 42.0f };
+
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	
 	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
@@ -52,11 +59,14 @@ private:
 	void CreateRifleEffect();
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
+	float m_RollSpeed = 500.0f; 
+
 	void DebugUpdate();
 	
 	// true = 오른쪽, false = 왼쪽 
 	bool m_Dir = false;
 	void DirCheck();
+	void ChangeDir();
 
 	BossPhase m_CurPhase = BossPhase::FIRST;
 
@@ -84,4 +94,8 @@ private:
 	void GunStart();
 	void GunUpdate(float _DeltaTime);
 	void GunEnd();
+
+	void RollStart();
+	void RollUpdate(float _DeltaTime);
+	void RollEnd();
 };
