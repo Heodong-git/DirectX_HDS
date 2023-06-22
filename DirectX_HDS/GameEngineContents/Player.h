@@ -111,6 +111,7 @@ protected:
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
+	virtual void LevelChangeEnd() override;
 private:
 	void SlashSoundPlay();
 	GameEngineSoundPlayer m_SoundPlayer;

@@ -35,6 +35,8 @@ void PlaySupporter::Start()
 
 	// 컴포넌트 세팅
 	ComponentSetting();
+
+	
 }
 
 void PlaySupporter::Update(float _DeltaTime)

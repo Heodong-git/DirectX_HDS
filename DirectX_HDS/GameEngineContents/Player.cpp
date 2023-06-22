@@ -263,6 +263,11 @@ void Player::Render(float _DeltaTime)
 {
 }
 
+void Player::LevelChangeEnd()
+{
+	m_MoveSoundPlayer.Stop();
+}
+
 void Player::SlashSoundPlay()
 {
 	// 3개중에 랜덤한거. 
