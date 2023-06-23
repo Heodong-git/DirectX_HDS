@@ -20,6 +20,11 @@ public:
 		return m_Render;
 	}
 
+	void SetActor(std::shared_ptr<class Boss_HeadHunter> _Actor)
+	{
+		m_Actor = _Actor;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -28,4 +33,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+
+	std::shared_ptr<class Boss_HeadHunter> m_Actor = nullptr;
 };

@@ -106,9 +106,6 @@ void Battery::TextureChange()
 	}
 
 
-
-
-
 	float TimeCheck = Player::MainPlayer->GetSkillLimitTime();
 	
 	// 배터리텍스쳐

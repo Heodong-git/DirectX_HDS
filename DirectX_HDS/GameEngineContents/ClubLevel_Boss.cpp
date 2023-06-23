@@ -30,6 +30,7 @@ ClubLevel_Boss::~ClubLevel_Boss()
 
 void ClubLevel_Boss::CreateHeadHunter()
 {
+	m_Appear = true;
 	std::shared_ptr<Boss_HeadHunter> Boss = CreateActor<Boss_HeadHunter>(static_cast<int>(RenderOrder::BOSS), "Boss_HeadHunter");
 	float4 InitPos = float4{ 358.0f, -203.0f };
 	ActorInit(Boss, InitPos);

@@ -174,6 +174,12 @@
     <ClInclude Include="HeadHunter_RifleEffect.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="GunSpark_Effect.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
+    </ClInclude>
+    <ClInclude Include="TeleportEffect.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Teleport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -348,6 +354,12 @@
     <ClCompile Include="HeadHunter_RifleEffect.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="GunSpark_Effect.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
+    </ClCompile>
+    <ClCompile Include="TeleportEffect.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Teleport</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -505,6 +517,12 @@
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect">
       <UniqueIdentifier>{ccb0c86f-a9ff-4f8b-8c6a-284abaa79019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark">
+      <UniqueIdentifier>{b8d380e1-836c-49cf-bd96-6cbb6b977296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\Teleport">
+      <UniqueIdentifier>{6473990a-827e-43a5-86e8-209156a69862}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

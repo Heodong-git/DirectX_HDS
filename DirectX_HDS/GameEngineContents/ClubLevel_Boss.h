@@ -16,6 +16,11 @@ public:
 	ClubLevel_Boss& operator=(ClubLevel_Boss&& _Other) noexcept = delete;
 
 	void CreateHeadHunter();
+	inline const bool IsAppear()
+	{
+		return m_Appear;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

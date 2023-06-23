@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "Boss_HeadHunter.h"
+
 HeadHunter_RifleEffect::HeadHunter_RifleEffect()
 {
 }
@@ -55,12 +57,13 @@ void HeadHunter_RifleEffect::Start()
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
 {
-	if (true == m_Render->IsAnimationEnd())
+	if (true == m_Render->IsAnimationEnd() || BossState::RIFLE != m_Actor->GetCurState())
 	{
 		this->Death();
 		if (nullptr != m_Render)
 		{
 			m_Render = nullptr;
+			m_Actor = nullptr;
 		}
 		return;
 	}

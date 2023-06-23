@@ -45,12 +45,20 @@ void ColEventObj::CollisionUpdate(float _DeltaTime)
 		// 충돌했을때, 내가 보스레벨이라면 다르게 동작시킨다. 
 		// 1. 보스방에 존재하는 sldingdoor 상태 -> Close 
 		BaseLevel* CurLevel = GetReturnCastLevel();
+		std::shared_ptr<ClubLevel_Boss> BossLevel = CurLevel->DynamicThis<ClubLevel_Boss>();
 		if (BaseLevel::LevelState::WAIT == CurLevel->GetCurState() && LevelType::CLUBBOSS0 == CurLevel->GetLevelType())
 		{
 			CurLevel->SetState(BaseLevel::LevelState::PLAY);
-			std::shared_ptr<ClubLevel_Boss> BossLevel = CurLevel->DynamicThis<ClubLevel_Boss>();
-			BossLevel->CreateHeadHunter();
+			if (false == BossLevel->IsAppear())
+			{
+				BossLevel->CreateHeadHunter();
+			}
 			this->Death();
+			return;
+		}
+
+		if (LevelType::CLUBBOSS0 == CurLevel->GetLevelType())
+		{
 			return;
 		}
 
