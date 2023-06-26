@@ -27,9 +27,18 @@ void TeleportEffect::Update(float _DeltaTime)
 {
 	if (true == m_SparkRenders[m_FirstRenderCount - 1]->IsAnimationEnd())
 	{
-		int a = 0;
 		this->Death();
 	}
+
+	// 클라우드의 경우 반복문을 돌아서 애니메이션이 종료 되었다면 off 처리 
+	for (size_t i = 0; i < m_CloudRenders.size(); ++i)
+	{
+		if (true == m_CloudRenders[i]->IsAnimationEnd())
+		{
+			m_CloudRenders[i]->Off();
+		}
+	}
+
 }
 
 void TeleportEffect::Render(float _DeltaTime)
@@ -50,6 +59,22 @@ void TeleportEffect::LoadAndCreateAnimation()
 		Dir.Move("effect");
 
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gunspark_effect").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gunspark_effect2").GetFullPath());
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+	}
+
+	// gunsmoke
+	if (nullptr == GameEngineSprite::Find("gunsmoke_effect2"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("katanazero_resources");
+		Dir.Move("katanazero_resources");
+		Dir.Move("Texture");
+		Dir.Move("ClubLevel");
+		Dir.Move("effect");
+		Dir.Move("gunsmoke_effect");
+
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gunsmoke_effect2").GetFullPath());
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 
@@ -93,13 +118,27 @@ void TeleportEffect::LoadAndCreateAnimation()
 		m_SparkRenders.push_back(Render);
 	}
 
-	m_CloudRenders.reserve(m_CloudRenderCount);
-	for (size_t i = 0; i < m_CloudRenderCount; ++i)
+	m_CloudRenders.reserve(m_CloudRenderCount + m_CloudRenderCount2);
+	for (size_t i = 0; i < m_CloudRenderCount + m_CloudRenderCount2; ++i)
 	{
 		std::shared_ptr<GameEngineSpriteRenderer> Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
-		Render->CreateAnimation({ .AnimationName = "dashcloud", .SpriteName = "dashcloud", .Start = 0, .End = 9 ,
+
+		// 대시클라우드 
+		if (i < m_CloudRenderCount)
+		{
+			Render->CreateAnimation({ .AnimationName = "dashcloud", .SpriteName = "dashcloud", .Start = 0, .End = 9 ,
 							  .FrameInter = 0.07f , .Loop = false , .ScaleToTexture = true });
-		Render->ChangeAnimation("dashcloud");
+			Render->ChangeAnimation("dashcloud");
+		}
+		
+		// 대시클라우드의 개수보다 더 크다면 
+		if (i >= m_CloudRenderCount)
+		{
+			// 다른 클라우드임 
+			Render->CreateAnimation({ .AnimationName = "gunsmoke_effect2", .SpriteName = "gunsmoke_effect2", .Start = 0, .End = 11 ,
+							  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
+			Render->ChangeAnimation("gunsmoke_effect2");
+		}
 
 		Render->SetScaleRatio(2.0f);
 		m_CloudRenders.push_back(Render);
@@ -148,7 +187,25 @@ void TeleportEffect::SetRenders()
 	// 클라우드 
 	m_CloudRenders[0]->GetTransform()->SetLocalPosition(float4{ -60.0f , 20.0f });
 	m_CloudRenders[0]->GetTransform()->SetLocalRotation(float4{ 0.0f, 180.0f, 0.0f });
-
 	m_CloudRenders[1]->GetTransform()->SetLocalPosition(float4{ 60.0f , 20.0f });
 
+	m_CloudRenders[2]->GetTransform()->SetLocalPosition(float4{ -60.0f , 80.0f });
+	m_CloudRenders[2]->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f , 120.0f});
+	m_CloudRenders[2]->SetScaleRatio(3.0f);
+
+	m_CloudRenders[3]->GetTransform()->SetLocalPosition(float4{ -80.0f , 60.0f });
+	m_CloudRenders[3]->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f , 140.0f });
+	m_CloudRenders[3]->SetScaleRatio(3.0f);
+
+	m_CloudRenders[4]->GetTransform()->SetLocalPosition(float4{ -10.0f , 90.0f});
+	m_CloudRenders[4]->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f , 90.0f });
+	m_CloudRenders[4]->SetScaleRatio(3.0f);
+
+	m_CloudRenders[5]->GetTransform()->SetLocalPosition(float4{ 40.0f , 80.0f });
+	m_CloudRenders[5]->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f , 65.0f });
+	m_CloudRenders[5]->SetScaleRatio(2.0f);
+
+	m_CloudRenders[6]->GetTransform()->SetLocalPosition(float4{ -100.0f , 0.0f });
+	m_CloudRenders[6]->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f , 180.0f });
+	m_CloudRenders[6]->SetScaleRatio(2.5f);
 }

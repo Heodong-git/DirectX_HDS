@@ -183,6 +183,9 @@
     <ClInclude Include="GunSpark_Effect2.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
     </ClInclude>
+    <ClInclude Include="GunSmoke_Effect.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -366,6 +369,9 @@
     <ClCompile Include="GunSpark_Effect2.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
     </ClCompile>
+    <ClCompile Include="GunSmoke_Effect.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -529,6 +535,9 @@
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\Teleport">
       <UniqueIdentifier>{6473990a-827e-43a5-86e8-209156a69862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke">
+      <UniqueIdentifier>{106d12f9-8ce6-494e-a2db-78268ecd2bdc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

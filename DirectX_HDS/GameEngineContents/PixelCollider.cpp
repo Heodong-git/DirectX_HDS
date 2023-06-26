@@ -158,7 +158,7 @@ bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 	}
 
 	// 체크할 위치 
-	float4 CheckPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+	float4 CheckPos = _Object->GetTransform()->GetLocalPosition();
 
 	float WidthHalf = static_cast<float>(m_CurColMap->GetWidth() / 2);
 	float HeightHalf = static_cast<float>(m_CurColMap->GetHeight() / 2);
@@ -182,7 +182,7 @@ bool PixelCollider::GroundCheck(class GameEngineObject* _Object)
 			ColPixel = m_CurColMap->GetPixel(CheckX, CheckY);
 			if (g_WhitePixel == ColPixel)
 			{
-				Player::MainPlayer->GetTransform()->AddLocalPosition({ 0 , static_cast<float>(UpCount) });
+				_Object->GetTransform()->AddLocalPosition({ 0 , static_cast<float>(UpCount) });
 				break;
 			}
 		}

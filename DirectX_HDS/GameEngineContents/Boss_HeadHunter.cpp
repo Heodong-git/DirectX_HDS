@@ -146,6 +146,22 @@ void Boss_HeadHunter::CreateRifleEffect()
 	}
 }
 
+void Boss_HeadHunter::CreateTpEffect()
+{
+	std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>();
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+
+	if (true == m_Dir)
+	{
+		Effect->GetTransform()->SetLocalNegativeScaleX();
+	}
+
+	else if (false == m_Dir)
+	{
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+	}
+}
+
 void Boss_HeadHunter::Reset()
 {
 	GetTransform()->SetLocalPosition(GetInitPos());
@@ -270,6 +286,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::RECOVER:
 		RecoverStart();
 		break;
+	case BossState::TRANSPARENCY:
+		TransparencyStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -295,6 +314,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::RECOVER:
 		RecoverEnd();
+		break;
+	case BossState::TRANSPARENCY:
+		TransparencyEnd();
 		break;
 	}
 }
@@ -325,15 +347,21 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 	case BossState::RECOVER:
 		RecoverUpdate(_DeltaTime);
 		break;
+	case BossState::TRANSPARENCY:
+		TransparencyUpdate(_DeltaTime);
+		break;
 	}
 }
 
 // 보스가 만들어지면 인트로로 진입, 순간이동 애니메이션으로 등장 
 void Boss_HeadHunter::IntroStart()
 {
+	// 이때 만약, 이전상태가 투명상태였다면 전투진행중 이었던거고.
+	// 랜덤한 위치에 다시 나타나서 전투진행. 
+
 	m_Dir = false;
 	DirCheck();
-	m_MainRender->ChangeAnimation("headhunter_intro");
+	m_MainRender->ChangeAnimation("headhunter_intro"); 
 }
 
 void Boss_HeadHunter::IntroUpdate(float _DeltaTime)
@@ -362,6 +390,7 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 	// 현재 페이즈가 1페이즈 일 경우의 동작,  
 	if (BossPhase::FIRST == m_CurPhase)
 	{
+		// 여기서 애니메이션이 종료되면이 아니라, 랜덤하게 라이플 상태로 변경
 		if (true == m_MainRender->IsAnimationEnd())
 		{
 			ChangeState(BossState::RIFLE);
@@ -477,6 +506,7 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 	{
 		if (true == m_MainRender->IsAnimationEnd())
 		{
+			PixelCollider::PixelCol->GroundCheck(this);
 			ChangeState(BossState::RECOVER);
 			return;
 		}
@@ -504,6 +534,14 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 			// 넥스트트랜스를 이동키시고, 이동한 위치가 흰색일때만 내가 이동한다.
 			GetTransform()->SetWorldPosition(MovePos3);
 		}
+
+		// 만약 검은색  픽셀이라면 아래로만 이동시킨다. 
+		// 만약 검은색  픽셀이라면 아래로만 이동시킨다. 
+		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + float4 { -m_DebugPivot.x, m_DebugPivot.y }) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
+		{
+			GetTransform()->AddLocalPosition(float4::Down * 20.0f * _DeltaTime);
+		}
 	}
 	else if (false == m_Dir)
 	{
@@ -516,6 +554,13 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 		{
 			// 넥스트트랜스를 이동키시고, 이동한 위치가 흰색일때만 내가 이동한다.
 			GetTransform()->SetWorldPosition(MovePos3);
+		}
+
+		// 만약 검은색  픽셀이라면 아래로만 이동시킨다. 
+		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + m_DebugPivot) && 
+				 PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
+		{
+			GetTransform()->AddLocalPosition(float4::Down * 20.0f * _DeltaTime);
 		}
 	}
 }
@@ -540,13 +585,14 @@ void Boss_HeadHunter::RecoverStart()
 
 void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
 {
+	// 텔레포트 이펙트를 생성하고 나면 여기서 아이들이 아니라 투명 상태로 변경. 
+	// 투명상태에서는 대기시간 3초를 가지고, 랜덤한 위치에 다시 등장한다? 
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		// 리커버 상태가 끝나면 
-		std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>();
-		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-		//Effect->GetTransform()->SetLocalNegativeScaleX();
-		ChangeState(BossState::IDLE);
+		CreateTpEffect();
+
+		// 사라지고 나서 어떻게 할거니 
+		ChangeState(BossState::TRANSPARENCY);
 		return;
 	}
 }
@@ -557,4 +603,20 @@ void Boss_HeadHunter::RecoverEnd()
 	
 	// test
 	// m_MainRender->Off();
+}
+
+// 일단 투명상태, 투명상태일때 시간값을 증가시키고, 일정시간을 초과하면
+// 랜덤한 위치에 재등장 하도록 
+// 인트로에서 이전상태가 트랜스 어쩌구였다면.. 으로 시작 
+void Boss_HeadHunter::TransparencyStart()
+{
+	int a = 0;
+}
+
+void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
+{
+}
+
+void Boss_HeadHunter::TransparencyEnd()
+{
 }

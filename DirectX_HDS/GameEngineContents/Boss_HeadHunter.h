@@ -11,13 +11,14 @@ enum class BossState
 {
 	NONE,
 	INTRO,
-	IDLE,		// 아이들 2
-	RIFLE,		// 라이플 3
-	GUN,		// 건(폭발탄) 4 
-	ROLL,		// 회피(구르기) 5
+	IDLE,			// 아이들 2
+	RIFLE,			// 라이플 3
+	GUN,			// 건(폭발탄) 4 
+	ROLL,			// 회피(구르기) 5
 
-	HURT,
-	RECOVER,
+	HURT,			 // 쳐맞
+	RECOVER,		 // 쳐맞 후 ㅌㅌ 
+	TRANSPARENCY,    // 투명 
 	MAX,
 };
 
@@ -47,6 +48,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	void CreateTpEffect();
+
 	void Reset();
 	void HurtCheck(float _DeltaTime);
 	void DebugUpdate();
@@ -129,4 +132,9 @@ private:
 	void RecoverStart();
 	void RecoverUpdate(float _DeltaTime);
 	void RecoverEnd();
+
+	// 일종의 리커버 후 대기상태로 만들자
+	void TransparencyStart();
+	void TransparencyUpdate(float _DeltaTime);
+	void TransparencyEnd();
 };

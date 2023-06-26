@@ -28,6 +28,7 @@ private:
 	std::vector<std::shared_ptr<class GameEngineSpriteRenderer>> m_SparkRenders;
 
 	size_t m_CloudRenderCount = 2;
+	size_t m_CloudRenderCount2 = 5;
 	std::vector<std::shared_ptr<class GameEngineSpriteRenderer>> m_CloudRenders;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;

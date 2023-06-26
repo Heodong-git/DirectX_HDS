@@ -22,6 +22,7 @@
 
 // test
 #include "GunSpark_Effect2.h"
+#include "GunSmoke_Effect.h"
 
 ClubLevel_Boss::ClubLevel_Boss()
 {
@@ -151,8 +152,10 @@ void ClubLevel_Boss::CreateObjAndInit()
 
 
 	{
-		std::shared_ptr<GunSpark_Effect2> NewPlatform = CreateActor<GunSpark_Effect2>(static_cast<int>(RenderOrder::PLATFORM), "GunSpark_Effect2");
-		NewPlatform->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
+		// 테스트용 이펙트 
+		std::shared_ptr<GunSmoke_Effect> Effect = CreateActor<GunSmoke_Effect>(static_cast<int>(RenderOrder::EFFECT), "GunSmoke_Effect");
+		Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
+		Effect->SetType(EffectType::SECOND);
 	}
 }
 
