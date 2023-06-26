@@ -20,6 +20,24 @@ public:
 
 	}
 
+	// 채널이 유효한지, 
+	inline bool IsValid() const
+	{
+		return (nullptr != Channel);
+	}
+
+	// 현재 사운드가 실행되고 있는지 
+	inline void isPlaying(bool* _IsPlaying) const
+	{
+		if (false == IsValid())
+		{
+			MsgAssert("유효하지 않은 사운드의 실행 여부를 확인하려 했습니다.");
+			return;
+		}
+
+		Channel->isPlaying(_IsPlaying);
+	}
+
 	void Stop()
 	{
 		Channel->stop();
@@ -56,6 +74,47 @@ public:
 		//_StartSecond ~_EndSecond 까지 반복
 		Channel->setLoopPoints(static_cast<UINT>(_StartSecond * 1000.f), _TimeUnit, static_cast<UINT>(_EndSecond * 1000.f), _TimeUnit);
 	}
+
+	/// <param name="_Position">사운드 위치 값</param>
+	/// <param name="_TimeType">입력 값의 타입을 정합니다</param>
+	inline void setPosition(UINT _Position, FMOD_TIMEUNIT _TimeType = FMOD_TIMEUNIT_MS)
+	{
+		if (false == IsValid())
+		{
+			MsgAssert("유효하지 않은 사운드의 위치를 설정하려 했습니다");
+			return;
+		}
+
+		Channel->setPosition(_Position, _TimeType);
+	}
+
+	/// <param name="_TimeType">입력 값의 타입을 정합니다</param>
+	inline UINT getPosition(FMOD_TIMEUNIT _TimeType = FMOD_TIMEUNIT_MS)
+	{
+		UINT ResultPosition = 0;
+
+		if (false == IsValid())
+		{
+			MsgAssert("유효하지 않은 사운드의 위치를 받아오려 했습니다");
+			return ResultPosition;
+		}
+
+		Channel->getPosition(&ResultPosition, _TimeType);
+		return ResultPosition;
+	}
+
+	/// <summary>
+	/// 사운드를 서서히 키웁니다
+	/// </summary>	
+	/// <param name="_Volume">재생할 사운드 볼륨을 설정합니다 기본적으로 1.0f 입니다</param>
+	void SoundFadeIn(double _Time, float _Volume = 1.0f);
+
+	/// <summary>
+	/// 사운드를 서서히 줄입니다
+	/// </summary>
+	/// <param name="_Volume">정지점의 사운드 볼륨을 설정합니다 기본적으로 0.0f 입니다</param>
+	/// <param name="_IsStop">true일 경우 사운드를 Stop 합니다, false 경우 사운드를 일시정지 시킵니다</param>
+	void SoundFadeOut(double _Time, float _Volume = 0.0f, bool _IsStop = false);
 };
 
 // 설명 :
