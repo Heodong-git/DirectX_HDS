@@ -19,6 +19,8 @@ enum class BossState
 	HURT,			 // 쳐맞
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 	TRANSPARENCY,    // 투명 
+	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
+	
 	MAX,
 };
 
@@ -68,6 +70,7 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
+
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
 	// 사용할 이펙트 
@@ -76,8 +79,8 @@ private:
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
 	// 기본스탯 
-	// 총 4히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
-	int m_HitCount = 9;
+	// 총 3히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
+	int m_HitCount = 8;
 	float m_RollSpeed = 500.0f;
 	bool m_Dir = false;
 
@@ -92,8 +95,21 @@ private:
 	float4 m_MiddlePos = {};
 	float4 m_MainPos = {}; 
 
+	// 몬스터 소환 위치
+	std::vector<float4> m_SummonsPoss = std::vector<float4>();
+
+	// 소환될 몬스터를 저장해둘 vector 
+	// 어차피 지우는건 한번에 지우고 클리어 시킬꺼니까 벡터가 맞다.
+	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();
+
+	float m_IdleDuration = 0.25f;
+
 	// 현재 페이즈 
 	BossPhase m_CurPhase = BossPhase::FIRST;
+	bool m_FirstSummons = false; 
+	bool m_SecondSummons = false;
+
+	// 베이스액터
 
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
@@ -133,8 +149,11 @@ private:
 	void RecoverUpdate(float _DeltaTime);
 	void RecoverEnd();
 
-	// 일종의 리커버 후 대기상태로 만들자
 	void TransparencyStart();
 	void TransparencyUpdate(float _DeltaTime);
 	void TransparencyEnd();
+	
+	void ReAppearStart();
+	void ReAppearUpdate(float _DeltaTime);
+	void ReAppearEnd();
 };

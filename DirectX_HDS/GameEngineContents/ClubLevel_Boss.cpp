@@ -150,13 +150,12 @@ void ClubLevel_Boss::CreateObjAndInit()
 		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 100.0f, 1.0f });
 	}
 
-
-	{
-		// 테스트용 이펙트 
-		std::shared_ptr<GunSmoke_Effect> Effect = CreateActor<GunSmoke_Effect>(static_cast<int>(RenderOrder::EFFECT), "GunSmoke_Effect");
-		Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
-		Effect->SetType(EffectType::SECOND);
-	}
+	//{
+	//	// 테스트용 이펙트 
+	//	std::shared_ptr<GunSmoke_Effect> Effect = CreateActor<GunSmoke_Effect>(static_cast<int>(RenderOrder::EFFECT), "GunSmoke_Effect");
+	//	Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
+	//	Effect->SetType(EffectType::SECOND);
+	//}
 }
 
 void ClubLevel_Boss::KeyUpdate()

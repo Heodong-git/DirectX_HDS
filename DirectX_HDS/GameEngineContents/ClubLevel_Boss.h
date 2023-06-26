@@ -42,4 +42,7 @@ private:
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 
 	bool m_Appear = false;
+
+	// 몬스터들의 등장위치 4군데를 저장.. 음.. 어 음 아 음 허 흠
+	
 };

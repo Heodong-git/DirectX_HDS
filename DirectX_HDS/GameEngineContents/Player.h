@@ -141,8 +141,8 @@ private:
 	float4 m_MyOriginPos = {};
 
 	// ¿Ãµø
-	float  m_MoveSpeed = 500.0f;
-	float  m_StartMoveSpeed = 400.0f;
+	float  m_MoveSpeed = 400.0f;
+	float  m_StartMoveSpeed = 350.0f;
 	float  m_AttSpeed = 700.0f;
 
 	void NextPosUpdate();

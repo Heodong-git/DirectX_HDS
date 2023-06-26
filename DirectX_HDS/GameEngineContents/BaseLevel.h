@@ -103,6 +103,12 @@ public:
 	
 	inline void DisCount()
 	{
+		// 만약 보스레벨이라면 그냥 실행안함
+		if (LevelType::CLUBBOSS0 == m_LevelType)
+		{
+			return;
+		}
+
 		if (0 == m_MonsterCount)
 		{
 			MsgAssert("이미 몬스터카운트가 0 인 상태에서 DisCount 하려고 했습니다.");

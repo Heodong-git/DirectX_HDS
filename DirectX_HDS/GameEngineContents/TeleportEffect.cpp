@@ -14,11 +14,6 @@ TeleportEffect::~TeleportEffect()
 
 void TeleportEffect::Start()
 {
-	// 디버그 렌더
-	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender->GetTransform()->SetLocalScale(float4{ 10.0f, 10.0f });
-	m_DebugRender->On();
-
 	LoadAndCreateAnimation();
 	SetRenders();
 }
@@ -28,6 +23,7 @@ void TeleportEffect::Update(float _DeltaTime)
 	if (true == m_SparkRenders[m_FirstRenderCount - 1]->IsAnimationEnd())
 	{
 		this->Death();
+		return;
 	}
 
 	// 클라우드의 경우 반복문을 돌아서 애니메이션이 종료 되었다면 off 처리 
@@ -44,6 +40,7 @@ void TeleportEffect::Update(float _DeltaTime)
 void TeleportEffect::Render(float _DeltaTime)
 {
 }
+
 
 void TeleportEffect::LoadAndCreateAnimation()
 {
@@ -147,6 +144,11 @@ void TeleportEffect::LoadAndCreateAnimation()
 
 void TeleportEffect::SetRenders()
 {
+	// 디버그 렌더
+	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	m_DebugRender->GetTransform()->SetLocalScale(float4{ 10.0f, 10.0f });
+	m_DebugRender->Off();
+
 	// 첫번째 
 	m_SparkRenders[0]->GetTransform()->SetLocalPosition(float4{ -120.0f , 10.0f });
 	m_SparkRenders[0]->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 180.0f });
