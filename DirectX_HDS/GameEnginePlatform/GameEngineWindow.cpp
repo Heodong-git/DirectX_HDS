@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineWindow.h"
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineBase/GameEngineThread.h>
 #include <GameEnginePlatform/GameEngineImage.h>
 #include "GameEngineInput.h"
 
@@ -48,6 +49,8 @@ LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WP
     }
     case WM_DESTROY:
     {
+        // 윈도우종료시 스레드 삭제 
+        GameEngineThread::ThreadEnd();
         // Message함수가 0을 리턴하게 만들어라.
         //  PostQuitMessage(0);
         IsWindowUpdate = false;

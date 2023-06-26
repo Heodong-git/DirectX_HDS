@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
 #include <GameEngineBase\GameEngineDebug.h>
+#include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
@@ -9,6 +10,8 @@
 #include <GameEngineCore/GameEngineDevice.h>
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
+
+GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;

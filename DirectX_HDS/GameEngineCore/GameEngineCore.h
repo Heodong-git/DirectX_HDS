@@ -6,6 +6,7 @@
 #include <functional>
 #include <string_view>
 #include <typeinfo>
+#include <GameEngineBase/GameEngineThreadJobQueue.h>
 
 #pragma comment(lib, "GameEngineBase.lib")
 #pragma comment(lib, "GameEnginePlatform.lib")
@@ -79,6 +80,8 @@ public:
 	{
 		return MainLevel;
 	}
+
+	static GameEngineThreadJobQueue JobQueue;
 
 protected:
 

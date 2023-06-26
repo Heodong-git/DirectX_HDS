@@ -4,11 +4,12 @@
 #include <map>
 #include <list>
 #include <memory>
+#include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
-#include <GameEngineCore/GameEngineNameObject.h>
 #include "GameEngineDevice.h"
 
+// 설명 :
 template<typename ResourcesType>
 class GameEngineResource : public GameEngineNameObject
 {
@@ -30,7 +31,6 @@ public:
 		return Path.c_str();
 	}
 
-
 	void SetPath(const std::string_view& _Value)
 	{
 		Path = _Value;
@@ -40,78 +40,83 @@ public:
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
 
+		UnNamedLock.lock();
 		if (NamedResources.end() == NamedResources.find(UpperName.c_str()))
 		{
+			UnNamedLock.unlock();
 			return nullptr;
 		}
+		UnNamedLock.unlock();
 
 		return NamedResources[UpperName];
 	}
 
 	virtual void Setting() {}
 
+
 	static void ResourcesClear()
 	{
-		for (std::shared_ptr<ResourcesType> Type : UnNamedRes)
-		{
-			Type->IsUnLoad = true;
-		}
-
-		for (std::pair<std::string, std::shared_ptr<ResourcesType>> Type : NamedResources)
-		{
-			Type.second->IsUnLoad = true;
-		}
-
 		NamedResources.clear();
 		UnNamedRes.clear();
 	}
 
+
 protected:
-	// 언네임드리소스 생성
 	static std::shared_ptr<ResourcesType> CreateUnNamed()
 	{
-		// 리소스 생성후 단순하게 리스트에 push_back 후 생성한 리소스를 shared ptr로 반환 
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
+		UnNamedLock.lock();
 		UnNamedRes.push_back(NewRes);
+		UnNamedLock.unlock();
 		return NewRes;
 	}
 
-	// 인자로 들어온 문자열의 이름으로 리소스를 만든다. 
 	static std::shared_ptr<ResourcesType> Create(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
 
+		NameLock.lock();
 		if (NamedResources.end() != NamedResources.find(UpperName))
 		{
 			MsgAssert("이미 존재하는 이름의 리소스를 또 만들려고 했습니다.");
+			NameLock.unlock();
 			return nullptr;
 		}
+		NameLock.unlock();
 
-		// 중복체크 후 shardptr 로 리소스 생성
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
-
-		// 리소스 이름세팅
 		NewRes->SetName(UpperName);
+
 		// std::pair<key, value>
 		// NamedResources.insert(std::make_pair(UpperName, NewRes));
-		// 조금이라도 최적화가 필요하다면 아래처럼 사용할 수 도 있음
+		// 여기 사이에 좀 느려져도 이
+
+		NameLock.lock();
 		NamedResources.insert(std::map<std::string, std::shared_ptr<ResourcesType>>::value_type(UpperName, NewRes));
+		NameLock.unlock();
 		return NewRes;
 	}
 
+
 private:
 	std::string Path;
-	bool IsUnLoad = false;
 
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
+	static std::mutex NameLock;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
+	static std::mutex UnNamedLock;
+
 
 };
 
-// template 클래스의 경우 
-// 원래라면 static 으로 선언한 변수들을 cpp에 구현해주어야 하지만 템플릿클래스로 구현하였을 경우 헤더의 하단에 아래처럼 구현이 가능하다.
 template<typename ResourcesType>
 std::map<std::string, std::shared_ptr<ResourcesType>> GameEngineResource<ResourcesType>::NamedResources;
 
 template<typename ResourcesType>
+std::mutex GameEngineResource<ResourcesType>::NameLock;
+
+template<typename ResourcesType>
 std::list<std::shared_ptr<ResourcesType>> GameEngineResource<ResourcesType>::UnNamedRes;
+
+template<typename ResourcesType>
+std::mutex GameEngineResource<ResourcesType>::UnNamedLock;
