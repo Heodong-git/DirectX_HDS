@@ -180,6 +180,9 @@
     <ClInclude Include="TeleportEffect.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Teleport</Filter>
     </ClInclude>
+    <ClInclude Include="GunSpark_Effect2.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -359,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="TeleportEffect.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="GunSpark_Effect2.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSpark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

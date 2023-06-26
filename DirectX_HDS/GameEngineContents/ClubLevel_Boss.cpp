@@ -20,6 +20,9 @@
 #include "ColEventObj.h"
 #include "Platform.h"
 
+// test
+#include "GunSpark_Effect2.h"
+
 ClubLevel_Boss::ClubLevel_Boss()
 {
 }
@@ -144,6 +147,12 @@ void ClubLevel_Boss::CreateObjAndInit()
 		std::shared_ptr<Platform> NewPlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
 		NewPlatform->GetTransform()->SetLocalPosition(float4{ 544.0f , -207.0f });
 		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 100.0f, 1.0f });
+	}
+
+
+	{
+		std::shared_ptr<GunSpark_Effect2> NewPlatform = CreateActor<GunSpark_Effect2>(static_cast<int>(RenderOrder::PLATFORM), "GunSpark_Effect2");
+		NewPlatform->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
 	}
 }
 

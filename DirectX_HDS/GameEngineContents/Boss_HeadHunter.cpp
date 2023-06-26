@@ -96,7 +96,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_roll", .SpriteName = "headhunter_roll", .Start = 0, .End = 6 ,
 							  .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_recover", .SpriteName = "headhunter_recover", .Start = 0, .End = 3 ,
-							  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
+							  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 
 	std::vector<float> vFrameTime = std::vector<float>();
 	vFrameTime.push_back(0.1f);
@@ -490,7 +490,7 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 		m_Ratio = 1.0f;
 	}
 
-	// 방향에 따라서.
+	// 방향에 따라서
 	if (true == m_Dir)
 	{
 		float4 MovePos = float4::Lerp(m_HitPos, m_MiddlePos, m_Ratio * 2.0f);
@@ -542,8 +542,10 @@ void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
+		// 리커버 상태가 끝나면 
 		std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>();
 		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		//Effect->GetTransform()->SetLocalNegativeScaleX();
 		ChangeState(BossState::IDLE);
 		return;
 	}
@@ -552,4 +554,7 @@ void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
 void Boss_HeadHunter::RecoverEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 10.0f });
+	
+	// test
+	// m_MainRender->Off();
 }
