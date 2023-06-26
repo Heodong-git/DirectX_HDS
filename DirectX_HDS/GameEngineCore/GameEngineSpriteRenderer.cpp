@@ -119,6 +119,12 @@ void GameEngineSpriteRenderer::Start()
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 {
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
+
+	//Animation이 동작하는 SpriteRenderer에 다시 텍스처를 세팅할 때 사용됩니다.
+	CurAnimation = nullptr;
+	AtlasData = float4{ 0.0f, 0.0f, 1.0f, 1.0f };
+
+
 	std::shared_ptr<GameEngineTexture> FindTex = GameEngineTexture::Find(_Name);
 	if (nullptr == FindTex)
 	{
@@ -338,6 +344,13 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 		CurAnimation->CurFrame = _Frame;
 	}
 
+	// 시작할때 Start 이벤트 체크 업데이트
+	size_t CurFrameIndex = CurAnimation->FrameIndex[CurAnimation->CurFrame];
+
+	if (CurAnimation->StartEventFunction.end() != CurAnimation->StartEventFunction.find(CurFrameIndex))
+	{
+		CurAnimation->StartEventFunction[CurFrameIndex]();
+	}
 }
 
 void GameEngineSpriteRenderer::Update(float _Delta)

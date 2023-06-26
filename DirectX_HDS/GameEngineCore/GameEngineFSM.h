@@ -37,6 +37,11 @@ public:
 	GameEngineFSM& operator=(GameEngineFSM&& _Other) noexcept = delete;
 
 	void CreateState(const StateParameter& _StateFunction);
+
+	void ChangeFunction(const std::string_view& _Name, std::function<void()> Start,
+		std::function<void(float _Delta)> Update,
+		std::function<void()> End
+	);
 	void ChangeState(const std::string_view& _Name);
 
 	void Update(float _DeltaTime);

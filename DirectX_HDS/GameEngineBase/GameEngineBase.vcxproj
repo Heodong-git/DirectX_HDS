@@ -194,6 +194,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineThread.cpp" />
+    <ClCompile Include="GameEngineThreadJobQueue.cpp" />
     <ClCompile Include="GameEngineTime.cpp">
       <SubType>
       </SubType>
@@ -233,6 +235,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineString.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineThread.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineThreadJobQueue.h">
       <SubType>
       </SubType>
     </ClInclude>
