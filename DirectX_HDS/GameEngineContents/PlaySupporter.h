@@ -42,7 +42,7 @@ private:
 	void LevelResetCheck();
 
 	std::shared_ptr<class GameEngineCamera> m_MainCamera = nullptr;
-	const float m_MoveSpeed = 450.0f;
+	const float m_MoveSpeed = 400.0f;
 	
 	void ComponentSetting();
 	void SaveCameraRange();

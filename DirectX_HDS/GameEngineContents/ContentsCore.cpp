@@ -105,7 +105,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_04>("ClubLevel_04");
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 
-	GameEngineCore::ChangeLevel("ClubLevel_Boss");
+	GameEngineCore::ChangeLevel("TitleLevel");
 }
 
 // 게임이 종료되면 동작해야할 함수를 호출

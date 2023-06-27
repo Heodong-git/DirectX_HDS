@@ -174,6 +174,14 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 
 		// 이동방향 
 		float4 Dir = PlayerPos - CameraPos;
+		
+		// test
+		if (20.0f >= abs(Dir.x))
+		{
+			return;
+		}
+
+
 		Dir.Normalize();
 		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
 
@@ -220,6 +228,11 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 
 		// 이동방향 
 		float4 Dir = PlayerPos - CameraPos;
+
+		if (20.0f >= abs(Dir.x))
+		{
+			return;
+		}
 		Dir.Normalize();
 		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
 
@@ -266,6 +279,11 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 
 		// 이동방향 
 		float4 Dir = PlayerPos - CameraPos;
+
+		if (20.0f >= abs(Dir.x))
+		{
+			return;
+		}
 		Dir.Normalize();
 		float4 NextPos = CameraPos + Dir * m_MoveSpeed * _DeltaTime;
 
