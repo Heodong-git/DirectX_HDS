@@ -110,7 +110,8 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_roll").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_hurt").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_recover").GetFullPath());
-		
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_jump").GetFullPath());
+
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -123,6 +124,10 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 							  .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_recover", .SpriteName = "headhunter_recover", .Start = 0, .End = 3 ,
 							  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_jump", .SpriteName = "headhunter_jump", .Start = 0, .End = 2 ,
+							  .FrameInter = 0.09f , .Loop = false , .ScaleToTexture = true });
+
+	// 
 
 	std::vector<float> vFrameTime = std::vector<float>();
 	vFrameTime.push_back(0.1f);
@@ -483,6 +488,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::CHANGEPHASE:
 		ChangePhaseStart();
 		break;
+	case BossState::JUMP:
+		JumpStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -517,6 +525,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::CHANGEPHASE:
 		ChangePhaseEnd();
+		break;
+	case BossState::JUMP:
+		JumpEnd();
 		break;
 	}
 }
@@ -555,6 +566,9 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 		break;
 	case BossState::CHANGEPHASE:
 		ChangePhaseUpdate(_DeltaTime);
+		break;
+	case BossState::JUMP:
+		JumpUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -896,8 +910,14 @@ void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
 	// 순간이동 후 2페이즈의 로직 
 	if (BossPhase::SECOND == m_CurPhase)
 	{
-		// 2페이즈고, 히트카운트가 3이야.
-		// 그럼 레이저 포탑 소환 
+		if (3 == m_Phase2_HitCount)
+		{
+			// 한대맞았으면, 레이저포탑 소환패턴 
+			return;
+		}
+
+		ChangeState(BossState::JUMP);
+		return;
 	}
 	
 	// 투명 지속시간이 4초가 지났다면, 나타날 위치세팅, 후 인트로 상태로 전환 
@@ -945,6 +965,23 @@ void Boss_HeadHunter::ChangePhaseEnd()
 	m_Collision->On();
 }
 
+// 점프를 언제해야되나? 
+// 충돌체를 만들고, 아이들 상태나, 특정 상태에서 피격시에
+// 그충돌체에 해당하는 패턴? 
+void Boss_HeadHunter::JumpStart()
+{
+	m_MainRender->ChangeAnimation("headhunter_jump");
+}
+
+void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
+{
+	int a = 0;
+}
+
+void Boss_HeadHunter::JumpEnd()
+{
+}
+
 // 사실상 레벨체인지 해야되네 
 void Boss_HeadHunter::ReAppearStart()
 {
@@ -957,8 +994,3 @@ void Boss_HeadHunter::ReAppearUpdate(float _DeltaTime)
 void Boss_HeadHunter::ReAppearEnd()
 {
 }
-
-
-
-// f2로 재시작할 경우 원래 앞쪽 충돌체와 충돌하게 되면 레벨이 play 상태로 변경되는데 보스는 먼저 움직임. 내일하자 집중도안되는데 
-// 근데이건 굳이 고칠필요가 있나? ㅇㅇ 고쳐야됨 

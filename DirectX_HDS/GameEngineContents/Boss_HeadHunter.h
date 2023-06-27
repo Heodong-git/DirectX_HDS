@@ -15,6 +15,7 @@ enum class BossState
 	RIFLE,			// 라이플 3
 	GUN,			// 건(폭발탄) 4 
 	ROLL,			// 회피(구르기) 5
+	JUMP,
 
 	HURT,			 // 쳐맞
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
@@ -184,4 +185,8 @@ private:
 	void ChangePhaseStart();
 	void ChangePhaseUpdate(float _DeltaTime);
 	void ChangePhaseEnd();
+
+	void JumpStart();
+	void JumpUpdate(float _DeltaTime);
+	void JumpEnd();
 };
