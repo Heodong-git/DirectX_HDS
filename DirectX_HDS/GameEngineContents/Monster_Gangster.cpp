@@ -196,6 +196,7 @@ void Monster_Gangster::Reset()
 	m_FireCount = 0;
 	m_FireTime = 0.0f;
 	m_FollowEffectOn = false;
+	m_IsDeath = false;
 }
 
 void Monster_Gangster::ResetDir()
@@ -668,10 +669,19 @@ void Monster_Gangster::HitGroundStart()
 	m_HitPos = float4{ 0.0f, 0.0f };
 	DirCheck();
 	m_MainRender->ChangeAnimation("gangster_hitground");
+	m_IsDeath = true;
 }
 
 void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 {
+	// 이상태에서 만약 내 서브콜리전이랑 보스익스플로전 이펙트랑 충돌했다면 
+	std::shared_ptr<GameEngineCollision> ExCol = m_SubCollision->Collision(ColOrder::BOSS_EXPLOSION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != ExCol)
+	{
+		// ㅇㅋ 잘되고 
+		int a = 0; 
+	}
+
 	// 픽셀체크 해야함
 	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
@@ -712,5 +722,6 @@ void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 void Monster_Gangster::HitGroundEnd()
 {
 	m_HitPos = float4{ 0.0f, 0.0f };
+	m_IsDeath = false;
 }
 

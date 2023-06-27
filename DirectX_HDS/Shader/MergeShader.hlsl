@@ -29,6 +29,7 @@ float4 Merge_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
     
+    // 임시로 삭제, 너무 화면이어두움 
     Color.a = saturate(Color.a);
     
     return Color;

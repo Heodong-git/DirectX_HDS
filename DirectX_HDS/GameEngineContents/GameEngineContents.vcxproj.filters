@@ -186,6 +186,12 @@
     <ClInclude Include="GunSmoke_Effect.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke</Filter>
     </ClInclude>
+    <ClInclude Include="Explosion_Effect.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="Remote_Mine.h">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Mine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -372,6 +378,12 @@
     <ClCompile Include="GunSmoke_Effect.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke</Filter>
     </ClCompile>
+    <ClCompile Include="Explosion_Effect.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Effect\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="Remote_Mine.cpp">
+      <Filter>02.Actor\03.Boss\00.HeadHunter\Mine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -538,6 +550,12 @@
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\GunSmoke">
       <UniqueIdentifier>{106d12f9-8ce6-494e-a2db-78268ecd2bdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\Explosion">
+      <UniqueIdentifier>{d9695e53-656d-4fe1-9263-425b6c1b019c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Mine">
+      <UniqueIdentifier>{1bbbf0c8-99dd-4155-8ce4-a4fc7dc7ce6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

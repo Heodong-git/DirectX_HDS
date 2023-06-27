@@ -27,6 +27,11 @@ public:
 	Monster_Grunt& operator=(Monster_Grunt&& _Other) noexcept = delete;
 
 	void ChangeState(GruntState _State);
+	inline GruntState GetCurState()
+	{
+		return m_CurState;
+	}
+
 
 	// 방향반환 
 	const bool GetDir() const

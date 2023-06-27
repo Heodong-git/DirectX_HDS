@@ -512,6 +512,8 @@ void Player::DebugUpdate()
 	
 	if (true == GameEngineInput::IsDown("player_invincibility"))
 	{
+		m_Invincibility = !m_Invincibility;
+
 		if (true == m_Collision->IsUpdate())
 		{
 			m_Collision->Off();
@@ -1993,7 +1995,10 @@ void Player::RollUpdate(float _DeltaTime)
 
 void Player::RollEnd()
 {
-	m_Collision->On();
+	if (false == m_Invincibility)
+	{
+		m_Collision->On();
+	}
 
 	m_RightRoll = false;
 	m_LeftRoll = false;

@@ -17,6 +17,7 @@
 #include "Monster_Grunt.h"
 #include "Monster_Pomp.h"
 
+#include "Remote_Mine.h"
 
 Boss_HeadHunter::Boss_HeadHunter()
 {
@@ -50,6 +51,11 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 {
 	DebugUpdate();
 	HurtCheck(_DeltaTime);
+
+	if (true == m_Summons && false == m_SummonsEndCheck)
+	{
+		SummonsMonstersUpdate(_DeltaTime);
+	}
 	NextTransUpdate();
 	UpdateState(_DeltaTime);
 }
@@ -184,20 +190,37 @@ void Boss_HeadHunter::Reset()
 {
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(BossState::INTRO);
+	m_CurPhase = BossPhase::FIRST;
 	m_IdleDuration = 0.25f;
 	m_HitCount = 8;
-	m_FirstSummons = false;
-	m_SecondSummons = false;
+	m_Summons = false;
+	m_SummonsEndCheck = false;
+	// m_SecondSummons = false;
 
 	// 만들어놨던 액터들 다 데스처리
 	if (0 != m_SummonsMonsters.size())
 	{
 		for (size_t i = 0; i < m_SummonsMonsters.size(); ++i)
 		{
-			m_SummonsMonsters[i]->Death();
+			if (nullptr != m_SummonsMonsters[i])
+			{
+				m_SummonsMonsters[i]->Death();
+			}
 		}
-
 		m_SummonsMonsters.clear();
+	}
+
+	// 마인이 0이 아니라면 현재 마인이 생성되었다는 의미이고, 생성된 마인을 전부 데스처리한다. 
+	if (0 != m_Mines.size())
+	{
+		for (size_t i = 0; i < m_Mines.size(); ++i)
+		{
+			if (nullptr != m_Mines[i])
+			{
+				m_Mines[i]->Death();
+			}
+		}
+		m_Mines.clear();
 	}
 }
 
@@ -257,6 +280,49 @@ void Boss_HeadHunter::DebugUpdate()
 	}
 }
 
+void Boss_HeadHunter::SummonsMonstersUpdate(float _DeltaTime)
+{
+	size_t DeathCount = 0;
+	for (size_t i = 0; i < m_SummonsMonsters.size(); ++i)
+	{
+		// 반복해서 돌면서 isdeath 가 true 일 경우를 체크한다. 
+		if (true == m_SummonsMonsters[i]->DeathCheck())
+		{
+			++DeathCount;
+		}
+	}
+
+	// 그리고 데스카운트 값에 따라서 몬스터를 On 시켜줘 
+	if (2 == DeathCount)
+	{
+		{
+			std::shared_ptr<Monster_Gangster> Gangster = m_SummonsMonsters[2]->DynamicThis<Monster_Gangster>();
+			m_SummonsMonsters[2]->On();
+		}
+		{
+			std::shared_ptr<Monster_Gangster> Gangster = m_SummonsMonsters[3]->DynamicThis<Monster_Gangster>();
+			m_SummonsMonsters[3]->On();
+		}
+	}
+
+	if (4 == DeathCount && false == m_SummonsEndCheck)
+	{
+		m_SummonsEndCheck = true;
+		// 여기가 pomp 
+		{
+			std::shared_ptr<Monster_Pomp> Pomp = m_SummonsMonsters[4]->DynamicThis<Monster_Pomp>();
+			Pomp->ChangeState(PompState::CHASE);
+			Pomp->On();
+		}
+		
+		{
+			std::shared_ptr<Monster_Pomp> Pomp = m_SummonsMonsters[5]->DynamicThis<Monster_Pomp>();
+			Pomp->ChangeState(PompState::CHASE);
+			Pomp->On();
+		}
+	}
+}
+
 void Boss_HeadHunter::DirCheck()
 {
 	if (true == m_Dir)
@@ -286,6 +352,71 @@ void Boss_HeadHunter::ChangeDir()
 	{
 		m_Dir = true;
 	}
+}
+
+void Boss_HeadHunter::SummonsMonsters()
+{
+	
+	// 소환상태를 true로 변경
+	m_Summons = true;
+
+	// 몬스터 8개를 생성해서 저장할 벡터 리저브,
+	m_SummonsMonsters.reserve(8);
+
+	// 그런트 
+	std::shared_ptr<Monster_Grunt> Monster = GetLevel()->CreateActor<Monster_Grunt>();
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
+	Monster->GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
+	Monster->ChangeState(GruntState::CHASE);
+	m_SummonsMonsters.push_back(Monster->DynamicThis<BaseActor>());
+
+	std::shared_ptr<Monster_Grunt> Monster2 = GetLevel()->CreateActor<Monster_Grunt>();
+	// 다음위치
+	int Value = RandomValue + 1;
+	if (Value >= static_cast<int>(m_SummonsPoss.size()))
+	{
+		Value = 0;
+	}
+
+	Monster2->GetTransform()->SetLocalPosition(m_SummonsPoss[Value]);
+	Monster2->ChangeState(GruntState::CHASE);
+	m_SummonsMonsters.push_back(Monster2->DynamicThis<BaseActor>());
+
+	// 갱스터 
+	std::shared_ptr<Monster_Gangster> NewGangster = GetLevel()->CreateActor<Monster_Gangster>();
+	RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
+	NewGangster->GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
+	NewGangster->ChangeState(GangsterState::CHASE);
+	NewGangster->Off();
+	m_SummonsMonsters.push_back(NewGangster->DynamicThis<BaseActor>());
+
+	std::shared_ptr<Monster_Gangster> NewGangster1 = GetLevel()->CreateActor<Monster_Gangster>();
+	Value = RandomValue + 1;
+	if (Value >= static_cast<int>(m_SummonsPoss.size()))
+	{
+		Value = 0;
+	}
+	NewGangster1->GetTransform()->SetLocalPosition(m_SummonsPoss[Value]);
+	NewGangster1->ChangeState(GangsterState::CHASE);
+	NewGangster1->Off();
+	m_SummonsMonsters.push_back(NewGangster1->DynamicThis<BaseActor>());
+
+	// pomp 
+	std::shared_ptr<Monster_Pomp> NewPomp = GetLevel()->CreateActor<Monster_Pomp>();
+	RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
+	NewPomp->GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
+	NewPomp->Off();
+	m_SummonsMonsters.push_back(NewPomp->DynamicThis<BaseActor>());
+
+	std::shared_ptr<Monster_Pomp> NewPomp1 = GetLevel()->CreateActor<Monster_Pomp>();
+	Value = RandomValue + 1;
+	if (Value >= static_cast<int>(m_SummonsPoss.size()))
+	{
+		Value = 0;
+	}
+	NewPomp1->GetTransform()->SetLocalPosition(m_SummonsPoss[Value]);
+	NewPomp1->Off();
+	m_SummonsMonsters.push_back(NewPomp1->DynamicThis<BaseActor>());
 }
 
 void Boss_HeadHunter::ChangeState(BossState _State)
@@ -324,6 +455,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::REAPPEAR:
 		ReAppearStart();
 		break;
+	case BossState::CHANGEPHASE:
+		ChangePhaseStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -355,6 +489,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::REAPPEAR:
 		ReAppearEnd();
+		break;
+	case BossState::CHANGEPHASE:
+		ChangePhaseEnd();
 		break;
 	}
 }
@@ -390,6 +527,9 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 		break;
 	case BossState::REAPPEAR:
 		ReAppearUpdate(_DeltaTime);
+		break;
+	case BossState::CHANGEPHASE:
+		ChangePhaseUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -432,10 +572,15 @@ void Boss_HeadHunter::IdleStart()
 
 void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 {
-	
 	// 현재 페이즈가 1페이즈 일 경우의 동작,  
 	if (BossPhase::FIRST == m_CurPhase)
 	{
+		// 이전상태가 투명상태였다면, 바로 rifle 상태로 전환 
+		if (BossState::TRANSPARENCY == m_PrevState)
+		{
+			ChangeState(BossState::RIFLE);
+			return;
+		}
 
 		if (0.0f >= m_IdleDuration)
 		{
@@ -672,54 +817,78 @@ void Boss_HeadHunter::TransparencyStart()
 
 void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
 {
-	// 현재 1페이즈, 첫번째 소환이 진행되지 않았다면.
-	if (BossPhase::FIRST == m_CurPhase && false == m_FirstSummons)
+	if (5 == m_HitCount)
 	{
-		m_SummonsMonsters.reserve(8);
-		// 몬스터를 생성하는데, 생성하고 내 액터를 저장하는 벡터에 넣어두고, 만약 리셋된다면 Death 처리? 
-		m_FirstSummons = true;
-		// 첫번째 소환상태를 true로 변경하고,
-		// 특정위치에 몬스터를 소환한다. 
-		// 첫번째 몬스터는 grunt, 소환위치는 
-
-		// 몬스터도 가지고 있는다. 단순하게 그냥 가지고 있는게 편한거같은데 
-		// 가지고 있지뭐 
-		std::shared_ptr<Monster_Grunt> Monster = GetLevel()->CreateActor<Monster_Grunt>();
-		int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
-		Monster->GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
-		Monster->ChangeState(GruntState::CHASE);
-
-		// 동시에 같은곳에서 나오지 않게하려면, 랜덤값을 뽑고, 두번째몬스터는 그 랜덤값에 1또는 2를 더한 위치에 생성한다. 
-		m_SummonsMonsters.push_back(Monster->DynamicThis<BaseActor>());
-
-		std::shared_ptr<Monster_Grunt> Monster2 = GetLevel()->CreateActor<Monster_Grunt>();
-		
-		// 다음위치
-		int Value = RandomValue + 1;
-		if (Value >= static_cast<int>(m_SummonsPoss.size()))
-		{
-			Value = 0;
-		}
-
-		Monster2->GetTransform()->SetLocalPosition(m_SummonsPoss[Value]);
-		Monster2->ChangeState(GruntState::CHASE);
-		
-
-		m_SummonsMonsters.push_back(Monster2->DynamicThis<BaseActor>());
+		// 2페이즈 전환, 
+		ChangeState(BossState::CHANGEPHASE);
+		return;
 	}
-	// 내가 1히트라면. 몹을 등장시켜야함. 그냥 그대로 투명, start 에서 등장시키고. 
-	// 만들어진 몹들이 다 죽으면, bool 변수를 true 로 만들어서 재등장상태로 변경
-	// 마찬가지로 두번히트되엇을때, start에서 또 생성해
+
+	// 4초 뒤에 재등장
+	if (0.0f >= m_TransDuration)
+	{
+		int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
+		GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
+		ChangeState(BossState::INTRO);
+		return;
+	}
+
+	m_TransDuration -= _DeltaTime;
+	// 현재 1페이즈, 첫번째 소환이 진행되지 않았다면.
+	if (BossPhase::FIRST == m_CurPhase && false == m_Summons)
+	{
+		SummonsMonsters();
+	}
+	
+	// 투명 지속시간이 4초가 지났다면, 나타날 위치세팅, 후 인트로 상태로 전환 
 }
 
 void Boss_HeadHunter::TransparencyEnd()
 {
 	// 투명상태 종료시 충돌체 on 
 	m_Collision->On();
+	m_TransDuration = 3.0f;
 }
 
-// 재등장 애니메이션이 끝나면, 랜덤한 패턴을 사용하도록. 
-// 만약 현재 페이즈가 1페이즈라면, 라이플 스테이트로 변경 
+void Boss_HeadHunter::ChangePhaseStart()
+{
+	// 내가 어디있든 등장하지 않음
+	m_Collision->Off();
+}
+
+// 일정 시간 지나면 이라는 조건을 넣어도 되고 안넣어도 될거같음 
+void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
+{
+	// 지뢰를 다 검사해서 올 데스라면 
+	// 서브충돌체만 남겨두고 
+
+	if (BossPhase::FIRST == m_CurPhase)
+	{
+		m_Mines.reserve(m_MineCount);
+		float4 MinePos = { -600.0f, -202.0f};
+		float XPos = 0.0f;
+		float LimitTime = 0.3f;
+		for (size_t i = 0; i < m_MineCount; i++)
+		{
+			std::shared_ptr<Remote_Mine> Mine = GetLevel()->CreateActor<Remote_Mine>();
+			Mine->GetTransform()->SetWorldPosition(float4{ MinePos.x + XPos, MinePos.y });
+			
+			Mine->AddTimeLimit(LimitTime);
+			XPos += 60.0f;
+			LimitTime += 0.1f;
+			m_Mines.push_back(Mine);
+		}
+
+		m_CurPhase = BossPhase::SECOND;
+	}
+}
+
+void Boss_HeadHunter::ChangePhaseEnd()
+{
+	m_Collision->On();
+}
+
+// 2페이즈 전환, 
 void Boss_HeadHunter::ReAppearStart()
 {
 }
@@ -732,4 +901,7 @@ void Boss_HeadHunter::ReAppearEnd()
 {
 }
 
+
+
 // f2로 재시작할 경우 원래 앞쪽 충돌체와 충돌하게 되면 레벨이 play 상태로 변경되는데 보스는 먼저 움직임. 내일하자 집중도안되는데 
+// 근데이건 굳이 고칠필요가 있나? ㅇㅇ 고쳐야됨 

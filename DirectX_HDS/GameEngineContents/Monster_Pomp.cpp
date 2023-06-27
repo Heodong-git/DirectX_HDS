@@ -353,6 +353,7 @@ void Monster_Pomp::Reset()
 	m_ChaseCollision->On();
 	m_AttCollision->Off();
 	m_HitPos = float4{ 0.0f , 0.0f };
+	m_IsDeath = false;
 }
 
 inline void Monster_Pomp::ResetDir()
@@ -627,10 +628,20 @@ void Monster_Pomp::HitGroundStart()
 {
 	m_MainRender->ChangeAnimation("pomp_hurtground");
 	m_HitPos = GetTransform()->GetLocalPosition();
+
+	m_IsDeath = true;
 }
 
 void Monster_Pomp::HitGroundUpdate(float _DeltaTime)
 {
+	// 이상태에서 만약 내 서브콜리전이랑 보스익스플로전 이펙트랑 충돌했다면 
+	std::shared_ptr<GameEngineCollision> ExCol = m_SubCollision->Collision(ColOrder::BOSS_EXPLOSION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != ExCol)
+	{
+		// ㅇㅋ 잘되고 
+		int a = 0;
+	}
+
 	// 픽셀체크 해야함
 	std::shared_ptr<GameEngineCollision> PartitionCol = m_SubCollision->Collision(ColOrder::PARTITION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	std::shared_ptr<GameEngineCollision> DoorCol = m_SubCollision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
@@ -671,6 +682,7 @@ void Monster_Pomp::HitGroundUpdate(float _DeltaTime)
 void Monster_Pomp::HitGroundEnd()
 {
 	m_HitPos = float4{ 0.0f, 0.0f };
+	m_IsDeath = false;
 }
 
 void Monster_Pomp::AttackStart()
@@ -735,13 +747,14 @@ void Monster_Pomp::KnockDownUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		ChangeState(PompState::IDLE);
+		ChangeState(PompState::CHASE);
 		return;
 	}
 }
 
 void Monster_Pomp::KnockDownEnd()
 {
+	m_Collision->On();
 }
 
 void Monster_Pomp::FallStart()

@@ -39,6 +39,12 @@ public:
 		m_IsDeath = true;
 	}
 
+	// 베이스액터용 데스체크, 액터들의 히트그라운드 state 에서 데스 true로 변경해준다. 
+	bool DeathCheck()
+	{
+		return m_IsDeath;
+	}
+
 protected:
 	void Update(float _DeltaTime) override;
 

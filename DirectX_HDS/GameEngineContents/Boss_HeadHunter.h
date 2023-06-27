@@ -20,7 +20,8 @@ enum class BossState
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 	TRANSPARENCY,    // 투명 
 	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
-	
+	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
+
 	MAX,
 };
 
@@ -55,6 +56,8 @@ private:
 	void Reset();
 	void HurtCheck(float _DeltaTime);
 	void DebugUpdate();
+
+	void SummonsMonstersUpdate(float _DeltaTime);
 
 	// 넥스트포스 체크
 	void NextTransUpdate();
@@ -102,14 +105,24 @@ private:
 	// 어차피 지우는건 한번에 지우고 클리어 시킬꺼니까 벡터가 맞다.
 	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();
 
+	// 마인을 저장할 벡터, 
+	std::vector<std::shared_ptr<class Remote_Mine>> m_Mines = std::vector<std::shared_ptr<class Remote_Mine>>();
+
 	float m_IdleDuration = 0.25f;
+
+	// 4초뒤에 
+	float m_TransDuration = 3.0f;
+
 
 	// 현재 페이즈 
 	BossPhase m_CurPhase = BossPhase::FIRST;
-	bool m_FirstSummons = false; 
-	bool m_SecondSummons = false;
+	bool m_Summons = false; 
+	bool m_SummonsEndCheck = false;
 
-	// 베이스액터
+
+	size_t m_MineCount = 21;
+	// 소환스킬, 
+	void SummonsMonsters();
 
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
@@ -156,4 +169,8 @@ private:
 	void ReAppearStart();
 	void ReAppearUpdate(float _DeltaTime);
 	void ReAppearEnd();
+
+	void ChangePhaseStart();
+	void ChangePhaseUpdate(float _DeltaTime);
+	void ChangePhaseEnd();
 };

@@ -32,6 +32,15 @@ public:
 		m_Direction = _Dir;
 	}
 
+	// 상태값 변경
+	void ChangeState(GangsterState _State);
+	
+	inline GangsterState GetCurState()
+	{
+		return m_CurState;
+	}
+
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -75,7 +84,7 @@ private:
 	float4 m_ColScale = { 45.0f, 65.0f , 1.0f };
 
 	float m_WalkMoveSpeed = 100.0f;
-	float m_ChaseMoveSpeed = 150.0f;
+	float m_ChaseMoveSpeed = 200.0f;
 	float m_ShotCoolTime = 0.5f;
 	float m_FireTime = 0.0f;
 	int m_FireCount = 0;
@@ -94,8 +103,7 @@ private:
 	bool m_Direction = false;
 	void DirCheck();
 
-	// 상태값 변경
-	void ChangeState(GangsterState _State);
+	
 	// 현재 상태값에 따른 업데이트 
 	void UpdateState(float _DeltaTime);
 

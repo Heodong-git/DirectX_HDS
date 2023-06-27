@@ -222,19 +222,6 @@ void BaseLevel::Reset()
 	ResetMonsterCount();
 	ResetColObj();
 	ResetSound();
-
-	// 만약 레벨 타입이 보스레벨이라면, wait 
-	if (LevelType::CLUBBOSS0 == m_LevelType)
-	{
-		SetState(BaseLevel::LevelState::WAIT);
-		{
-			// -348 , - 200
-			std::shared_ptr<ColEventObj> Obj = CreateActor<ColEventObj>(static_cast<int>(RenderOrder::DOOR), "ColEventObj");
-			float4 InitPos = float4{ -380.0f, -203.0f };
-			ActorInit(Obj, InitPos);
-		}
-		return;
-	}
 	SetState(BaseLevel::LevelState::PLAY);
 }
 

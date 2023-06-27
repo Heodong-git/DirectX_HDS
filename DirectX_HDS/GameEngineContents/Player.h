@@ -219,6 +219,8 @@ private:
 	const float m_WallDebugPivotX = 17.0f;
 	const float m_WallDebugPivotY = 36.0f;
 
+	bool m_Invincibility = false;
+
 	// -------------------------------------------------------------------
 	// -------------------------skill value----------------------------
 	// 스킬 사용가능 시간 

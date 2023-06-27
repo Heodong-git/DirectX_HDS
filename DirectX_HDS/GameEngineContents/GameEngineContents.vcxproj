@@ -185,6 +185,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="EnemyFollow_Effect.h" />
+    <ClInclude Include="Explosion_Effect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FanBlade.h">
       <SubType>
       </SubType>
@@ -236,6 +240,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlaySupporter.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Remote_Mine.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -406,6 +414,7 @@
     <ClCompile Include="ColEventObj.cpp" />
     <ClCompile Include="DoorEffect.cpp" />
     <ClCompile Include="EnemyFollow_Effect.cpp" />
+    <ClCompile Include="Explosion_Effect.cpp" />
     <ClCompile Include="FanBlade.cpp" />
     <ClCompile Include="FireEffect.cpp" />
     <ClCompile Include="Go_UI.cpp" />
@@ -421,6 +430,7 @@
     <ClCompile Include="Partition.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
+    <ClCompile Include="Remote_Mine.cpp" />
     <ClCompile Include="SlidingDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp" />
     <ClCompile Include="ClubLevel_02.cpp" />
