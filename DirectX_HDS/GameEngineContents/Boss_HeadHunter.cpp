@@ -19,6 +19,8 @@
 
 #include "Remote_Mine.h"
 
+#include "BaseLevel.h"
+
 Boss_HeadHunter::Boss_HeadHunter()
 {
 }
@@ -190,9 +192,22 @@ void Boss_HeadHunter::Reset()
 {
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(BossState::INTRO);
-	m_CurPhase = BossPhase::FIRST;
+
+	// 레벨타입에따라서 first , second 로 
+	if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+	{
+		m_CurPhase = BossPhase::FIRST;
+		m_Phase1_HitCount = 3;
+	}
+
+	if (LevelType::CLUBBOSS1 == GetReturnCastLevel()->GetLevelType())
+	{
+		m_CurPhase = BossPhase::SECOND;
+		m_Phase2_HitCount = 4;
+	}
+
 	m_IdleDuration = 0.25f;
-	m_HitCount = 8;
+
 	m_Summons = false;
 	m_SummonsEndCheck = false;
 	// m_SecondSummons = false;
@@ -234,7 +249,17 @@ void Boss_HeadHunter::HurtCheck(float _DeltaTime)
 		// 1. 충돌했다면 바로 충돌체 off,
 		// 2. hurt state로 전환
 		m_Collision->Off();
-		--m_HitCount;
+
+		if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+		{
+			--m_Phase1_HitCount;
+		}
+
+		if (LevelType::CLUBBOSS1 == GetReturnCastLevel()->GetLevelType())
+		{
+			--m_Phase2_HitCount;
+		}
+		// 여기서 
 
 		// 플레이어 x축 계산  
 		float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
@@ -597,6 +622,30 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 		}
 	}
 
+	if (BossPhase::SECOND == m_CurPhase)
+	{
+		// 이전상태가 투명상태였다면, 바로 rifle 상태로 전환 
+		if (BossState::TRANSPARENCY == m_PrevState)
+		{
+			ChangeState(BossState::RIFLE);
+			return;
+		}
+
+		if (0.0f >= m_IdleDuration)
+		{
+			// 아이들지속시간이 1초를 경과했을 경우 라이플 상태로 변경
+			ChangeState(BossState::RIFLE);
+			return;
+		}
+
+		// 여기서 애니메이션이 종료되면이 아니라, 랜덤하게 라이플 상태로 변경
+		if (true == m_MainRender->IsAnimationEnd())
+		{
+			ChangeState(BossState::RIFLE);
+			return;
+		}
+	}
+
 	m_IdleDuration -= _DeltaTime;
 	ChangeDir();
 	DirCheck();
@@ -814,30 +863,41 @@ void Boss_HeadHunter::TransparencyStart()
 
 // 투명상태 시작하면 몬스터를 한번에 다 만들어두고, Off 상태,
 // 앞에 나온 몬스터들이 사망상태가 될때마다 업데이트를 on, chase 상태로 변경한다. 이게 맞네 
-
 void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
 {
-	if (5 == m_HitCount)
+	if (BossPhase::FIRST == m_CurPhase)
 	{
-		// 2페이즈 전환, 
-		ChangeState(BossState::CHANGEPHASE);
+		if (0 == m_Phase1_HitCount)
+		{
+			// 2페이즈 전환, 
+			ChangeState(BossState::CHANGEPHASE);
+			return;
+		}
+
+		// 4초 뒤에 재등장
+		if (0.0f >= m_TransDuration)
+		{
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
+			GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
+			ChangeState(BossState::INTRO);
+			return;
+		}
+
+		m_TransDuration -= _DeltaTime;
+		// 현재 1페이즈, 첫번째 소환이 진행되지 않았다면.
+		if (false == m_Summons)
+		{
+			SummonsMonsters();
+		}
+
 		return;
 	}
 
-	// 4초 뒤에 재등장
-	if (0.0f >= m_TransDuration)
+	// 순간이동 후 2페이즈의 로직 
+	if (BossPhase::SECOND == m_CurPhase)
 	{
-		int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 3);
-		GetTransform()->SetLocalPosition(m_SummonsPoss[RandomValue]);
-		ChangeState(BossState::INTRO);
-		return;
-	}
-
-	m_TransDuration -= _DeltaTime;
-	// 현재 1페이즈, 첫번째 소환이 진행되지 않았다면.
-	if (BossPhase::FIRST == m_CurPhase && false == m_Summons)
-	{
-		SummonsMonsters();
+		// 2페이즈고, 히트카운트가 3이야.
+		// 그럼 레이저 포탑 소환 
 	}
 	
 	// 투명 지속시간이 4초가 지났다면, 나타날 위치세팅, 후 인트로 상태로 전환 
@@ -859,9 +919,6 @@ void Boss_HeadHunter::ChangePhaseStart()
 // 일정 시간 지나면 이라는 조건을 넣어도 되고 안넣어도 될거같음 
 void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 {
-	// 지뢰를 다 검사해서 올 데스라면 
-	// 서브충돌체만 남겨두고 
-
 	if (BossPhase::FIRST == m_CurPhase)
 	{
 		m_Mines.reserve(m_MineCount);
@@ -888,7 +945,7 @@ void Boss_HeadHunter::ChangePhaseEnd()
 	m_Collision->On();
 }
 
-// 2페이즈 전환, 
+// 사실상 레벨체인지 해야되네 
 void Boss_HeadHunter::ReAppearStart()
 {
 }

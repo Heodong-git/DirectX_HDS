@@ -79,7 +79,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_right_Move", 'D');
 		GameEngineInput::CreateKey("player_jump", 'W');
 		GameEngineInput::CreateKey("player_crouch", 'S');
-		GameEngineInput::CreateKey("player_invincibility", 'I');
+		GameEngineInput::CreateKey("player_invincibility", VK_SPACE);
 	}
 }
 

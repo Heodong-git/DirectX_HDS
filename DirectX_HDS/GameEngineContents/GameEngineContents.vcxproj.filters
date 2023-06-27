@@ -192,6 +192,9 @@
     <ClInclude Include="Remote_Mine.h">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Mine</Filter>
     </ClInclude>
+    <ClInclude Include="ClubLevel_Boss_01.h">
+      <Filter>01.Level\02.Club\01.Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -383,6 +386,9 @@
     </ClCompile>
     <ClCompile Include="Remote_Mine.cpp">
       <Filter>02.Actor\03.Boss\00.HeadHunter\Mine</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubLevel_Boss_01.cpp">
+      <Filter>01.Level\02.Club\01.Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

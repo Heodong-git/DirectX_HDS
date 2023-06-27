@@ -29,6 +29,7 @@ enum class BossState
 // 설명 :
 class Boss_HeadHunter : public BaseActor
 {
+	friend class ClubLevel_Boss_01;
 public:
 	// constrcuter destructer
 	Boss_HeadHunter();
@@ -45,12 +46,19 @@ public:
 		return m_CurState;
 	}
 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+	inline void ChangePhase(BossPhase _Phase)
+	{
+		m_CurPhase = _Phase;
+	}
+
+
 	void CreateTpEffect();
 
 	void Reset();
@@ -81,9 +89,12 @@ private:
 	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
+	float m_PhasePivot = -60.0f;
+
 	// 기본스탯 
 	// 총 3히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
-	int m_HitCount = 8;
+	int m_Phase1_HitCount = 3;
+	int m_Phase2_HitCount = 4;
 	float m_RollSpeed = 500.0f;
 	bool m_Dir = false;
 

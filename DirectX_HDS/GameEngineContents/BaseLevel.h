@@ -13,6 +13,7 @@ enum class LevelType
 	CLUBMAP4,
 
 	CLUBBOSS0, 
+	CLUBBOSS1,
 
 	TITLE = 98,
 	NONE = 99,

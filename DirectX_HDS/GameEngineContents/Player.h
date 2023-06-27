@@ -28,6 +28,7 @@ enum class PlayerState
 class Player : public BaseActor
 {
 	friend class PixelCollider;
+	friend class ClubLevel_Boss_01;
 public:
 	static Player* MainPlayer;
 

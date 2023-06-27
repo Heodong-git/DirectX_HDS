@@ -131,7 +131,8 @@ void BaseLevel::DebugUpdate()
 void BaseLevel::LevelClearCheck()
 {
 	// 일단 안생기게해 
-	if (LevelType::CLUBBOSS0 == m_LevelType)
+	// 보스레벨일 경우 return; 
+	if (LevelType::CLUBBOSS0 == m_LevelType || LevelType::CLUBBOSS1 == m_LevelType)
 	{
 		return;
 	}

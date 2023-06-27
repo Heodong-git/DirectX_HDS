@@ -105,7 +105,6 @@ void ClubLevel_Boss::ResourcesLoad()
 
 void ClubLevel_Boss::ActorLoad()
 {
-	// 임시로 1번맵 세팅
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetScaleToTexture("ClubMap_Boss_00.png");
 	m_Map->GetRender()->GetTransform()->SetLocalScale(float4{1344.0f, 580.0f});
@@ -160,10 +159,20 @@ void ClubLevel_Boss::CreateObjAndInit()
 
 void ClubLevel_Boss::KeyUpdate()
 {
+	if (true == GameEngineInput::IsDown("LevelChange_Boss01"))
+	{
+		GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
+		return;
+	}
 }
 
 void ClubLevel_Boss::CreateKey()
 {
+	if (false == GameEngineInput::IsKey("LevelChange_Boss01"))
+	{
+		GameEngineInput::CreateKey("LevelChange_Boss01", VK_F1);
+		return;
+	}
 }
 
 void ClubLevel_Boss::GUISetting()

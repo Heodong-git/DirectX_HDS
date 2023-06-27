@@ -110,6 +110,9 @@ bool PixelCollider::ColMapSetting()
 	case LevelType::CLUBBOSS0:
 		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAPBOSS0)];
 		break;
+	case LevelType::CLUBBOSS1:
+		m_CurColMap = m_ColMaps[static_cast<int>(ColMapName::COLMAPBOSS1)];
+		break;
 	}
 
 	if (nullptr == m_CurColMap)
