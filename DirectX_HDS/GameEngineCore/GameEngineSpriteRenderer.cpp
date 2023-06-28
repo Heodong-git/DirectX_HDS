@@ -134,19 +134,14 @@ void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 	CurTexture = FindTex;
 }
 
-// X , Y 축 뒤집기 
 void GameEngineSpriteRenderer::SetFlipX()
 {
-	float4 LocalScale = GetTransform()->GetLocalScale();
-	LocalScale.x = -LocalScale.x;
-	GetTransform()->SetLocalScale(LocalScale);
+	Flip.x = Flip.x != 0.0f ? 0.0f : 1.0f;
 }
 
 void GameEngineSpriteRenderer::SetFlipY()
 {
-	float4 LocalScale = GetTransform()->GetLocalScale();
-	LocalScale.y = -LocalScale.y;
-	GetTransform()->SetLocalScale(LocalScale);
+	Flip.y = Flip.y != 0.0f ? 0.0f : 1.0f;
 }
 
 void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
@@ -434,6 +429,7 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
 	GetShaderResHelper().SetConstantBufferLink("ClipData", Clip);
+	GetShaderResHelper().SetConstantBufferLink("FlipData", Flip);
 }
 
 // 내 눈에 보이는 이미지에서 0.1;

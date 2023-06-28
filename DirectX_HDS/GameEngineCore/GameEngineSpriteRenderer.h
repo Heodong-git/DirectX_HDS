@@ -199,6 +199,8 @@ protected:
 	// 상속받은 클래스에서 사용가능하도록 
 	float4 AtlasData;
 	float4 Clip = float4::One;
+	float4 Flip = float4::Zero;
+
 private:
 	void Update(float _Delta) override;
 

@@ -6,5 +6,6 @@
     <FxCompile Include="TranslucentShader.hlsl" />
     <FxCompile Include="MergeShader.hlsl" />
     <FxCompile Include="DebugMeshRender.hlsl" />
+    <FxCompile Include="TileMapShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -568,6 +568,18 @@ void GameEngineCore::CoreResourcesInit()
 		}
 
 		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("TileMap");
+
+			//Pipe->SetVertexBuffer("Rect");
+			//Pipe->SetIndexBuffer("Rect");
+			Pipe->SetVertexShader("TileMapShader.hlsl");
+			Pipe->SetRasterizer("Engine2DBase");
+			Pipe->SetPixelShader("TileMapShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
+		}
+
+		{
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Merge");
 			//Pipe->SetVertexBuffer("FullRect");
 			//Pipe->SetIndexBuffer("FullRect");
