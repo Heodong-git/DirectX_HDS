@@ -733,6 +733,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::NONE:
 		NoneUpdate(_DeltaTime);
 		break;
+	case PlayerState::FORCEFALL:
+		ForceFallUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -791,6 +794,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::NONE:
 		NoneStart();
 		break;
+	case PlayerState::FORCEFALL:
+		ForceFallStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -840,6 +846,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::NONE:
 		NoneEnd();
+		break;
+	case PlayerState::FORCEFALL:
+		ForceFallEnd();
 		break;
 	}
 }
@@ -2684,3 +2693,19 @@ void Player::NoneEnd()
 	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 }
 
+void Player::ForceFallStart()
+{
+	m_Render->ChangeAnimation("player_fall");
+}
+
+void Player::ForceFallUpdate(float _DeltaTime)
+{
+	// 플레이어 아래로 추락, 픽셀충돌 하지 않음
+	GetTransform()->AddLocalPosition(float4::Down * (m_MoveSpeed  / 2.0f ) *_DeltaTime);
+}
+
+void Player::ForceFallEnd()
+{
+}
+
+// 몬스터 보스폭발과 충돌시 상태변경, 플레이어의 점프처럼 위로 떠오르다가 fall 상태로 변경되도록 

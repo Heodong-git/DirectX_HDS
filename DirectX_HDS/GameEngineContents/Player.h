@@ -22,6 +22,9 @@ enum class PlayerState
 	RIGHTWALL,		// 벽타기 
 	LEFTWALL,
 	DOORBREAK,
+
+
+	FORCEFALL,		// 레벨체인지 연출용 state 
 	DEATH,			// 쥬금
 };
 
@@ -29,6 +32,7 @@ class Player : public BaseActor
 {
 	friend class PixelCollider;
 	friend class ClubLevel_Boss_01;
+	friend class Boss_HeadHunter;
 public:
 	static Player* MainPlayer;
 
@@ -308,6 +312,10 @@ private:
 	void NoneStart();
 	void NoneUpdate(float _DeltaTime);
 	void NoneEnd();
+
+	void ForceFallStart();
+	void ForceFallUpdate(float _DeltaTime);
+	void ForceFallEnd();
 };
 
 // 파일입출력이 필수다. 

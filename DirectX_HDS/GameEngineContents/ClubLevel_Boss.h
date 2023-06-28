@@ -40,6 +40,8 @@ private:
 	virtual void GUISetting() override;
 
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
+	std::shared_ptr<class Platform> m_LevelChangePlatform = nullptr;
+	void LevelChangeUpdate();
 
 	bool m_Appear = false;	
 };

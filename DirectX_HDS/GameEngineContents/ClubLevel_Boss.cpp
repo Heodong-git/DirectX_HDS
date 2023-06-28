@@ -52,6 +52,7 @@ void ClubLevel_Boss::Start()
 
 void ClubLevel_Boss::Update(float _DeltaTime)
 {
+	LevelChangeUpdate();
 	BaseLevel::Update(_DeltaTime);
 }
 
@@ -148,6 +149,11 @@ void ClubLevel_Boss::CreateObjAndInit()
 		NewPlatform->GetTransform()->SetLocalPosition(float4{ 544.0f , -207.0f });
 		NewPlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 100.0f, 1.0f });
 	}
+	{
+		m_LevelChangePlatform = CreateActor<Platform>(static_cast<int>(RenderOrder::PLATFORM), "platform");
+		m_LevelChangePlatform->GetTransform()->SetLocalPosition(float4{ 0.0f , -480.0f });
+		m_LevelChangePlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 1280.0f, 1.0f });
+	}
 
 	//{
 	//	// 테스트용 이펙트 
@@ -185,4 +191,14 @@ void ClubLevel_Boss::GUISetting()
 		return;
 	}
 	m_GUI->On();
+}
+
+void ClubLevel_Boss::LevelChangeUpdate()
+{
+	std::shared_ptr<GameEngineCollision> PlayerCol = m_LevelChangePlatform->GetCollision()->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != PlayerCol)
+	{
+		GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
+		return;
+	}
 }

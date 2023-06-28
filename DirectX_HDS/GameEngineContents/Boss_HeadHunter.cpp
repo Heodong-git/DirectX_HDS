@@ -52,6 +52,7 @@ void Boss_HeadHunter::Start()
 void Boss_HeadHunter::Update(float _DeltaTime)
 {
 	DebugUpdate();
+
 	HurtCheck(_DeltaTime);
 
 	if (true == m_Summons && false == m_SummonsEndCheck)
@@ -215,6 +216,7 @@ void Boss_HeadHunter::Reset()
 
 	m_Summons = false;
 	m_SummonsEndCheck = false;
+	m_SetMine = false;
 	// m_SecondSummons = false;
 
 	// 만들어놨던 액터들 다 데스처리
@@ -382,6 +384,38 @@ void Boss_HeadHunter::ChangeDir()
 	{
 		m_Dir = true;
 	}
+}
+
+bool Boss_HeadHunter::PlayerLiveCheck()
+{
+	// 데스상태 또는 NONE 상태라면 return 
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState() || PlayerState::NONE == Player::MainPlayer->GetCurState())
+	{
+		return false;
+	}
+
+	size_t Count = 0;
+	for (size_t i = 0; i < m_Mines.size(); ++i)
+	{
+		if (nullptr != m_Mines[i])
+		{
+			// 하나라도 false 라면 return; 
+			if (false == m_Mines[i]->IsDeath())
+			{
+				return false;
+			}
+			// 그게 아니라면 카운트를 더해주고, 
+			// 최종 카운트가 마인카운트와 동일하다면 마인이 모두 데스상태라는 의미, 플레이어를 강제로 forcefall 상태로 변경 
+			++Count;
+		}
+	}
+
+	if (m_MineCount == Count)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Boss_HeadHunter::SummonsMonsters()
@@ -941,6 +975,18 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 {
 	if (BossPhase::FIRST == m_CurPhase)
 	{
+		if (true == PlayerLiveCheck())
+		{
+			Player::MainPlayer->ChangeState(PlayerState::FORCEFALL);
+			m_CurPhase = BossPhase::SECOND;
+			return;
+		}
+
+	}
+
+	if (BossPhase::FIRST == m_CurPhase && false == m_SetMine)
+	{
+		m_SetMine = true;
 		m_Mines.reserve(m_MineCount);
 		float4 MinePos = { -600.0f, -202.0f};
 		float XPos = 0.0f;
@@ -956,7 +1002,7 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 			m_Mines.push_back(Mine);
 		}
 
-		m_CurPhase = BossPhase::SECOND;
+		
 	}
 }
 

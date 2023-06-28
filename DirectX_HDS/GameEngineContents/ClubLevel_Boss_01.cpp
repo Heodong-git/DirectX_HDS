@@ -74,8 +74,6 @@ void ClubLevel_Boss_01::LevelStartCheck()
 		SetState(BaseLevel::LevelState::PLAY);
 		CreateHeadHunter();
 	}
-
-
 }
 
 void ClubLevel_Boss_01::LevelChangeStart()

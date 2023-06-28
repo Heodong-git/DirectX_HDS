@@ -59,7 +59,6 @@ private:
 		m_CurPhase = _Phase;
 	}
 
-
 	void CreateTpEffect();
 
 	void Reset();
@@ -112,13 +111,17 @@ private:
 
 	// 몬스터 소환 위치
 	std::vector<float4> m_SummonsPoss = std::vector<float4>();
-
-	// 소환될 몬스터를 저장해둘 vector 
-	// 어차피 지우는건 한번에 지우고 클리어 시킬꺼니까 벡터가 맞다.
 	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();
 
+
+	bool m_SetMine = false;
 	// 마인을 저장할 벡터, 
 	std::vector<std::shared_ptr<class Remote_Mine>> m_Mines = std::vector<std::shared_ptr<class Remote_Mine>>();
+	
+
+	// 마인이 전부 death 상태이고, 플레이어가 살아있다면 
+	// 플레이어를 강제로 forcefall 상태로 변경한다. 
+	bool PlayerLiveCheck();
 
 	float m_IdleDuration = 0.25f;
 
