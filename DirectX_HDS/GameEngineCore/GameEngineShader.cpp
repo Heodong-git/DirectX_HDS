@@ -111,7 +111,8 @@ void GameEngineShader::ShaderResCheck()
 
 			if (nullptr == Res)
 			{
-				MsgAssert("다음의 샘플러가 존재하지 않아서 쉐이더에 세팅해줄수가 없습니다. : " + UpperName);
+				Res = GameEngineSampler::Find("ENGINEBASE");
+				//MsgAssert("다음의 샘플러가 존재하지 않아서 쉐이더에 세팅해줄수가 없습니다. : " + UpperName);
 			}
 
 			GameEngineSamplerSetter Setter;

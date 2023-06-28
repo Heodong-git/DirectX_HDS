@@ -61,12 +61,32 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		//SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		// 
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		
-		// 텍스쳐가 멀리있을 때 뭉개서 출력할 것인지
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("ENGINEBASE", SamperData);
+	}
+
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
+
+		// 
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -75,15 +95,16 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineSampler::Create("CLAMPSAMPLER", SamperData);
 	}
+
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		//SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		
-		// 텍스쳐가 멀리있을 때 뭉개서 출력할 것인지
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;

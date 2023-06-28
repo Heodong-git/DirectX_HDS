@@ -17,6 +17,12 @@ GameEngineSampler::~GameEngineSampler()
 
 void GameEngineSampler::ResCreate(const D3D11_SAMPLER_DESC& _Desc)
 {
+	if (nullptr != State)
+	{
+		State->Release();
+		State = nullptr;
+	}
+
 	Desc = _Desc;
 
 	if (S_OK != GameEngineDevice::GetDevice()->CreateSamplerState(&Desc, &State))
