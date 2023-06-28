@@ -144,6 +144,7 @@ void Monster_Grunt::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_attack").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_turn").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_fall").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("grunt_forcefall").GetFullPath());
 
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
@@ -169,6 +170,9 @@ void Monster_Grunt::LoadAndCreateAnimation()
 
 	m_MainRender->CreateAnimation({ .AnimationName = "grunt_walk", .SpriteName = "grunt_walk", .Start = 0, .End = 9 ,
 							  .FrameInter = 0.08f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "grunt_forcefall", .SpriteName = "grunt_forcefall", .Start = 0, .End = 1 ,
+						  .FrameInter = 0.15f , .Loop = false , .ScaleToTexture = true });
 
 	// 애니메이션 프레임별 이벤트추가 
 	m_MainRender->SetAnimationStartEvent("grunt_attack", static_cast<size_t>(5), std::bind(&Monster_Grunt::Attack, this));
@@ -354,6 +358,7 @@ void Monster_Grunt::Reset()
 	m_AttCollision->Off();
 	m_HitPos = float4{ 0.0f , 0.0f };
 	m_IsDeath = false;
+	m_CurrentVerticalVelocity = 0.0f;
 }
 
 inline void Monster_Grunt::ResetDir()
@@ -410,6 +415,9 @@ void Monster_Grunt::UpdateState(float _DeltaTime)
 	case GruntState::ATTACK:
 		AttackUpdate(_DeltaTime);
 		break;
+	case GruntState::FORCEFALL:
+		ForceFallUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -443,6 +451,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 	case GruntState::ATTACK:
 		AttackStart();
 		break;
+	case GruntState::FORCEFALL:
+		ForceFallStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -468,6 +479,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 		break;
 	case GruntState::ATTACK:
 		AttackEnd();
+		break;
+	case GruntState::FORCEFALL:
+		ForceFallEnd();
 		break;
 	}
 }
@@ -610,8 +624,8 @@ void Monster_Grunt::HitGroundUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> ExCol = m_SubCollision->Collision(ColOrder::BOSS_EXPLOSION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != ExCol)
 	{
-		// ㅇㅋ 잘되고 
-		int a = 0;
+		ChangeState(GruntState::FORCEFALL);
+		return;
 	}
 
 	// 픽셀체크 해야함
@@ -719,4 +733,21 @@ void Monster_Grunt::FallUpdate(float _DeltaTime)
 
 void Monster_Grunt::FallEnd()
 {
+}
+
+void Monster_Grunt::ForceFallStart()
+{
+	m_MainRender->ChangeAnimation("grunt_forcefall");
+	m_CurrentVerticalVelocity = m_JumpPower;
+}
+
+void Monster_Grunt::ForceFallUpdate(float _DeltaTime)
+{
+	m_CurrentVerticalVelocity -= m_GravityPower * _DeltaTime;
+	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+}
+
+void Monster_Grunt::ForceFallEnd()
+{
+	m_CurrentVerticalVelocity = 0.0f;
 }

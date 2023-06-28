@@ -193,11 +193,13 @@ void ClubLevel_Boss::GUISetting()
 	m_GUI->On();
 }
 
+// 플레이어 치트상태일때 안들어옴 ㅇㅇ 
 void ClubLevel_Boss::LevelChangeUpdate()
 {
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_LevelChangePlatform->GetCollision()->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != PlayerCol)
 	{
+		Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
 		GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
 		return;
 	}

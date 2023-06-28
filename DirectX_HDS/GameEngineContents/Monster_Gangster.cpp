@@ -158,7 +158,8 @@ void Monster_Gangster::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_turn").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_fire_effect").GetFullPath());
 			
-
+			// 강제fall 애니메이션
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gangster_forcefall").GetFullPath());
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
 	}
@@ -181,6 +182,9 @@ void Monster_Gangster::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "gangster_aim", .SpriteName = "gangster_idle", .Start = 0, .End = 5 ,
 								  .FrameInter = 0.09f , .Loop = false ,.ScaleToTexture = true });
 
+	m_MainRender->CreateAnimation({ .AnimationName = "gangster_forcefall", .SpriteName = "gangster_forcefall", .Start = 0, .End = 1 ,
+								  .FrameInter = 0.15f , .Loop = false ,.ScaleToTexture = true });
+
 	m_MainRender->ChangeAnimation("gangster_aim");
 }
 
@@ -195,6 +199,7 @@ void Monster_Gangster::Reset()
 	m_AimCollision->On();
 	m_FireCount = 0;
 	m_FireTime = 0.0f;
+	m_CurrentVerticalVelocity = 0.0f;
 	m_FollowEffectOn = false;
 	m_IsDeath = false;
 }
@@ -425,6 +430,9 @@ void Monster_Gangster::UpdateState(float _DeltaTime)
 	case GangsterState::AIM:
 		AimUpdate(_DeltaTime);
 		break;
+	case GangsterState::FORCEFALL:
+		ForceFallUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -454,6 +462,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 	case GangsterState::AIM:
 		AimStart();
 		break;
+	case GangsterState::FORCEFALL:
+		ForceFallStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -473,6 +484,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 		break;
 	case GangsterState::AIM:
 		AimEnd();
+		break;
+	case GangsterState::FORCEFALL:
+		ForceFallEnd();
 		break;
 	}
 }
@@ -679,7 +693,8 @@ void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 	if (nullptr != ExCol)
 	{
 		// ㅇㅋ 잘되고 
-		int a = 0; 
+		ChangeState(GangsterState::FORCEFALL);
+		return;
 	}
 
 	// 픽셀체크 해야함
@@ -723,5 +738,22 @@ void Monster_Gangster::HitGroundEnd()
 {
 	m_HitPos = float4{ 0.0f, 0.0f };
 	m_IsDeath = false;
+}
+
+void Monster_Gangster::ForceFallStart()
+{
+	m_MainRender->ChangeAnimation("gangster_forcefall");
+	m_CurrentVerticalVelocity = m_JumpPower;
+}
+
+void Monster_Gangster::ForceFallUpdate(float _DeltaTime)
+{
+	m_CurrentVerticalVelocity -= m_GravityPower * _DeltaTime;
+	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+}
+
+void Monster_Gangster::ForceFallEnd()
+{
+	m_CurrentVerticalVelocity = 0.0f;
 }
 

@@ -9,6 +9,8 @@ enum class GangsterState
 	CHASE,	 // 뛰기 
 	HITGROUND,	 // 쳐맞음
 	AIM,	 // 공격 
+
+	FORCEFALL, 
 };
 
 // 갱스터 
@@ -90,6 +92,10 @@ private:
 	int m_FireCount = 0;
 	float m_FlyingSpeed = 800.0f;
 
+	float m_JumpPower = 750.0f;
+	float m_CurrentVerticalVelocity = 0.0f;
+	float m_GravityPower = 1500.f;
+
 	float4 m_HitPos = float4{ 0.0f, 0.0f };
 
 
@@ -135,5 +141,7 @@ private:
 	void HitGroundUpdate(float _DeltaTime);
 	void HitGroundEnd();
 
-	
+	void ForceFallStart();
+	void ForceFallUpdate(float _DeltaTime);
+	void ForceFallEnd();
 };

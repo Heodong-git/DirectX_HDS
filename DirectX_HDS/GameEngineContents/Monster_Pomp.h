@@ -12,6 +12,8 @@ enum class PompState
 	TURN,		 // 턴 
 	KNOCKDOWN,	 // 넉다운 
 	HITGROUND,	 // 데스 
+
+	FORCEFALL,
 };
 
 class Monster_Pomp : public BaseActor
@@ -87,7 +89,10 @@ private:
 	bool m_Direction = false;
 	void DirCheck();
 
-	
+	float m_JumpPower = 810.0f;
+	float m_CurrentVerticalVelocity = 0.0f;
+	float m_GravityPower = 1500.f;
+
 	// --------------------------------------State ----------------------------------------------
 	// 현재 상태값에 따른 업데이트 
 	void UpdateState(float _DeltaTime);
@@ -128,4 +133,7 @@ private:
 	void FallUpdate(float _DeltaTime);
 	void FallEnd();
 
+	void ForceFallStart();
+	void ForceFallUpdate(float _DeltaTime);
+	void ForceFallEnd();
 };

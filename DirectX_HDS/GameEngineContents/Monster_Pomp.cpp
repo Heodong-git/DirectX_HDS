@@ -94,8 +94,6 @@ void Monster_Pomp::DebugUpdate()
 			m_DebugRender->Off();
 		}
 	}
-
-	
 }
 
 void Monster_Pomp::ComponentSetting()
@@ -153,6 +151,7 @@ void Monster_Pomp::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("pomp_knockdown").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("pomp_turn").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("pomp_fall").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("pomp_forcefall").GetFullPath());
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -181,6 +180,9 @@ void Monster_Pomp::LoadAndCreateAnimation()
 
 	m_MainRender->CreateAnimation({ .AnimationName = "pomp_fall", .SpriteName = "pomp_fall", .Start = 0, .End = 12 ,
 						  .FrameInter = 0.09f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "pomp_forcefall", .SpriteName = "pomp_forcefall", .Start = 0, .End = 1 ,
+						  .FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
 
 	m_MainRender->SetAnimationStartEvent("pomp_attack", static_cast<size_t>(3), std::bind(&Monster_Pomp::Attack, this));
 	m_MainRender->SetAnimationStartEvent("pomp_attack", static_cast<size_t>(5), std::bind(&Monster_Pomp::AttackOff, this));
@@ -354,6 +356,7 @@ void Monster_Pomp::Reset()
 	m_AttCollision->Off();
 	m_HitPos = float4{ 0.0f , 0.0f };
 	m_IsDeath = false;
+	m_CurrentVerticalVelocity = 0.0f; 
 }
 
 inline void Monster_Pomp::ResetDir()
@@ -430,6 +433,9 @@ void Monster_Pomp::UpdateState(float _DeltaTime)
 	case PompState::KNOCKDOWN:
 		KnockDownUpdate(_DeltaTime);
 		break;
+	case PompState::FORCEFALL:
+		ForceFallUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -466,6 +472,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 	case PompState::KNOCKDOWN:
 		KnockDownStart();
 		break;
+	case PompState::FORCEFALL:
+		ForceFallStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -494,6 +503,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 		break;
 	case PompState::KNOCKDOWN:
 		KnockDownEnd();
+		break;
+	case PompState::FORCEFALL:
+		ForceFallEnd();
 		break;
 	}
 }
@@ -638,8 +650,8 @@ void Monster_Pomp::HitGroundUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> ExCol = m_SubCollision->Collision(ColOrder::BOSS_EXPLOSION, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != ExCol)
 	{
-		// ㅇㅋ 잘되고 
-		int a = 0;
+		ChangeState(PompState::FORCEFALL);
+		return;
 	}
 
 	// 픽셀체크 해야함
@@ -767,5 +779,22 @@ void Monster_Pomp::FallUpdate(float _DeltaTime)
 
 void Monster_Pomp::FallEnd()
 {
+}
+
+void Monster_Pomp::ForceFallStart()
+{
+	m_MainRender->ChangeAnimation("pomp_forcefall");
+	m_CurrentVerticalVelocity = m_JumpPower;
+}
+
+void Monster_Pomp::ForceFallUpdate(float _DeltaTime)
+{
+	m_CurrentVerticalVelocity -= m_GravityPower * _DeltaTime;
+	GetTransform()->AddLocalPosition(float4::Up * m_CurrentVerticalVelocity * _DeltaTime);
+}
+
+void Monster_Pomp::ForceFallEnd()
+{
+	m_CurrentVerticalVelocity = 0.0f;
 }
 

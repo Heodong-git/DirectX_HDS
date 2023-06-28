@@ -36,6 +36,9 @@
 #include "HitEffect.h"
 #include "IronDoor.h"
 
+// test
+#include "Explosion_Effect.h"
+
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
@@ -115,6 +118,8 @@ void Player::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_wallslide").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_roll").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_die").GetFullPath());
+
+			
 
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
@@ -231,6 +236,7 @@ void Player::Update(float _DeltaTime)
 	// 제한시간 초과 체크 
 	TimeOutCheck();
 
+	BossHitCheck();
 	HitCheck();
 
 	// 스킬 업데이트 
@@ -339,7 +345,6 @@ bool Player::FanBladeColCheck()
 
 bool Player::HitCheck()
 {
-	// ?? 뭐야 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 
 	if (nullptr != Col)
@@ -355,9 +360,36 @@ bool Player::HitCheck()
 	return false;
 }
 
+bool Player::BossHitCheck()
+{
+	std::shared_ptr<GameEngineCollision> LaserCol = m_Collision->Collision(ColOrder::BOSS_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineCollision> ExCol = m_Collision->Collision(ColOrder::BOSS_EXPLOSION, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	// 둘중하나라도 nullptr 이 아니라면 
+	if (nullptr != LaserCol || nullptr != ExCol)
+	{
+		// 여기서 익스플로전 이펙트 생성
+		CreateExplosionEffect();
+
+		// 충돌한 시점에 내충돌체 off 
+		m_Collision->Off();
+		m_SubCollision->Off();
+		ChangeState(PlayerState::EXPLOSION_DEATH);
+		return true;
+	}
+	return false;
+}
+
 void Player::CreateSlashEffect()
 {
 	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
+}
+
+void Player::CreateExplosionEffect()
+{
+	std::shared_ptr<Explosion_Effect> Effect = GetLevel()->CreateActor<Explosion_Effect>(static_cast<int>(RenderOrder::EFFECT));
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 30.0f});
+	Effect->SetType(EffectType::SECOND);
 }
 
 void Player::CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col)
@@ -736,6 +768,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::FORCEFALL:
 		ForceFallUpdate(_DeltaTime);
 		break;
+	case PlayerState::EXPLOSION_DEATH:
+		ExplosionDeathUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -797,6 +832,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::FORCEFALL:
 		ForceFallStart();
 		break;
+	case PlayerState::EXPLOSION_DEATH:
+		ExplosionDeathStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -849,6 +887,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::FORCEFALL:
 		ForceFallEnd();
+		break;
+	case PlayerState::EXPLOSION_DEATH:
+		ExplosionDeathEnd();
 		break;
 	}
 }
@@ -2619,6 +2660,7 @@ void Player::DeathStart()
 	DirCheck();
 	m_SoundPlayer = GameEngineSound::Play("player_die.wav");
 	m_SoundPlayer.SetVolume(0.7f);
+
 	m_Render->ChangeAnimation("player_die");
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
@@ -2666,8 +2708,6 @@ void Player::DeathUpdate(float _DeltaTime)
 
 		GetTransform()->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
 	}
-	
-	
 }
 
 void Player::DeathEnd()
@@ -2706,6 +2746,23 @@ void Player::ForceFallUpdate(float _DeltaTime)
 
 void Player::ForceFallEnd()
 {
+}
+
+void Player::ExplosionDeathStart()
+{
+	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
+	m_Render->ChangeAnimation("player_die");
+	m_Render->SetAnimPauseOn();
+}
+
+void Player::ExplosionDeathUpdate(float _DeltaTime)
+{
+	// 뭐 할게있나여기? 
+}
+
+void Player::ExplosionDeathEnd()
+{
+	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
 // 몬스터 보스폭발과 충돌시 상태변경, 플레이어의 점프처럼 위로 떠오르다가 fall 상태로 변경되도록 

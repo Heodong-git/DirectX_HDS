@@ -11,6 +11,8 @@ enum class GruntState
 	FALL,		// 날아감
 	HITGROUND,	// 쳐맞음
 	TURN,		// 뒤돌기 
+
+	FORCEFALL,
 };
 
 class Monster_Grunt : public BaseActor
@@ -90,7 +92,7 @@ private:
 	virtual void Reset() override;
 	void ResetDir();
 
-	// 공격당했을 때의 위치 
+	// 공격당했을 때의 위치 ㅔㄷ
 	float4 m_HitPos = {};
 
 	// 능력치
@@ -105,6 +107,9 @@ private:
 	bool m_Direction = false;
 	void DirCheck();
 
+	float m_JumpPower = 650.0f;
+	float m_CurrentVerticalVelocity = 0.0f;
+	float m_GravityPower = 1500.f;
 
 	// -------------------------------------- State -----------------------------------------------
 	void UpdateState(float _DeltaTime);
@@ -147,4 +152,8 @@ private:
 	void FallStart();
 	void FallUpdate(float _DeltaTime);
 	void FallEnd();
+
+	void ForceFallStart();
+	void ForceFallUpdate(float _DeltaTime);
+	void ForceFallEnd();
 };

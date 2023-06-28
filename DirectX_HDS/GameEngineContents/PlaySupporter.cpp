@@ -48,9 +48,14 @@ void PlaySupporter::Update(float _DeltaTime)
 	}
 
 	// 플레이어가 사망하면, 텍스트를 띄우고 레벨을 대기 상태로 변경한다. 
-	if (PlayerState::NONE == Player::MainPlayer->GetCurState())
+	if (PlayerState::NONE == Player::MainPlayer->GetCurState() ||
+		PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
 	{
-		GetReturnCastLevel()->SetState(BaseLevel::LevelState::WAIT);
+		BaseLevel* CurLevel = GetReturnCastLevel();
+		if (BaseLevel::LevelState::PLAY == CurLevel->GetCurState())
+		{
+			CurLevel->SetState(BaseLevel::LevelState::WAIT);
+		}
 
 		// 레벨리셋여부체크 
 		LevelResetCheck();
@@ -325,7 +330,8 @@ bool PlaySupporter::PlayerDeathCheck()
 		return false;
 	}
 
-	if (PlayerState::DEATH == Player::MainPlayer->GetCurState())
+	if (PlayerState::DEATH == Player::MainPlayer->GetCurState() || 
+		PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
 	{
 		return true;
 	}
@@ -349,7 +355,8 @@ void PlaySupporter::LevelResetCheck()
 
 	// 뭔가가 들어왔다는건 충돌했다는거고 
 	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-	if (nullptr != CursorCol && PlayerState::NONE == Player::MainPlayer->GetCurState())
+	if ((nullptr != CursorCol && PlayerState::NONE == Player::MainPlayer->GetCurState()) ||
+		(nullptr != CursorCol && PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState()))
 	{
 		CursorCol->Off();
 		g_BlackBoxRender->Off();

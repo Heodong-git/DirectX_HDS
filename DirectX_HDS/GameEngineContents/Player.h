@@ -26,11 +26,14 @@ enum class PlayerState
 
 	FORCEFALL,		// 레벨체인지 연출용 state 
 	DEATH,			// 쥬금
+	EXPLOSION_DEATH,
 };
+
 
 class Player : public BaseActor
 {
 	friend class PixelCollider;
+	friend class ClubLevel_Boss;
 	friend class ClubLevel_Boss_01;
 	friend class Boss_HeadHunter;
 public:
@@ -109,6 +112,7 @@ public:
 
 	// 이펙트생성 함수로 만들어서 사용 
 	void CreateSlashEffect();
+	void CreateExplosionEffect();
 	void CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col);
 
 protected:
@@ -128,6 +132,7 @@ private:
 	bool LaserColCheck();		 // 레이저
 	bool FanBladeColCheck();	 // 팬 블레이드 
 	bool HitCheck();			 // 히트체크 
+	bool BossHitCheck();
 
 	void TimeOutCheck();
 
@@ -316,6 +321,10 @@ private:
 	void ForceFallStart();
 	void ForceFallUpdate(float _DeltaTime);
 	void ForceFallEnd();
+
+	void ExplosionDeathStart();
+	void ExplosionDeathUpdate(float _DeltaTime);
+	void ExplosionDeathEnd();
 };
 
 // 파일입출력이 필수다. 
