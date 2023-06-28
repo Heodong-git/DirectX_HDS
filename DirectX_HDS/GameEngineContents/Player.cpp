@@ -174,7 +174,7 @@ void Player::LoadAndCreateAnimation()
 					  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_jump", .SpriteName = "player_jump", .Start = 0, .End = 3,
-					  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true });
+					  .FrameInter = 0.06f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_wallslide", .SpriteName = "player_wallslide", .Start = 0, .End = 1,
 					  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
@@ -186,7 +186,9 @@ void Player::LoadAndCreateAnimation()
 
 	// 이벤트추가 
 	// std::bind, 1번인자 : 멤버함수의 포인터 / 2번인자 : this 포인터
+
 	m_Render->SetAnimationStartEvent("player_attack", static_cast<size_t>(1), std::bind(&Player::CreateSlashEffect, this));
+	m_Render->SetAnimationStartEvent("player_jump", static_cast<size_t>(3), std::bind(&Player::FallAnimChange, this));
 }
 
 // 플레이어와 관련된 사운드는 전부 플레이어에서 로드 
@@ -272,6 +274,11 @@ void Player::Render(float _DeltaTime)
 void Player::LevelChangeEnd()
 {
 	m_MoveSoundPlayer.Stop();
+}
+
+void Player::FallAnimChange()
+{
+	m_Render->ChangeAnimation("player_fall");
 }
 
 void Player::SlashSoundPlay()
@@ -910,7 +917,6 @@ void Player::IdleStart()
 	}
 
 	m_Render->ChangeAnimation("player_idle");
-
 	// 이전 상태가 점프였는데, Idle로 변경 되었다면 내가 땅이라는 뜻이기 때문에 착지이펙트 생성
 	if (PlayerState::JUMP == m_PrevState)
 	{
@@ -2626,8 +2632,6 @@ void Player::DoorBreakUpdate(float _DeltaTime)
 {
 	if (true == m_Render->IsAnimationEnd())
 	{
-		// 애니메이션이끝나면 
-		// 현재 충돌해있는 문을 가져와서 애니메이션을 변경시킨다. 
 		std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
 		if (nullptr != DoorCol)
 		{
@@ -2662,7 +2666,7 @@ void Player::DeathStart()
 	m_SoundPlayer.SetVolume(0.7f);
 
 	m_Render->ChangeAnimation("player_die");
-	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
+	//m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
 void Player::DeathUpdate(float _DeltaTime)
@@ -2712,13 +2716,13 @@ void Player::DeathUpdate(float _DeltaTime)
 
 void Player::DeathEnd()
 {
-	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
+	//m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 	m_HitPos = float4{ 0.0f, 0.0f };
 }
 
 void Player::NoneStart()
 {
-	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
+	//m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
 void Player::NoneUpdate(float _DeltaTime)
@@ -2726,11 +2730,9 @@ void Player::NoneUpdate(float _DeltaTime)
 	
 }
 
-
-
 void Player::NoneEnd()
 {
-	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
+	//m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 }
 
 void Player::ForceFallStart()

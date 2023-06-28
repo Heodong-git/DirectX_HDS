@@ -122,6 +122,9 @@ protected:
 
 	virtual void LevelChangeEnd() override;
 private:
+	// 점프애니메이션 이벤트추가용
+	void FallAnimChange();
+
 	void SlashSoundPlay();
 	GameEngineSoundPlayer m_SoundPlayer;
 	GameEngineSoundPlayer m_MoveSoundPlayer;
