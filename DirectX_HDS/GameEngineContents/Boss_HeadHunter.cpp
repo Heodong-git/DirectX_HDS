@@ -114,7 +114,11 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_hurt").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_recover").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_jump").GetFullPath());
-
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_teleportin_sweep").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_sweep").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_teleportout_sweep").GetFullPath());
+		
+		// tp out 부터 
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -129,6 +133,12 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 							  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_jump", .SpriteName = "headhunter_jump", .Start = 0, .End = 2 ,
 							  .FrameInter = 0.09f , .Loop = false , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_teleportin_sweep", .SpriteName = "headhunter_teleportin_sweep", .Start = 0, .End = 3 ,
+							  .FrameInter = 0.15f , .Loop = false , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_sweep", .SpriteName = "headhunter_sweep", .Start = 0, .End = 17 ,
+							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_teleportout_sweep", .SpriteName = "headhunter_teleportout_sweep", .Start = 0, .End = 2 ,
+							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
 
 	// 
 
@@ -220,6 +230,12 @@ void Boss_HeadHunter::Reset()
 	m_SummonsEndCheck = false;
 	m_SetMine = false;
 	// m_SecondSummons = false;
+
+	if (nullptr != m_SweepEffect)
+	{
+		m_SweepEffect->Death();
+		m_SweepEffect = nullptr;
+	}
 
 	// 만들어놨던 액터들 다 데스처리
 	if (0 != m_SummonsMonsters.size())
@@ -529,6 +545,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::JUMP:
 		JumpStart();
 		break;
+	case BossState::TELEPORTIN_SWEEP:
+		TpSweepInStart();
+		break;
+	case BossState::SWEEP:
+		SweepStart();
+		break;
+	case BossState::TELEPORTOUT_SWEEP:
+		TpSweepOutStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -566,6 +591,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::JUMP:
 		JumpEnd();
+		break;
+	case BossState::TELEPORTIN_SWEEP:
+		TpSweepInEnd();
+		break;
+	case BossState::SWEEP:
+		SweepEnd();
+		break;
+	case BossState::TELEPORTOUT_SWEEP:
+		TpSweepOutEnd();
 		break;
 	}
 }
@@ -607,6 +641,15 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 		break;
 	case BossState::JUMP:
 		JumpUpdate(_DeltaTime);
+		break;
+	case BossState::TELEPORTIN_SWEEP:
+		TpSweepInUpdate(_DeltaTime);
+		break;
+	case BossState::SWEEP:
+		SweepUpdate(_DeltaTime);
+		break;
+	case BossState::TELEPORTOUT_SWEEP:
+		TpSweepOutUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -955,7 +998,9 @@ void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
 	{
 		if (3 == m_Phase2_HitCount)
 		{
-			// 한대맞았으면, 레이저포탑 소환패턴 
+			// 원히트 후 상태
+			GetTransform()->SetWorldPosition(float4{ -68.0f, 58.0f });
+			ChangeState(BossState::TELEPORTIN_SWEEP);
 			return;
 		}
 
@@ -1011,8 +1056,6 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 			LimitTime += 0.1f;
 			m_Mines.push_back(Mine);
 		}
-
-		
 	}
 }
 
@@ -1021,9 +1064,6 @@ void Boss_HeadHunter::ChangePhaseEnd()
 	m_Collision->On();
 }
 
-// 점프를 언제해야되나? 
-// 충돌체를 만들고, 아이들 상태나, 특정 상태에서 피격시에
-// 그충돌체에 해당하는 패턴? 
 void Boss_HeadHunter::JumpStart()
 {
 	m_MainRender->ChangeAnimation("headhunter_jump");
@@ -1035,6 +1075,82 @@ void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 }
 
 void Boss_HeadHunter::JumpEnd()
+{
+}
+
+void Boss_HeadHunter::TpSweepInStart()
+{
+	// dir 은 오른쪽으로 고정
+	m_Dir = true;
+	DirCheck();
+
+	m_MainRender->ChangeAnimation("headhunter_teleportin_sweep");
+	
+}
+
+void Boss_HeadHunter::TpSweepInUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		// 여기서 애니메이션이 종료 되었다면, Sweep 상태로 변경 
+		ChangeState(BossState::SWEEP);
+		return;
+	}
+}
+
+void Boss_HeadHunter::TpSweepInEnd()
+{
+}
+
+void Boss_HeadHunter::SweepStart()
+{
+	m_SweepEffect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
+	m_SweepEffect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 3.0f, 47.0f , 0.5f });
+	m_SweepEffect->SetType(RifleEffectType::SWEEP);
+	m_MainRender->ChangeAnimation("headhunter_sweep");
+}
+
+void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
+{
+	// 애니메이션이 종료되면 
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		// 스윕이펙트 데스처리후 
+		if (nullptr != m_SweepEffect)
+		{
+			m_SweepEffect->Death();
+			m_SweepEffect = nullptr;
+		}
+
+		// 다음 상태로 전환 
+		
+		ChangeState(BossState::TELEPORTOUT_SWEEP);
+		return;
+	}
+
+	float RotSpeed = 13.0f; 
+	m_SweepEffect->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } * RotSpeed * _DeltaTime);
+}
+
+void Boss_HeadHunter::SweepEnd()
+{
+
+}
+
+void Boss_HeadHunter::TpSweepOutStart()
+{
+	m_MainRender->ChangeAnimation("headhunter_teleportout_sweep");
+}
+
+void Boss_HeadHunter::TpSweepOutUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		int a = 0;
+	}
+}
+
+void Boss_HeadHunter::TpSweepOutEnd()
 {
 }
 

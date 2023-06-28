@@ -131,6 +131,8 @@ void ClubLevel_Boss_01::ActorLoad()
 	m_Map = CreateActor<Map>(static_cast<int>(RenderOrder::MAP));
 	m_Map->GetRender()->SetTexture("ClubMap_Boss_01.png");
 	m_Map->GetRender()->GetTransform()->SetLocalScale(float4{ 1280.0f, 720.0f });
+
+	m_Map->GetRender()->GetTransform()->SetLocalPosition(float4{ 0.0f, 0.0f, 1.0f });
 }
 
 void ClubLevel_Boss_01::CreateObjAndInit()

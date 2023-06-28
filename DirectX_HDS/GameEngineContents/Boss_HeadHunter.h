@@ -17,10 +17,15 @@ enum class BossState
 	ROLL,			// 회피(구르기) 5
 	JUMP,
 
+
+	SWEEP,			// 12시 방향에서 라이플 180도돌리기 
+
 	HURT,			 // 쳐맞
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 	TRANSPARENCY,    // 투명 
 	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
+	TELEPORTIN_SWEEP,
+	TELEPORTOUT_SWEEP,
 	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
 
 	MAX,
@@ -87,6 +92,7 @@ private:
 	// 사용할 이펙트 
 	void CreateRifleEffect();
 	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
+	std::shared_ptr<class HeadHunter_RifleEffect> m_SweepEffect = nullptr;
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
 	float m_PhasePivot = -60.0f;
@@ -192,4 +198,18 @@ private:
 	void JumpStart();
 	void JumpUpdate(float _DeltaTime);
 	void JumpEnd();
+
+	// 애매한건 그냥 다만들어 
+	void TpSweepInStart();
+	void TpSweepInUpdate(float _DeltaTime);
+	void TpSweepInEnd();
+
+	void SweepStart();
+	void SweepUpdate(float _DeltaTime);
+	void SweepEnd();
+
+	// 애매한건 그냥 다만들어 
+	void TpSweepOutStart();
+	void TpSweepOutUpdate(float _DeltaTime);
+	void TpSweepOutEnd();
 };

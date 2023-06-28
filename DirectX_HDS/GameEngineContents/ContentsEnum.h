@@ -7,6 +7,7 @@ enum class RenderOrder
 	DOOR,
 	MONSTER_BLOOD,
 	MONSTER,
+	BOSS_EFFECT,
 	BOSS,
 	UI,
 	FANBLADE,

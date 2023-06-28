@@ -87,16 +87,7 @@ void Remote_Mine::Update(float _DeltaTime)
 		Effect1->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		Effect1->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 110.0f });
 		Effect1->GetRender()->SetScaleRatio(2.0f);
-
-		std::shared_ptr<GunSpark_Effect> Effect2 = GetLevel()->CreateActor<GunSpark_Effect>();
-		Effect2->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-		Effect2->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 70.0f });
-		Effect2->GetRender()->SetScaleRatio(2.0f);
 		
-
-		/*std::shared_ptr<GunSpark_Effect2> Effect = GetLevel()->CreateActor<GunSpark_Effect2>();
-		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-		Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 110.0f });*/
 		return;
 	}
 

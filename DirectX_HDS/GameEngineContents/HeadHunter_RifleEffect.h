@@ -1,6 +1,13 @@
 #pragma once
 #include "BaseActor.h"
 
+enum class RifleEffectType
+{
+	NORMAL,
+	SWEEP,
+
+};
+
 // Ό³Έν :
 class HeadHunter_RifleEffect : public BaseActor
 {
@@ -25,6 +32,9 @@ public:
 		m_Actor = _Actor;
 	}
 
+	void SetType(RifleEffectType _Type);
+
+	void ChangeLoopAnimation();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -33,6 +43,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
-
 	std::shared_ptr<class Boss_HeadHunter> m_Actor = nullptr;
+
+	RifleEffectType m_Type = RifleEffectType::NORMAL;
 };

@@ -94,9 +94,7 @@ void ClubLevel_Boss::LevelChangeStart()
 void ClubLevel_Boss::LevelChangeEnd()
 {
 	SetState(BaseLevel::LevelState::WAIT);
-
 	Player::MainPlayer->Death();
-
 	// GUI Off 
 	// GUI 를 사용중이라면 Off
 	if (nullptr != m_GUI)
@@ -163,9 +161,9 @@ void ClubLevel_Boss::CreateObjAndInit()
 
 	{
 		// 테스트용 이펙트 
-		std::shared_ptr<BloodEffect> Effect = CreateActor<BloodEffect>(static_cast<int>(RenderOrder::EFFECT), "Blood_Effect");
+	/*	std::shared_ptr<BloodEffect> Effect = CreateActor<BloodEffect>(static_cast<int>(RenderOrder::EFFECT), "Blood_Effect");
 		Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
-		Effect->SetType(BloodType::FIRST);
+		Effect->SetType(BloodType::FIRST);*/
 	}
 }
 
