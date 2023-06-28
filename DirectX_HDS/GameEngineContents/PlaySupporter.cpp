@@ -63,7 +63,7 @@ void PlaySupporter::Update(float _DeltaTime)
 
 	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 
 	// 이렇게 체크하는게 아니라 그냥 카메라 무브먼트에서 무빙까지 한번에 하는게 맞다 
-	CameraMovement(_DeltaTime);
+	// CameraMovement(_DeltaTime);
 }
 
 void PlaySupporter::Render(float _DeltaTime)
@@ -181,7 +181,7 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 		float4 Dir = PlayerPos - CameraPos;
 		
 		// test
-		if (20.0f >= abs(Dir.x))
+		if (10.0f >= abs(Dir.x))
 		{
 			return;
 		}
@@ -234,7 +234,7 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 		// 이동방향 
 		float4 Dir = PlayerPos - CameraPos;
 
-		if (20.0f >= abs(Dir.x))
+		if (10.0f >= abs(Dir.x))
 		{
 			return;
 		}
@@ -285,7 +285,7 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 		// 이동방향 
 		float4 Dir = PlayerPos - CameraPos;
 
-		if (20.0f >= abs(Dir.x))
+		if (10.0f >= abs(Dir.x))
 		{
 			return;
 		}

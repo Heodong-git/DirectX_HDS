@@ -30,6 +30,7 @@ public:
 	}
 
 	void SetType(EffectType _Type);
+	void CollisionOff();
 
 protected:
 	void Start() override;

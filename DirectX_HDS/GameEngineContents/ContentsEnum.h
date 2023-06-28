@@ -5,6 +5,7 @@ enum class RenderOrder
 	BACKGROUND,
 	MAP,
 	DOOR,
+	MONSTER_BLOOD,
 	MONSTER,
 	BOSS,
 	UI,

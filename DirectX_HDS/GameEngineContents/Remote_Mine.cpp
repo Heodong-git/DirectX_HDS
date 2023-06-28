@@ -5,6 +5,9 @@
 
 #include "Explosion_Effect.h"
 
+#include "GunSpark_Effect.h"
+#include "GunSpark_Effect2.h"
+
 Remote_Mine::Remote_Mine()
 {
 }
@@ -44,6 +47,7 @@ void Remote_Mine::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
 
+
 	if (nullptr == GameEngineSprite::Find("mine_ground"))
 	{
 		GameEngineDirectory Dir;
@@ -58,7 +62,7 @@ void Remote_Mine::Start()
 	}
 
 	m_Render->CreateAnimation({ .AnimationName = "mine_ground", .SpriteName = "mine_ground", .Start = 0, .End = 1 ,
-								  .FrameInter = 0.25f , .Loop = false , .ScaleToTexture = true });
+								  .FrameInter = 0.25f , .Loop = true , .ScaleToTexture = true });
 	m_Render->ChangeAnimation("mine_ground");
 	m_Render->SetScaleRatio(2.0f);
 }
@@ -78,6 +82,22 @@ void Remote_Mine::Update(float _DeltaTime)
 			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + m_ExplosionPos[i]);
 			Effect->SetType(EffectType::SECOND);
 		}
+
+		std::shared_ptr<GunSpark_Effect> Effect1 = GetLevel()->CreateActor<GunSpark_Effect>();
+		Effect1->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect1->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 110.0f });
+		Effect1->GetRender()->SetScaleRatio(2.0f);
+
+		std::shared_ptr<GunSpark_Effect> Effect2 = GetLevel()->CreateActor<GunSpark_Effect>();
+		Effect2->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect2->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 70.0f });
+		Effect2->GetRender()->SetScaleRatio(2.0f);
+		
+
+		/*std::shared_ptr<GunSpark_Effect2> Effect = GetLevel()->CreateActor<GunSpark_Effect2>();
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, 110.0f });*/
+		return;
 	}
 
 	if (0.0f >= m_TimeLimit)

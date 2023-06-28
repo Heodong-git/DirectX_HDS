@@ -36,10 +36,10 @@ void GunSpark_Effect2::Start()
 
 void GunSpark_Effect2::Update(float _DeltaTime)
 {
-	/*if (true == m_Render->IsAnimationEnd())
+	if (true == m_Render->IsAnimationEnd())
 	{
 		this->Death();
-	}*/
+	}
 }
 
 void GunSpark_Effect2::Render(float _DeltaTime)

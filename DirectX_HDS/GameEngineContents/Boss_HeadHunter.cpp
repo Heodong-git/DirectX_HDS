@@ -21,6 +21,8 @@
 
 #include "BaseLevel.h"
 
+#include "FadeEffect.h"
+
 Boss_HeadHunter::Boss_HeadHunter()
 {
 }
@@ -389,7 +391,9 @@ void Boss_HeadHunter::ChangeDir()
 bool Boss_HeadHunter::PlayerLiveCheck()
 {
 	// 데스상태 또는 NONE 상태라면 return 
-	if (PlayerState::DEATH == Player::MainPlayer->GetCurState() || PlayerState::NONE == Player::MainPlayer->GetCurState())
+	PlayerState State = Player::MainPlayer->GetCurState();
+	if (PlayerState::DEATH == State || PlayerState::NONE == State ||
+		PlayerState::EXPLOSION_DEATH == State)
 	{
 		return false;
 	}
@@ -645,6 +649,11 @@ void Boss_HeadHunter::IdleStart()
 
 void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 {
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
+
 	// 현재 페이즈가 1페이즈 일 경우의 동작,  
 	if (BossPhase::FIRST == m_CurPhase)
 	{
@@ -978,6 +987,7 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 		if (true == PlayerLiveCheck())
 		{
 			Player::MainPlayer->ChangeState(PlayerState::FORCEFALL);
+			
 			m_CurPhase = BossPhase::SECOND;
 			return;
 		}

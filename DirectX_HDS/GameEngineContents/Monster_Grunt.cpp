@@ -578,6 +578,8 @@ void Monster_Grunt::ChaseStart()
 
 void Monster_Grunt::ChaseUpdate(float _DeltaTime)
 {	
+	// chase 상태에서 내아래,그아래가 모두 흰색픽셀이라면 
+
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
 	float4 MyPos = GetTransform()->GetWorldPosition();
 	float4 MoveDir = PlayerPos - MyPos;
@@ -675,6 +677,7 @@ void Monster_Grunt::AttackStart()
 {
 	DirCheck();
 	m_MainRender->ChangeAnimation("grunt_attack");
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 5.0f });
 }
 
 void Monster_Grunt::AttackUpdate(float _DeltaTime)
@@ -709,6 +712,7 @@ void Monster_Grunt::AttackUpdate(float _DeltaTime)
 
 void Monster_Grunt::AttackEnd()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -5.0f });
 }
 
 void Monster_Grunt::TurnStart()

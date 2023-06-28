@@ -35,9 +35,10 @@ private:
 	// 세팅하지 않으면 1.0f, 세팅하면 기존 1.0f 에 추가 
 	float m_TimeLimit = 1.0f;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+
 	MineState m_CurState = MineState::GROUND;
 
 	// 내위치를 기준으로 한 폭발 이펙트 생성지점 push
 	std::vector<float4> m_ExplosionPos = std::vector<float4>();
-	float m_ExplosionPosCount = 12;
+	size_t m_ExplosionPosCount = 12;
 };

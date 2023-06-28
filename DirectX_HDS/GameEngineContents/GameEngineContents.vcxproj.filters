@@ -195,6 +195,9 @@
     <ClInclude Include="ClubLevel_Boss_01.h">
       <Filter>01.Level\02.Club\01.Boss</Filter>
     </ClInclude>
+    <ClInclude Include="BloodEffect.h">
+      <Filter>02.Actor\16.Effect\BloodEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -390,6 +393,9 @@
     <ClCompile Include="ClubLevel_Boss_01.cpp">
       <Filter>01.Level\02.Club\01.Boss</Filter>
     </ClCompile>
+    <ClCompile Include="BloodEffect.cpp">
+      <Filter>02.Actor\16.Effect\BloodEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -562,6 +568,12 @@
     </Filter>
     <Filter Include="02.Actor\03.Boss\00.HeadHunter\Mine">
       <UniqueIdentifier>{1bbbf0c8-99dd-4155-8ce4-a4fc7dc7ce6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\03.Boss\00.HeadHunter\Effect\Blood">
+      <UniqueIdentifier>{16932b03-66a6-4308-87da-d3f491ab1d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\16.Effect\BloodEffect">
+      <UniqueIdentifier>{22cb6c80-ff42-4ab6-b3f9-1c373d1f28f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

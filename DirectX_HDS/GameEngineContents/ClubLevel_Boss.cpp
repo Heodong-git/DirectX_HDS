@@ -20,9 +20,13 @@
 #include "ColEventObj.h"
 #include "Platform.h"
 
-// test
-#include "GunSpark_Effect2.h"
 #include "GunSmoke_Effect.h"
+#include "GunSpark_Effect2.h"
+
+#include "FadeEffect.h"
+
+// test
+#include "BloodEffect.h"
 
 ClubLevel_Boss::ClubLevel_Boss()
 {
@@ -58,6 +62,8 @@ void ClubLevel_Boss::Update(float _DeltaTime)
 
 void ClubLevel_Boss::LevelChangeStart()
 {
+	
+
 	GUISetting();
 
 	// 카메라 피봇세팅
@@ -155,12 +161,12 @@ void ClubLevel_Boss::CreateObjAndInit()
 		m_LevelChangePlatform->GetCollision()->GetTransform()->SetLocalScale(float4{ 1280.0f, 1.0f });
 	}
 
-	//{
-	//	// 테스트용 이펙트 
-	//	std::shared_ptr<GunSmoke_Effect> Effect = CreateActor<GunSmoke_Effect>(static_cast<int>(RenderOrder::EFFECT), "GunSmoke_Effect");
-	//	Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
-	//	Effect->SetType(EffectType::SECOND);
-	//}
+	{
+		// 테스트용 이펙트 
+		std::shared_ptr<BloodEffect> Effect = CreateActor<BloodEffect>(static_cast<int>(RenderOrder::EFFECT), "Blood_Effect");
+		Effect->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f });
+		Effect->SetType(BloodType::FIRST);
+	}
 }
 
 void ClubLevel_Boss::KeyUpdate()

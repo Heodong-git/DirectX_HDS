@@ -168,6 +168,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BloodEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Boss_HeadHunter.h">
       <SubType>
       </SubType>
@@ -413,6 +417,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BloodEffect.cpp" />
     <ClCompile Include="Boss_HeadHunter.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ClubLevel_Boss_01.cpp" />

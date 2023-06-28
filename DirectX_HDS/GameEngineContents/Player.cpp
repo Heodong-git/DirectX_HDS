@@ -38,6 +38,7 @@
 
 // test
 #include "Explosion_Effect.h"
+#include "FadeEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -162,7 +163,7 @@ void Player::LoadAndCreateAnimation()
 						  .FrameInter = 0.05f , .Loop = true , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_hurtfly_begin", .SpriteName = "player_hurtfly_begin", .Start = 0, .End = 1,
-						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
+						  .FrameInter = 0.25f , .Loop = false , .ScaleToTexture = true });
 
 	m_Render->CreateAnimation({ .AnimationName = "player_hurtfly_loop", .SpriteName = "player_hurtfly_loop", .Start = 0, .End = 3,
 						  .FrameInter = 0.05f , .Loop = false , .ScaleToTexture = true });
@@ -186,7 +187,6 @@ void Player::LoadAndCreateAnimation()
 
 	// 이벤트추가 
 	// std::bind, 1번인자 : 멤버함수의 포인터 / 2번인자 : this 포인터
-
 	m_Render->SetAnimationStartEvent("player_attack", static_cast<size_t>(1), std::bind(&Player::CreateSlashEffect, this));
 	m_Render->SetAnimationStartEvent("player_jump", static_cast<size_t>(3), std::bind(&Player::FallAnimChange, this));
 }
@@ -265,6 +265,8 @@ void Player::Update(float _DeltaTime)
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
+
+	PlaySupporter::MainSupporter->CameraMovement(_DeltaTime);
 }
 
 void Player::Render(float _DeltaTime)
@@ -395,7 +397,7 @@ void Player::CreateSlashEffect()
 void Player::CreateExplosionEffect()
 {
 	std::shared_ptr<Explosion_Effect> Effect = GetLevel()->CreateActor<Explosion_Effect>(static_cast<int>(RenderOrder::EFFECT));
-	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 30.0f});
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 60.0f});
 	Effect->SetType(EffectType::SECOND);
 }
 
@@ -905,7 +907,7 @@ void Player::IdleStart()
 {
 	// 이전 스테이트가 데스라면 스테이지 미클리어,
 	// 난무조건 정방향 ( 오른쪽 ) , 데스 후 NONE 상태로 변경됨 
-	if (PlayerState::NONE == m_PrevState)
+	if (PlayerState::NONE == m_PrevState || PlayerState::EXPLOSION_DEATH == m_PrevState)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}
@@ -2665,7 +2667,7 @@ void Player::DeathStart()
 	m_SoundPlayer = GameEngineSound::Play("player_die.wav");
 	m_SoundPlayer.SetVolume(0.7f);
 
-	m_Render->ChangeAnimation("player_die");
+	m_Render->ChangeAnimation("player_hurtfly_begin");
 	//m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
@@ -2738,6 +2740,9 @@ void Player::NoneEnd()
 void Player::ForceFallStart()
 {
 	m_Render->ChangeAnimation("player_fall");
+
+	// test
+	GetReturnCastLevel()->GetFadeEffect()->FadeOut();
 }
 
 void Player::ForceFallUpdate(float _DeltaTime)
@@ -2760,6 +2765,7 @@ void Player::ExplosionDeathStart()
 void Player::ExplosionDeathUpdate(float _DeltaTime)
 {
 	// 뭐 할게있나여기? 
+	int a = 0;
 }
 
 void Player::ExplosionDeathEnd()

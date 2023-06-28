@@ -185,7 +185,7 @@ void BaseLevel::PlayerSkillCheck()
 	// 플레이어 페이드인이펙트 
 	if (true == Player::MainPlayer->IsSkill())
 	{
-		GetFadeEffect()->FadeIn();
+		// GetFadeEffect()->FadeIn();
 	}
 
 	else if (false == Player::MainPlayer->IsSkill())

@@ -21,6 +21,7 @@
 #include "GunSmoke_Effect.h"
 #include "GunSpark_Effect2.h"
 
+#include "FadeEffect.h"
 
 
 ClubLevel_Boss_01::ClubLevel_Boss_01()
@@ -78,15 +79,14 @@ void ClubLevel_Boss_01::LevelStartCheck()
 
 void ClubLevel_Boss_01::LevelChangeStart()
 {
+	// GetFadeEffect()->FadeIn();
+
 	GUISetting();
 
 	// 카메라 피봇세팅
 	Push_ResetActor(CreateActor<CameraSetter>());
 	CameraSetter::MainCamSetter->CameraSetting();
 
-	// 플레이어 위치세팅
-	// 최초등장 위치만 따로 세팅해준다. 
-	// 초기화 위치는 지정해주고 
 	std::shared_ptr<Player> NewPlayer = (CreateActor<Player>(static_cast<int>(RenderOrder::PLAYER), "Player"));
 	float4 FallPos = { -343.0f, 68.0f };
 	float4 InitPos = { -334.0f, -264.0f };

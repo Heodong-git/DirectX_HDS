@@ -33,6 +33,11 @@ void Explosion_Effect::SetType(EffectType _Type)
 	}
 }
 
+void Explosion_Effect::CollisionOff()
+{
+	m_Collision->Off();
+}
+
 void Explosion_Effect::Start()
 {
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
@@ -61,8 +66,13 @@ void Explosion_Effect::Start()
 	m_Render->CreateAnimation({ .AnimationName = "explosion_effect2", .SpriteName = "explosion_effect2", .Start = 0, .End = 9 ,
 								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 
+	
+	m_Render->SetAnimationStartEvent("explosion_effect", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
+	m_Render->SetAnimationStartEvent("explosion_effect2", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
+
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->ChangeAnimation("explosion_effect");
+
 }
 
 void Explosion_Effect::Update(float _DeltaTime)

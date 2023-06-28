@@ -70,7 +70,7 @@ void GunSmoke_Effect::Update(float _DeltaTime)
 {
 	if (true == m_Render->IsAnimationEnd())
 	{
-		// this->Death();
+		this->Death();
 	}
 }
 
