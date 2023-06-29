@@ -411,6 +411,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="Turret.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Turret_Wall.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="YouCanDoThis.h">
       <SubType>
       </SubType>
@@ -493,6 +501,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="Turret_Wall.cpp" />
     <ClCompile Include="YouCanDoThis.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

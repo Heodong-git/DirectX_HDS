@@ -17,6 +17,8 @@ enum class BossState
 	ROLL,			// 회피(구르기) 5
 	JUMP,
 
+	DASH,
+	DASH_END,
 
 	SWEEP,			// 12시 방향에서 라이플 180도돌리기 
 
@@ -27,6 +29,7 @@ enum class BossState
 	TELEPORTIN_SWEEP,
 	TELEPORTOUT_SWEEP,
 	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
+	TURRET_SUMMONS,  // 터렛 소환 
 
 	MAX,
 };
@@ -87,7 +90,12 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 
+
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
+
+	void AttCollisionOn();
+	void AttCollisionOff();
 
 	// 사용할 이펙트 
 	void CreateRifleEffect();
@@ -134,6 +142,9 @@ private:
 	// 4초뒤에 
 	float m_TransDuration = 3.0f;
 
+	float m_TurretSummons_Duration = 3.0f;
+
+	float m_PhaseDuration = 0.0f;
 
 	// 현재 페이즈 
 	BossPhase m_CurPhase = BossPhase::FIRST;
@@ -142,8 +153,27 @@ private:
 
 
 	size_t m_MineCount = 21;
+
+	// world
+	const float4 m_TeleportPos = float4{ -68.0f, 58.0f };
+	const float4 m_DashPos = float4{ -68.0f, -205.0f };
+
+
 	// 소환스킬, 
 	void SummonsMonsters();
+	void SummonsTurrets();
+
+	// 터렛관련
+	// 터렛 소환위치, world 
+	const float4 m_TurretWallPos = float4{ -491.0f , -87.0f };
+	const float4 m_Turret_FirstPos = float4{ -451.0f , -127.0f };
+	const float4 m_Turret_SecondPos = float4{ -451.0f, -27.0f };
+
+	bool m_IsTurretSummons = false;
+
+	std::shared_ptr<class Turret_Wall> m_TurretWall = nullptr;
+	std::shared_ptr<class Turret> m_Turret_First = nullptr;
+	std::shared_ptr<class Turret> m_Turret_Second = nullptr;
 
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
@@ -212,4 +242,16 @@ private:
 	void TpSweepOutStart();
 	void TpSweepOutUpdate(float _DeltaTime);
 	void TpSweepOutEnd();
+
+	void TurretSummonsStart();
+	void TurretSummonsUpdate(float _DeltaTime);
+	void TurretSummonsEnd();
+
+	void DashStart();
+	void DashUpdate(float _DeltaTime);
+	void DashEnd();
+
+	void DashEndStart();
+	void DashEndUpdate(float _DeltaTime);
+	void DashEndEnd();
 };

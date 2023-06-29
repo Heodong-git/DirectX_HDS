@@ -4,8 +4,10 @@ enum class RenderOrder
 {
 	BACKGROUND,
 	MAP,
+	WALL,
 	DOOR,
 	MONSTER_BLOOD,
+	TURRET_BODY,
 	MONSTER,
 	BOSS_EFFECT,
 	BOSS,

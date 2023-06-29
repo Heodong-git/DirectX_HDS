@@ -17,7 +17,7 @@ std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
 std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;
 
-GameEngineLevel* GameEngineCore::CurLoadLevel = nullptr;
+std::shared_ptr<class GameEngineLevel> GameEngineCore::CurLoadLevel;
 
 GameEngineCore::GameEngineCore()
 {
@@ -63,9 +63,7 @@ void GameEngineCore::EngineUpdate()
 		// 현재 레벨도 nullptr 이 아니라면 
 		if (nullptr != MainLevel)
 		{
-			CurLoadLevel = MainLevel.get();
 			MainLevel->LevelChangeEnd();
-			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeEnd();
 		}
 
@@ -75,9 +73,8 @@ void GameEngineCore::EngineUpdate()
 		// 변경된 레벨의 start 
 		if (nullptr != MainLevel)
 		{
-			CurLoadLevel = MainLevel.get();
+			CurLoadLevel = MainLevel;
 			MainLevel->LevelChangeStart();
-			CurLoadLevel = nullptr;
 			MainLevel->ActorLevelChangeStart();
 		}
 
@@ -120,12 +117,10 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 
-	CurLoadLevel = MainLevel.get();
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
-	CurLoadLevel = nullptr;
 
 
 	// 비디오가 재생중이라면 렌더링을 하지 않는다. 
@@ -205,7 +200,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
 	// 현재 로드된 레벨을 가져오고
-	CurLoadLevel = _Level.get();
+	CurLoadLevel = _Level;
 	_Level->Level = _Level.get();
 	_Level->Start();
 

@@ -1,6 +1,13 @@
 #pragma once
 #include "BaseActor.h"
 
+enum class BulletType
+{
+	NORMAL,
+	ROT,
+};
+
+
 // Ό³Έν :
 class Bullet : public BaseActor
 {
@@ -25,6 +32,16 @@ public:
 		return m_Parring;
 	}
 
+	void SetType(BulletType _Type)
+	{
+		m_Type = _Type;
+	}
+
+	void SetAngle(const float _Angle)
+	{
+		m_Angle = _Angle;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -33,6 +50,8 @@ protected:
 private:
 	GameEngineSoundPlayer m_SoundPlayer;
 
+	BulletType m_Type = BulletType::NORMAL;
+	
 	void CreateReflectEffect();
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
@@ -44,4 +63,6 @@ private:
 	
 	bool m_Parring = false;
 	bool m_DirChange = false;
+	float m_Angle = 0.0f;
+
 };

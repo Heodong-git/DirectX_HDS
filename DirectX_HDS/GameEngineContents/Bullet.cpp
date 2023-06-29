@@ -47,8 +47,9 @@ void Bullet::Update(float _DeltaTime)
 		}
 		return;
 	}
-
+	
 	GetTransform()->AddLocalPosition(m_MoveDir * m_MoveSpeed * _DeltaTime);
+
 	
 	// 플레이어의 공격과 충돌했다면
 	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);

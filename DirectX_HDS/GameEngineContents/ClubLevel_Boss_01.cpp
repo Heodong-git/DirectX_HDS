@@ -21,6 +21,9 @@
 #include "GunSmoke_Effect.h"
 #include "GunSpark_Effect2.h"
 
+#include "Turret.h"
+#include "Turret_Wall.h"
+
 #include "FadeEffect.h"
 
 
@@ -143,6 +146,10 @@ void ClubLevel_Boss_01::CreateObjAndInit()
 		m_ColCheckObj->GetTransform()->SetLocalPosition(float4{ 0.0f , -264.0f });
 		m_ColCheckObj->GetCollision()->GetTransform()->SetLocalScale(float4{ 1280.0f, 2.0f });
 	}
+	/*{
+		std::shared_ptr<Turret> Obj = CreateActor<Turret>(static_cast<int>(RenderOrder::MONSTER));
+		Obj->GetTransform()->SetWorldPosition(float4{ 0.0f, 0.0f });
+	}*/
 }
 
 void ClubLevel_Boss_01::KeyUpdate()

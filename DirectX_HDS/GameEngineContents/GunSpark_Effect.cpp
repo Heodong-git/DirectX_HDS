@@ -29,7 +29,7 @@ void GunSpark_Effect::Start()
 	}
 	
 	m_Render->CreateAnimation({ .AnimationName = "gunspark_effect", .SpriteName = "gunspark_effect", .Start = 0, .End = 7 ,
-								  .FrameInter = 0.1f , .Loop = true , .ScaleToTexture = true });
+								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 	m_Render->ChangeAnimation("gunspark_effect");
 }
 

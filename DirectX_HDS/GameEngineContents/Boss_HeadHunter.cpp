@@ -5,23 +5,22 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-
+#include "BaseLevel.h"
 #include "PixelCollider.h"
 #include "Player.h"
-
 #include "HeadHunter_RifleEffect.h"
 #include "TeleportEffect.h"
 #include "GunSpark_Effect.h"
-
 #include "Monster_Gangster.h"
 #include "Monster_Grunt.h"
 #include "Monster_Pomp.h"
 
 #include "Remote_Mine.h"
-
-#include "BaseLevel.h"
-
 #include "FadeEffect.h"
+
+// 터렛
+#include "Turret_Wall.h"
+#include "Turret.h"
 
 Boss_HeadHunter::Boss_HeadHunter()
 {
@@ -86,6 +85,11 @@ void Boss_HeadHunter::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(float4{ 30.0f, 75.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 
+	m_AttCollision = CreateComponent<GameEngineCollision>(ColOrder::BOSS_ATTACK);
+	m_AttCollision->GetTransform()->SetLocalScale(float4{ 60.0f, 70.0f });
+	m_AttCollision->Off();
+	m_AttCollision->SetColType(ColType::OBBBOX3D);
+
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale(float4{ 4.0f , 4.0f });
 	m_DebugRender->Off();
@@ -117,6 +121,8 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_teleportin_sweep").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_sweep").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_teleportout_sweep").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_dash").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_dash_end_ground").GetFullPath());
 		
 		// tp out 부터 
 	}
@@ -139,39 +145,89 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_teleportout_sweep", .SpriteName = "headhunter_teleportout_sweep", .Start = 0, .End = 2 ,
 							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_dash", .SpriteName = "headhunter_dash", .Start = 0, .End = 1 ,
+							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
 
 	// 
+	{
+		std::vector<float> vFrameTime = std::vector<float>();
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.15f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.05f);
+		vFrameTime.push_back(0.05f);
+		vFrameTime.push_back(0.05f);
+		vFrameTime.push_back(0.05f);
 
-	std::vector<float> vFrameTime = std::vector<float>();
-	vFrameTime.push_back(0.1f);
-	vFrameTime.push_back(0.1f);
-	vFrameTime.push_back(0.15f);
-	vFrameTime.push_back(0.07f);
-	vFrameTime.push_back(0.07f);
-	vFrameTime.push_back(0.07f);
-	vFrameTime.push_back(0.05f);
-	vFrameTime.push_back(0.05f);
-	vFrameTime.push_back(0.05f);
-	vFrameTime.push_back(0.05f);
+		AnimationParameter Para = {};
+		Para.AnimationName = "headhunter_hurt";
+		Para.SpriteName = "headhunter_hurt";
+		Para.Start = 0;
+		Para.End = 9;
+		Para.FrameTime = vFrameTime;
+		Para.Loop = false;
+		Para.ScaleToTexture = true;
 
-	AnimationParameter Para = {};
-	Para.AnimationName = "headhunter_hurt";
-	Para.SpriteName = "headhunter_hurt";
-	Para.Start = 0;
-	Para.End = 9;
-	Para.FrameTime = vFrameTime;
-	Para.Loop = false;
-	Para.ScaleToTexture = true;
+		m_MainRender->CreateAnimation(Para);
+	}
+	{
+		std::vector<float> vFrameTime = std::vector<float>();
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.07f);
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.1f);
+		vFrameTime.push_back(0.1f);
 
-	m_MainRender->CreateAnimation(Para);
+		AnimationParameter Para = {};
+		Para.AnimationName = "headhunter_dash_end_ground";
+		Para.SpriteName = "headhunter_dash_end_ground";
+		Para.Start = 0;
+		Para.End = 9;
+		Para.FrameTime = vFrameTime;
+		Para.Loop = false;
+		Para.ScaleToTexture = true;
+
+		m_MainRender->CreateAnimation(Para);
+	}
+	
 	
 	m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(5), std::bind(&Boss_HeadHunter::CreateRifleEffect, this));
+	m_MainRender->SetAnimationStartEvent("headhunter_dash_end_ground", static_cast<size_t>(0), std::bind(&Boss_HeadHunter::AttCollisionOn, this));
+	m_MainRender->SetAnimationStartEvent("headhunter_dash_end_ground", static_cast<size_t>(2), std::bind(&Boss_HeadHunter::AttCollisionOff, this));
 	m_MainRender->ChangeAnimation("headhunter_idle");
 	m_MainRender->SetScaleRatio(2.0f);
 }
 
 void Boss_HeadHunter::LoadSound()
 {
+}
+
+void Boss_HeadHunter::AttCollisionOn()
+{
+	m_AttCollision->On();
+	// 내가 우측을 보고 있다면 
+	if (true == m_Dir)
+	{
+		m_AttCollision->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4 { 15.0f, 10.0f });
+	}
+
+	else if (false == m_Dir)
+	{
+		m_AttCollision->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4 { -15.0f, 10.0f });
+	}
+}
+
+void Boss_HeadHunter::AttCollisionOff()
+{
+	m_AttCollision->Off();
 }
 
 void Boss_HeadHunter::CreateRifleEffect()
@@ -231,6 +287,8 @@ void Boss_HeadHunter::Reset()
 	m_SetMine = false;
 	// m_SecondSummons = false;
 
+	m_IsTurretSummons = false;
+
 	if (nullptr != m_SweepEffect)
 	{
 		m_SweepEffect->Death();
@@ -261,6 +319,25 @@ void Boss_HeadHunter::Reset()
 			}
 		}
 		m_Mines.clear();
+	}
+
+	if (nullptr != m_TurretWall)
+	{
+		m_TurretWall->Death();
+		m_TurretWall = nullptr;
+		
+		if (nullptr != m_Turret_First)
+		{
+			m_Turret_First->Death();
+			m_Turret_First = nullptr;
+		}
+	
+		if (nullptr != m_Turret_Second)
+		{
+			m_Turret_Second->Death();
+			m_Turret_Second = nullptr;
+		}
+		
 	}
 }
 
@@ -503,6 +580,10 @@ void Boss_HeadHunter::SummonsMonsters()
 	m_SummonsMonsters.push_back(NewPomp1->DynamicThis<BaseActor>());
 }
 
+void Boss_HeadHunter::SummonsTurrets()
+{
+}
+
 void Boss_HeadHunter::ChangeState(BossState _State)
 {
 	m_NextState = _State;
@@ -554,6 +635,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::TELEPORTOUT_SWEEP:
 		TpSweepOutStart();
 		break;
+	case BossState::TURRET_SUMMONS:
+		TurretSummonsStart();
+		break;
+	case BossState::DASH:
+		DashStart();
+		break;
+	case BossState::DASH_END:
+		DashEndStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -600,6 +690,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::TELEPORTOUT_SWEEP:
 		TpSweepOutEnd();
+		break;
+	case BossState::TURRET_SUMMONS:
+		TurretSummonsEnd();
+		break;
+	case BossState::DASH:
+		DashEnd();
+		break;
+	case BossState::DASH_END:
+		DashEndEnd();
 		break;
 	}
 }
@@ -650,6 +749,15 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 		break;
 	case BossState::TELEPORTOUT_SWEEP:
 		TpSweepOutUpdate(_DeltaTime);
+		break;
+	case BossState::TURRET_SUMMONS:
+		TurretSummonsUpdate(_DeltaTime);
+		break;
+	case BossState::DASH:
+		DashUpdate(_DeltaTime);
+		break;
+	case BossState::DASH_END:
+		DashEndUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -926,6 +1034,7 @@ void Boss_HeadHunter::RecoverStart()
 	// 시작할때 플레이어 위치x, 내위치 x를 비교, 방향을 정한다.
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -10.0f });
 	m_MainRender->ChangeAnimation("headhunter_recover");
+	m_Collision->Off();
 }
 
 void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
@@ -944,7 +1053,9 @@ void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::RecoverEnd()
 {
+
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 10.0f });
+	m_Collision->On();
 	// test
 	// m_MainRender->Off();
 }
@@ -999,12 +1110,20 @@ void Boss_HeadHunter::TransparencyUpdate(float _DeltaTime)
 		if (3 == m_Phase2_HitCount)
 		{
 			// 원히트 후 상태
-			GetTransform()->SetWorldPosition(float4{ -68.0f, 58.0f });
-			ChangeState(BossState::TELEPORTIN_SWEEP);
+			// 이거를 변수로 가지고 있는거로 수정해야함 
+			GetTransform()->SetWorldPosition(m_TeleportPos);
+
+			// 여기서 사라지고 나서, 벽에 게이트 생성 후 터렛소환 
+			// 그러면 State 를 터렛소환 으로 일단 변경. 
+			ChangeState(BossState::TURRET_SUMMONS);
 			return;
 		}
 
-		ChangeState(BossState::JUMP);
+		if (2 == m_Phase2_HitCount)
+		{
+			int a = 0;
+		}
+
 		return;
 	}
 	
@@ -1137,6 +1256,7 @@ void Boss_HeadHunter::SweepEnd()
 
 }
 
+// sweep 후, 텔레포트 아웃, 
 void Boss_HeadHunter::TpSweepOutStart()
 {
 	m_MainRender->ChangeAnimation("headhunter_teleportout_sweep");
@@ -1146,11 +1266,96 @@ void Boss_HeadHunter::TpSweepOutUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		int a = 0;
+		m_MainRender->Off();
+		ChangeState(BossState::DASH);
+		return;
 	}
 }
 
 void Boss_HeadHunter::TpSweepOutEnd()
+{
+	m_MainRender->On();
+}
+
+void Boss_HeadHunter::TurretSummonsStart()
+{
+	m_PhaseDuration = m_TurretSummons_Duration;
+	// 터렛을 소환할 wall 생성
+	m_TurretWall = GetLevel()->CreateActor<Turret_Wall>();
+	m_TurretWall->GetTransform()->SetWorldPosition(m_TurretWallPos);
+}
+
+void Boss_HeadHunter::TurretSummonsUpdate(float _DeltaTime)
+{
+	m_PhaseDuration -= _DeltaTime;
+
+	if (0.0f >= m_PhaseDuration)
+	{
+		ChangeState(BossState::TELEPORTIN_SWEEP);
+		return;
+	}
+
+	if (true == m_TurretWall->GetRender()->IsAnimationEnd() && false == m_IsTurretSummons)
+	{
+		m_IsTurretSummons = true;
+		// 터렛 두마리 생성, 위치는 ? 
+		m_Turret_First = GetLevel()->CreateActor<Turret>();
+		m_Turret_First->SetType(TurretType::WALL);
+		m_Turret_First->GetTransform()->SetWorldPosition(m_Turret_FirstPos);
+		m_Turret_Second = GetLevel()->CreateActor<Turret>();
+		m_Turret_Second->SetType(TurretType::WALL);
+		m_Turret_Second->GetTransform()->SetWorldPosition(m_Turret_SecondPos);
+	}
+}
+
+void Boss_HeadHunter::TurretSummonsEnd()
+{
+	m_PhaseDuration = 0.0f; 
+}
+
+void Boss_HeadHunter::DashStart()
+{
+	if (BossState::TELEPORTOUT_SWEEP == m_PrevState)
+	{
+		// 왼쪽오른쪽 정해주고 
+		ChangeDir();
+		DirCheck();
+	}
+
+	m_MainRender->ChangeAnimation("headhunter_dash");
+}
+
+void Boss_HeadHunter::DashUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		ChangeState(BossState::DASH_END);
+		return;
+	}
+
+	GetTransform()->SetWorldPosition(m_DashPos);
+}
+
+void Boss_HeadHunter::DashEnd()
+{
+	GetTransform()->SetWorldPosition(float4{ -68.0f, -264.0f });
+}
+
+void Boss_HeadHunter::DashEndStart()
+{
+	m_MainRender->ChangeAnimation("headhunter_dash_end_ground");
+}
+
+void Boss_HeadHunter::DashEndUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		ChangeState(BossState::IDLE);
+		return;
+	}
+}
+
+void Boss_HeadHunter::DashEndEnd()
 {
 }
 

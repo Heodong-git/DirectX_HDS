@@ -198,6 +198,12 @@
     <ClInclude Include="BloodEffect.h">
       <Filter>02.Actor\16.Effect\BloodEffect</Filter>
     </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>02.Actor\02.Monster\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret_Wall.h">
+      <Filter>02.Actor\02.Monster\Turret\Turret_Wall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -396,6 +402,12 @@
     <ClCompile Include="BloodEffect.cpp">
       <Filter>02.Actor\16.Effect\BloodEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>02.Actor\02.Monster\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret_Wall.cpp">
+      <Filter>02.Actor\02.Monster\Turret\Turret_Wall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -574,6 +586,12 @@
     </Filter>
     <Filter Include="02.Actor\16.Effect\BloodEffect">
       <UniqueIdentifier>{22cb6c80-ff42-4ab6-b3f9-1c373d1f28f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Turret">
+      <UniqueIdentifier>{f1b451b0-64e9-419b-bea4-010c32fa87de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\02.Monster\Turret\Turret_Wall">
+      <UniqueIdentifier>{393e7af6-d33e-4c6e-97ce-fb27d3c12c1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

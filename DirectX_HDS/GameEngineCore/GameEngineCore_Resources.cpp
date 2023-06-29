@@ -79,6 +79,24 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		// ÅØ½ºÃ³°¡ ¸Ö¸®ÀÖÀ»¶§ ¹¶°¶²¨³Ä
+		// ¾È¹¶°µ´Ù.
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("POINTSAMPLER", SamperData);
+	}
+
+
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
 
 		// 
 		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -626,6 +644,16 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetPixelShader("DebugMeshRender.hlsl");
 			Pipe->SetBlendState("AlphaBlend");
 			Pipe->SetDepthState("AlwayDepth");
+		}
+
+		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Blur");
+
+			Pipe->SetVertexShader("BlurShader.hlsl");
+			Pipe->SetRasterizer("Engine2DBase");
+			Pipe->SetPixelShader("BlurShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
 		}
 	}
 }
