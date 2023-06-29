@@ -63,7 +63,7 @@ public:
 
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
-	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
+
 
 	// ·»´õÅ¸°Ù¿¡ ÀÌÆåÆ®¸¦ Ãß°¡ÇÑ´Ù´Â °³³ä
 	template<typename EffectType>
@@ -111,5 +111,6 @@ private:
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
+	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
 };
 

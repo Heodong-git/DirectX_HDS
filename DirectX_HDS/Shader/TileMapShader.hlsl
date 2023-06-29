@@ -106,7 +106,5 @@ float4 TileMap_PS(OutPut _Value) : SV_Target0
     Color *= MulColor;
     Color += PlusColor;
     
-    Color += float4(1.0f, 1.0f, 1.0f, 1.0f);
-    
     return Color;
 }
