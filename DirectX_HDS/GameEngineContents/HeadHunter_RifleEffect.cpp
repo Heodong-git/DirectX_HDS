@@ -55,6 +55,7 @@ void HeadHunter_RifleEffect::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BOSS_EFFECT);
 	m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 2.0f, 1.0f });
+	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f, -1.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BOSS_ATTACK);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f , 1.0f  });
@@ -123,6 +124,26 @@ void HeadHunter_RifleEffect::Start()
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
 {
+	// 라이브타임으로 그냥 죽이자 
+	if (RifleEffectType::CEILING_FIRE == m_Type)
+	{
+		if (true == m_Render->IsAnimationEnd())
+		{
+			this->Death();
+			return;
+		}
+
+
+		if (1 == m_Render->GetCurrentFrame())
+		{
+			m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f, 1.0f });
+			m_Collision->On();
+		}
+
+		return;
+	}
+
+
 	if (RifleEffectType::SWEEP == m_Type)
 	{
 		// 만약, 라이플 타입이 sweep 이라면, 내가 애니메이션프레임이 1일 경우, 렌더러의 y축 크기를 증가시킨다. 
@@ -131,9 +152,9 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 			m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f, 1.0f });
 			m_Collision->On();
 		}
+
 		return;
 	}
-
 
 	if (true == m_Render->IsAnimationEnd() || BossState::RIFLE != m_Actor->GetCurState())
 	{

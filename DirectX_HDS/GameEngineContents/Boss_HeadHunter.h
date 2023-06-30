@@ -26,8 +26,13 @@ enum class BossState
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 	TRANSPARENCY,    // 투명 
 	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
+	TELEPORTIN_CEILING,
+	TELEPORTOUT_CEILING,
 	TELEPORTIN_SWEEP,
 	TELEPORTOUT_SWEEP,
+	TELEPORTIN_RIFLE,
+	TELEPORTOUT_RIFLE,
+
 	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
 	TURRET_SUMMONS,  // 터렛 소환 
 
@@ -103,12 +108,13 @@ private:
 	std::shared_ptr<class HeadHunter_RifleEffect> m_SweepEffect = nullptr;
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
+
 	float m_PhasePivot = -60.0f;
 
 	// 기본스탯 
 	// 총 3히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
 	int m_Phase1_HitCount = 3;
-	int m_Phase2_HitCount = 4;
+	int m_Phase2_HitCount = 5;
 	float m_RollSpeed = 500.0f;
 	bool m_Dir = false;
 
@@ -174,6 +180,20 @@ private:
 	std::shared_ptr<class Turret_Wall> m_TurretWall = nullptr;
 	std::shared_ptr<class Turret> m_Turret_First = nullptr;
 	std::shared_ptr<class Turret> m_Turret_Second = nullptr;
+	
+	bool m_IsDoubleSweep = false;
+
+	// ceiling 
+	std::vector<float4> m_vecCeilingPos = std::vector<float4>();
+	void CeilingPointInit();
+	const float4& CeilingPointShuffle();
+
+	bool m_TpInStart = false;
+	size_t m_TpCount = 0;
+	float4 m_TpCeilingPos = float4{ 0.0f, 0.0f };
+
+	float4 m_TpRifleLeftPos = float4{ 374.0f, -263.0f };
+	float4 m_TpRifleRightPos = float4{ -398.0f , -263.0f };
 
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
@@ -254,4 +274,20 @@ private:
 	void DashEndStart();
 	void DashEndUpdate(float _DeltaTime);
 	void DashEndEnd();
+
+	void TpInCeilingStart();
+	void TpInCeilingUpdate(float _DeltaTime);
+	void TpInCeilingEnd();
+
+	void TpOutCeilingStart();
+	void TpOutCeilingUpdate(float _DeltaTime);
+	void TpOutCeilingEnd();
+
+	void TpInRifleStart();
+	void TpInRifleUpdate(float _DeltaTime);
+	void TpInRifleEnd();
+
+	void TpOutRifleStart();
+	void TpOutRifleUpdate(float _DeltaTime);
+	void TpOutRifleEnd();
 };

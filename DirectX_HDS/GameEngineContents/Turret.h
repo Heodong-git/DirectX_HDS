@@ -42,7 +42,7 @@ private:
 
 	void Fire(float4 _Dir, const float _Angle);
 
-	float m_FireTime = 2.0f;
+	float m_FireTime = 1.5f;
 
 	bool m_ChangeAnim = false;
 

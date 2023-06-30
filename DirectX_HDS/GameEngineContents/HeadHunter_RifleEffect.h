@@ -5,7 +5,7 @@ enum class RifleEffectType
 {
 	NORMAL,
 	SWEEP,
-
+	CEILING_FIRE,
 };
 
 // Ό³Έν :

@@ -36,8 +36,6 @@ void Turret::SetType(TurretType _Type)
 
 void Turret::Start()
 {
-	
-
 	// 애니메이션렌더, 3분할 홀더, 바디, 포탑 
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
 	// m_MainRender->Off();
@@ -48,6 +46,7 @@ void Turret::Start()
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale(float4{ 4.0f , 4.0f });
+	m_DebugRender->Off();
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 50.0f , 70.0f });
@@ -126,7 +125,7 @@ void Turret::Update(float _DeltaTime)
 	
 				if (0.0f >= m_FireTime)
 				{
-					m_FireTime = 2.0f;
+					m_FireTime = 1.5f;
 					// 일단해 
 					Fire(TargetPos, m_TopRender->GetTransform()->GetLocalRotation().z);
 				}
