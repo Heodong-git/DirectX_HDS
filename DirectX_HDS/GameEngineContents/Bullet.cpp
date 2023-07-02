@@ -86,9 +86,6 @@ void Bullet::Update(float _DeltaTime)
 			}
 		}
 		// 반사사운드 출력
-		
-
-		
 	}
 
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
@@ -98,19 +95,25 @@ void Bullet::Update(float _DeltaTime)
 		Player::MainPlayer->BulletCollision();
 		Player::MainPlayer->CreateHitEffect(m_Collision);
 		this->Death();
+		return;
 	}
 
-	// 이동시키는데, 내가 몬스터와 충돌했다면 나를 데스, 몬스터도 총알과 충돌했다면 데스
-	std::shared_ptr<GameEngineCollision> MonsterCol = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (nullptr != MonsterCol && true == m_Parring)
+	
+	if (true == m_Parring)
 	{
-		GameEngineSound::Play("death_bullet.wav");
-		// 충돌체의 액터를 받아와서, 액터의 오버라이드된 불릿충돌 함수 호출
+		// 이동시키는데, 내가 몬스터와 충돌했다면 나를 데스, 몬스터도 총알과 충돌했다면 데스
+		std::shared_ptr<GameEngineCollision> MonsterCol = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != MonsterCol)
+		{
+			GameEngineSound::Play("death_bullet.wav");
+			// 충돌체의 액터를 받아와서, 액터의 오버라이드된 불릿충돌 함수 호출
 
-		// 그리고 여기서 리플렉트 이펙트도 만들어야함 
-		std::shared_ptr<BaseActor> Actor = MonsterCol->GetActor()->DynamicThis<BaseActor>();
-		Actor->BulletCollision();
-		this->Death();
+			// 그리고 여기서 리플렉트 이펙트도 만들어야함 
+			std::shared_ptr<BaseActor> Actor = MonsterCol->GetActor()->DynamicThis<BaseActor>();
+			Actor->BulletCollision();
+			this->Death();
+			return;
+		}
 	}
 }
 

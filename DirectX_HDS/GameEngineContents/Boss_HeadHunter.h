@@ -26,12 +26,18 @@ enum class BossState
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 	TRANSPARENCY,    // 투명 
 	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
+	
 	TELEPORTIN_CEILING,
 	TELEPORTOUT_CEILING,
 	TELEPORTIN_SWEEP,
 	TELEPORTOUT_SWEEP,
 	TELEPORTIN_RIFLE,
 	TELEPORTOUT_RIFLE,
+
+	TELEPORTIN_WALL,
+	
+	JUMP_RIFLE,
+	JUMP_RIFLE_LAND,
 
 	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
 	TURRET_SUMMONS,  // 터렛 소환 
@@ -164,6 +170,8 @@ private:
 	const float4 m_TeleportPos = float4{ -68.0f, 58.0f };
 	const float4 m_DashPos = float4{ -68.0f, -205.0f };
 
+	const float4 m_TeleportLeftWallPos = float4{ -485.0f,  -50.0f };
+	const float4 m_TeleportRightWallPos = float4{ 485.0f,  -50.0f };
 
 	// 소환스킬, 
 	void SummonsMonsters();
@@ -192,8 +200,8 @@ private:
 	size_t m_TpCount = 0;
 	float4 m_TpCeilingPos = float4{ 0.0f, 0.0f };
 
-	float4 m_TpRifleLeftPos = float4{ 374.0f, -263.0f };
-	float4 m_TpRifleRightPos = float4{ -398.0f , -263.0f };
+	float4 m_TpRifleLeftPos = float4{ 394.0f, -263.0f , };
+	float4 m_TpRifleRightPos = float4{ -418.0f , -263.0f };
 
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
@@ -290,4 +298,16 @@ private:
 	void TpOutRifleStart();
 	void TpOutRifleUpdate(float _DeltaTime);
 	void TpOutRifleEnd();
+
+	void TpInWallStart();
+	void TpInWallUpdate(float _DeltaTime);
+	void TpInWallEnd();
+
+	void JumpRifleStart();
+	void JumpRifleUpdate(float _DeltaTime);
+	void JumpRifleEnd();
+
+	void JumpRifleLandStart();
+	void JumpRifleLandUpdate(float _DeltaTime);
+	void JumpRifleLandEnd();
 };

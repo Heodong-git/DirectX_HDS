@@ -156,15 +156,20 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == m_Render->IsAnimationEnd() || BossState::RIFLE != m_Actor->GetCurState())
+	// 노말이펙트일 경우 
+	if (RifleEffectType::NORMAL == m_Type)
 	{
-		this->Death();
-		if (nullptr != m_Render)
+		BossState CurState = m_Actor->GetCurState();
+		if (true == m_Render->IsAnimationEnd())
 		{
-			m_Render = nullptr;
-			m_Actor = nullptr;
+			this->Death();
+			if (nullptr != m_Render)
+			{
+				m_Render = nullptr;
+				m_Actor = nullptr;
+			}
+			return;
 		}
-		return;
 	}
 
 	size_t Frame = m_Render->GetCurrentFrame();
@@ -172,7 +177,7 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 	{
 	case 0:
 		m_Render->ColorOptionValue.MulColor.a -= _DeltaTime;
-	break;
+		break;
 	case 1:
 		m_Render->ColorOptionValue.MulColor.a = 0.0f;
 		break;
@@ -182,6 +187,7 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		m_Collision->On();
 		break;
 	}
+	
 }
 
 void HeadHunter_RifleEffect::Render(float _DeltaTime)
