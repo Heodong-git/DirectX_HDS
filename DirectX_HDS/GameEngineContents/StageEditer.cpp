@@ -12,6 +12,10 @@
 
 #include "PixelCollider.h"
 
+#include "ClubLevel_Boss_01.h"
+
+#include "Boss_HeadHunter.h"
+
 StageEditer::StageEditer()
 {
 }
@@ -395,6 +399,21 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 ImGui::Text("Monster Count :");
                 ImGui::SameLine();
                 ImGui::Text("%.2d", CastLevel->GetMonsterCount());
+
+                if (LevelType::CLUBBOSS1 == CastLevel->GetLevelType())
+                {
+                    std::shared_ptr<ClubLevel_Boss_01> BossLevel = CastLevel->DynamicThis<ClubLevel_Boss_01>();
+                    
+                    std::shared_ptr<Boss_HeadHunter> HeadHunter = BossLevel->GetBossPtr();
+                    if (nullptr != HeadHunter)
+                    {
+                        // 레벨 몬스터 카운트
+                        ImGui::Text("Boss Hit Count :");
+                        ImGui::SameLine();
+                        ImGui::Text("%.2d", BossLevel->GetBossPtr()->GetPhase2_HitCount());
+                    }
+                   
+                }
             }
             
             // 여기서 각 디버그 픽셀의 컬러 

@@ -14,6 +14,7 @@ enum class BossState
 	IDLE,			// 아이들 2
 	RIFLE,			// 라이플 3
 	GUN,			// 건(폭발탄) 4 
+	GUN_SHOT,		// 폭발탄 발사 
 	ROLL,			// 회피(구르기) 5
 	JUMP,
 
@@ -40,7 +41,10 @@ enum class BossState
 	JUMP_RIFLE_LAND,
 
 	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
-	TURRET_SUMMONS,  // 터렛 소환 
+	TURRET_SUMMONS,  // 터렛 소환
+
+	MORIBUND,
+	NOHEAD,
 
 	MAX,
 };
@@ -66,13 +70,22 @@ public:
 		return m_CurState;
 	}
 
-
+	inline const int GetPhase2_HitCount()
+	{
+		return m_Phase2_HitCount;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+	float m_RotaitionFireTime = 0.02f;
+	int m_RotaitionFireCount = 10;
+	int m_CurRotFireCount = 0;
+	bool m_RotaitionFire = false;
+	void RotaitionFireUpdate(float _DeltaTime);
+
 	inline void ChangePhase(BossPhase _Phase)
 	{
 		m_CurPhase = _Phase;
@@ -121,6 +134,9 @@ private:
 	// 총 3히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
 	int m_Phase1_HitCount = 3;
 	int m_Phase2_HitCount = 5;
+
+	
+	
 	float m_RollSpeed = 500.0f;
 	bool m_Dir = false;
 
@@ -144,6 +160,8 @@ private:
 	// 마인을 저장할 벡터, 
 	std::vector<std::shared_ptr<class Remote_Mine>> m_Mines = std::vector<std::shared_ptr<class Remote_Mine>>();
 	
+
+	float4 m_GunShot_StandardPos = float4::Zero;
 
 	// 마인이 전부 death 상태이고, 플레이어가 살아있다면 
 	// 플레이어를 강제로 forcefall 상태로 변경한다. 
@@ -229,6 +247,10 @@ private:
 	void GunUpdate(float _DeltaTime);
 	void GunEnd();
 
+	void GunShotStart();
+	void GunShotUpdate(float _DeltaTime);
+	void GunShotEnd();
+
 	void RollStart();
 	void RollUpdate(float _DeltaTime);
 	void RollEnd();
@@ -310,4 +332,12 @@ private:
 	void JumpRifleLandStart();
 	void JumpRifleLandUpdate(float _DeltaTime);
 	void JumpRifleLandEnd();
+
+	void MoribundStart();
+	void MoribundUpdate(float _DeltaTime);
+	void MoribundEnd();
+
+	void NoHeadStart();
+	void NoHeadUpdate(float _DeltaTime);
+	void NoHeadEnd();
 };

@@ -59,7 +59,7 @@ private:
 	void DirCorrection();
 	float4 m_MoveDir = {};
 	float m_MoveSpeed = 1000.0f;
-	float m_LiveTime = 5.0f;
+	float m_LiveTime = 4.0f;
 	
 	bool m_Parring = false;
 	bool m_DirChange = false;

@@ -50,21 +50,19 @@ void Bullet::Update(float _DeltaTime)
 	
 	GetTransform()->AddLocalPosition(m_MoveDir * m_MoveSpeed * _DeltaTime);
 
-	
-	// 플레이어의 공격과 충돌했다면
 	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != DoorCol)
 	{
 		m_Collision->Off();
 		this->Death();
+		return;
 	}
 
 	// 플레이어의 공격과 충돌했다면
-	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	// 임시로 구충돌로 
+	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK);
 	if (nullptr != AttCol)
 	{
-		if (PlayerState::DEATH != Player::MainPlayer->GetCurState() ||
-			PlayerState::NONE != Player::MainPlayer->GetCurState())
 		{
 			// 내가 패링이 아닌상태에서
 			if (false == m_Parring)
@@ -85,18 +83,23 @@ void Bullet::Update(float _DeltaTime)
 				DirCorrection();
 			}
 		}
+		return;
 		// 반사사운드 출력
 	}
 
-	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (nullptr != PlayerCol)
+	if (true == this->IsUpdate())
 	{
-		GameEngineSound::Play("death_bullet.wav");
-		Player::MainPlayer->BulletCollision();
-		Player::MainPlayer->CreateHitEffect(m_Collision);
-		this->Death();
-		return;
+		std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != PlayerCol)
+		{
+			GameEngineSound::Play("death_bullet.wav");
+			Player::MainPlayer->BulletCollision();
+			Player::MainPlayer->CreateHitEffect(m_Collision);
+			this->Death();
+			return;
+		}
 	}
+
 
 	
 	if (true == m_Parring)

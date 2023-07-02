@@ -355,7 +355,6 @@ bool Player::FanBladeColCheck()
 bool Player::HitCheck()
 {
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
 	if (nullptr != Col)
 	{
 		CreateHitEffect(Col);

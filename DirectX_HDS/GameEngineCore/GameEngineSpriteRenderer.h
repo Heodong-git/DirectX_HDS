@@ -46,6 +46,8 @@ private:
 		IsPauseValue = false;
 	}
 
+	
+
 public:
 	size_t CurFrame = 0;				  // 현재프레임값
 	size_t StartFrame = -1;				  // 애니메이션의 시작 프레임값
@@ -170,6 +172,12 @@ public:
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
 
 	void SetFrame(size_t _Frame);
+
+	// 임시 
+	inline bool IsPause()
+	{
+		return CurAnimation->IsPauseValue;
+	}
 
 	void SetAnimPauseOn()
 	{

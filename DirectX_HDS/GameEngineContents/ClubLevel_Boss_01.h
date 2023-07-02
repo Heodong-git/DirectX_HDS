@@ -21,7 +21,10 @@ public:
 		return m_Appear;
 	}
 
-
+	std::shared_ptr<class Boss_HeadHunter> GetBossPtr()
+	{
+		return m_HeadHunter;
+	}
 
 protected:
 	void Start() override;
@@ -45,7 +48,7 @@ private:
 
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
 	std::shared_ptr<class Platform> m_ColCheckObj = nullptr;
-
+	std::shared_ptr<class Boss_HeadHunter> m_HeadHunter = nullptr;
 
 	bool m_Appear = false;
 };

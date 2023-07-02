@@ -38,10 +38,10 @@ ClubLevel_Boss_01::~ClubLevel_Boss_01()
 void ClubLevel_Boss_01::CreateHeadHunter()
 {
 	m_Appear = true;
-	std::shared_ptr<Boss_HeadHunter> Boss = CreateActor<Boss_HeadHunter>(static_cast<int>(RenderOrder::BOSS), "Boss_HeadHunter");
+	m_HeadHunter = CreateActor<Boss_HeadHunter>(static_cast<int>(RenderOrder::BOSS), "Boss_HeadHunter");
 	float4 InitPos = float4{ 358.0f, -263.0f };
-	ActorInit(Boss, InitPos);
-	Boss->ChangePhase(BossPhase::SECOND);
+	ActorInit(m_HeadHunter, InitPos);
+	m_HeadHunter->ChangePhase(BossPhase::SECOND);
 }
 
 void ClubLevel_Boss_01::Start()

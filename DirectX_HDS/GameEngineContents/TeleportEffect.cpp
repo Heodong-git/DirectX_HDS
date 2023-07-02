@@ -60,6 +60,19 @@ void TeleportEffect::LoadAndCreateAnimation()
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 	}
 
+	if (nullptr == GameEngineSprite::Find("gunspark_effect2"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("katanazero_resources");
+		Dir.Move("katanazero_resources");
+		Dir.Move("Texture");
+		Dir.Move("ClubLevel");
+		Dir.Move("effect");
+
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("gunspark_effect2").GetFullPath());
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+	}
+
 	// gunsmoke
 	if (nullptr == GameEngineSprite::Find("gunsmoke_effect2"))
 	{

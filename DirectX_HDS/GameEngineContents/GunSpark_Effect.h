@@ -20,6 +20,11 @@ public:
 		return m_Render;
 	}
 
+	void SetAngle(const float _Angle)
+	{
+		m_Angle;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -27,4 +32,5 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
+	float m_Angle = 0.0f;
 };
