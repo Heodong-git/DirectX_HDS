@@ -1,50 +1,55 @@
 #pragma once
 #include "BaseActor.h"
 
+// 보스 페이즈
 enum class BossPhase
 {
-	FIRST,
-	SECOND,
+	FIRST,		// 첫번째맵
+	SECOND,		// 두번째맵
 };
 
 enum class BossState
 {
 	NONE,
-	INTRO,
-	IDLE,			// 아이들 2
-	RIFLE,			// 라이플 3
-	GUN,			// 건(폭발탄) 4 
-	GUN_SHOT,		// 폭발탄 발사 
-	ROLL,			// 회피(구르기) 5
-	JUMP,
+	INTRO,			// 최초 조우시 
+	IDLE,			
+	RIFLE,			
+	GUN,			// 삭제 할수도 
+	GUN_SHOT,		// 마찬가지 
 
-	DASH,
-	DASH_END,
+	ROLL,			// 회피모션 
 
-	SWEEP,			// 12시 방향에서 라이플 180도돌리기 
+	JUMP,			// 추가예정
+
+	DASH,			// 공중상태에서의 대쉬임 
+	DASH_END,		// 착지하면서 칼질 
 
 	HURT,			 // 쳐맞
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
-	TRANSPARENCY,    // 투명 
-	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
-	
-	TELEPORTIN_CEILING,
-	TELEPORTOUT_CEILING,
-	TELEPORTIN_SWEEP,
-	TELEPORTOUT_SWEEP,
-	TELEPORTIN_RIFLE,
-	TELEPORTOUT_RIFLE,
 
-	TELEPORTIN_WALL,
+	REAPPEAR,		 // 투명상태 이후, 재등장 스테이트, 재등장 이후, 특정시간 내로 다른 스테이트로 진입하도록 
+	TRANSPARENCY,    // 투명 특정패턴 사용시 진입 
+
+	// 레이저, 라이플패턴 
+
+	SWEEP,			// 천장에서 라이플 180도돌리기 
 	
-	JUMP_RIFLE,
+	TELEPORTIN_CEILING,			// 천장진입 
+	TELEPORTOUT_CEILING,
+	TELEPORTIN_SWEEP,			// 라이플회전모션진입
+	TELEPORTOUT_SWEEP,
+	TELEPORTIN_RIFLE,			// 순간이동라이플모션진입
+	TELEPORTOUT_RIFLE,
+	TELEPORTIN_WALL,			// 벽 순간이동 
+
+	JUMP_RIFLE,					// 회전 발사 이펙트 추가예정
 	JUMP_RIFLE_LAND,
 
-	CHANGEPHASE,	 // 페이즈체인지, 맵에 익스플로전 이펙트생성 
-	TURRET_SUMMONS,  // 터렛 소환
+	CHANGEPHASE,				// 페이즈체인지, 맵에 익스플로전 이펙트생성 
+	TURRET_SUMMONS,				// 터렛 소환
 
-	MORIBUND,
-	NOHEAD,
+	MORIBUND,					// 빈사상태 
+	NOHEAD,						// 이건 안만들수도
 
 	MAX,
 };
@@ -65,105 +70,111 @@ public:
 	Boss_HeadHunter& operator=(const Boss_HeadHunter& _Other) = delete;
 	Boss_HeadHunter& operator=(Boss_HeadHunter&& _Other) noexcept = delete;
 
+	// 현재스테이트반환 
 	inline BossState GetCurState()
 	{
 		return m_CurState;
 	}
 
+	// 2페이즈의 히트카운트 반환 
 	inline const int GetPhase2_HitCount()
 	{
 		return m_Phase2_HitCount;
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override;
 
 private:
+	// 초기세팅
+	void ComponentSetting();
+	void LoadAndCreateAnimation();
+	void LoadSound();
 
-	float m_RotaitionFireTime = 0.02f;
-	int m_RotaitionFireCount = 10;
-	int m_CurRotFireCount = 0;
-	bool m_RotaitionFire = false;
+	// 공중사격 관련 
 	void RotaitionFireUpdate(float _DeltaTime);
+	float m_RotaitionFireTime = 0.02f;
+	int   m_RotaitionFireCount = 10;
+	int   m_CurRotFireCount = 0;
+	bool  m_RotaitionFire = false;
 
+	// 페이즈변경
 	inline void ChangePhase(BossPhase _Phase)
 	{
 		m_CurPhase = _Phase;
 	}
 
-	void CreateTpEffect();
-
-	void Reset();
-	void HurtCheck(float _DeltaTime);
-	void DebugUpdate();
-
+	
+	void SummonsSetting();
+	// 지속업데이트 필요함수 
 	void SummonsMonstersUpdate(float _DeltaTime);
+	// 몬스터 소환 위치
+	std::vector<float4> m_SummonsPoss = std::vector<float4>();
+	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();
 
-	// 넥스트포스 체크
+	void HitUpdate(float _DeltaTime);
+	void DebugUpdate();
 	void NextTransUpdate();
 	std::shared_ptr<GameEngineTransform> m_NextTrans = nullptr;
 	const float4 m_DebugPivot = float4{ 30.0f, 42.0f };
-
-	// 초기세팅
-	void ComponentSetting();
-	void LoadAndCreateAnimation();
-	void LoadSound();
 
 	// 렌더, 콜리전 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 
-	// 머리통 애니메이션 따로 만들거. 
-	// Start에서 부터 다시 하면댐 
+	// 삭제할수도 
 	std::shared_ptr<class GameEngineSpritRenderer> m_HeadRender = nullptr;
 
+	// 메인콜리전 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
+	// 공격콜리전 
 	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;
 
+	// 공격콜리전 온오프 
 	void AttCollisionOn();
 	void AttCollisionOff();
 
-	// 사용할 이펙트 
+	// 이펙트 
+	void CreateTpEffect();
 	void CreateRifleEffect();
+	void CreateSweepEffect();
 	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
 	std::shared_ptr<class HeadHunter_RifleEffect> m_SweepEffect = nullptr;
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
-
-	float m_PhasePivot = -60.0f;
-
-	// 기본스탯 
-	// 총 3히트를 당하고, 카운트가 5가 되면 2페이즈로 전환, 맵을 부수는 효과를 주고, 아래로 이동한다. 
-	int m_Phase1_HitCount = 3;
-	int m_Phase2_HitCount = 5;
-
-	
-	
-	float m_RollSpeed = 500.0f;
-	bool m_Dir = false;
-
 	// true = 오른쪽, false = 왼쪽 
-	void DirCheck();
-	void ChangeDir();
+	void ChangeDir();		// 플레이어와 x축 계산해서 왼쪽,오른쪽 변경
+	void DirCheck();		// 왼쪽오른쪽 구분해서 포지티브,네거티브스케일 적용
 
-	float m_Ratio = 0.0f;
-	// 히트되었을때 포물선로직을 사용하기 위한 변수
-	float4 m_HitPos = {};
-	float4 m_HitEndPos = {};
-	float4 m_MiddlePos = {};
-	float4 m_MainPos = {}; 
-
-	// 몬스터 소환 위치
-	std::vector<float4> m_SummonsPoss = std::vector<float4>();
-	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();
-
+	// 리셋 
+	void Reset();
+	void ResetPhase();
+	void ResetEffect();
+	void ResetSummons();
+	bool m_Dir = false;
 
 	bool m_SetMine = false;
 	// 마인을 저장할 벡터, 
 	std::vector<std::shared_ptr<class Remote_Mine>> m_Mines = std::vector<std::shared_ptr<class Remote_Mine>>();
+	size_t m_MineCount = 21;
+
+	bool m_Summons = false;
+	bool m_SummonsEndCheck = false;
+
+	// 기본스탯, 1페이즈, 2페이즈의 히트카운트 
+	int m_Phase1_HitCount = 3;
+	int m_Phase2_HitCount = 5;
+	float m_RollSpeed = 500.0f;
+
+	float m_Ratio = 0.0f;
 	
+	// 히트시 베지에곡선사용에 필요한 변수  
+	float4 m_HitPos = {};
+	float4 m_HitEndPos = {};
+	float4 m_MiddlePos = {};
+	float4 m_MainPos = {}; 
 
 	float4 m_GunShot_StandardPos = float4::Zero;
 
@@ -172,21 +183,12 @@ private:
 	bool PlayerLiveCheck();
 
 	float m_IdleDuration = 0.25f;
-
-	// 4초뒤에 
 	float m_TransDuration = 3.0f;
-
 	float m_TurretSummons_Duration = 3.0f;
-
 	float m_PhaseDuration = 0.0f;
 
 	// 현재 페이즈 
 	BossPhase m_CurPhase = BossPhase::FIRST;
-	bool m_Summons = false; 
-	bool m_SummonsEndCheck = false;
-
-
-	size_t m_MineCount = 21;
 
 	// world
 	const float4 m_TeleportPos = float4{ -68.0f, 58.0f };
@@ -197,7 +199,7 @@ private:
 
 	// 소환스킬, 
 	void SummonsMonsters();
-	void SummonsTurrets();
+	void CreateTurretWall();
 
 	// 터렛관련
 	// 터렛 소환위치, world 
@@ -211,9 +213,9 @@ private:
 	std::shared_ptr<class Turret> m_Turret_First = nullptr;
 	std::shared_ptr<class Turret> m_Turret_Second = nullptr;
 	
+	// 천장레이저 
 	bool m_IsDoubleSweep = false;
-
-	// ceiling 
+	const float m_SweepRotSpeed = 13.0f;
 	std::vector<float4> m_vecCeilingPos = std::vector<float4>();
 	void CeilingPointInit();
 	const float4& CeilingPointShuffle();
