@@ -80,6 +80,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+
 	float m_RotaitionFireTime = 0.02f;
 	int m_RotaitionFireCount = 10;
 	int m_CurRotFireCount = 0;
@@ -114,6 +115,9 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_DebugRender_Right = nullptr;
 
+	// 머리통 애니메이션 따로 만들거. 
+	// Start에서 부터 다시 하면댐 
+	std::shared_ptr<class GameEngineSpritRenderer> m_HeadRender = nullptr;
 
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_AttCollision = nullptr;

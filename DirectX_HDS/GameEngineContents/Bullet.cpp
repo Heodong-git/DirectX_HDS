@@ -41,7 +41,7 @@ void Bullet::Update(float _DeltaTime)
 {
 	if (GetLiveTime() >= m_LiveTime)
 	{
-		if (false == IsUpdate())
+		if (true == IsUpdate())
 		{
 			this->Death();
 		}

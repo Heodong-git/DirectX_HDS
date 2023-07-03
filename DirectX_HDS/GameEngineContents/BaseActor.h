@@ -20,6 +20,9 @@ public:
 	BaseActor& operator=(const BaseActor& _Other) = delete;
 	BaseActor& operator=(BaseActor&& _Other) noexcept = delete;
 
+	// 인자로 값을 넣어주면, 0부터 인자로 넣어준 값까지의 랜덤한 값 반환 
+	const int CreateRandomValue(const int _MAX);
+
 	class BaseLevel* GetReturnCastLevel() const;
 
 	inline void SetInitPos(float4& _Pos)

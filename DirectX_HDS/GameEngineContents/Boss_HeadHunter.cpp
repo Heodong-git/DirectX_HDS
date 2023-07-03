@@ -1130,8 +1130,26 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 	if (true == m_MainRender->IsAnimationEnd() && true == m_Effect->IsDeath())
 	{ 
 		m_Effect = nullptr;
-		ChangeState(BossState::ROLL);
+
+		// 여기서 롤, 또는 점프, 또는 wall 상태로 변경해야함 
+		int RandomValue = CreateRandomValue(2);
+
+		switch (RandomValue)
+		{
+		case 1:
+			ChangeState(BossState::ROLL);
+			break;
+		case 2:
+			ChangeState(BossState::TELEPORTIN_WALL);
+			break;
+		default:
+		{
+			MsgAssert("이상한 랜덤값이 반환 되었습니다. CreateRandomValue 함수를 확인하세요.");
+			break;
+		}
+
 		return;
+		}
 	}
 }
 
@@ -1635,7 +1653,7 @@ void Boss_HeadHunter::JumpStart()
 
 void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 {
-	
+	// 베지에곡선사용으로 점프 ㄱㄱ
 }
 
 void Boss_HeadHunter::JumpEnd()
@@ -2033,6 +2051,7 @@ void Boss_HeadHunter::TpOutRifleEnd()
 	}*/
 }
 
+// 
 void Boss_HeadHunter::TpInWallStart()
 {
 	m_Collision->Off();
@@ -2041,18 +2060,17 @@ void Boss_HeadHunter::TpInWallStart()
 	if (1 == RandomValue)
 	{
 		// 일단 왼쪽부터 
-		/*m_Dir = false;
+		m_Dir = false;
+		
 		GetTransform()->SetWorldPosition(m_TeleportRightWallPos);
-		GetTransform()->SetLocalNegativeScaleX();*/
-
-		m_Dir = true;
-		GetTransform()->SetWorldPosition(m_TeleportLeftWallPos);
-		GetTransform()->SetLocalPositiveScaleX();
+		GetTransform()->SetLocalNegativeScaleX();
 	}
 
 	else if (2 == RandomValue)
 	{
 		m_Dir = true;
+
+
 		GetTransform()->SetWorldPosition(m_TeleportLeftWallPos);
 		GetTransform()->SetLocalPositiveScaleX();
 	}
@@ -2091,7 +2109,7 @@ void Boss_HeadHunter::JumpRifleStart()
 
 void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 {
-	if (5 == m_MainRender->GetCurrentFrame())
+	/*if (5 == m_MainRender->GetCurrentFrame())
 	{
 		m_RotaitionFire = false;
 	}
@@ -2100,7 +2118,7 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 	if (1 == m_MainRender->GetCurrentFrame())
 	{
 		m_RotaitionFire = true;
-	}
+	}*/
 
 	m_Ratio += _DeltaTime;
 	if (1.0f <= m_Ratio)
@@ -2108,41 +2126,109 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 		m_Ratio = 1.0f;
 	}
 
-	// 왼쪽벽일때의 로직
-	if (true == m_Dir)
+	if (BossPhase::FIRST == m_CurPhase)
 	{
-		m_TeleportLeftWallPos;
-		// 중간지점, 도착지점을 정해야함 
-		float4 MiddlePos = float4{ -19.0f, 402.0f };
-		float4 EndPos = float4{ 301.0f, -263.0f };
-
-		float4 MovePos = float4::Lerp(m_TeleportLeftWallPos, MiddlePos, m_Ratio);
-		float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
-		float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
-
-		GetTransform()->SetWorldPosition(MovePos3);
-		
-		float4 Check = GetTransform()->GetWorldPosition();
-
-		if (EndPos == GetTransform()->GetWorldPosition())
+		// 왼쪽벽일때의 로직
+		if (true == m_Dir)
 		{
-			ChangeState(BossState::JUMP_RIFLE_LAND);
+			// 중간지점, 도착지점을 정해야함 
+			float4 MiddlePos = float4{ -19.0f, 402.0f };
+			float4 EndPos = float4{ 301.0f, -203.0f };
+
+			float4 MovePos = float4::Lerp(m_TeleportLeftWallPos, MiddlePos, m_Ratio);
+			float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+			float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+			GetTransform()->SetWorldPosition(MovePos3);
+
+			float4 Check = GetTransform()->GetWorldPosition();
+
+			if (EndPos == GetTransform()->GetWorldPosition())
+			{
+				ChangeState(BossState::JUMP_RIFLE_LAND);
+				return;
+			}
+
 			return;
 		}
 
-		return;
+		// 우측벽 
+		if (false == m_Dir)
+		{
+			// 중간지점, 도착지점을 정해야함 
+			float4 MiddlePos = float4{ 19.0f, 402.0f };
+			float4 EndPos = float4{ -301.0f, -203.0f };
+
+			float4 MovePos = float4::Lerp(m_TeleportRightWallPos, MiddlePos, m_Ratio);
+			float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+			float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+			GetTransform()->SetWorldPosition(MovePos3);
+
+			float4 Check = GetTransform()->GetWorldPosition();
+
+			if (EndPos == GetTransform()->GetWorldPosition())
+			{
+				ChangeState(BossState::JUMP_RIFLE_LAND);
+				return;
+			}
+
+			return;
+		}
 	}
 
-	//// 우측벽일때의 로직 
-	//if (false == m_Dir)
-	//{
-	//	float4 MovePos = float4::Lerp(m_HitPos, m_MiddlePos, m_Ratio * 2.0f);
-	//	float4 MovePos2 = float4::Lerp(m_MiddlePos, m_HitEndPos, m_Ratio);
-	//	float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+	// 이게 2페이즈 로직
+	if (BossPhase::SECOND == m_CurPhase)
+	{
+		// 왼쪽벽일때의 로직
+		if (true == m_Dir)
+		{
+			// 중간지점, 도착지점을 정해야함 
+			float4 MiddlePos = float4{ -19.0f, 402.0f };
+			float4 EndPos = float4{ 301.0f, -263.0f };
 
-	//	GetTransform()->SetWorldPosition(MovePos3);
-	//	return;
-	//}
+			float4 MovePos = float4::Lerp(m_TeleportLeftWallPos, MiddlePos, m_Ratio);
+			float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+			float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+			GetTransform()->SetWorldPosition(MovePos3);
+
+			float4 Check = GetTransform()->GetWorldPosition();
+
+			if (EndPos == GetTransform()->GetWorldPosition())
+			{
+				ChangeState(BossState::JUMP_RIFLE_LAND);
+				return;
+			}
+
+			return;
+		}
+
+		// 우측벽 
+		if (false == m_Dir)
+		{
+			// 중간지점, 도착지점을 정해야함 
+			float4 MiddlePos = float4{ 19.0f, 402.0f };
+			float4 EndPos = float4{ -301.0f, -263.0f };
+
+			float4 MovePos = float4::Lerp(m_TeleportRightWallPos, MiddlePos, m_Ratio);
+			float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+			float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+			GetTransform()->SetWorldPosition(MovePos3);
+
+			float4 Check = GetTransform()->GetWorldPosition();
+
+			if (EndPos == GetTransform()->GetWorldPosition())
+			{
+				ChangeState(BossState::JUMP_RIFLE_LAND);
+				return;
+			}
+
+			return;
+		}
+	}
+	
 }
 
 void Boss_HeadHunter::JumpRifleEnd()
@@ -2222,7 +2308,7 @@ void Boss_HeadHunter::NoHeadStart()
 // 나중에 필요한거 있으면 
 void Boss_HeadHunter::NoHeadUpdate(float _DeltaTime)
 {
-	int a = 0;
+	// 공격 당하면, 충돌체 없애고, 머리통 날아가게해야함 
 }
 
 void Boss_HeadHunter::NoHeadEnd()

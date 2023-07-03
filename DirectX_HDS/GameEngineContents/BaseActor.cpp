@@ -2,12 +2,20 @@
 #include "BaseActor.h"
 #include "BaseLevel.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
 BaseActor::BaseActor()
 {
 }
 
 BaseActor::~BaseActor()
 {
+}
+
+const int BaseActor::CreateRandomValue(const int _MAX)
+{
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(1, _MAX);
+	return RandomValue;
 }
 
 BaseLevel* BaseActor::GetReturnCastLevel() const
