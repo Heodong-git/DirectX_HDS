@@ -54,8 +54,9 @@ void ClubLevel_Boss::Start()
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
 
-	// test 
-	GetLastTarget()->CreateEffect<DistotionEffect>();
+	// test
+	// 디스토션쉐이더 적용 잘됨  
+	// GetLastTarget()->CreateEffect<DistotionEffect>();
 }
 
 void ClubLevel_Boss::Update(float _DeltaTime)

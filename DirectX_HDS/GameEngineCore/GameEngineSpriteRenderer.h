@@ -16,6 +16,14 @@
 // 따라서 이 클래스를 사용하면 참조계수를 증가시키지 않고도 객체를 참조하는 shared ptr을 생성할 수 있다. 
 // 메모리 누수를 방지하는데에 도움이 된다. 
 
+class AnimationStartEvent
+{
+public:
+	bool IsEvent = false;
+	std::function<void()> Function;
+};
+
+
 // 애니메이션정보를 저장할 클래스 
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
@@ -62,7 +70,7 @@ public:
 	std::vector<float>  FrameTime = std::vector<float>();			// 프레임당 걸리는 시간 저장 ( 프레임사이의 간격 ) 
 
 	std::map<size_t, std::function<void()>> UpdateEventFunction;	// 업데이트 이벤트 함수를 저장할 map
-	std::map<size_t, std::function<void()>> StartEventFunction;		// 프레임이 실행될 때 한번만 호출될 함수를 저장할 map 
+	std::map<size_t, AnimationStartEvent> StartEventFunction;
 
 	bool IsEnd();						  // 현재 애니메이션이 최초로 마지막 프레임에 도달했는지? , 최초 한번만 호출됨
 };

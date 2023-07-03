@@ -1150,6 +1150,7 @@ void Boss_HeadHunter::IdleEnd()
 
 void Boss_HeadHunter::RifleStart()
 {
+	CreateRifleEffect();
 	ChangeDir();
 	DirCheck();
 	m_MainRender->ChangeAnimation("headhunter_takeout_rifle");
