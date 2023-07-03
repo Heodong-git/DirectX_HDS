@@ -161,6 +161,9 @@
     <ClInclude Include="GameEngineFont.h">
       <Filter>Resources\Font</Filter>
     </ClInclude>
+    <ClInclude Include="BlurEffect.h">
+      <Filter>Contents\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -315,6 +318,9 @@
     <ClCompile Include="GameEngineFont.cpp">
       <Filter>Resources\Font</Filter>
     </ClCompile>
+    <ClCompile Include="BlurEffect.cpp">
+      <Filter>Contents\PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -412,6 +418,9 @@
     </Filter>
     <Filter Include="Resources\Font">
       <UniqueIdentifier>{67fa590f-9de1-4e85-8bf6-9387c0f63b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\PostEffect">
+      <UniqueIdentifier>{bbbfa8d6-048e-4a4d-9610-6ccf8853b663}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

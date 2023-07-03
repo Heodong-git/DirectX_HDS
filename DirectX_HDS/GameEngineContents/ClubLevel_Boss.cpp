@@ -27,6 +27,7 @@
 
 // test
 #include "BloodEffect.h"
+#include "DistotionEffect.h"
 
 ClubLevel_Boss::ClubLevel_Boss()
 {
@@ -52,6 +53,9 @@ void ClubLevel_Boss::Start()
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
+
+	// test 
+	GetLastTarget()->CreateEffect<DistotionEffect>();
 }
 
 void ClubLevel_Boss::Update(float _DeltaTime)

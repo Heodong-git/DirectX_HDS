@@ -204,6 +204,9 @@
     <ClInclude Include="Turret_Wall.h">
       <Filter>02.Actor\02.Monster\Turret\Turret_Wall</Filter>
     </ClInclude>
+    <ClInclude Include="DistotionEffect.h">
+      <Filter>02.Actor\08.CameraEffect\Distotion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -408,6 +411,9 @@
     <ClCompile Include="Turret_Wall.cpp">
       <Filter>02.Actor\02.Monster\Turret\Turret_Wall</Filter>
     </ClCompile>
+    <ClCompile Include="DistotionEffect.cpp">
+      <Filter>02.Actor\08.CameraEffect\Distotion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -592,6 +598,9 @@
     </Filter>
     <Filter Include="02.Actor\02.Monster\Turret\Turret_Wall">
       <UniqueIdentifier>{393e7af6-d33e-4c6e-97ce-fb27d3c12c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect\Distotion">
+      <UniqueIdentifier>{e5be19c9-3b4f-47c5-af62-73c340cc2cab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

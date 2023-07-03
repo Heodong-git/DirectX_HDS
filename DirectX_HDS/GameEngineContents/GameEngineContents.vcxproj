@@ -188,6 +188,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="DistotionEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="DoorEffect.h">
       <SubType>
       </SubType>
@@ -430,6 +434,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ClubLevel_Boss_01.cpp" />
     <ClCompile Include="ColEventObj.cpp" />
+    <ClCompile Include="DistotionEffect.cpp" />
     <ClCompile Include="DoorEffect.cpp" />
     <ClCompile Include="EnemyFollow_Effect.cpp" />
     <ClCompile Include="Explosion_Effect.cpp" />

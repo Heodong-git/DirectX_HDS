@@ -167,6 +167,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BlurEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EngineContentsRenderingStruct.h" />
     <ClInclude Include="GameEngineActor.h">
       <SubType>
@@ -348,6 +352,7 @@
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlurEffect.cpp" />
     <ClCompile Include="GameEngineActor.cpp" />
     <ClCompile Include="GameEngineBlend.cpp" />
     <ClCompile Include="GameEngineButton.cpp" />

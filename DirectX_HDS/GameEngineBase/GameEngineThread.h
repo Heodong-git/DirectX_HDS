@@ -2,6 +2,7 @@
 #include <string>
 #include <functional>
 #include <atomic>
+#include <thread>
 
 // Ό³Έν :
 class GameEngineThread

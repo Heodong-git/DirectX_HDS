@@ -22,6 +22,13 @@ public:
 	void Render(float _DeltaTime);
 };
 
+class RenderBaseValue
+{
+public:
+	float4 Time;
+	float4 ScreenScale;
+	float4 Mouse;
+};
 
 // Ό³Έν :
 class GameEngineRenderer : public GameEngineComponent
@@ -79,9 +86,11 @@ private:
 
 	float CalZ = 0.0f;
 
-	GameEngineCamera* RenderCamera;
+	GameEngineCamera* RenderCamera = nullptr;
 
 	std::vector<std::shared_ptr<GameEngineRenderUnit>> Units;
+
+	RenderBaseValue BaseValue;
 
 	void RenderTransformUpdate(GameEngineCamera* _Camera);
 };
