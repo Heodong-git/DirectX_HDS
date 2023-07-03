@@ -94,7 +94,7 @@ private:
 
 	// 공중사격 관련 
 	void RotaitionFireUpdate(float _DeltaTime);
-	float m_RotaitionFireTime = 0.02f;
+	float m_RotaitionFireTime = 0.008f;
 	int   m_RotaitionFireCount = 10;
 	int   m_CurRotFireCount = 0;
 	bool  m_RotaitionFire = false;
@@ -187,6 +187,12 @@ private:
 	float m_TurretSummons_Duration = 3.0f;
 	float m_PhaseDuration = 0.0f;
 
+	std::vector<float> m_vecFireAngle = std::vector<float>();
+	size_t m_FireAngleCount = 18;
+	size_t m_CurFireAngleCount = 0;
+	size_t m_CurFireAngleCount_Reverse = 17;
+	void FireAngleInit();
+
 	// 현재 페이즈 
 	BossPhase m_CurPhase = BossPhase::FIRST;
 
@@ -200,6 +206,7 @@ private:
 	// 소환스킬, 
 	void SummonsMonsters();
 	void CreateTurretWall();
+	void CreateTurret();
 
 	// 터렛관련
 	// 터렛 소환위치, world 

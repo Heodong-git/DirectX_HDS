@@ -34,6 +34,7 @@ void Boss_HeadHunter::Start()
 	LoadAndCreateAnimation();
 	SummonsSetting();
 	CeilingPointInit();
+	FireAngleInit();
 	ChangeState(BossState::INTRO);
 }
 
@@ -42,10 +43,10 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 	DebugUpdate();
 
 	// 이건 위에 있어야 맞지. 근데 일단 보류 
-	/*if (true == m_RotaitionFire)
+	if (true == m_RotaitionFire)
 	{
 		RotaitionFireUpdate(_DeltaTime);
-	}*/
+	}
 
 	HitUpdate(_DeltaTime);
 	if (true == m_Summons && false == m_SummonsEndCheck)
@@ -56,39 +57,61 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 }
 
+// -179, -1 
+// 개수는 18개 
+// 10도당 하나 
+// 어느쪽으로 먼저나가냐가 그거니까
+// 벡터에 담아두고 우측으로 쏠때는 정방향, 좌측으로쏠때는 역방향으로 진행한다. 
+
 void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 {
-	//// 벡터에 발사각도 저장해두고, 
-	//// 보류  
-	//if (0.0f >= m_RotaitionFireTime)
-	//{
-	//	// test
-	//	if (1 == m_CurRotFireCount)
-	//	{
-	//		m_RotaitionFireTime = 0.02f;
-	//		std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
-	//		Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-	//		Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f , -15.0f });
-	//		Obj->SetMoveDir(float4 { 628.0f , 77.0f , 30.0f });
+	// 벡터에 발사각도 저장해두고, 사용 일단 임시
+	if (0.0f >= m_RotaitionFireTime)
+	{
+		bool Check = m_Dir;
 
-	//		// 이게 말이되나????
-	//		std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
-	//		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-	//		Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, -15.0f });
-	//		++m_CurRotFireCount;
-	//		return;
-	//	}
+		if (true == m_Dir)
+		{
+			// 쿨타임 0.02초로 초기화
+			m_RotaitionFireTime = 0.008f;
+			// 불릿 오브젝트생성
+			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
+			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
+			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
+			Obj->SetMoveDir(Dir);
 
-	//	m_RotaitionFireTime = 0.02f;
-	//	std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
-	//	Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-	//	Obj->SetMoveDir(float4::Right);
-	//	std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
-	//	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-	//	++m_CurRotFireCount;
-	//}
-	//
-	//m_RotaitionFireTime -= _DeltaTime;
+			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
+			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
+
+		
+			++m_CurFireAngleCount;
+			return;
+		}
+
+		if (false == m_Dir)
+		{
+			// 쿨타임 0.02초로 초기화
+			m_RotaitionFireTime = 0.008f;
+			// 불릿 오브젝트생성
+			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
+			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
+			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
+			Obj->SetMoveDir(Dir);
+
+			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
+			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
+
+			--m_CurFireAngleCount_Reverse;
+			return;
+		}
+		
+	}
+	
+	m_RotaitionFireTime -= _DeltaTime;
 }
 
 void Boss_HeadHunter::NextTransUpdate()
@@ -360,6 +383,7 @@ void Boss_HeadHunter::Reset()
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(BossState::INTRO);
 
+	m_CurFireAngleCount = 0;
 	m_IdleDuration = 0.25f;
 	m_IsDoubleSweep = false;
 	m_TpInStart = false;
@@ -655,6 +679,18 @@ bool Boss_HeadHunter::PlayerLiveCheck()
 	return false;
 }
 
+void Boss_HeadHunter::FireAngleInit()
+{
+	m_vecFireAngle.reserve(m_FireAngleCount);
+	float Angle = 0.0f;
+
+	for (size_t i = 0; i < m_FireAngleCount; ++i)
+	{
+		m_vecFireAngle.push_back(Angle);
+		Angle -= 10.0f;
+	}
+}
+
 void Boss_HeadHunter::SummonsMonsters()
 {
 	// 소환상태를 true로 변경
@@ -722,6 +758,17 @@ void Boss_HeadHunter::CreateTurretWall()
 {
 	m_TurretWall = GetLevel()->CreateActor<Turret_Wall>();
 	m_TurretWall->GetTransform()->SetWorldPosition(m_TurretWallPos);
+}
+
+void Boss_HeadHunter::CreateTurret()
+{
+	// 터렛 두마리 생성, 위치는 ? 
+	m_Turret_First = GetLevel()->CreateActor<Turret>();
+	m_Turret_First->SetType(TurretType::WALL);
+	m_Turret_First->GetTransform()->SetWorldPosition(m_Turret_FirstPos);
+	m_Turret_Second = GetLevel()->CreateActor<Turret>();
+	m_Turret_Second->SetType(TurretType::WALL);
+	m_Turret_Second->GetTransform()->SetWorldPosition(m_Turret_SecondPos);
 }
 
 
@@ -1649,7 +1696,6 @@ void Boss_HeadHunter::TpSweepOutEnd()
 			m_Effect = nullptr;
 		}
 	}
-	
 	m_MainRender->On();
 }
 
@@ -1659,10 +1705,10 @@ void Boss_HeadHunter::TurretSummonsStart()
 	CreateTurretWall();
 }
 
+// 얜냅둬 
 void Boss_HeadHunter::TurretSummonsUpdate(float _DeltaTime)
 {
 	m_PhaseDuration -= _DeltaTime;
-
 	if (0.0f >= m_PhaseDuration)
 	{
 		ChangeState(BossState::TELEPORTIN_SWEEP);
@@ -1672,13 +1718,8 @@ void Boss_HeadHunter::TurretSummonsUpdate(float _DeltaTime)
 	if (true == m_TurretWall->GetRender()->IsAnimationEnd() && false == m_IsTurretSummons)
 	{
 		m_IsTurretSummons = true;
-		// 터렛 두마리 생성, 위치는 ? 
-		m_Turret_First = GetLevel()->CreateActor<Turret>();
-		m_Turret_First->SetType(TurretType::WALL);
-		m_Turret_First->GetTransform()->SetWorldPosition(m_Turret_FirstPos);
-		m_Turret_Second = GetLevel()->CreateActor<Turret>();
-		m_Turret_Second->SetType(TurretType::WALL);
-		m_Turret_Second->GetTransform()->SetWorldPosition(m_Turret_SecondPos);
+		CreateTurret();
+		return;
 	}
 }
 
@@ -1692,14 +1733,14 @@ void Boss_HeadHunter::DashStart()
 	m_Collision->Off();
 	if (BossState::TELEPORTOUT_SWEEP == m_PrevState)
 	{
-		// 왼쪽오른쪽 정해주고 
 		ChangeDir();
 		DirCheck();
 	}
-
 	m_MainRender->ChangeAnimation("headhunter_dash");
 }
 
+// 대시 종료시 ~~~ 
+// 여기부터 다시 
 void Boss_HeadHunter::DashUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
@@ -1715,8 +1756,6 @@ void Boss_HeadHunter::DashUpdate(float _DeltaTime)
 
 		else if (1 == RandomValue)
 		{
-			
-
 			// ChangeState(BossState::TELEPORTIN_RIFLE);
 			return;
 		}
@@ -1968,16 +2007,27 @@ void Boss_HeadHunter::JumpRifleStart()
 
 void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 {
-	/*if (5 == m_MainRender->GetCurrentFrame())
+	// ??
+	if (m_FireAngleCount == m_CurFireAngleCount)
 	{
+		m_CurFireAngleCount = 0;
+		m_RotaitionFireTime = 0.008f;
 		m_RotaitionFire = false;
+		return;
 	}
 
+	if (m_CurFireAngleCount_Reverse == 0)
+	{
+		m_CurFireAngleCount_Reverse = 17;
+		m_RotaitionFireTime = 0.008f;
+		m_RotaitionFire = false;
+		return;
+	}
 
 	if (1 == m_MainRender->GetCurrentFrame())
 	{
 		m_RotaitionFire = true;
-	}*/
+	}
 
 	m_Ratio += _DeltaTime;
 	if (1.0f <= m_Ratio)
@@ -2094,7 +2144,8 @@ void Boss_HeadHunter::JumpRifleEnd()
 {
 	m_Collision->On();
 	m_Ratio = 0.0f;
-	m_CurRotFireCount = 0;
+	m_CurFireAngleCount = 0;
+	m_CurFireAngleCount_Reverse = 17;
 }
 
 void Boss_HeadHunter::JumpRifleLandStart()
