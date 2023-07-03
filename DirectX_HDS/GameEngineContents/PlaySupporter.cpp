@@ -13,7 +13,6 @@
 PlaySupporter* PlaySupporter::MainSupporter = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
-std::shared_ptr<GameEngineCollision> PlaySupporter::g_MouseCheckCollision = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_ClearRender = nullptr;
 
 PlaySupporter::PlaySupporter()
@@ -47,7 +46,16 @@ void PlaySupporter::Update(float _DeltaTime)
 		m_MainCamera = GameEngineCore::GetCurLevel()->GetMainCamera();
 	}
 
+	// 녹화대기 상태를 추가해. 
+	// 녹화대기 상태의 조건
+	// 1. 플레이어가 사망한다.
+	// 2. 스테이지가 클리어된다. 
+	// 그렇다는건, 1번은 플레이어가 죽는다. 를 어떻게 체크할거냐?
+	// 단순하게. 레벨에서 플레이어 데스체크를해서, 죽었다면 녹화대기 상태로 변경한다.
+	// 2번 스테이지가 클리어 된다 라는 조건은, 몬스터를 모두 죽이거나, 유캔두디스 텍스쳐가 출력되고나서 2초후. 라고 하자. 
+
 	// 플레이어가 사망하면, 텍스트를 띄우고 레벨을 대기 상태로 변경한다. 
+	// 사망하면 이라는 전제를, 좀 바꾸고 싶어. 
 	if (PlayerState::NONE == Player::MainPlayer->GetCurState() ||
 		PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
 	{
@@ -75,7 +83,6 @@ void PlaySupporter::ResetButtonOn()
 {
 	g_BlackBoxRender->On();
 	g_FailRender->On();
-	g_MouseCheckCollision->On();
 }
 
 void PlaySupporter::CameraZoomEffect(float _Ratio)
@@ -343,27 +350,34 @@ void PlaySupporter::LevelResetCheck()
 {
 	ResetButtonOn();
 
-	if (nullptr == g_MouseCheckCollision)
+	if (true == GameEngineInput::IsDown("EngineMouseLeft"))
 	{
-		MsgAssert("마우스클릭 체크용 충돌체가 nullptr입니다.");
-		return;
+		if (PlayerState::NONE == Player::MainPlayer->GetCurState() || PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
+		{
+			g_BlackBoxRender->Off();
+			g_FailRender->Off();
+			// 리셋하고 
+			GetReturnCastLevel()->LevelReset();
+			return;
+		}
 	}
 
-	// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
-	g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
-	std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
 
-	// 뭔가가 들어왔다는건 충돌했다는거고 
-	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-	if ((nullptr != CursorCol && PlayerState::NONE == Player::MainPlayer->GetCurState()) ||
-		(nullptr != CursorCol && PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState()))
-	{
-		CursorCol->Off();
-		g_BlackBoxRender->Off();
-		g_FailRender->Off();
-		// 리셋하고 
-		GetReturnCastLevel()->LevelReset();
-	}
+	//// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
+	//g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
+	//std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
+
+	//// 뭔가가 들어왔다는건 충돌했다는거고 
+	//// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
+	//if ((nullptr != CursorCol && PlayerState::NONE == Player::MainPlayer->GetCurState()) ||
+	//	(nullptr != CursorCol && PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState()))
+	//{
+	//	CursorCol->Off();
+	//	g_BlackBoxRender->Off();
+	//	g_FailRender->Off();
+	//	// 리셋하고 
+	//	GetReturnCastLevel()->LevelReset();
+	//}
 }
 
 void PlaySupporter::ComponentSetting()
@@ -386,12 +400,6 @@ void PlaySupporter::ComponentSetting()
 	g_ClearRender->SetTexture("youcandothis.png");
 	g_ClearRender->GetTransform()->SetLocalScale(ScreenSize);
 	g_ClearRender->Off();
-
-	// 일단 임시로 크기를 키워둠 
-	g_MouseCheckCollision = CreateComponent <GameEngineCollision>(ColOrder::CHECKBOX);
-	g_MouseCheckCollision->GetTransform()->SetLocalScale(ScreenSize * 4.0f);
-	g_MouseCheckCollision->SetColType(ColType::OBBBOX3D);
-	g_MouseCheckCollision->Off();
 }
 
 void PlaySupporter::SaveCameraRange()
@@ -488,6 +496,5 @@ void PlaySupporter::Reset()
 {
 	g_BlackBoxRender->Off();
 	g_FailRender->Off();
-	g_MouseCheckCollision->Off();
 }
 

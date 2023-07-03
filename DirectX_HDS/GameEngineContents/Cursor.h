@@ -51,7 +51,6 @@ private:
 		ShowCursor(false);
 	}
 
-	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 
 	// 마우스커서 쫓아가기
 	void FollowCursor();

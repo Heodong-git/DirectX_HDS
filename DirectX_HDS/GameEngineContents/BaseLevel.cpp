@@ -58,8 +58,6 @@ void BaseLevel::Update(float _DeltaTime)
 	}
 
 	KeyUpdate();
-
-	// 스테이지 클리어 체크
 	LevelClearCheck();
 	PlayerSkillCheck();
 	DebugUpdate();
@@ -212,8 +210,6 @@ void BaseLevel::LevelReset()
 
 void BaseLevel::Reset()
 {
-	// test 
-	return;
 
 	if (nullptr != m_GoUI)
 	{

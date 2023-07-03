@@ -22,7 +22,6 @@ public:
 	static std::shared_ptr<class GameEngineUIRenderer> g_FailRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_BlackBoxRender;
 	static std::shared_ptr<class GameEngineUIRenderer> g_ClearRender;
-	static std::shared_ptr<class GameEngineCollision>  g_MouseCheckCollision;
 
 	void ResetButtonOn();
 	void CameraZoomEffect(const float _Ratio);

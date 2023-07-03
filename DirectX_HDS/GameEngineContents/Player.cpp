@@ -459,8 +459,8 @@ void Player::Reset()
 	m_Collision->On();
 	m_SubCollision->On();
 
-	return;
-	ChangeState(PlayerState::IDLE);
+	// ㅇㅇㅇ 
+	// ChangeState(PlayerState::IDLE);
 }
 
 void Player::ComponentSetting()
@@ -937,6 +937,11 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
+	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
+
 	// 공격, 마우스 좌클릭 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
@@ -2734,15 +2739,16 @@ void Player::DeathEnd()
 void Player::NoneStart()
 {
 	//m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
-	GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
 
+
+	// 역재생이 시작될때 한번만 호출
+	// GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
 }
 
 void Player::NoneUpdate(float _DeltaTime)
 {
 	//
-	Reverse(m_Render.get());
-	
+	// Reverse(m_Render.get());
 }
 
 void Player::NoneEnd()
@@ -2753,8 +2759,6 @@ void Player::NoneEnd()
 void Player::ForceFallStart()
 {
 	m_Render->ChangeAnimation("player_fall");
-
-	// test
 	GetReturnCastLevel()->GetFadeEffect()->FadeOut();
 }
 
@@ -2785,5 +2789,3 @@ void Player::ExplosionDeathEnd()
 {
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
-
-// 몬스터 보스폭발과 충돌시 상태변경, 플레이어의 점프처럼 위로 떠오르다가 fall 상태로 변경되도록 

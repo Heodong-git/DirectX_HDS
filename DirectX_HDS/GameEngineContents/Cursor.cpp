@@ -55,7 +55,6 @@ void Cursor::Start()
 	if (false == GameEngineInput::IsKey("cursor_DebugSwitch"))
 	{
 		GameEngineInput::CreateKey("cursor_DebugSwitch", 'Q');
-		GameEngineInput::CreateKey("cursor_leftclick", VK_LBUTTON);
 	}
 
 	
@@ -75,28 +74,6 @@ void Cursor::Update(float _DeltaTime)
 {
 	DebugUpdate();
 	FollowCursor();
-
-	// 플레이어가 데스상태고, 레벨이 대기상태일때만 작동
-	// 플레이어 데스상태 조건은 제거함 
-	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState() && (PlayerState::NONE == Player::MainPlayer->GetCurState() ||
-																			   PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState()))
-	{
-		if (true == GameEngineInput::IsDown("cursor_leftclick"))
-		{
-			if (nullptr == m_Collision)
-			{
-				m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::CURSOR));
-				m_Collision->GetTransform()->SetLocalPosition(GetReturnCastLevel()->GetMainCamera()->GetTransform()->GetLocalPosition());
-				m_Collision->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize());
-				m_Collision->SetColType(ColType::OBBBOX3D);
-			}
-			
-			else if (nullptr != m_Collision)
-			{
-				m_Collision->On();
-			}
-		}
-	}
 }
 
 void Cursor::Render(float _DeltaTime)

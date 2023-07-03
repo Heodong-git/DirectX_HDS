@@ -3,7 +3,6 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineTransform.h>
 
-
 enum class LevelType
 {
 	CLUBMAP0 = 0,
@@ -28,6 +27,7 @@ public:
 	{
 		WAIT,
 		PLAY,
+		RECORDING_STANDBY,
 	};
 
 public:

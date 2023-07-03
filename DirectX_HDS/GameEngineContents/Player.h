@@ -32,6 +32,7 @@ enum class PlayerState
 
 class Player : public BaseActor
 {
+	friend class PlaySupporter;
 	friend class PixelCollider;
 	friend class ClubLevel_Boss;
 	friend class ClubLevel_Boss_01;
