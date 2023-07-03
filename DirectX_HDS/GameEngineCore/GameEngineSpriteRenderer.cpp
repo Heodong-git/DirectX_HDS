@@ -21,6 +21,11 @@ void AnimationInfo::Reset()
 	CurTime = FrameTime[0];		// 현재프레임의 진행시간 초기화
 	IsEndValue = false;			// 애니메이션 종료 여부 초기화 
 	IsPauseValue = false;		// 애니메이션의 정지 여부 초기화 
+
+	for (std::pair<const size_t, AnimationStartEvent>& Pair : StartEventFunction)
+	{
+		Pair.second.IsEvent = false;
+	}
 }
 
 // 애니메이션 정보의 업데이트
@@ -45,7 +50,7 @@ void AnimationInfo::Update(float _DeltaTime)
 	if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
 	{
 		if (false == StartEventFunction[CurFrameIndex].IsEvent
-			&& nullptr == StartEventFunction[CurFrameIndex].Function)
+			&& nullptr != StartEventFunction[CurFrameIndex].Function)
 		{
 			StartEventFunction[CurFrameIndex].Function();
 			StartEventFunction[CurFrameIndex].IsEvent = true;
@@ -374,6 +379,12 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 void GameEngineSpriteRenderer::Render(float _DeltaTime)
 {
 	GameEngineRenderer::Render(_DeltaTime);
+
+	// 만약, 콜백함수가 nullptr이 아니라면 호출
+	if (nullptr != RenderEndCallBack)
+	{
+		RenderEndCallBack(this);
+	}
 }
 
 void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)

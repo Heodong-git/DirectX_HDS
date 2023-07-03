@@ -212,6 +212,9 @@ void BaseLevel::LevelReset()
 
 void BaseLevel::Reset()
 {
+	// test 
+	return;
+
 	if (nullptr != m_GoUI)
 	{
 		m_GoUI->Death();

@@ -1,8 +1,15 @@
 #pragma once
 #include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-// BaseState ???? 
+class ReverseInfo
+{
+public:
+	TransformData ActorData;
+	TransformData RendererData;
+	SpriteInfo InfoData;
+};
 
 class BaseActor : public GameEngineActor
 {
@@ -49,6 +56,17 @@ public:
 	}
 
 protected:
+	// 재생, 역재생 관련함수 
+	void Reverse(class GameEngineSpriteRenderer* _Renderer);
+	void InfoSetting(class GameEngineSpriteRenderer* _Renderer);
+
+	void ClearInfo()
+	{
+		Infos.clear();
+	}
+
+
+	// ---------------------------------------------------- 
 	void Update(float _DeltaTime) override;
 
 	// 디버그 스위치
@@ -68,6 +86,7 @@ protected:
 	bool m_IsDeath = false;
 	
 private:
+	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
 
 	// BaseActor들은 전부 얘를 오버라이드 
 	virtual void Reset() {};

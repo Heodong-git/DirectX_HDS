@@ -177,6 +177,12 @@ public:
 		return AtlasData;
 	}
 
+	// 테스트 
+	inline void SetAtlasData(float4& _Data)
+	{
+		AtlasData = _Data;
+	}
+
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
 
 	void SetFrame(size_t _Frame);
@@ -208,6 +214,11 @@ public:
 	// 머지 얘는 헤더에없는데
 	std::string GetTexName();
 
+	void SetRenderEndCallBack(std::function<void(GameEngineRenderer*)> _CallBack)
+	{
+		RenderEndCallBack = _CallBack;
+	}
+
 protected:
 
 	void SpriteRenderInit();
@@ -216,6 +227,8 @@ protected:
 	float4 AtlasData;
 	float4 Clip = float4::One;
 	float4 Flip = float4::Zero;
+
+	std::function<void(GameEngineRenderer*)> RenderEndCallBack = nullptr;
 
 private:
 	void Update(float _Delta) override;
@@ -230,6 +243,7 @@ private:
 	size_t Frame = -1;
 
 	float4 OriginAtlasData;
+
 	std::shared_ptr<GameEngineTexture> CurTexture;
 
 	float ScaleRatio = 1.0f;

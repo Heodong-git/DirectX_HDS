@@ -39,6 +39,7 @@
 // test
 #include "Explosion_Effect.h"
 #include "FadeEffect.h"
+#include "DistotionEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -266,6 +267,13 @@ void Player::Update(float _DeltaTime)
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
+	// 개멍청한새끼 
+	// 인포세팅
+	if (PlayerState::NONE != m_CurState)
+	{
+		InfoSetting(m_Render.get());
+	}
+
 	PlaySupporter::MainSupporter->CameraMovement(_DeltaTime);
 }
 
@@ -450,6 +458,8 @@ void Player::Reset()
 	ResetDir();	
 	m_Collision->On();
 	m_SubCollision->On();
+
+	return;
 	ChangeState(PlayerState::IDLE);
 }
 
@@ -2724,10 +2734,14 @@ void Player::DeathEnd()
 void Player::NoneStart()
 {
 	//m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
+	GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
+
 }
 
 void Player::NoneUpdate(float _DeltaTime)
 {
+	//
+	Reverse(m_Render.get());
 	
 }
 

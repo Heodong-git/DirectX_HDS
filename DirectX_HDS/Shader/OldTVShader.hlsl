@@ -70,7 +70,7 @@ float4 OldTV_PS(OutPut _Value) : SV_Target0
     
     float2 uv = _Value.UV.xy;
     //// uv.y = 1.0 - uv.y;
-    uv.x += sin(uv.y * 10.0f + Time.x) / 10.0;
+    uv.x += sin(uv.y * 10.0f + Time.x) / 50.0;
     
     //// uv.x += Time.x * 0.1f;
     float4 Color = DiffuseTex.Sample(WRAP, uv.xy);
