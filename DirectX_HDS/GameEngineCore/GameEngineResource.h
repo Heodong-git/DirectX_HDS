@@ -8,6 +8,7 @@
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
 #include "GameEngineDevice.h"
+#include <mutex>
 
 // Ό³Έν :
 template<typename ResourcesType>
