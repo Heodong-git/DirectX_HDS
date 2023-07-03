@@ -84,8 +84,7 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
-
-		
+			
 			++m_CurFireAngleCount;
 			return;
 		}
@@ -103,8 +102,8 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 
 			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
-
+			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
+			
 			--m_CurFireAngleCount_Reverse;
 			return;
 		}
@@ -683,12 +682,13 @@ void Boss_HeadHunter::FireAngleInit()
 {
 	m_vecFireAngle.reserve(m_FireAngleCount);
 	float Angle = 0.0f;
-
 	for (size_t i = 0; i < m_FireAngleCount; ++i)
 	{
 		m_vecFireAngle.push_back(Angle);
 		Angle -= 10.0f;
 	}
+
+	m_FireAngleCount_Reverse = m_vecFireAngle.size() - 1;
 }
 
 void Boss_HeadHunter::SummonsMonsters()
@@ -2018,7 +2018,7 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 
 	if (m_CurFireAngleCount_Reverse == 0)
 	{
-		m_CurFireAngleCount_Reverse = 17;
+		m_CurFireAngleCount_Reverse = m_FireAngleCount_Reverse;
 		m_RotaitionFireTime = 0.008f;
 		m_RotaitionFire = false;
 		return;
@@ -2145,7 +2145,7 @@ void Boss_HeadHunter::JumpRifleEnd()
 	m_Collision->On();
 	m_Ratio = 0.0f;
 	m_CurFireAngleCount = 0;
-	m_CurFireAngleCount_Reverse = 17;
+	m_CurFireAngleCount_Reverse = m_FireAngleCount_Reverse;
 }
 
 void Boss_HeadHunter::JumpRifleLandStart()

@@ -189,8 +189,9 @@ private:
 
 	std::vector<float> m_vecFireAngle = std::vector<float>();
 	size_t m_FireAngleCount = 18;
+	size_t m_FireAngleCount_Reverse = 0;
 	size_t m_CurFireAngleCount = 0;
-	size_t m_CurFireAngleCount_Reverse = 17;
+	size_t m_CurFireAngleCount_Reverse = 0;
 	void FireAngleInit();
 
 	// 현재 페이즈 

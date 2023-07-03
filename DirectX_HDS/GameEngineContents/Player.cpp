@@ -708,7 +708,7 @@ void Player::Slow()
 {
 	if (true == m_IsSkill)
 	{
-		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
+		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.01f);
 
 		 //팬블레이드는 여기서 더느리게 만들어 
 		 GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 0.1f);
