@@ -51,6 +51,7 @@ enum class BossState
 	MORIBUND,					// 빈사상태 
 	NOHEAD,						// 이건 안만들수도
 
+	RECORDING_PROGRESS,
 	MAX,
 };
 
@@ -354,4 +355,8 @@ private:
 	void NoHeadStart();
 	void NoHeadUpdate(float _DeltaTime);
 	void NoHeadEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };

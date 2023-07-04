@@ -37,6 +37,7 @@ void Monster_Grunt::Start()
 void Monster_Grunt::Update(float _DeltaTime)
 {
 	m_RecordingFrame = !m_RecordingFrame;
+
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&

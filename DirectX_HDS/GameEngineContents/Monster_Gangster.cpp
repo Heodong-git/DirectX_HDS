@@ -217,7 +217,7 @@ void Monster_Gangster::LoadAndCreateAnimation()
 void Monster_Gangster::Reset()
 {
 	ComponentSetting();
-	GetTransform()->SetLocalPosition(GetInitPos());
+	// GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(GangsterState::IDLE);
 	ResetDir();
 	m_Collision->On();
@@ -808,6 +808,19 @@ void Monster_Gangster::RecordingProgressUpdate(float _DeltaTime)
 	}
 
 	// 여기서 역재생을 수행하고, 
+	// 역재생하고 거의 마무리단계에서 위치가 최초위치와 동일하다면 렌더OFF
+
+	// 만약 보스레벨1이고, 내가 최초위치와 동일해졌다면, 렌더러를 off? 
+
+	/*LevelType CurLevelType = GetReturnCastLevel()->GetLevelType();
+	if (LevelType::CLUBBOSS1 == CurLevelType && m_Recording_Complete == false)
+	{
+		if (0 == Infos.size())
+		{
+			m_MainRender->Off();
+		}
+	}*/
+
 	Reverse(m_MainRender.get());
 }
 

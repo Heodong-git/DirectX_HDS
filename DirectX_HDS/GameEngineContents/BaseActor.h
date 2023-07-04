@@ -96,8 +96,8 @@ protected:
 	bool m_Recording_Complete = false;
 	bool m_RecordingFrame = false;
 	
-private:
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
+private:
 
 	// BaseActor들은 전부 얘를 오버라이드 
 	virtual void Reset() {};

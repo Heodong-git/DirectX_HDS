@@ -40,6 +40,17 @@ void Boss_HeadHunter::Start()
 
 void Boss_HeadHunter::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
+	// 레벨의 상태를 체크한다. 
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		BossState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(BossState::RECORDING_PROGRESS);
+		return;
+	}
+
 	DebugUpdate();
 
 	// 이건 위에 있어야 맞지. 근데 일단 보류 
@@ -55,6 +66,14 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 	}
 	NextTransUpdate();
 	UpdateState(_DeltaTime);
+
+	if (BossState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_MainRender.get());
+		}
+	}
 }
 
 // -179, -1 
@@ -68,12 +87,19 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 	// 벡터에 발사각도 저장해두고, 사용 일단 임시
 	if (0.0f >= m_RotaitionFireTime)
 	{
+		
+
 		bool Check = m_Dir;
 
 		if (true == m_Dir)
 		{
 			// 쿨타임 0.02초로 초기화
 			m_RotaitionFireTime = 0.008f;
+
+			if (m_CurFireAngleCount >= 18)
+			{
+				return;
+			}
 			// 불릿 오브젝트생성
 			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
 			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
@@ -93,6 +119,11 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 		{
 			// 쿨타임 0.02초로 초기화
 			m_RotaitionFireTime = 0.008f;
+
+			if (m_CurFireAngleCount_Reverse < 0 || m_CurFireAngleCount_Reverse > 17)
+			{
+				return;
+			}
 			// 불릿 오브젝트생성
 			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
 			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
@@ -885,6 +916,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::NOHEAD:
 		NoHeadStart();
 		break;
+	case BossState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -970,6 +1004,9 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::NOHEAD:
 		NoHeadEnd();
+		break;
+	case BossState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
 		break;
 	}
 }
@@ -1059,6 +1096,9 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 		break;
 	case BossState::NOHEAD:
 		NoHeadUpdate(_DeltaTime);
+		break;
+	case BossState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
 		break;
 	}
 }
@@ -2147,6 +2187,7 @@ void Boss_HeadHunter::JumpRifleEnd()
 	m_Ratio = 0.0f;
 	m_CurFireAngleCount = 0;
 	m_CurFireAngleCount_Reverse = m_FireAngleCount_Reverse;
+	m_RotaitionFire = false;
 }
 
 void Boss_HeadHunter::JumpRifleLandStart()
@@ -2225,6 +2266,29 @@ void Boss_HeadHunter::NoHeadUpdate(float _DeltaTime)
 void Boss_HeadHunter::NoHeadEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 37.0f });
+}
+
+void Boss_HeadHunter::RecordingProgressStart()
+{
+}
+
+void Boss_HeadHunter::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(BossState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_MainRender.get());
+}
+
+void Boss_HeadHunter::RecordingProgressEnd()
+{
 }
 
 // 사실상 레벨체인지 해야되네 

@@ -241,9 +241,6 @@ void Player::Update(float _DeltaTime)
 	// 제한시간 초과 체크 
 	TimeOutCheck();
 
-	BossHitCheck();
-	HitCheck();
-
 	// 스킬 업데이트 
 	SkillUpdate(_DeltaTime);
 
@@ -260,11 +257,14 @@ void Player::Update(float _DeltaTime)
 		}
 	}
 
-	// 레이저 충돌체크
-	LaserColCheck();
-
-	// 환풍기 충돌체크 
-	FanBladeColCheck();
+	if (false == m_Invincibility)
+	{
+		BossHitCheck();
+		HitCheck();
+		LaserColCheck();
+		FanBladeColCheck();
+	}
+	
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
@@ -406,11 +406,13 @@ void Player::CreateSlashEffect()
 	GetLevel()->CreateActor<SlashEffect>(static_cast<int>(RenderOrder::PLAYER_EFFECT));
 }
 
+// ㅇㅇㅇㅇ 여기야 여기 
 void Player::CreateExplosionEffect()
 {
 	std::shared_ptr<Explosion_Effect> Effect = GetLevel()->CreateActor<Explosion_Effect>(static_cast<int>(RenderOrder::EFFECT));
 	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 60.0f});
 	Effect->SetType(EffectType::SECOND);
+	Effect->CollisionOff();
 }
 
 void Player::CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col)
@@ -456,17 +458,14 @@ void Player::TimeOutCheck()
 
 void Player::Reset()
 {
-	//float4 SetPos = GetInitPos();
-
-	//GetTransform()->SetLocalPosition(SetPos);
+	float4 SetPos = GetInitPos();
+	GetTransform()->SetLocalPosition(SetPos);
 	ResetSkillLimitTime();
 	ResetDir();	
 	// 컴포넌트 위치를 다시세팅한다. 
 	ComponentSetting();
 
 	// 바로 온을 하지말고 
-
-
 	// ㅇㅇㅇ 
 	// ChangeState(PlayerState::IDLE);
 }
@@ -581,19 +580,6 @@ void Player::DebugUpdate()
 	if (true == GameEngineInput::IsDown("player_invincibility"))
 	{
 		m_Invincibility = !m_Invincibility;
-
-		if (true == m_Collision->IsUpdate())
-		{
-			m_Collision->Off();
-			m_SubCollision->Off();
-		}
-
-		else
-		{
-			m_Collision->On();
-			m_SubCollision->On();
-		}
-	
 	}
 
 	if (true == GameEngineInput::IsDown("player_debugswitch"))
@@ -967,10 +953,10 @@ void Player::IdleStart()
 
 void Player::IdleUpdate(float _DeltaTime)
 {
-	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
+	/*if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
 	{
 		return;
-	}
+	}*/
 
 	// 공격, 마우스 좌클릭 
 	if (true == GameEngineInput::IsDown("player_slash"))
@@ -2818,8 +2804,12 @@ void Player::ExplosionDeathStart()
 
 void Player::ExplosionDeathUpdate(float _DeltaTime)
 {
-	// 뭐 할게있나여기? 
-	int a = 0;
+	BaseLevel::LevelState State = GetReturnCastLevel()->GetCurState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == State)
+	{
+		ChangeState(PlayerState::RECORDING_PROGRESS);
+		return;
+	}
 }
 
 void Player::ExplosionDeathEnd()
