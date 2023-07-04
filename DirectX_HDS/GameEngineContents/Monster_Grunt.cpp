@@ -36,6 +36,15 @@ void Monster_Grunt::Start()
 
 void Monster_Grunt::Update(float _DeltaTime)
 {
+	// 레벨의 상태를 체크한다. 
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		GruntState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(GruntState::RECORDING_PROGRESS);
+		return;
+	}
+
 	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
@@ -54,6 +63,11 @@ void Monster_Grunt::Update(float _DeltaTime)
 	DoorOpenCheck();			// 문충돌체크 
 	DeathCheck();
 	UpdateState(_DeltaTime);
+
+	if (GruntState::RECORDING_PROGRESS != m_CurState)
+	{
+		InfoSetting(m_MainRender.get());
+	}
 
 	// 내가 플레이어의 공격과 충돌했는지 확인 
 }
@@ -346,11 +360,12 @@ void Monster_Grunt::AttackOff()
 void Monster_Grunt::Reset()
 {
 	// 나의 초기 세팅위치로 이동하고
-	GetTransform()->SetLocalPosition(GetInitPos());
+	// GetTransform()->SetLocalPosition(GetInitPos());
 	// 상태 아이들로 변경하고 
 	ChangeState(GruntState::IDLE);
 	
 	// 초기화필요한 값들 전부 초기화 
+	// 몬스터 카운트를 하나 추가시켜줘야함 
 	ResetDir();
 	m_FollowEffectOn = false;
 	m_Collision->On();
@@ -418,6 +433,9 @@ void Monster_Grunt::UpdateState(float _DeltaTime)
 	case GruntState::FORCEFALL:
 		ForceFallUpdate(_DeltaTime);
 		break;
+	case GruntState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -454,6 +472,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 	case GruntState::FORCEFALL:
 		ForceFallStart();
 		break;
+	case GruntState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -482,6 +503,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 		break;
 	case GruntState::FORCEFALL:
 		ForceFallEnd();
+		break;
+	case GruntState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
 		break;
 	}
 }
@@ -754,4 +778,27 @@ void Monster_Grunt::ForceFallUpdate(float _DeltaTime)
 void Monster_Grunt::ForceFallEnd()
 {
 	m_CurrentVerticalVelocity = 0.0f;
+}
+
+void Monster_Grunt::RecordingProgressStart()
+{
+}
+
+void Monster_Grunt::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(GruntState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Grunt::RecordingProgressEnd()
+{
 }

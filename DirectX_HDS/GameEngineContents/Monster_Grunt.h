@@ -13,6 +13,8 @@ enum class GruntState
 	TURN,		// µÚµ¹±â 
 
 	FORCEFALL,
+
+	RECORDING_PROGRESS,
 };
 
 class Monster_Grunt : public BaseActor
@@ -156,4 +158,8 @@ private:
 	void ForceFallStart();
 	void ForceFallUpdate(float _DeltaTime);
 	void ForceFallEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };

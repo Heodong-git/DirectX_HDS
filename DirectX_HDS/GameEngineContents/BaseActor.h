@@ -3,6 +3,8 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "BaseLevel.h"
+
 class ReverseInfo
 {
 public:
@@ -61,6 +63,8 @@ public:
 	}
 
 protected:
+	BaseLevel::LevelState GetLevelState();
+
 	// 재생, 역재생 관련함수 
 	void Reverse(class GameEngineSpriteRenderer* _Renderer);
 	void InfoSetting(class GameEngineSpriteRenderer* _Renderer);

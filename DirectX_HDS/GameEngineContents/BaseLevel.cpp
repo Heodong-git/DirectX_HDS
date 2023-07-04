@@ -203,6 +203,9 @@ void BaseLevel::LevelReset()
 	// 레벨에서 초기화 되어야 할 부분을 초기화 
 	Reset();
 
+	// 임시
+	return;
+
 	// 순회하며 액터 초기화 
 	std::vector <std::shared_ptr<class BaseActor>>::iterator StartIter = m_ResetActors.begin();
 	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();
@@ -230,6 +233,9 @@ void BaseLevel::Reset()
 	ResetSound();
 
 	// 여기서 플레이가 아니라 녹화진행 상태로 변경
+	// 플레이어가 아니면, 딱히 죽은 상태가 아니더라도 뒤로 돌아가야함 
+	// 다른 몬스터들은, 레벨이 레코딩스탠바이 상태가 되면 업데이트하지않고,
+	// 레코딩 프로그레스 상태가 되면 녹화상태로 변경 되도록 
 	SetState(BaseLevel::LevelState::RECORDING_PROGRESS);
 }
 

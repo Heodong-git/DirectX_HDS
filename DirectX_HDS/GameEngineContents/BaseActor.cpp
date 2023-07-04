@@ -31,6 +31,12 @@ BaseLevel* BaseActor::GetReturnCastLevel() const
 	return Level;
 }
 
+BaseLevel::LevelState BaseActor::GetLevelState()
+{
+	BaseLevel* CurLevel = GetReturnCastLevel();
+	return CurLevel->GetCurState();
+}
+
 // 역재생함수 
 void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 {

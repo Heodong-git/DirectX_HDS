@@ -451,13 +451,16 @@ void Player::TimeOutCheck()
 
 void Player::Reset()
 {
-	float4 SetPos = GetInitPos();
+	//float4 SetPos = GetInitPos();
 
-	GetTransform()->SetLocalPosition(SetPos);
+	//GetTransform()->SetLocalPosition(SetPos);
 	ResetSkillLimitTime();
 	ResetDir();	
-	m_Collision->On();
-	m_SubCollision->On();
+	// 컴포넌트 위치를 다시세팅한다. 
+	ComponentSetting();
+
+	// 바로 온을 하지말고 
+
 
 	// ㅇㅇㅇ 
 	// ChangeState(PlayerState::IDLE);
@@ -465,26 +468,48 @@ void Player::Reset()
 
 void Player::ComponentSetting()
 {
-	// 픽셀충돌 
-	CreateComponent<PixelCollider>();
+	// 여기서 모든 컴포넌트를 세팅하는데, 생성하는건 NULLPTR 일 때만 생성하도록하고, 나머지는 전부
+	// 다시 세팅 될 수 있는 부분이기 때문에 하나로 묶어서 resetting 을 만들어준다. <-- 재생역재생하는 모든액터공통
 
-	// 넥스트포스체크용 트랜스폼
-	m_NextTrans = std::make_shared<GameEngineTransform>();
+	// 메인렌더러가 nullptr 일 경우에만 
+	if (nullptr == m_Render)
+	{
+		// 픽셀충돌 
+		CreateComponent<PixelCollider>();
 
-	// 메인렌더 
-	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER);
+		m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER);
+		m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
+		m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER_SUB));
+
+		m_DebugRenders.reserve(8);
+		m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Wall_Left = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Wall_Right = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+		
+		m_DebugRenders.push_back(m_DebugRender_Bottom);
+		m_DebugRenders.push_back(m_DebugRender_Top);
+		m_DebugRenders.push_back(m_DebugRender_Left);
+		m_DebugRenders.push_back(m_DebugRender_Right);
+		m_DebugRenders.push_back(m_DebugRender_Wall_Left);
+		m_DebugRenders.push_back(m_DebugRender_Wall_Right);
+		m_DebugRenders.push_back(m_DebugRender_Bottom_Down);
+
+		// 넥스트포스체크용 트랜스폼
+		m_NextTrans = std::make_shared<GameEngineTransform>();
+	}
+	
 	m_Render->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 	m_Render->SetScaleRatio(2.0f);
 
-	// 콜리전 
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->DebugOff();
 
-	// 얘를 어떻게 할거니? 
-	m_SubCollision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::PLAYER_SUB));
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_SubCollision->SetColType(ColType::OBBBOX3D);
@@ -492,47 +517,32 @@ void Player::ComponentSetting()
 
 	// --------------------------- Debug Render ------------------------------
 
-	m_DebugRenders.reserve(8);
-	m_DebugRender_Bottom = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom->Off();
-	m_DebugRenders.push_back(m_DebugRender_Bottom);
 
-	m_DebugRender_Top = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
 	m_DebugRender_Top->Off();
-	m_DebugRenders.push_back(m_DebugRender_Top);
 
-	m_DebugRender_Left = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
 	m_DebugRender_Left->Off();
-	m_DebugRenders.push_back(m_DebugRender_Left);
 	
-	m_DebugRender_Right = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
 	m_DebugRender_Right->Off();
-	m_DebugRenders.push_back(m_DebugRender_Right);
-
-	m_DebugRender_Wall_Left = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalPosition({ -m_WallDebugPivotX , m_WallDebugPivotY });
 	m_DebugRender_Wall_Left->Off();
-	m_DebugRenders.push_back(m_DebugRender_Wall_Left);
-
-	m_DebugRender_Wall_Right = CreateComponent <GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+	
 	m_DebugRender_Wall_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Wall_Right->GetTransform()->SetLocalPosition({ m_WallDebugPivotX , m_WallDebugPivotY });
 	m_DebugRender_Wall_Right->Off();
-	m_DebugRenders.push_back(m_DebugRender_Wall_Right);
 	
-	m_DebugRender_Bottom_Down = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
 	m_DebugRender_Bottom_Down->Off();
-	m_DebugRenders.push_back(m_DebugRender_Bottom_Down);
 }
 
 void Player::DirCheck()
@@ -923,6 +933,9 @@ void Player::ChangeState(PlayerState _State)
 
 void Player::IdleStart()
 {
+	m_Collision->On();
+	m_SubCollision->On();
+
 	// 이전 스테이트가 데스라면 스테이지 미클리어,
 	// 난무조건 정방향 ( 오른쪽 ) , 데스 후 NONE 상태로 변경됨 
 	if (PlayerState::NONE == m_PrevState || PlayerState::EXPLOSION_DEATH == m_PrevState)
@@ -2808,12 +2821,15 @@ void Player::ExplosionDeathEnd()
 
 void Player::RecordingProgressStart()
 {
+	m_Collision->Off();
 }
 void Player::RecordingProgressUpdate(float _DeltaTime)
 {
 	// 레코딩이 종료 되었다면 아이들로 전환. 
 	if (true == m_Recording_Complete)
 	{
+		m_Recording_Complete = false;
+		Reset();
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
@@ -2823,6 +2839,6 @@ void Player::RecordingProgressUpdate(float _DeltaTime)
 }
 void Player::RecordingProgressEnd()
 {
-	Reset();
+
 	// 녹화종료시에 모든 정보를 리셋한다. 
 }
