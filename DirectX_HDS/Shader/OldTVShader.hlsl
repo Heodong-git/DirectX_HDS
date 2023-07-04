@@ -38,6 +38,7 @@ float2 getDistortion(float2 uv, float d, float t)
 {
     uv.x += cos(d) + t * 0.9;
     uv.y += sin(d + t * 0.75);
+   
     return uv;
 }
 
@@ -55,7 +56,7 @@ void mainImage(out float4 fragColor, in float2 fragCoord)
     float2 mid = float2(0.5, 0.5);
     // float2 focus = Mouse.xy / ScreenSize.xy;
     float2 focus = Mouse.xy;
-    float d1 = distance(focus + sin(t * 0.25) * 0.5, uv);
+    float d1 = distance(focus + sin(t * 0.2) * 0.5, uv);
     float d2 = distance(focus + cos(t), uv);
     float4 rgb = (getDistortedTexture(WRAP, getDistortion(uv, d1, t)) + getDistortedTexture(WRAP, getDistortion(uv, -d2, t))) * 0.5f;
     rgb.r /= d2;
@@ -70,15 +71,13 @@ float4 OldTV_PS(OutPut _Value) : SV_Target0
     
     float2 uv = _Value.UV.xy;
     //// uv.y = 1.0 - uv.y;
-    uv.x += sin(uv.y * 10.0f + Time.x * 15.0f) / 50.0;
+    // ¿ø·¡ 50.0 >>> 
+    uv.x += sin(uv.y * 35.0f + Time.x * 15.0f) / 60.0;
     
     //// uv.x += Time.x * 0.1f;
     float4 Color = DiffuseTex.Sample(WRAP, uv.xy);
     
     //float4 Color;
-    
     //mainImage(Color, _Value.UV.xy);
-    
-
     return Color;
 }
