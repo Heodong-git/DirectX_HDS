@@ -71,7 +71,7 @@ float4 OldTV_PS(OutPut _Value) : SV_Target0
     
     float2 uv = _Value.UV.xy;
     //// uv.y = 1.0 - uv.y;
-    // 원래 50.0 >>> 
+    //               원래 10.0f               원래 50.0 >>> 
     uv.x += sin(uv.y * 35.0f + Time.x * 15.0f) / 60.0;
     
     //// uv.x += Time.x * 0.1f;
