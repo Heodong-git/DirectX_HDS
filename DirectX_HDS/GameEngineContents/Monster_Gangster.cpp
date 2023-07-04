@@ -46,6 +46,15 @@ void Monster_Gangster::Start()
 
 void Monster_Gangster::Update(float _DeltaTime)
 {
+	// 레벨의 상태를 체크한다. 
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		GangsterState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(GangsterState::RECORDING_PROGRESS);
+		return;
+	}
+
 	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
@@ -63,6 +72,11 @@ void Monster_Gangster::Update(float _DeltaTime)
 	DirCheck();
 	DeathCheck();
 	UpdateState(_DeltaTime);
+
+	if (GangsterState::RECORDING_PROGRESS != m_CurState)
+	{
+		InfoSetting(m_MainRender.get());
+	}
 }
 
 void Monster_Gangster::Render(float _DeltaTime)
@@ -100,42 +114,48 @@ void Monster_Gangster::DebugUpdate()
 	}
 }
 
+// 필요 없어도 공통적으로 해 .
 void Monster_Gangster::ComponentSetting()
 {
-	float4 MyPos = GetTransform()->GetLocalPosition();
+	if (nullptr == m_MainRender)
+	{
+		m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
+		m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
+		m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
+		m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
+		m_AimCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_RANGE_CHECK);
+		m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
+
+		m_Collision->DebugOff();
+		m_ChaseCollision->DebugOff();
+		m_AimCollision->DebugOff();
+		m_DebugRender->Off();
+	}
+	
 	
 	// 렌더러, 충돌체 생성
-	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MONSTER);
+	
 	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot });
 	m_MainRender->SetScaleRatio(2.0f);
 
 	// 콜리전 생성
-	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
-	m_Collision->DebugOff();
 
-	m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
 	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 300.0f, 80.0f });
 	m_ChaseCollision->GetTransform()->SetLocalPosition({ 50.0f, m_ColPivot });
 	m_ChaseCollision->SetColType(ColType::OBBBOX3D);
-	m_ChaseCollision->DebugOff();
 
-	m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 
-	m_AimCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_RANGE_CHECK);
 	m_AimCollision->GetTransform()->SetLocalScale(float4{ 550.0f , 20.0f });
 	m_AimCollision->GetTransform()->SetLocalPosition({ 275.0f, m_RenderPivot });
 	m_AimCollision->SetColType(ColType::OBBBOX3D);
-	m_AimCollision->DebugOff();
 
 	// 디버그렌더 생성
-	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
-	m_DebugRender->Off();
 }
 
 void Monster_Gangster::LoadAndCreateAnimation()
@@ -191,6 +211,7 @@ void Monster_Gangster::LoadAndCreateAnimation()
 // 완성하면 리셋목록 확인해서 다시작성
 void Monster_Gangster::Reset()
 {
+	ComponentSetting();
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(GangsterState::IDLE);
 	ResetDir();
@@ -433,6 +454,9 @@ void Monster_Gangster::UpdateState(float _DeltaTime)
 	case GangsterState::FORCEFALL:
 		ForceFallUpdate(_DeltaTime);
 		break;
+	case GangsterState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -465,6 +489,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 	case GangsterState::FORCEFALL:
 		ForceFallStart();
 		break;
+	case GangsterState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -487,6 +514,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 		break;
 	case GangsterState::FORCEFALL:
 		ForceFallEnd();
+		break;
+	case GangsterState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
 		break;
 	}
 }
@@ -755,5 +785,28 @@ void Monster_Gangster::ForceFallUpdate(float _DeltaTime)
 void Monster_Gangster::ForceFallEnd()
 {
 	m_CurrentVerticalVelocity = 0.0f;
+}
+
+void Monster_Gangster::RecordingProgressStart()
+{
+}
+
+void Monster_Gangster::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(GangsterState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Gangster::RecordingProgressEnd()
+{
 }
 

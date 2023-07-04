@@ -40,6 +40,15 @@ void Monster_Pomp::Start()
 
 void Monster_Pomp::Update(float _DeltaTime)
 {
+	// 레벨의 상태를 체크한다. 
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		PompState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(PompState::RECORDING_PROGRESS);
+		return;
+	}
+
 	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_MainRender->ColorOptionValue.MulColor.r = 0.2f;
@@ -59,6 +68,12 @@ void Monster_Pomp::Update(float _DeltaTime)
 	DeathCheck();
 	ParryingCheck();
 	UpdateState(_DeltaTime);
+
+	if (PompState::RECORDING_PROGRESS != m_CurState)
+	{
+		InfoSetting(m_MainRender.get());
+	}
+
 }
 
 void Monster_Pomp::Render(float _DeltaTime)
@@ -98,36 +113,40 @@ void Monster_Pomp::DebugUpdate()
 
 void Monster_Pomp::ComponentSetting()
 {
-	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(static_cast<int>(RenderOrder::MONSTER));
+	if (nullptr == m_MainRender)
+	{
+		m_MainRender = CreateComponent<GameEngineSpriteRenderer>(static_cast<int>(RenderOrder::MONSTER));
+		m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
+		m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
+		m_AttCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_ATTACK);
+		m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
+		m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
+
+		m_Collision->DebugOff();
+		m_ChaseCollision->DebugOff();
+		m_AttCollision->Off();
+		m_DebugRender->Off();
+	}
+
 	m_MainRender->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 	m_MainRender->SetScaleRatio(2.0f);
 
-	// 콜리전 생성
-	m_Collision = CreateComponent<GameEngineCollision>(static_cast<int>(ColOrder::MONSTER));
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0.0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
-	m_Collision->DebugOff();
 
-	m_ChaseCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHASE);
 	m_ChaseCollision->GetTransform()->SetLocalScale(float4{ 250.0f, 80.0f });
 	m_ChaseCollision->GetTransform()->SetLocalPosition({ 100.0f, m_ColPivot });
 	m_ChaseCollision->SetColType(ColType::OBBBOX3D);
-	m_ChaseCollision->DebugOff();
 
-	m_AttCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_ATTACK);
 	m_AttCollision->GetTransform()->SetLocalScale(float4{ 25.0f, 70.0f });
 	m_AttCollision->GetTransform()->SetLocalPosition({ 0.0f, m_ColPivot });
 	m_AttCollision->SetColType(ColType::OBBBOX3D);
-	m_AttCollision->Off();
 
-	m_SubCollision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER_CHECK);
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 
-	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
 	m_DebugRender->GetTransform()->SetLocalScale({ 4, 4 });
-	m_DebugRender->Off();
 }
 
 void Monster_Pomp::LoadAndCreateAnimation()
@@ -343,6 +362,7 @@ void Monster_Pomp::AttackOff()
 // 내리셋은 플레이어와 동일 
 void Monster_Pomp::Reset()
 {
+	ComponentSetting();
 	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
 	// 상태 아이들로 변경하고 
@@ -436,6 +456,9 @@ void Monster_Pomp::UpdateState(float _DeltaTime)
 	case PompState::FORCEFALL:
 		ForceFallUpdate(_DeltaTime);
 		break;
+	case PompState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -475,6 +498,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 	case PompState::FORCEFALL:
 		ForceFallStart();
 		break;
+	case PompState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -507,6 +533,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 	case PompState::FORCEFALL:
 		ForceFallEnd();
 		break;
+	case PompState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
+		break;
 	}
 }
 
@@ -518,6 +547,7 @@ void Monster_Pomp::BulletCollision()
 
 void Monster_Pomp::IdleStart()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 4.0f });
 	m_MainRender->ChangeAnimation("pomp_idle");
 }
 
@@ -544,10 +574,12 @@ void Monster_Pomp::IdleUpdate(float _DeltaTime)
 
 void Monster_Pomp::IdleEnd()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -4.0f });
 }
 
 void Monster_Pomp::WalkStart()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 5.0f });
 	m_MainRender->ChangeAnimation("pomp_walk");
 	ResetDir();
 }
@@ -592,6 +624,7 @@ void Monster_Pomp::WalkUpdate(float _DeltaTime)
 
 void Monster_Pomp::WalkEnd()
 {
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -5.0f });
 }
 
 void Monster_Pomp::ChaseStart()
@@ -796,5 +829,28 @@ void Monster_Pomp::ForceFallUpdate(float _DeltaTime)
 void Monster_Pomp::ForceFallEnd()
 {
 	m_CurrentVerticalVelocity = 0.0f;
+}
+
+void Monster_Pomp::RecordingProgressStart()
+{
+}
+
+void Monster_Pomp::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(PompState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Pomp::RecordingProgressEnd()
+{
 }
 

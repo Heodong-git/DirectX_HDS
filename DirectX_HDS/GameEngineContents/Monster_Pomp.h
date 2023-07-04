@@ -14,6 +14,7 @@ enum class PompState
 	HITGROUND,	 // µ¥½º 
 
 	FORCEFALL,
+	RECORDING_PROGRESS,
 };
 
 class Monster_Pomp : public BaseActor
@@ -136,4 +137,8 @@ private:
 	void ForceFallStart();
 	void ForceFallUpdate(float _DeltaTime);
 	void ForceFallEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };

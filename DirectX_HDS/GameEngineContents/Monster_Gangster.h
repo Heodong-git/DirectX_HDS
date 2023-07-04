@@ -11,6 +11,7 @@ enum class GangsterState
 	AIM,	 // 공격 
 
 	FORCEFALL, 
+	RECORDING_PROGRESS,
 };
 
 // 갱스터 
@@ -144,4 +145,8 @@ private:
 	void ForceFallStart();
 	void ForceFallUpdate(float _DeltaTime);
 	void ForceFallEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };

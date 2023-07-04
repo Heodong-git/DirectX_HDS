@@ -498,6 +498,17 @@ void Player::ComponentSetting()
 		m_DebugRenders.push_back(m_DebugRender_Wall_Right);
 		m_DebugRenders.push_back(m_DebugRender_Bottom_Down);
 
+		m_Collision->DebugOff();
+		m_SubCollision->DebugOff();
+		m_DebugRender_Bottom->Off();
+		m_DebugRender_Top->Off();
+		m_DebugRender_Left->Off();
+		m_DebugRender_Right->Off();
+		m_DebugRender_Wall_Left->Off();
+		m_DebugRender_Wall_Right->Off();
+		m_DebugRender_Bottom_Down->Off();
+
+
 		// 넥스트포스체크용 트랜스폼
 		m_NextTrans = std::make_shared<GameEngineTransform>();
 	}
@@ -508,41 +519,33 @@ void Player::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
-	m_Collision->DebugOff();
+	
 
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_SubCollision->SetColType(ColType::OBBBOX3D);
-	m_SubCollision->DebugOff();
 
 	// --------------------------- Debug Render ------------------------------
 
 	m_DebugRender_Bottom->GetTransform()->SetLocalScale(m_DebugRenderScale);
-	m_DebugRender_Bottom->Off();
 
 	m_DebugRender_Top->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Top->GetTransform()->SetLocalPosition({ 0.0f , m_RenderPivot * 2.0f });
-	m_DebugRender_Top->Off();
 
 	m_DebugRender_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Left->GetTransform()->SetLocalPosition({ -36.0f, m_RenderPivot });
-	m_DebugRender_Left->Off();
 	
 	m_DebugRender_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Right->GetTransform()->SetLocalPosition({ 36.0f, m_RenderPivot });
-	m_DebugRender_Right->Off();
 	
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Wall_Left->GetTransform()->SetLocalPosition({ -m_WallDebugPivotX , m_WallDebugPivotY });
-	m_DebugRender_Wall_Left->Off();
 	
 	m_DebugRender_Wall_Right->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Wall_Right->GetTransform()->SetLocalPosition({ m_WallDebugPivotX , m_WallDebugPivotY });
-	m_DebugRender_Wall_Right->Off();
 	
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalScale(m_DebugRenderScale);
 	m_DebugRender_Bottom_Down->GetTransform()->SetLocalPosition({ 0.0f, -1.0f });
-	m_DebugRender_Bottom_Down->Off();
 }
 
 void Player::DirCheck()
