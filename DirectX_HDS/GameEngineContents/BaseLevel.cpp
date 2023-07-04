@@ -12,6 +12,8 @@
 #include "ColEventObj.h"
 #include "Go_UI.h"
 
+#include "DistotionEffect.h"
+
 BaseLevel::BaseLevel()
 {
 }
@@ -65,6 +67,9 @@ void BaseLevel::Update(float _DeltaTime)
 	if (true == Player::MainPlayer->IsRecording())
 	{
 		m_CurState = BaseLevel::LevelState::PLAY;
+		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
+		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
+		m_DistotionEffect->EffectOff();
 		return;
 	}
 
@@ -77,7 +82,7 @@ void BaseLevel::Update(float _DeltaTime)
 	// 현재레벨이 플레이상태라면 제한시간을 감소시킨다. 
 	if (BaseLevel::LevelState::PLAY == m_CurState)
 	{
-
+		
 		if (0 >= m_LimitTime)
 		{
 			int a = 0;
@@ -236,7 +241,15 @@ void BaseLevel::Reset()
 	// 플레이어가 아니면, 딱히 죽은 상태가 아니더라도 뒤로 돌아가야함 
 	// 다른 몬스터들은, 레벨이 레코딩스탠바이 상태가 되면 업데이트하지않고,
 	// 레코딩 프로그레스 상태가 되면 녹화상태로 변경 되도록 
+	// 여기서 디스토션이펙트 
 	SetState(BaseLevel::LevelState::RECORDING_PROGRESS);
+	GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_RecordingTimeScale);
+	GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_RecordingTimeScale);
+	if (nullptr == m_DistotionEffect)
+	{
+		m_DistotionEffect = GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
+	}
+	m_DistotionEffect->EffectOn();
 }
 
 void BaseLevel::ResetColObj()

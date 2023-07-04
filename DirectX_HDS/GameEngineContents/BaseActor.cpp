@@ -55,7 +55,6 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 		return;
 	}
 
-
 	// 거꾸로 비긴.
 	ReverseInfo& Info = *(Infos.rbegin());
 	
@@ -68,8 +67,6 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 
 	// 아틀라스 데이터 세팅해주면.
 	_Renderer->SetAtlasData(Info.InfoData.CutData);
-
-
 	Infos.pop_back();
 }
 

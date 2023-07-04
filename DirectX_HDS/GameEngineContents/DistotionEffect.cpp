@@ -20,25 +20,26 @@ void DistotionEffect::Start(GameEngineRenderTarget* _Target)
 	BlurUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
 
 	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
-
 }
 
 void DistotionEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-	BaseValue.Mouse = GameEngineWindow::GetMousePosition();
-	BaseValue.Mouse.z = GameEngineInput::IsPress("EngineMouseLeft");
-	BaseValue.Mouse.w = GameEngineInput::IsPress("EngineMouseLeft");
+	if (true == m_IsUpdate)
+	{
+		BaseValue.Mouse = GameEngineWindow::GetMousePosition();
+		BaseValue.Mouse.z = GameEngineInput::IsPress("EngineMouseLeft");
+		BaseValue.Mouse.w = GameEngineInput::IsPress("EngineMouseLeft");
 
-	BaseValue.Time.x += _DeltaTime;
-	BaseValue.Time.y = _DeltaTime;
+		BaseValue.Time.x += _DeltaTime;
+		BaseValue.Time.y = _DeltaTime;
 
-	ResultTarget->Clear();
-	BlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
-	ResultTarget->Setting();
-	BlurUnit->Render(_DeltaTime);
-	BlurUnit->ShaderResHelper.AllResourcesReset();
+		ResultTarget->Clear();
+		BlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
+		ResultTarget->Setting();
+		BlurUnit->Render(_DeltaTime);
+		BlurUnit->ShaderResHelper.AllResourcesReset();
 
-	_Target->Clear();
-	_Target->Merge(ResultTarget);
-
+		_Target->Clear();
+		_Target->Merge(ResultTarget);
+	}
 }

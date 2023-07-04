@@ -194,8 +194,12 @@ protected:
 	std::vector <std::shared_ptr<class BaseActor>> m_ResetActors = std::vector<std::shared_ptr<class BaseActor>>();
 	
 	GameEngineSoundPlayer m_SoundPlayer;
+	
+	std::shared_ptr<class DistotionEffect> m_DistotionEffect = nullptr;
 
 private:
+	const float m_RecordingTimeScale = 10.0f;
+	const float m_TimeScale = 1.0f;
 	virtual void LevelReset();
 	void Reset();
 	void ResetColObj();

@@ -46,6 +46,8 @@ void Monster_Gangster::Start()
 
 void Monster_Gangster::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
@@ -75,7 +77,10 @@ void Monster_Gangster::Update(float _DeltaTime)
 
 	if (GangsterState::RECORDING_PROGRESS != m_CurState)
 	{
-		InfoSetting(m_MainRender.get());
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_MainRender.get());
+		}
 	}
 }
 

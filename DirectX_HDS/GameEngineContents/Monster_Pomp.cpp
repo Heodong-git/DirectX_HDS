@@ -40,6 +40,7 @@ void Monster_Pomp::Start()
 
 void Monster_Pomp::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
@@ -71,7 +72,10 @@ void Monster_Pomp::Update(float _DeltaTime)
 
 	if (PompState::RECORDING_PROGRESS != m_CurState)
 	{
-		InfoSetting(m_MainRender.get());
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_MainRender.get());
+		}
 	}
 
 }

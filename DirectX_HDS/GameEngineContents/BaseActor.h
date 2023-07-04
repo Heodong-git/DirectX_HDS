@@ -94,6 +94,7 @@ protected:
 
 	bool m_IsDeath = false;
 	bool m_Recording_Complete = false;
+	bool m_RecordingFrame = false;
 	
 private:
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();

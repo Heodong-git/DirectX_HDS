@@ -233,6 +233,8 @@ void Player::NextPosUpdate()
 
 void Player::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
 	// 디버그 업데이트
 	DebugUpdate();
 
@@ -271,7 +273,10 @@ void Player::Update(float _DeltaTime)
 	// 인포세팅
 	if (PlayerState::RECORDING_PROGRESS != m_CurState)
 	{
-		InfoSetting(m_Render.get());
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_Render.get());
+		}
 	}
 
 	PlaySupporter::MainSupporter->CameraMovement(_DeltaTime);
@@ -731,10 +736,10 @@ void Player::Slow()
 {
 	if (true == m_IsSkill)
 	{
-		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.01f);
+		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
 
-		 //팬블레이드는 여기서 더느리게 만들어 
-		 GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 0.1f);
+	    //팬블레이드는 여기서 더느리게 만들어 
+	    GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 0.1f);
 	}
 }
 
@@ -2767,7 +2772,7 @@ void Player::NoneStart()
 
 
 	// 역재생이 시작될때 한번만 호출
-	// GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
+	// 
 }
 
 void Player::NoneUpdate(float _DeltaTime)
