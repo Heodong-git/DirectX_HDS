@@ -43,6 +43,9 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 	// 만약 인포가 비어있다면 return; 
 	if (true == Infos.empty())
 	{
+		// 여기서 bool 값 하나두고, 녹화완료 체크를 하고,
+		// true로 바뀌었다면 외부 녹화 state 에서 상태를 종료시킨다. 
+		m_Recording_Complete = true;
 		return;
 	}
 

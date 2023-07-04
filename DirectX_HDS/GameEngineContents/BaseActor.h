@@ -55,6 +55,11 @@ public:
 		return m_IsDeath;
 	}
 
+	const inline bool IsRecording()
+	{
+		return m_Recording_Complete;
+	}
+
 protected:
 	// 재생, 역재생 관련함수 
 	void Reverse(class GameEngineSpriteRenderer* _Renderer);
@@ -84,6 +89,7 @@ protected:
 	}
 
 	bool m_IsDeath = false;
+	bool m_Recording_Complete = false;
 	
 private:
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();

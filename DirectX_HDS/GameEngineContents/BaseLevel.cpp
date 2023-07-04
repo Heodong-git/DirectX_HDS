@@ -62,6 +62,12 @@ void BaseLevel::Update(float _DeltaTime)
 	PlayerSkillCheck();
 	DebugUpdate();
 
+	if (true == Player::MainPlayer->IsRecording())
+	{
+		m_CurState = BaseLevel::LevelState::PLAY;
+		return;
+	}
+
 	// 현재 레벨이 대기상태라면 업데이트하지 않음
 	if (BaseLevel::LevelState::WAIT == m_CurState)
 	{
@@ -202,6 +208,7 @@ void BaseLevel::LevelReset()
 	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();
 
 	// 현재 벡터에 저장된 액터들을 순회하면서 리셋 
+	// 여기서 액터를 순회하면서 리셋하는게 아니라. 
 	for (; StartIter != EndIter; ++StartIter)
 	{
 		(*StartIter)->Reset();
@@ -210,7 +217,6 @@ void BaseLevel::LevelReset()
 
 void BaseLevel::Reset()
 {
-
 	if (nullptr != m_GoUI)
 	{
 		m_GoUI->Death();
@@ -222,7 +228,9 @@ void BaseLevel::Reset()
 	ResetMonsterCount();
 	ResetColObj();
 	ResetSound();
-	SetState(BaseLevel::LevelState::PLAY);
+
+	// 여기서 플레이가 아니라 녹화진행 상태로 변경
+	SetState(BaseLevel::LevelState::RECORDING_PROGRESS);
 }
 
 void BaseLevel::ResetColObj()

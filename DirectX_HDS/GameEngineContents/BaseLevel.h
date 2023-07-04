@@ -27,7 +27,8 @@ public:
 	{
 		WAIT,
 		PLAY,
-		RECORDING_STANDBY,
+		RECORDING_STANDBY,	 // 녹화대기
+		RECORDING_PROGRESS,	 // 녹화진행중
 	};
 
 public:

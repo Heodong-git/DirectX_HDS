@@ -269,7 +269,7 @@ void Player::Update(float _DeltaTime)
 
 	// 개멍청한새끼 
 	// 인포세팅
-	if (PlayerState::NONE != m_CurState)
+	if (PlayerState::RECORDING_PROGRESS != m_CurState)
 	{
 		InfoSetting(m_Render.get());
 	}
@@ -789,6 +789,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::EXPLOSION_DEATH:
 		ExplosionDeathUpdate(_DeltaTime);
 		break;
+	case PlayerState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -853,6 +856,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::EXPLOSION_DEATH:
 		ExplosionDeathStart();
 		break;
+	case PlayerState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -908,6 +914,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::EXPLOSION_DEATH:
 		ExplosionDeathEnd();
+		break;
+	case PlayerState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
 		break;
 	}
 }
@@ -2747,6 +2756,13 @@ void Player::NoneStart()
 
 void Player::NoneUpdate(float _DeltaTime)
 {
+	BaseLevel::LevelState State = GetReturnCastLevel()->GetCurState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == State)
+	{
+		ChangeState(PlayerState::RECORDING_PROGRESS);
+		return;
+	}
+
 	//
 	// Reverse(m_Render.get());
 }
@@ -2788,4 +2804,25 @@ void Player::ExplosionDeathUpdate(float _DeltaTime)
 void Player::ExplosionDeathEnd()
 {
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
+}
+
+void Player::RecordingProgressStart()
+{
+}
+void Player::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_Render.get());
+}
+void Player::RecordingProgressEnd()
+{
+	Reset();
+	// 녹화종료시에 모든 정보를 리셋한다. 
 }

@@ -54,18 +54,22 @@ void PlaySupporter::Update(float _DeltaTime)
 	// 단순하게. 레벨에서 플레이어 데스체크를해서, 죽었다면 녹화대기 상태로 변경한다.
 	// 2번 스테이지가 클리어 된다 라는 조건은, 몬스터를 모두 죽이거나, 유캔두디스 텍스쳐가 출력되고나서 2초후. 라고 하자. 
 
-	// 플레이어가 사망하면, 텍스트를 띄우고 레벨을 대기 상태로 변경한다. 
-	// 사망하면 이라는 전제를, 좀 바꾸고 싶어. 
-	if (PlayerState::NONE == Player::MainPlayer->GetCurState() ||
-		PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
+	// 1.플레이어가 NONE, 또는 EXPLOSION_DEATH 상태라면
+	// 2.현재 레벨의 상태가 PLAY 일 경우, 녹화대기상태로 변경해준다.
+	// 3.그 상태에서 내가 마우스 좌클릭을 눌렀는지 체크해서 
+	if (PlayerState::NONE == Player::MainPlayer->GetCurState() || PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
 	{
 		BaseLevel* CurLevel = GetReturnCastLevel();
 		if (BaseLevel::LevelState::PLAY == CurLevel->GetCurState())
 		{
-			CurLevel->SetState(BaseLevel::LevelState::WAIT);
+			CurLevel->SetState(BaseLevel::LevelState::RECORDING_STANDBY);
+
+			// 화면에 임무실패 텍스쳐를 출력해주고. 
+			ResetButtonOn();
 		}
 
-		// 레벨리셋여부체크 
+		// 여기서 내가 우클릭을 눌렀다면, 레벨리셋이 아니라 역재생을 해야하기 때문에
+		// 좌클릭을 눌렀는지 체크해주고. 
 		LevelResetCheck();
 	}
 
@@ -348,18 +352,14 @@ bool PlaySupporter::PlayerDeathCheck()
 
 void PlaySupporter::LevelResetCheck()
 {
-	ResetButtonOn();
-
 	if (true == GameEngineInput::IsDown("EngineMouseLeft"))
 	{
-		if (PlayerState::NONE == Player::MainPlayer->GetCurState() || PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState())
-		{
-			g_BlackBoxRender->Off();
-			g_FailRender->Off();
-			// 리셋하고 
-			GetReturnCastLevel()->LevelReset();
-			return;
-		}
+		// 좌클릭을 입력했다면. 렌더러를 없애주고, 
+		g_BlackBoxRender->Off();
+		g_FailRender->Off();
+		// 리셋하고 
+		GetReturnCastLevel()->LevelReset();
+		return;
 	}
 
 

@@ -23,10 +23,12 @@ enum class PlayerState
 	LEFTWALL,
 	DOORBREAK,
 
-
+	
 	FORCEFALL,		// 레벨체인지 연출용 state 
 	DEATH,			// 쥬금
 	EXPLOSION_DEATH,
+
+	RECORDING_PROGRESS,
 };
 
 
@@ -329,6 +331,10 @@ private:
 	void ExplosionDeathStart();
 	void ExplosionDeathUpdate(float _DeltaTime);
 	void ExplosionDeathEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };
 
 // 파일입출력이 필수다. 
