@@ -92,6 +92,11 @@ void Bullet::Update(float _DeltaTime)
 		std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 		if (nullptr != PlayerCol)
 		{
+			if (true == Player::MainPlayer->IsInvincibility())
+			{
+				return;
+			}
+
 			GameEngineSound::Play("death_bullet.wav");
 			Player::MainPlayer->BulletCollision();
 			Player::MainPlayer->CreateHitEffect(m_Collision);

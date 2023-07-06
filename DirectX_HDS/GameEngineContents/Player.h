@@ -111,6 +111,10 @@ public:
 		return m_DebugRenders;
 	}
 
+	inline bool IsInvincibility()
+	{
+		return m_Invincibility;
+	}
 	virtual void BulletCollision() override;
 
 	// 이펙트생성 함수로 만들어서 사용 

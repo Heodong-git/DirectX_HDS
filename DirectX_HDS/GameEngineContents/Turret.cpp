@@ -132,6 +132,8 @@ void Turret::Update(float _DeltaTime)
 				
 			}
 
+			// 0.03  
+			// 
 			return;
 		}
 
