@@ -18,14 +18,63 @@ void TeleportEffect::Start()
 	SetRenders();
 }
 
+// 잔상남는거만 없애면 끝 
 void TeleportEffect::Update(float _DeltaTime)
 { 
-	// 건스파크 이펙트의 마지막 애니메이션까지 종료 되었다면
-	if (true == m_SparkRenders[m_FirstRenderCount - 1]->IsAnimationEnd())
+	// ----- ㅇㅇㅇㅇ
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
-		// 모든렌더러를 순회하며 off 
-		this->Death();
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		size_t Size = m_SparkRenders.size();
+		for (size_t i = 0; i < Size; ++i)
+		{
+			Reverse(m_SparkRenders[i].get());
+		}
+
+		size_t Size1 = m_CloudRenders.size();
+		for (size_t i = 0; i < Size1; ++i)
+		{
+			Reverse(m_CloudRenders[i].get());
+		}
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
+		{
+			this->Death();
+		}
+
 		return;
+	}
+
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	// 모든렌더러를 전부순회하면서 저장 
+	if (EffectState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			size_t EffectSize = m_SparkRenders.size();
+			for (size_t i = 0; i < EffectSize; ++i)
+			{
+				InfoSetting(m_SparkRenders[i].get());
+			}
+
+			size_t EffectSize1 = m_CloudRenders.size();
+			for (size_t i = 0; i < EffectSize1; ++i)
+			{
+				InfoSetting(m_CloudRenders[i].get());
+			}
+		}
+
+		
 	}
 
 	// 클라우드의 경우 반복문을 돌아서 애니메이션이 종료 되었다면 off 처리 
@@ -37,6 +86,19 @@ void TeleportEffect::Update(float _DeltaTime)
 		}
 	}
 
+	if (true == m_SparkRenders[m_FirstRenderCount - 1]->IsAnimationEnd() && EffectState::DEATH != m_CurState)
+	{
+		ChangeState(EffectState::DEATH);
+		size_t Size = m_SparkRenders.size();
+		for (size_t i = 0; i < Size; ++i)
+		{
+			m_SparkRenders[i]->Off();
+		}
+		m_IsRecording = false;
+		return;
+	}
+
+	
 }
 
 void TeleportEffect::Render(float _DeltaTime)
