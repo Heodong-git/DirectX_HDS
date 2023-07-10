@@ -847,6 +847,10 @@ void Monster_Pomp::RecordingProgressUpdate(float _DeltaTime)
 		m_Recording_Complete = false;
 		Reset();
 		ChangeState(PompState::IDLE);
+		if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+		{
+			Off();
+		}
 		return;
 	}
 

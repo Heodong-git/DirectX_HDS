@@ -805,6 +805,10 @@ void Monster_Gangster::RecordingProgressUpdate(float _DeltaTime)
 		m_Recording_Complete = false;
 		Reset();
 		ChangeState(GangsterState::IDLE);
+		if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+		{
+			Off();
+		}
 		return;
 	}
 

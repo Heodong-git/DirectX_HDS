@@ -791,12 +791,15 @@ void Monster_Grunt::RecordingProgressStart()
 
 void Monster_Grunt::RecordingProgressUpdate(float _DeltaTime)
 {
-	// 레코딩이 종료 되었다면 아이들로 전환. 
 	if (true == m_Recording_Complete)
 	{
 		m_Recording_Complete = false;
 		Reset();
 		ChangeState(GruntState::IDLE);
+		if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+		{
+			Off();
+		}
 		return;
 	}
 

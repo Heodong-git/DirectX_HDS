@@ -391,6 +391,12 @@ void StageEditer::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
                 case BaseLevel::LevelState::PLAY:
                     ImGui::Text("PLAY");
                     break;
+                case BaseLevel::LevelState::RECORDING_PROGRESS:
+                    ImGui::Text("RECORDING_PROGRESS");
+                    break;
+                case BaseLevel::LevelState::RECORDING_STANDBY:
+                    ImGui::Text("RECORDING_STANDBY");
+                    break;
                 default:
                     break;
                 }
