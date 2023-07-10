@@ -70,11 +70,18 @@ public:
 		return m_Recording_Complete;
 	}
 
+	EffectState GetCurState()
+	{
+		return m_CurState;
+	}
+
 protected:
 	void ChangeState(EffectState _State)
 	{
 		m_CurState = _State;
 	}
+
+	
 
 	EffectState m_CurState = EffectState::NORMAL;
 

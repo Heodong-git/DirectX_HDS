@@ -31,10 +31,14 @@ public:
 	{
 		m_Actor = _Actor;
 	}
-
+	
 	void SetType(RifleEffectType _Type);
 
 	void ChangeLoopAnimation();
+	
+	void EffectDeath();
+
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

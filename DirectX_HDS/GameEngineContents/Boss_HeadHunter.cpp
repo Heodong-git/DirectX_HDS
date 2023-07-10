@@ -1199,7 +1199,7 @@ void Boss_HeadHunter::RifleStart()
 void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 {
 	// 애니메이션이 종료되었거나, 이펙트가 데스상태라면
-	if (true == m_MainRender->IsAnimationEnd() && true == m_Effect->IsDeath())
+	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect->GetCurState())
 	{ 
 		m_Effect = nullptr;
 		int RandomValue = CreateRandomValue(2);
@@ -1671,8 +1671,11 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 	{
 		if (nullptr != m_SweepEffect)
 		{
-			m_SweepEffect->Death();
-			m_SweepEffect = nullptr;
+			// 얘를 죽이지않아야함 
+			// 여기서 애니메이션이 종료되면, 
+			
+			m_SweepEffect->EffectDeath();
+			// m_SweepEffect = nullptr;
 		}
 
 		if (2 == m_Phase2_HitCount || 1 == m_Phase2_HitCount)
@@ -1696,8 +1699,7 @@ void Boss_HeadHunter::SweepEnd()
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 10.0f });
 	if (nullptr != m_SweepEffect)
 	{
-		m_SweepEffect->Death();
-		m_SweepEffect = nullptr;
+		m_SweepEffect->EffectDeath();
 	}
 }
 
