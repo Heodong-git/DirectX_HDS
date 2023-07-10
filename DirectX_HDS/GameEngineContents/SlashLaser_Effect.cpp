@@ -57,9 +57,8 @@ void SlashLaser_Effect::MoveUpdate(float _DeltaTime)
 	float4 Dir = m_MovePos - GetTransform()->GetLocalPosition();
 	float Angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
 	m_MainRender->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
-
-	Dir.Normalize();
-	m_MainRender->GetTransform()->AddLocalPosition(Dir * 20000.0f * _DeltaTime);
+	float4 MoveDir = float4::AngleToDirection2DToDeg(m_MainRender->GetTransform()->GetLocalRotation().z);
+	m_MainRender->GetTransform()->AddLocalPosition(MoveDir * 20000.0f * _DeltaTime);
 }
 
 void SlashLaser_Effect::ComponentSetting()

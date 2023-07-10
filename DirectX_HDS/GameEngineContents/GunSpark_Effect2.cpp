@@ -36,9 +36,43 @@ void GunSpark_Effect2::Start()
 
 void GunSpark_Effect2::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		Reverse(m_Render.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
+		{
+			this->Death();
+		}
+
+		return;
+	}
+
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	if (EffectState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_Render.get());
+		}
+	}
+
 	if (true == m_Render->IsAnimationEnd())
 	{
-		this->Death();
+		ChangeState(EffectState::DEATH);
+		m_Render->Off();
+		m_IsRecording = false;
 	}
 }
 

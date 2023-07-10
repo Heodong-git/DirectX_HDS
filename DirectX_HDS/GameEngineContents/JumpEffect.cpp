@@ -42,19 +42,48 @@ void JumpEffect::Start()
 
 void JumpEffect::Update(float _DeltaTime)
 {
-	if (nullptr != m_Render)
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
-		if (m_Render->IsAnimationEnd())
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		Reverse(m_Render.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
 		{
 			this->Death();
+		}
+
+		return;
+	}
+
+	if (nullptr != m_Render)
+	{
+		if (m_Render->IsAnimationEnd() && EffectState::DEATH != m_CurState)
+		{
+			ChangeState(EffectState::DEATH);
+			m_Render->Off();
+			m_IsRecording = false;
+			//this->Death();
 			return;
 		}
 	}
 
-	if (nullptr == Player::MainPlayer)
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	if (EffectState::RECORDING_PROGRESS != m_CurState)
 	{
-		MsgAssert("플레이어가 nullptr 입니다.");
-		return;
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_Render.get());
+		}
 	}
 }
 

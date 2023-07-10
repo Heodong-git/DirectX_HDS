@@ -221,6 +221,7 @@ private:
 
 	// ม฿ทย 
 	const float m_GravityPower = 1000.0f;
+	const float m_Ratio = 1.0f;
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();

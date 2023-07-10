@@ -124,6 +124,9 @@ void HeadHunter_RifleEffect::Start()
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
 {
+	// 일단 적용 시켜봐 
+
+
 	// 라이브타임으로 그냥 죽이자 
 	if (RifleEffectType::CEILING_FIRE == m_Type)
 	{

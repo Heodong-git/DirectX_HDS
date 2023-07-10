@@ -214,6 +214,7 @@ void Monster_Gangster::LoadAndCreateAnimation()
 }
 
 // 완성하면 리셋목록 확인해서 다시작성
+// 최종적으로 리셋을 하는데. 
 void Monster_Gangster::Reset()
 {
 	ComponentSetting();

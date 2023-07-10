@@ -7,7 +7,6 @@ enum class BulletType
 	ROT,
 };
 
-
 // 설명 :
 class Bullet : public BaseActor
 {
@@ -41,6 +40,9 @@ public:
 	{
 		m_Angle = _Angle;
 	}
+
+	// death 함수를 만들고
+	void BulletDeath();
 
 protected:
 	void Start() override;

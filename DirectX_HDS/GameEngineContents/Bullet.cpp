@@ -15,6 +15,14 @@ Bullet::~Bullet()
 {
 }
 
+void Bullet::BulletDeath()
+{	
+	ChangeState(EffectState::DEATH);
+	m_Collision->Off();
+	m_Render->Off();
+	m_IsRecording = false;
+}
+
 void Bullet::Start()
 {
 	if (nullptr == GameEngineSprite::Find("Bullet"))
@@ -39,22 +47,61 @@ void Bullet::Start()
 
 void Bullet::Update(float _DeltaTime)
 {
-	if (GetLiveTime() >= m_LiveTime)
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
-		if (true == IsUpdate())
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		Reverse(m_Render.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
 		{
 			this->Death();
 		}
+
+		return;
+	}
+
+
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	// 이게 묶여있어도 상관은없는거같기도한데 
+	if (EffectState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_Render.get());
+		}
+	}
+
+	// 라이브타임 종료시 데스가 아님, 
+	if (GetLiveTime() >= m_LiveTime)
+	{
+		if (true == IsUpdate() && EffectState::DEATH != m_CurState)
+		{
+			BulletDeath();
+		}
+
 		return;
 	}
 	
+	// 이동시키고
 	GetTransform()->AddLocalPosition(m_MoveDir * m_MoveSpeed * _DeltaTime);
 
+	// 충돌했다면 
 	std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != DoorCol)
 	{
-		m_Collision->Off();
-		this->Death();
+		// 충돌체, 렌더러를 끄고 데스상태로 바꾸는데 리턴. 
+		// 내가 데스상태면 
+		BulletDeath();
 		return;
 	}
 
@@ -100,7 +147,7 @@ void Bullet::Update(float _DeltaTime)
 			GameEngineSound::Play("death_bullet.wav");
 			Player::MainPlayer->BulletCollision();
 			Player::MainPlayer->CreateHitEffect(m_Collision);
-			this->Death();
+			BulletDeath();
 			return;
 		}
 	}
@@ -119,7 +166,7 @@ void Bullet::Update(float _DeltaTime)
 			// 그리고 여기서 리플렉트 이펙트도 만들어야함 
 			std::shared_ptr<BaseActor> Actor = MonsterCol->GetActor()->DynamicThis<BaseActor>();
 			Actor->BulletCollision();
-			this->Death();
+			BulletDeath();
 			return;
 		}
 	}

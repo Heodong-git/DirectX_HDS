@@ -87,8 +87,6 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 	// 벡터에 발사각도 저장해두고, 사용 일단 임시
 	if (0.0f >= m_RotaitionFireTime)
 	{
-		
-
 		bool Check = m_Dir;
 
 		if (true == m_Dir)
@@ -435,6 +433,8 @@ void Boss_HeadHunter::ResetPhase()
 	}
 }
 
+// 흠 이거 일단 하지말아봐 
+// 어차피 안죽어있지않나 ?? 
 void Boss_HeadHunter::ResetEffect()
 {
 	if (nullptr != m_Effect)
@@ -1190,7 +1190,7 @@ void Boss_HeadHunter::IdleEnd()
 
 void Boss_HeadHunter::RifleStart()
 {
-	CreateRifleEffect();
+	// CreateRifleEffect();
 	ChangeDir();
 	DirCheck();
 	m_MainRender->ChangeAnimation("headhunter_takeout_rifle");

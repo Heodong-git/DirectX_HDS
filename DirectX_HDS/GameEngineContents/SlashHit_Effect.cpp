@@ -40,25 +40,69 @@ void SlashHit_Effect::Start()
 
 void SlashHit_Effect::Update(float _DeltaTime)
 {
-	if (nullptr != m_MainRender)
+	m_RecordingFrame = !m_RecordingFrame;
+
+	// 레벨이 녹화진행중이라면, 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
-		if (m_MainRender->IsAnimationEnd())
+		// 내 상태를 녹화상태로 변경하고, 
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	// 녹화 상태라면 
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		// 리버스 함수 호출 
+		Reverse(m_MainRender.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
 		{
 			this->Death();
+		}
+		return;
+	}
+
+	if (nullptr != m_MainRender)
+	{
+		// 애니메이션이 종료되었고, 내가 데스상태가 아닐때만 
+		if (m_MainRender->IsAnimationEnd() && EffectState::DEATH != m_CurState)
+		{
+			// 데스시키지 않고, 상태만 변경
+			ChangeState(EffectState::DEATH);
+			m_MainRender->Off();
+			m_IsRecording = false;
 			return;
 		}
 	}
 
+	// 오브젝트 쫓아가기 
 	if (nullptr != m_FollowObj)
 	{
 		if (true == m_IsPivot)
 		{
 			GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition() + m_Pivot);
-			return;
 		}
 
-		GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition());
+		if (false == m_IsPivot)
+		{
+			GetTransform()->SetWorldPosition(m_FollowObj->GetTransform()->GetWorldPosition());
+		}
+		
+		// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			if (true == m_RecordingFrame)
+			{
+				InfoSetting(m_MainRender.get());
+			}
+		}
 	}
+
+	
 }
 
 void SlashHit_Effect::Render(float _DeltaTime)

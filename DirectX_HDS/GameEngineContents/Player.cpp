@@ -269,8 +269,6 @@ void Player::Update(float _DeltaTime)
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
-	// 개멍청한새끼 
-	// 인포세팅
 	if (PlayerState::RECORDING_PROGRESS != m_CurState)
 	{
 		if (true == m_RecordingFrame)
@@ -731,8 +729,8 @@ void Player::Slow()
 
 void Player::SlowReset()
 {
-	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
-	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 1.0f);
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(m_Ratio);
+	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, m_Ratio);
 }
 
 
@@ -958,7 +956,6 @@ void Player::IdleUpdate(float _DeltaTime)
 		return;
 	}*/
 
-	// 공격, 마우스 좌클릭 
 	if (true == GameEngineInput::IsDown("player_slash"))
 	{
 		if (true == DoorColCheck())

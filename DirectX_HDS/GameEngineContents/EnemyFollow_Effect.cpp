@@ -41,7 +41,7 @@ void EnemyFollow_Effect::Start()
 	}
 
 	m_Render->CreateAnimation({ .AnimationName = "enemy_follow", .SpriteName = "enemy_follow", .Start = 0, .End = 1 ,
-								  .FrameInter = 0.2f , .Loop = false , .ScaleToTexture = true });
+								  .FrameInter = 0.25f , .Loop = false , .ScaleToTexture = true });
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->ChangeAnimation("enemy_follow");
 }
@@ -49,7 +49,7 @@ void EnemyFollow_Effect::Start()
 void EnemyFollow_Effect::Update(float _DeltaTime)
 {
 	if (true == m_Render->IsAnimationEnd())
-	{
+	{ 
 		this->Death();
 		if (nullptr != m_Render)
 		{

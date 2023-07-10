@@ -45,9 +45,42 @@ void SlashEffect::Start()
 
 void SlashEffect::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS);
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS == m_CurState)
+	{
+		Reverse(m_Render.get());
+		
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
+		{
+			this->Death();
+		}
+		
+		return;
+	}
+
+
 	DebugUpdate();
 	MoveUpdate(_DeltaTime);
 	CollisionUpdate(_DeltaTime);
+
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	if (EffectState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_Render.get());
+		}
+	}
 }
 
 void SlashEffect::Render(float _DeltaTime)
@@ -158,12 +191,16 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 
 void SlashEffect::MoveUpdate(float _DeltaTime)
 {
-	// 여기서 충돌체크를해서 충돌체를 오프시키는게 편할거같은데
 	if (nullptr != m_Render)
 	{
 		if (m_Render->IsAnimationEnd())
 		{
-			this->Death();
+			ChangeState(EffectState::DEATH);
+			CollisionOff();
+			m_Render->Off();
+			m_IsRecording = false;
+
+			// this->Death();
 			PlaySupporter::MainSupporter->CameraZoomEffect(1.0f);
 			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 1.0f);
 			GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 1.0f);
@@ -172,7 +209,6 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 	}
 
 	// 충돌체는 이펙트의 3번프레임에서 제거
-
 	if (nullptr == Player::MainPlayer)
 	{
 		MsgAssert("플레이어가 nullptr 입니다.");

@@ -2,8 +2,15 @@
 #include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-
 #include "BaseLevel.h"
+
+// 이펙트만 사용
+enum class EffectState
+{
+	NORMAL,
+	DEATH,
+	RECORDING_PROGRESS,
+};
 
 class ReverseInfo
 {
@@ -11,6 +18,7 @@ public:
 	TransformData ActorData;
 	TransformData RendererData;
 	SpriteInfo InfoData;
+	bool IsRecording = false;
 };
 
 class BaseActor : public GameEngineActor
@@ -63,6 +71,13 @@ public:
 	}
 
 protected:
+	void ChangeState(EffectState _State)
+	{
+		m_CurState = _State;
+	}
+
+	EffectState m_CurState = EffectState::NORMAL;
+
 	BaseLevel::LevelState GetLevelState();
 
 	// 재생, 역재생 관련함수 
@@ -93,9 +108,14 @@ protected:
 	}
 
 	bool m_IsDeath = false;
+
+	//  레벨이 녹화진행중 인 상태에서, Infos 의 size가 0이 되면 
+	// 내가 true 로 변경되는데, 녹화 진행중인 상태에서 스킵을 하고 싶다면?? 
+
 	bool m_Recording_Complete = false;
 	bool m_RecordingFrame = false;
 	
+	bool m_IsRecording = true;
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
 private:
 

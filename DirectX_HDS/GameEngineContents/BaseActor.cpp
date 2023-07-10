@@ -55,18 +55,26 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 		return;
 	}
 
-	// 거꾸로 비긴.
+	// 뒤쪽 데이터 부터 받아온다. 
 	ReverseInfo& Info = *(Infos.rbegin());
-	
-	// 액터의 위치
-	this->GetTransform()->SetTransformData(Info.ActorData);
-	// 랜더러 위치세팅해주고
-	_Renderer->GetTransform()->SetTransformData(Info.RendererData);
-	// 랜더러의 텍스처와 
-	_Renderer->SetTexture(Info.InfoData.Texture->GetName());
 
-	// 아틀라스 데이터 세팅해주면.
+	if (true == Info.IsRecording)
+	{
+		_Renderer->On();
+	}
+
+	else if (false == Info.IsRecording)
+	{
+		Infos.pop_back();
+		return;
+	}
+
+	this->GetTransform()->SetTransformData(Info.ActorData);
+	_Renderer->GetTransform()->SetTransformData(Info.RendererData);
+	_Renderer->SetTexture(Info.InfoData.Texture->GetName());
 	_Renderer->SetAtlasData(Info.InfoData.CutData);
+
+	// 데이터 세팅 후 삭제 
 	Infos.pop_back();
 }
 
@@ -79,7 +87,7 @@ void BaseActor::InfoSetting(GameEngineSpriteRenderer* _Renderer)
 	Info.Texture = Tex->Res;
 	Info.CutData = _Renderer->GetAtlasData();
 
-	Infos.push_back({ _Renderer->GetActor()->GetTransform()->GetTransDataRef(), _Renderer->GetTransform()->GetTransDataRef(), Info });
+	Infos.push_back({ _Renderer->GetActor()->GetTransform()->GetTransDataRef(), _Renderer->GetTransform()->GetTransDataRef(), Info , m_IsRecording });
 }
 
 void BaseActor::Update(float _DeltaTime)

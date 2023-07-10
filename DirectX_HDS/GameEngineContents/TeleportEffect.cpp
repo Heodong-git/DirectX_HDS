@@ -19,9 +19,11 @@ void TeleportEffect::Start()
 }
 
 void TeleportEffect::Update(float _DeltaTime)
-{
+{ 
+	// 건스파크 이펙트의 마지막 애니메이션까지 종료 되었다면
 	if (true == m_SparkRenders[m_FirstRenderCount - 1]->IsAnimationEnd())
 	{
+		// 모든렌더러를 순회하며 off 
 		this->Death();
 		return;
 	}

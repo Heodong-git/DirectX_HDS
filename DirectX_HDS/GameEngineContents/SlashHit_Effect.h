@@ -1,8 +1,6 @@
 #pragma once
 #include "BaseActor.h"
 
-
-// 히트이펙트가 얘가 아닌거같은데 
 // 설명 :
 class SlashHit_Effect : public BaseActor
 {
@@ -29,6 +27,11 @@ public:
 		m_Pivot = _Pivot;
 	}
 
+	void ChangeState(EffectState _State)
+	{
+		m_CurState = _State;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -44,5 +47,4 @@ private:
 	void ComponentSetting();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> m_MainRender = nullptr;
-
 };
