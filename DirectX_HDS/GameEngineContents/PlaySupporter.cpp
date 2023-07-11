@@ -396,23 +396,6 @@ void PlaySupporter::LevelResetCheck()
 		GetReturnCastLevel()->LevelReset();
 		return;
 	}
-
-
-	//// 만약 이 충돌체가 마우스 클릭 충돌체를 가진녀석과 충돌하게 되면 레벨의 리셋 호출 
-	//g_MouseCheckCollision->GetTransform()->SetLocalPosition(m_MainCamera->GetTransform()->GetLocalPosition());
-	//std::shared_ptr<GameEngineCollision> CursorCol = g_MouseCheckCollision->Collision(ColOrder::CURSOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
-
-	//// 뭔가가 들어왔다는건 충돌했다는거고 
-	//// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
-	//if ((nullptr != CursorCol && PlayerState::NONE == Player::MainPlayer->GetCurState()) ||
-	//	(nullptr != CursorCol && PlayerState::EXPLOSION_DEATH == Player::MainPlayer->GetCurState()))
-	//{
-	//	CursorCol->Off();
-	//	g_BlackBoxRender->Off();
-	//	g_FailRender->Off();
-	//	// 리셋하고 
-	//	GetReturnCastLevel()->LevelReset();
-	//}
 }
 
 void PlaySupporter::ComponentSetting()

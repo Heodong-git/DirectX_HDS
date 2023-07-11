@@ -21,6 +21,8 @@ enum class LevelType
 class BaseLevel : public GameEngineLevel
 {
 	friend class PlaySupporter;
+	friend class YouCanDoThis;
+
 
 public:
 	enum class LevelState
@@ -29,6 +31,7 @@ public:
 		PLAY,
 		RECORDING_STANDBY,	 // 녹화대기
 		RECORDING_PROGRESS,	 // 녹화진행중
+		RECORDING_PROGRESS_FORWARD, // 정방향재생 
 	};
 
 public:

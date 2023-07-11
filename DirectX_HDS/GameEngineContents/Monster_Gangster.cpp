@@ -46,6 +46,14 @@ void Monster_Gangster::Start()
 
 void Monster_Gangster::Update(float _DeltaTime)
 {
+	// 정방향 재생인지 체크 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
+		GangsterState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		ChangeState(GangsterState::RECORDING_PROGRESS_FORWARD);
+		return;
+	}
+
 	m_RecordingFrame = !m_RecordingFrame;
 
 	// 레벨의 상태를 체크한다. 
@@ -75,7 +83,7 @@ void Monster_Gangster::Update(float _DeltaTime)
 	DeathCheck();
 	UpdateState(_DeltaTime);
 
-	if (GangsterState::RECORDING_PROGRESS != m_CurState)
+	if (GangsterState::RECORDING_PROGRESS != m_CurState && GangsterState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
 		if (true == m_RecordingFrame)
 		{
@@ -219,7 +227,10 @@ void Monster_Gangster::Reset()
 {
 	ComponentSetting();
 	GetTransform()->SetLocalPosition(GetInitPos());
-	ChangeState(GangsterState::IDLE);
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD != GetReturnCastLevel()->GetCurState())
+	{
+		ChangeState(GangsterState::IDLE);
+	}
 	ResetDir();
 	m_Collision->On();
 	m_SubCollision->On();
@@ -463,6 +474,9 @@ void Monster_Gangster::UpdateState(float _DeltaTime)
 	case GangsterState::RECORDING_PROGRESS:
 		RecordingProgressUpdate(_DeltaTime);
 		break;
+	case GangsterState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -498,6 +512,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 	case GangsterState::RECORDING_PROGRESS:
 		RecordingProgressStart();
 		break;
+	case GangsterState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -523,6 +540,9 @@ void Monster_Gangster::ChangeState(GangsterState _State)
 		break;
 	case GangsterState::RECORDING_PROGRESS:
 		RecordingProgressEnd();
+		break;
+	case GangsterState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardEnd();
 		break;
 	}
 }
@@ -812,24 +832,29 @@ void Monster_Gangster::RecordingProgressUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 여기서 역재생을 수행하고, 
-	// 역재생하고 거의 마무리단계에서 위치가 최초위치와 동일하다면 렌더OFF
-
-	// 만약 보스레벨1이고, 내가 최초위치와 동일해졌다면, 렌더러를 off? 
-
-	/*LevelType CurLevelType = GetReturnCastLevel()->GetLevelType();
-	if (LevelType::CLUBBOSS1 == CurLevelType && m_Recording_Complete == false)
-	{
-		if (0 == Infos.size())
-		{
-			m_MainRender->Off();
-		}
-	}*/
-
 	Reverse(m_MainRender.get());
 }
 
 void Monster_Gangster::RecordingProgressEnd()
+{
+}
+
+void Monster_Gangster::RecordingProgress_ForwardStart()
+{
+	Reset();
+}
+
+void Monster_Gangster::RecordingProgress_ForwardUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		return;
+	}
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Gangster::RecordingProgress_ForwardEnd()
 {
 }
 

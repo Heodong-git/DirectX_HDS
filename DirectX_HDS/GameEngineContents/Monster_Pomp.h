@@ -15,6 +15,7 @@ enum class PompState
 
 	FORCEFALL,
 	RECORDING_PROGRESS,
+	RECORDING_PROGRESS_FORWARD,
 };
 
 class Monster_Pomp : public BaseActor
@@ -141,4 +142,8 @@ private:
 	void RecordingProgressStart();
 	void RecordingProgressUpdate(float _DeltaTime);
 	void RecordingProgressEnd();
+
+	void RecordingProgress_ForwardStart();
+	void RecordingProgress_ForwardUpdate(float _DeltaTime);
+	void RecordingProgress_ForwardEnd();
 };

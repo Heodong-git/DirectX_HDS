@@ -233,6 +233,14 @@ void Player::NextPosUpdate()
 
 void Player::Update(float _DeltaTime)
 {
+	// 정방향 재생인지 체크 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
+		PlayerState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		ChangeState(PlayerState::RECORDING_PROGRESS_FORWARD);
+		return;
+	}
+
 	m_RecordingFrame = !m_RecordingFrame;
 
 	// 디버그 업데이트
@@ -269,7 +277,7 @@ void Player::Update(float _DeltaTime)
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
 
-	if (PlayerState::RECORDING_PROGRESS != m_CurState)
+	if (PlayerState::RECORDING_PROGRESS != m_CurState && PlayerState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
 		if (true == m_RecordingFrame)
 		{
@@ -794,6 +802,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::RECORDING_PROGRESS:
 		RecordingProgressUpdate(_DeltaTime);
 		break;
+	case PlayerState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -861,6 +872,9 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::RECORDING_PROGRESS:
 		RecordingProgressStart();
 		break;
+	case PlayerState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -919,6 +933,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::RECORDING_PROGRESS:
 		RecordingProgressEnd();
+		break;
+	case PlayerState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardEnd();
 		break;
 	}
 }
@@ -2829,11 +2846,60 @@ void Player::RecordingProgressUpdate(float _DeltaTime)
 		return;
 	}
 
-	// 여기서 역재생을 수행하고, 
+	// 여기서 역재생을 수행하고
+	// 이때, 맵이 클리어 상태라면 
+	// 리셋후, 정방향으로 재생, 그리고 재생이 끝나면 레벨체인지 
 	Reverse(m_Render.get());
 }
 void Player::RecordingProgressEnd()
 {
 
 	// 녹화종료시에 모든 정보를 리셋한다. 
+}
+
+void Player::RecordingProgress_ForwardStart()
+{
+	Reset();
+	PlaySupporter::MainSupporter->ForcedReset();
+}
+
+// 정방향 재생 진행중, 여기부터 하면됨 
+void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		BaseLevel* CurLevel = GetReturnCastLevel();
+		LevelType CurLevelType = CurLevel->GetLevelType();
+
+		switch (CurLevelType)
+		{
+		case LevelType::CLUBMAP0:
+			// GetReturnCastLevel()->GetFadeEffect()->FadeOut();
+			GameEngineCore::ChangeLevel("ClubLevel_01");
+			break;
+		case LevelType::CLUBMAP1:
+			GameEngineCore::ChangeLevel("ClubLevel_02");
+			break;
+		case LevelType::CLUBMAP2:
+			GameEngineCore::ChangeLevel("ClubLevel_03");
+			break;
+		case LevelType::CLUBMAP3:
+			GameEngineCore::ChangeLevel("ClubLevel_04");
+			break;
+		case LevelType::CLUBMAP4:
+			GameEngineCore::ChangeLevel("ClubLevel_Boss");
+			break;
+		}
+		return;
+	}
+
+	// 여기서 역재생을 수행하고
+	// 이때, 맵이 클리어 상태라면 
+	// 리셋후, 정방향으로 재생, 그리고 재생이 끝나면 레벨체인지 
+	Reverse(m_Render.get());
+}
+
+void Player::RecordingProgress_ForwardEnd()
+{
 }

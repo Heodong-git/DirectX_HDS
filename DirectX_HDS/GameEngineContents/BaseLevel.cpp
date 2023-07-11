@@ -12,7 +12,6 @@
 #include "FadeEffect.h"
 #include "ColEventObj.h"
 #include "Go_UI.h"
-
 #include "DistotionEffect.h"
 
 
@@ -149,7 +148,12 @@ void BaseLevel::RecordingUpdate(float _DeltaTime)
 		m_CurState = BaseLevel::LevelState::PLAY;
 		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
 		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
-		m_DistotionEffect->EffectOff();
+
+		if (nullptr != m_DistotionEffect)
+		{
+			m_DistotionEffect->EffectOff();
+			m_DistotionEffect = nullptr;
+		}
 		return;
 	}
 }
@@ -269,6 +273,7 @@ void BaseLevel::Reset()
 	{
 		m_DistotionEffect = GetLevel()->GetLastTarget()->CreateEffect<DistotionEffect>();
 	}
+
 	m_DistotionEffect->EffectOn();
 }
 

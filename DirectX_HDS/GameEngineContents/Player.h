@@ -29,6 +29,7 @@ enum class PlayerState
 	EXPLOSION_DEATH,
 
 	RECORDING_PROGRESS,
+	RECORDING_PROGRESS_FORWARD,
 };
 
 
@@ -341,6 +342,10 @@ private:
 	void RecordingProgressStart();
 	void RecordingProgressUpdate(float _DeltaTime);
 	void RecordingProgressEnd();
+
+	void RecordingProgress_ForwardStart();
+	void RecordingProgress_ForwardUpdate(float _DeltaTime);
+	void RecordingProgress_ForwardEnd();
 };
 
 // 파일입출력이 필수다. 

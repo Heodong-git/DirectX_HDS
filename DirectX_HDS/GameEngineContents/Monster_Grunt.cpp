@@ -36,6 +36,14 @@ void Monster_Grunt::Start()
 
 void Monster_Grunt::Update(float _DeltaTime)
 {
+	// 정방향 재생인지 체크 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
+		GruntState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		ChangeState(GruntState::RECORDING_PROGRESS_FORWARD);
+		return;
+	}
+
 	m_RecordingFrame = !m_RecordingFrame;
 
 	// 레벨의 상태를 체크한다. 
@@ -66,7 +74,7 @@ void Monster_Grunt::Update(float _DeltaTime)
 	DeathCheck();
 	UpdateState(_DeltaTime);
 
-	if (GruntState::RECORDING_PROGRESS != m_CurState)
+	if (GruntState::RECORDING_PROGRESS != m_CurState && GruntState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
 		if (true == m_RecordingFrame)
 		{
@@ -366,8 +374,12 @@ void Monster_Grunt::Reset()
 {
 	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
-	// 상태 아이들로 변경하고 
-	ChangeState(GruntState::IDLE);
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD != GetReturnCastLevel()->GetCurState())
+	{
+		// 상태 아이들로 변경하고 
+		ChangeState(GruntState::IDLE);
+	}
 	
 	// 초기화필요한 값들 전부 초기화 
 	// 몬스터 카운트를 하나 추가시켜줘야함 
@@ -441,6 +453,9 @@ void Monster_Grunt::UpdateState(float _DeltaTime)
 	case GruntState::RECORDING_PROGRESS:
 		RecordingProgressUpdate(_DeltaTime);
 		break;
+	case GruntState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -480,6 +495,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 	case GruntState::RECORDING_PROGRESS:
 		RecordingProgressStart();
 		break;
+	case GruntState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -511,6 +529,9 @@ void Monster_Grunt::ChangeState(GruntState _State)
 		break;
 	case GruntState::RECORDING_PROGRESS:
 		RecordingProgressEnd();
+		break;
+	case GruntState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardEnd();
 		break;
 	}
 }
@@ -808,5 +829,25 @@ void Monster_Grunt::RecordingProgressUpdate(float _DeltaTime)
 }
 
 void Monster_Grunt::RecordingProgressEnd()
+{
+}
+
+void Monster_Grunt::RecordingProgress_ForwardStart()
+{	
+	Reset();
+}
+
+void Monster_Grunt::RecordingProgress_ForwardUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		return;
+	}
+
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Grunt::RecordingProgress_ForwardEnd()
 {
 }

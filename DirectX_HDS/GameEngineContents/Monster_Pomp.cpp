@@ -40,6 +40,15 @@ void Monster_Pomp::Start()
 
 void Monster_Pomp::Update(float _DeltaTime)
 {
+	// 정방향 재생인지 체크 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
+		PompState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		ChangeState(PompState::RECORDING_PROGRESS_FORWARD);
+		return;
+	}
+
+
 	m_RecordingFrame = !m_RecordingFrame;
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
@@ -70,7 +79,7 @@ void Monster_Pomp::Update(float _DeltaTime)
 	ParryingCheck();
 	UpdateState(_DeltaTime);
 
-	if (PompState::RECORDING_PROGRESS != m_CurState)
+	if (PompState::RECORDING_PROGRESS != m_CurState && PompState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
 		if (true == m_RecordingFrame)
 		{
@@ -369,8 +378,12 @@ void Monster_Pomp::Reset()
 	ComponentSetting();
 	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
-	// 상태 아이들로 변경하고 
-	ChangeState(PompState::IDLE);
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD != GetReturnCastLevel()->GetCurState())
+	{
+		// 상태 아이들로 변경하고 
+		ChangeState(PompState::IDLE);
+	}
 
 	// 초기화필요한 값들 전부 초기화 
 	ResetDir();
@@ -463,6 +476,9 @@ void Monster_Pomp::UpdateState(float _DeltaTime)
 	case PompState::RECORDING_PROGRESS:
 		RecordingProgressUpdate(_DeltaTime);
 		break;
+	case PompState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -505,6 +521,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 	case PompState::RECORDING_PROGRESS:
 		RecordingProgressStart();
 		break;
+	case PompState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -539,6 +558,9 @@ void Monster_Pomp::ChangeState(PompState _State)
 		break;
 	case PompState::RECORDING_PROGRESS:
 		RecordingProgressEnd();
+		break;
+	case PompState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardEnd();
 		break;
 	}
 }
@@ -859,6 +881,26 @@ void Monster_Pomp::RecordingProgressUpdate(float _DeltaTime)
 }
 
 void Monster_Pomp::RecordingProgressEnd()
+{
+}
+
+void Monster_Pomp::RecordingProgress_ForwardStart()
+{
+	Reset();
+}
+
+void Monster_Pomp::RecordingProgress_ForwardUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		return;
+	}
+
+	Reverse(m_MainRender.get());
+}
+
+void Monster_Pomp::RecordingProgress_ForwardEnd()
 {
 }
 

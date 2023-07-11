@@ -10,6 +10,7 @@ enum class EffectState
 	NORMAL,
 	DEATH,
 	RECORDING_PROGRESS,
+	RECORDING_PROGRESS_FORWARD,
 };
 
 class ReverseInfo
@@ -126,8 +127,6 @@ protected:
 	
 	bool m_IsRecording = true;
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
-
-
 private:
 
 	// BaseActor들은 전부 얘를 오버라이드 

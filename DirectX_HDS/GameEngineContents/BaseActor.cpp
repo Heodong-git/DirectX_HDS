@@ -62,26 +62,63 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 	}
 
 	// 뒤쪽 데이터 부터 받아온다. 
-	ReverseInfo& Info = *(Infos.rbegin());
 
-	if (true == Info.IsRecording)
-	{
-		_Renderer->On();
-	}
+	BaseLevel::LevelState CurLevelState = GetLevelState();
 
-	else if (false == Info.IsRecording)
+	switch (CurLevelState)
 	{
+	case BaseLevel::LevelState::RECORDING_PROGRESS:
+	{
+		ReverseInfo& Info = *(Infos.rbegin());
+
+		if (true == Info.IsRecording)
+		{
+			_Renderer->On();
+		}
+
+		else if (false == Info.IsRecording)
+		{
+			Infos.pop_back();
+			return;
+		}
+
+		this->GetTransform()->SetTransformData(Info.ActorData);
+		_Renderer->GetTransform()->SetTransformData(Info.RendererData);
+		_Renderer->SetTexture(Info.InfoData.Texture->GetName());
+		_Renderer->SetAtlasData(Info.InfoData.CutData);
+
+		// 데이터 세팅 후 삭제 
 		Infos.pop_back();
-		return;
 	}
+		break;
+	case BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD:
+	{
+		ReverseInfo& Info = *(Infos.begin());
 
-	this->GetTransform()->SetTransformData(Info.ActorData);
-	_Renderer->GetTransform()->SetTransformData(Info.RendererData);
-	_Renderer->SetTexture(Info.InfoData.Texture->GetName());
-	_Renderer->SetAtlasData(Info.InfoData.CutData);
+		if (true == Info.IsRecording)
+		{
+			_Renderer->On();
+		}
 
-	// 데이터 세팅 후 삭제 
-	Infos.pop_back();
+		else if (false == Info.IsRecording)
+		{
+			Infos.pop_front();
+			return;
+		}
+
+		this->GetTransform()->SetTransformData(Info.ActorData);
+		_Renderer->GetTransform()->SetTransformData(Info.RendererData);
+		_Renderer->SetTexture(Info.InfoData.Texture->GetName());
+		_Renderer->SetAtlasData(Info.InfoData.CutData);
+
+		// 데이터 세팅 후 삭제 
+		Infos.pop_front();
+	}
+		break;
+	default:
+		break;
+	}
+	
 }
 
 // 적절한 위치에서 이걸 호출?? 
