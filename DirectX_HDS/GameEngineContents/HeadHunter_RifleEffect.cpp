@@ -63,7 +63,7 @@ void HeadHunter_RifleEffect::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BOSS_EFFECT);
 	m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 2.0f, 1.0f });
-	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f, -1.0f });
+	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f, -2.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BOSS_ATTACK);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f , 1.0f  });
@@ -145,6 +145,13 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
 		Reverse(m_Render.get());
 
 		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 

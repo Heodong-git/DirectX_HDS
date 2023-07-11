@@ -149,6 +149,8 @@ private:
 	void ChangeDir();		// 플레이어와 x축 계산해서 왼쪽,오른쪽 변경
 	void DirCheck();		// 왼쪽오른쪽 구분해서 포지티브,네거티브스케일 적용
 
+
+	const float4 m_MainRenderOriginPos = float4{ 0.0f, 42.0f , -1.0f };
 	// 리셋 
 	void Reset();
 	void ResetPhase();

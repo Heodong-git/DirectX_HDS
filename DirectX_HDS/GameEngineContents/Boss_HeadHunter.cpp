@@ -153,7 +153,7 @@ void Boss_HeadHunter::ComponentSetting()
 	m_NextTrans = std::make_shared<GameEngineTransform>();
 
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BOSS);
-	m_MainRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 42.0f });
+	m_MainRender->GetTransform()->SetLocalPosition(m_MainRenderOriginPos);
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BOSS);
 	m_Collision->GetTransform()->SetLocalPosition(float4{ 0.0f, 37.0f });
@@ -411,6 +411,7 @@ void Boss_HeadHunter::Reset()
 	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(BossState::INTRO);
 
+	m_MainRender->GetTransform()->SetLocalPosition(m_MainRenderOriginPos);
 	m_CurFireAngleCount = 0;
 	m_IdleDuration = 0.25f;
 	m_IsDoubleSweep = false;

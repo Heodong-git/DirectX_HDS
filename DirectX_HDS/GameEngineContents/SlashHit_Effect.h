@@ -38,6 +38,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+
 	bool m_Direction = false;
 	std::shared_ptr<GameEngineObject> m_FollowObj = nullptr;
 

@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 
+#include "PlaySupporter.h"
 #include "Map.h"
 #include "Player.h"
 #include "FadeEffect.h"
@@ -13,6 +14,7 @@
 #include "Go_UI.h"
 
 #include "DistotionEffect.h"
+
 
 BaseLevel::BaseLevel()
 {
@@ -60,18 +62,12 @@ void BaseLevel::Update(float _DeltaTime)
 	}
 
 	KeyUpdate();
+	// 스테이지가 클리어 되었는지 체크 
 	LevelClearCheck();
-	PlayerSkillCheck();
+	// 디버그용 업데이트 
 	DebugUpdate();
-
-	if (true == Player::MainPlayer->IsRecording())
-	{
-		m_CurState = BaseLevel::LevelState::PLAY;
-		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
-		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
-		m_DistotionEffect->EffectOff();
-		return;
-	}
+	// 녹화 업데이트 
+	RecordingUpdate(_DeltaTime);
 
 	// 현재 레벨이 대기상태라면 업데이트하지 않음
 	if (BaseLevel::LevelState::WAIT == m_CurState)
@@ -82,12 +78,7 @@ void BaseLevel::Update(float _DeltaTime)
 	// 현재레벨이 플레이상태라면 제한시간을 감소시킨다. 
 	if (BaseLevel::LevelState::PLAY == m_CurState)
 	{
-		
-		if (0 >= m_LimitTime)
-		{
-			int a = 0;
-		}
-
+		PlayerSkillCheck();
 		m_LimitTime -= GameEngineTime::GlobalTime.GetDeltaTime();
 	}
 
@@ -134,6 +125,44 @@ void BaseLevel::DebugUpdate()
 			ChangeMap();
 			return;
 		}
+	}
+}
+
+void BaseLevel::RecordingUpdate(float _DeltaTime)
+{
+	// 만약 녹화중인 상태에서 마우스 좌클릭이 입력되었다면
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == m_CurState && true == GameEngineInput::IsDown("EngineMouseLeft"))
+	{
+		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
+		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
+		m_DistotionEffect->EffectOff();
+		ActorReset();
+		m_CurState = BaseLevel::LevelState::PLAY;
+		return;
+	}
+
+
+	// 지금 플레이어가 녹화진행중인지 체크해서, 녹화가 종료 되었다면
+	// 레벨을 PLAY 상태로 변경하고, 디스토션 이펙트를 off 시키고 있다. 
+	if (true == Player::MainPlayer->IsRecording())
+	{
+		m_CurState = BaseLevel::LevelState::PLAY;
+		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
+		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
+		m_DistotionEffect->EffectOff();
+		return;
+	}
+}
+
+void BaseLevel::ActorReset()
+{
+	// 리셋액터... 하 
+	std::vector <std::shared_ptr<class BaseActor>>::iterator StartIter = m_ResetActors.begin();
+	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();
+
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		(*StartIter)->ForcedReset();
 	}
 }
 
@@ -211,16 +240,7 @@ void BaseLevel::LevelReset()
 	// 임시
 	return;
 
-	// 순회하며 액터 초기화 
-	std::vector <std::shared_ptr<class BaseActor>>::iterator StartIter = m_ResetActors.begin();
-	std::vector <std::shared_ptr<class BaseActor>>::iterator EndIter = m_ResetActors.end();
-
-	// 현재 벡터에 저장된 액터들을 순회하면서 리셋 
-	// 여기서 액터를 순회하면서 리셋하는게 아니라. 
-	for (; StartIter != EndIter; ++StartIter)
-	{
-		(*StartIter)->Reset();
-	}
+	
 }
 
 void BaseLevel::Reset()

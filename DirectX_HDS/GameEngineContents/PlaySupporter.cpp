@@ -9,6 +9,7 @@
 #include "BaseLevel.h"
 #include "Player.h"
 #include "PixelCollider.h"
+#include "CameraSetter.h"
 
 PlaySupporter* PlaySupporter::MainSupporter = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
@@ -22,6 +23,34 @@ PlaySupporter::PlaySupporter()
 
 PlaySupporter::~PlaySupporter()
 {
+}
+
+void PlaySupporter::ForcedReset()
+{
+	BaseLevel* Level = GetReturnCastLevel();
+	LevelType Type = Level->GetLevelType();
+
+	// 여기까지 화깅ㄴ 
+	switch (Type)
+	{
+	case LevelType::CLUBMAP0:
+		m_MainCamera->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[0]);
+		break;
+	case LevelType::CLUBMAP1:
+		break;
+	case LevelType::CLUBMAP2:
+		break;
+	case LevelType::CLUBMAP3:
+		break;
+	case LevelType::CLUBMAP4:
+		break;
+	case LevelType::CLUBBOSS0:
+		break;
+	case LevelType::CLUBBOSS1:
+		break;
+	}
+
+	BaseActor::ForcedReset();
 }
 
 void PlaySupporter::Start()
@@ -128,6 +157,9 @@ void PlaySupporter::CameraMovement(float _DeltaTime)
 		return;
 	}
 
+	// 여기서, 현재 녹화중이고, 좌클릭이 눌렸다면
+	// 초기 카메라 위치로 바로 세팅, 
+	
 	// 맵의 크기를 받아온다.
 	float4 MapSize = CurMap->GetScale();
 

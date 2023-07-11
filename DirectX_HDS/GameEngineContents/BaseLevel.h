@@ -218,6 +218,9 @@ private:
 	// 디버그 업데이트
 	virtual void DebugUpdate();
 
+	void RecordingUpdate(float _DeltaTime);
+	void ActorReset();
+
 	// 레벨 클리어 체크
 	void LevelClearCheck();
 	void PlayerSkillCheck();

@@ -57,6 +57,13 @@ void SlashEffect::Update(float _DeltaTime)
 
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
 		Reverse(m_Render.get());
 		
 		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
@@ -216,7 +223,7 @@ void SlashEffect::MoveUpdate(float _DeltaTime)
 	}
 
 	m_PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
-	m_Render->GetTransform()->SetLocalPosition({ m_PlayerPos.x , m_PlayerPos.y + m_RenderPivot });	
+	m_Render->GetTransform()->SetLocalPosition({ m_PlayerPos.x , m_PlayerPos.y + m_RenderPivot , -1.0f });	
 	if (false == Player::MainPlayer->GetDir())
 	{
 		m_Collision->GetTransform()->SetLocalPosition({ m_PlayerPos.x + -m_ColPivot , m_PlayerPos.y + m_RenderPivot });

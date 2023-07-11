@@ -408,7 +408,7 @@ void Player::CreateSlashEffect()
 void Player::CreateExplosionEffect()
 {
 	std::shared_ptr<Explosion_Effect> Effect = GetLevel()->CreateActor<Explosion_Effect>(static_cast<int>(RenderOrder::EFFECT));
-	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 60.0f});
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 {0.0f, 60.0f, -2.0f});
 	Effect->SetType(EffectType::SECOND);
 	Effect->CollisionOff();
 }
@@ -460,12 +460,7 @@ void Player::Reset()
 	GetTransform()->SetLocalPosition(SetPos);
 	ResetSkillLimitTime();
 	ResetDir();	
-	// 컴포넌트 위치를 다시세팅한다. 
 	ComponentSetting();
-
-	// 바로 온을 하지말고 
-	// ㅇㅇㅇ 
-	// ChangeState(PlayerState::IDLE);
 }
 
 void Player::ComponentSetting()
@@ -515,7 +510,7 @@ void Player::ComponentSetting()
 		m_NextTrans = std::make_shared<GameEngineTransform>();
 	}
 	
-	m_Render->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
+	m_Render->GetTransform()->SetLocalPosition({ 0, m_RenderPivot, -1.0f });
 	m_Render->SetScaleRatio(2.0f);
 
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
@@ -631,6 +626,11 @@ void Player::DebugUpdate()
 
 void Player::SkillUpdate(float _DeltaTime)
 {
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
+
 	if (PlayerState::DEATH == m_CurState)
 	{
 		// 스킬 false

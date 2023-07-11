@@ -31,6 +31,12 @@ BaseLevel* BaseActor::GetReturnCastLevel() const
 	return Level;
 }
 
+void BaseActor::ForcedReset()
+{
+	Infos.clear();
+	m_Recording_Complete = true;
+}
+
 BaseLevel::LevelState BaseActor::GetLevelState()
 {
 	BaseLevel* CurLevel = GetReturnCastLevel();

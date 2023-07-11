@@ -15,6 +15,7 @@ public:
 	SlashEffect& operator=(const SlashEffect& _Other) = delete;
 	SlashEffect& operator=(SlashEffect&& _Other) noexcept = delete;
 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

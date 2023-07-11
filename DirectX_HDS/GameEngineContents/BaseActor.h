@@ -74,6 +74,8 @@ public:
 	{
 		return m_CurState;
 	}
+	
+	virtual void ForcedReset();
 
 protected:
 	void ChangeState(EffectState _State)
@@ -124,6 +126,8 @@ protected:
 	
 	bool m_IsRecording = true;
 	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
+
+
 private:
 
 	// BaseActor들은 전부 얘를 오버라이드 

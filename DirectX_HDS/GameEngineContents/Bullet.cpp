@@ -59,6 +59,13 @@ void Bullet::Update(float _DeltaTime)
 
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
 		Reverse(m_Render.get());
 
 		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
@@ -75,6 +82,8 @@ void Bullet::Update(float _DeltaTime)
 	// 이게 묶여있어도 상관은없는거같기도한데 
 	if (EffectState::RECORDING_PROGRESS != m_CurState)
 	{
+
+
 		if (true == m_RecordingFrame)
 		{
 			InfoSetting(m_Render.get());

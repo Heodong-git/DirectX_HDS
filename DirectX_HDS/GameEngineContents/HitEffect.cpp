@@ -63,6 +63,12 @@ void HitEffect::Update(float _DeltaTime)
 	// 녹화 상태라면 
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
 		// 리버스 함수 호출 
 		Reverse(m_MainRender.get());
 

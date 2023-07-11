@@ -55,6 +55,12 @@ void SlashHit_Effect::Update(float _DeltaTime)
 	// 녹화 상태라면 
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
 		// 리버스 함수 호출 
 		Reverse(m_MainRender.get());
 

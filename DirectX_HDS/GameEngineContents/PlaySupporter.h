@@ -25,16 +25,17 @@ public:
 
 	void ResetButtonOn();
 	void CameraZoomEffect(const float _Ratio);
-	
-	// 
 	void CameraShake(float _DeltaTime);
 
+
+	virtual void ForcedReset() override;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+
 	void CameraMovement(float _DeltaTime);
 	
 	bool PlayerDeathCheck();
