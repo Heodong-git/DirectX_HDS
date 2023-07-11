@@ -104,6 +104,7 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
 			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
 			Obj->SetMoveDir(Dir);
+			Obj->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
 
 			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
@@ -128,6 +129,7 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
 			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
 			Obj->SetMoveDir(Dir);
+			Obj->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
 
 			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
@@ -1359,6 +1361,7 @@ void Boss_HeadHunter::HurtStart()
 	ChangeDir();
 
 	// 현재 2페이즈, 히트카운트가 0이라면 데드 애니메이션으로 변경함 
+	// ?? 이뭔 ???? 뭐임 
 	if (BossPhase::SECOND == m_CurPhase && 0 == m_Phase2_HitCount)
 	{
 		if (true == m_Dir)
@@ -1383,6 +1386,7 @@ void Boss_HeadHunter::HurtStart()
 
 void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 {
+
 	// 특정위치에 도달했다면 return 일단 그냥 리턴인데, 9번프레임이라면 
 	if (1.0f <= m_Ratio)
 	{
@@ -1394,6 +1398,7 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 				// 여기서 찐데스 상태로 변경
 				PixelCollider::PixelCol->GroundCheck(this);
 				ChangeState(BossState::MORIBUND);
+				return;
 			}
 
 			// 일반적인 경우 리커버 상태로 전환 

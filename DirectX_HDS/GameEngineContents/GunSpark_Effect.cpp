@@ -14,7 +14,9 @@ GunSpark_Effect::~GunSpark_Effect()
 void GunSpark_Effect::Start()
 {
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
-	
+	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f, 0.0f, -2.0f });
+
+
 	if (nullptr == GameEngineSprite::Find("gunspark_effect"))
 	{
 		GameEngineDirectory Dir;
@@ -42,6 +44,7 @@ void GunSpark_Effect::Update(float _DeltaTime)
 		if (EffectState::RECORDING_PROGRESS != m_CurState)
 		{
 			ChangeState(EffectState::RECORDING_PROGRESS);
+			return;
 		}
 	}
 

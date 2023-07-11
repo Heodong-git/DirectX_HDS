@@ -23,6 +23,11 @@ void Bullet::BulletDeath()
 	m_IsRecording = false;
 }
 
+void Bullet::ChangeColOrder(int _ColOrder)
+{
+	m_Collision->SetOrder(_ColOrder);
+}
+
 void Bullet::Start()
 {
 	if (nullptr == GameEngineSprite::Find("Bullet"))
@@ -154,8 +159,18 @@ void Bullet::Update(float _DeltaTime)
 			}
 
 			GameEngineSound::Play("death_bullet.wav");
-			Player::MainPlayer->BulletCollision();
-			Player::MainPlayer->CreateHitEffect(m_Collision);
+
+			if (static_cast<int>(ColOrder::BOSS_ATTACK) == m_Collision->GetOrder())
+			{
+				Player::MainPlayer->CreateExplosionEffect();
+				Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+			}
+
+			else
+			{
+				Player::MainPlayer->BulletCollision();
+				Player::MainPlayer->CreateHitEffect(m_Collision);
+			}
 			BulletDeath();
 			return;
 		}

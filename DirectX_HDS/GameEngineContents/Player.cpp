@@ -930,7 +930,7 @@ void Player::IdleStart()
 
 	// 이전 스테이트가 데스라면 스테이지 미클리어,
 	// 난무조건 정방향 ( 오른쪽 ) , 데스 후 NONE 상태로 변경됨 
-	if (PlayerState::NONE == m_PrevState || PlayerState::EXPLOSION_DEATH == m_PrevState)
+	if (PlayerState::NONE == m_PrevState || PlayerState::EXPLOSION_DEATH == m_PrevState || PlayerState::RECORDING_PROGRESS == m_PrevState)
 	{
 		GetTransform()->SetLocalPositiveScaleX();
 	}

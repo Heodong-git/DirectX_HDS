@@ -218,7 +218,7 @@ void Monster_Gangster::LoadAndCreateAnimation()
 void Monster_Gangster::Reset()
 {
 	ComponentSetting();
-	// GetTransform()->SetLocalPosition(GetInitPos());
+	GetTransform()->SetLocalPosition(GetInitPos());
 	ChangeState(GangsterState::IDLE);
 	ResetDir();
 	m_Collision->On();

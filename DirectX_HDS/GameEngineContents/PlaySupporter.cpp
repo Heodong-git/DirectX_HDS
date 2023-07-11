@@ -39,10 +39,13 @@ void PlaySupporter::ForcedReset()
 	case LevelType::CLUBMAP1:
 		break;
 	case LevelType::CLUBMAP2:
+		m_MainCamera->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[2]);
 		break;
 	case LevelType::CLUBMAP3:
+		m_MainCamera->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[3]);
 		break;
 	case LevelType::CLUBMAP4:
+		m_MainCamera->GetTransform()->SetLocalPosition(CameraSetter::MainCamSetter->m_CameraPivots[4]);
 		break;
 	case LevelType::CLUBBOSS0:
 		break;

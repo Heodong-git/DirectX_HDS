@@ -43,6 +43,7 @@ void GunSpark_Effect2::Update(float _DeltaTime)
 		if (EffectState::RECORDING_PROGRESS != m_CurState)
 		{
 			ChangeState(EffectState::RECORDING_PROGRESS);
+			return;
 		}
 	}
 

@@ -368,7 +368,7 @@ void Monster_Pomp::Reset()
 {
 	ComponentSetting();
 	// 나의 초기 세팅위치로 이동하고
-	// GetTransform()->SetLocalPosition(GetInitPos());
+	GetTransform()->SetLocalPosition(GetInitPos());
 	// 상태 아이들로 변경하고 
 	ChangeState(PompState::IDLE);
 

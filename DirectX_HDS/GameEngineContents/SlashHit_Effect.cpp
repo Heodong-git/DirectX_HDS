@@ -49,6 +49,7 @@ void SlashHit_Effect::Update(float _DeltaTime)
 		if (EffectState::RECORDING_PROGRESS != m_CurState)
 		{
 			ChangeState(EffectState::RECORDING_PROGRESS);
+			return;
 		}
 	}
 

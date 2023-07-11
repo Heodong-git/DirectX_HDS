@@ -43,6 +43,7 @@ public:
 
 	// death 함수를 만들고
 	void BulletDeath();
+	void ChangeColOrder(int _ColOrder);
 
 protected:
 	void Start() override;
@@ -66,7 +67,6 @@ private:
 	bool m_Parring = false;
 	bool m_DirChange = false;
 	float m_Angle = 0.0f;
-
 };
 
 
