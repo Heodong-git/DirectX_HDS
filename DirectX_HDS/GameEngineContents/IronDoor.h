@@ -6,6 +6,7 @@ enum class IronDoorState
 	NONE,
 	CLOSE,
 	OPEN,
+	RECORDING_PROGRESS,
 };
 
 // Ό³Έν :
@@ -75,4 +76,8 @@ private:
 	void OpenStart();
 	void OpenUpdate(float _DeltaTime);
 	void OpenEnd();
+
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
 };

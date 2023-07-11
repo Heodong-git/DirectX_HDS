@@ -30,8 +30,26 @@ void IronDoor::Start()
 
 void IronDoor::Update(float _DeltaTime)
 {
+	m_RecordingFrame = !m_RecordingFrame;
+
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		IronDoorState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(IronDoorState::RECORDING_PROGRESS);
+		return;
+	}
+
 	DebugUpdate();
 	UpdateState(_DeltaTime);
+
+	if (IronDoorState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_MainRender.get());
+		}
+	}
 }
 
 void IronDoor::Render(float _DeltaTime)
@@ -137,6 +155,9 @@ void IronDoor::UpdateState(float _DeltaTime)
 	case IronDoorState::OPEN:
 		OpenUpdate(_DeltaTime);
 		break;
+	case IronDoorState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -155,6 +176,9 @@ void IronDoor::ChangeState(IronDoorState _State)
 	case IronDoorState::OPEN:
 		OpenStart();
 		break;
+	case IronDoorState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -165,6 +189,9 @@ void IronDoor::ChangeState(IronDoorState _State)
 		break;
 	case IronDoorState::OPEN:
 		OpenEnd();
+		break;
+	case IronDoorState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
 		break;
 	}
 }
@@ -214,5 +241,29 @@ void IronDoor::OpenUpdate(float _DeltaTime)
 }
 
 void IronDoor::OpenEnd()
+{
+}
+
+void IronDoor::RecordingProgressStart()
+{
+}
+
+void IronDoor::RecordingProgressUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(IronDoorState::CLOSE);
+		m_OpenEventCol->On();
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_MainRender.get());
+}
+
+void IronDoor::RecordingProgressEnd()
 {
 }
