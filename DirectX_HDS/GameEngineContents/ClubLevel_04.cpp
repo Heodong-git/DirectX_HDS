@@ -22,6 +22,8 @@
 #include "Laser.h"
 #include "IronDoor.h"
 #include "Partition.h"
+#include "FadeEffect.h"
+
 
 ClubLevel_04::ClubLevel_04()
 {
@@ -53,6 +55,7 @@ void ClubLevel_04::Update(float _DeltaTime)
 
 void ClubLevel_04::LevelChangeStart()
 {
+	GetFadeEffect()->FadeIn();
 	GUISetting();
 
 	Push_ResetActor(CreateActor<CameraSetter>());

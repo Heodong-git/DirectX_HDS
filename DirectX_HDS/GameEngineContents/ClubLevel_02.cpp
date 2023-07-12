@@ -20,6 +20,7 @@
 #include "Laser.h"
 #include "FanBlade.h"
 #include "Partition.h"
+#include "FadeEffect.h"
 
 ClubLevel_02::ClubLevel_02()
 {
@@ -51,6 +52,7 @@ void ClubLevel_02::Update(float _DeltaTime)
 
 void ClubLevel_02::LevelChangeStart()
 {
+	GetFadeEffect()->FadeIn();
 	GUISetting();
 
 	// 리셋이필요한 액터는 전부 push 

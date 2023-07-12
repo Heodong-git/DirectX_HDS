@@ -67,8 +67,7 @@ void ClubLevel_Boss::Update(float _DeltaTime)
 
 void ClubLevel_Boss::LevelChangeStart()
 {
-	
-
+	GetFadeEffect()->FadeIn();
 	GUISetting();
 
 	// 카메라 피봇세팅

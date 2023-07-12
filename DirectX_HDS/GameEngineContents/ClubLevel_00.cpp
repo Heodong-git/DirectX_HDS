@@ -92,6 +92,7 @@ void ClubLevel_00::LoadSound()
 
 void ClubLevel_00::LevelChangeStart()
 {
+	GetFadeEffect()->FadeIn();
 	m_SoundPlayer = GameEngineSound::Play("Sneaky_Driver.mp3");
 	m_SoundPlayer.SetLoop();
 	m_SoundPlayer.SetVolume(0.2f);

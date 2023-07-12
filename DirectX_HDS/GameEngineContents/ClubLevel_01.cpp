@@ -24,6 +24,8 @@
 #include "Platform.h"
 #include "Partition.h"
 
+#include "FadeEffect.h"
+
 ClubLevel_01::ClubLevel_01()
 {
 }
@@ -56,6 +58,9 @@ void ClubLevel_01::Update(float _DeltaTime)
 
 void ClubLevel_01::LevelChangeStart()
 {
+	// 
+	GetFadeEffect()->FadeIn();
+
 	GUISetting();
 
 	// 리셋이필요한 액터는 전부 push 

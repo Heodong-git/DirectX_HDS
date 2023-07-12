@@ -19,8 +19,7 @@
 #include "Monster_Gangster.h"
 #include "Monster_Pomp.h"
 #include "Partition.h"
-
-
+#include "FadeEffect.h"
 
 ClubLevel_03::ClubLevel_03()
 {
@@ -52,6 +51,7 @@ void ClubLevel_03::Update(float _DeltaTime)
 
 void ClubLevel_03::LevelChangeStart()
 {
+	GetFadeEffect()->FadeIn();
 	GUISetting();
 
 	Push_ResetActor(CreateActor<CameraSetter>());

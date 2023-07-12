@@ -374,6 +374,7 @@ void Monster_Grunt::Reset()
 {
 	// 나의 초기 세팅위치로 이동하고
 	GetTransform()->SetLocalPosition(GetInitPos());
+	m_MainRender->GetTransform()->SetLocalPosition({ 0, m_RenderPivot });
 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD != GetReturnCastLevel()->GetCurState())
 	{

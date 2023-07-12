@@ -82,8 +82,7 @@ void ClubLevel_Boss_01::LevelStartCheck()
 
 void ClubLevel_Boss_01::LevelChangeStart()
 {
-	// GetFadeEffect()->FadeIn();
-
+	GetFadeEffect()->FadeIn();
 	GUISetting();
 
 	// 카메라 피봇세팅
