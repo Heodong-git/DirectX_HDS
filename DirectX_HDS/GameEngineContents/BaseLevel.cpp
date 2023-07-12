@@ -154,6 +154,7 @@ void BaseLevel::RecordingUpdate(float _DeltaTime)
 			m_DistotionEffect->EffectOff();
 			m_DistotionEffect = nullptr;
 		}
+
 		return;
 	}
 }
@@ -240,11 +241,6 @@ void BaseLevel::LevelReset()
 {
 	// 레벨에서 초기화 되어야 할 부분을 초기화 
 	Reset();
-
-	// 임시
-	return;
-
-	
 }
 
 void BaseLevel::Reset()

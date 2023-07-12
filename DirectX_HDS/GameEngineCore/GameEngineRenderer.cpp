@@ -11,6 +11,8 @@
 #include "GameEngineMesh.h"
 #include "GameEngineInputLayOut.h"
 
+#include "GameEngineSpriteRenderer.h"
+
 // ------------------------- 렌더유닛 -----------------------------
 GameEngineRenderUnit::GameEngineRenderUnit()
 {
@@ -84,6 +86,7 @@ void GameEngineRenderer::Start()
 {
 	// 기본적으로는 메인카메라에 세팅
 	PushCameraRender(0);
+	HBSCControl(DynamicThis<GameEngineSpriteRenderer>(), 0.5f, 0.5f, 0.4f);
 }
 
 void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
@@ -95,6 +98,19 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 	}
 
 	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
+}
+
+void GameEngineRenderer::HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast)
+{
+	float4 OriginColor = _Object->ColorOptionValue.MulColor;
+	float4 ControlColor = float4::Zero;
+
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
+
+	_Object->ColorOptionValue.HBSColor = ControlColor;
 }
 
 void GameEngineRenderer::Render(float _Delta)

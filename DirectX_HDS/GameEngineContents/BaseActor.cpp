@@ -51,9 +51,10 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 		MsgAssert("렌더러가 nullptr 입니다.");
 		return;
 	}
+	BaseLevel::LevelState CurLevelState = GetLevelState();
 
 	// 만약 인포가 비어있다면 return; 
-	if (true == Infos.empty())
+	if (true == Infos.empty() || BaseLevel::LevelState::PLAY == CurLevelState)
 	{
 		// 여기서 bool 값 하나두고, 녹화완료 체크를 하고,
 		// true로 바뀌었다면 외부 녹화 state 에서 상태를 종료시킨다. 
@@ -63,7 +64,7 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 
 	// 뒤쪽 데이터 부터 받아온다. 
 
-	BaseLevel::LevelState CurLevelState = GetLevelState();
+	
 
 	switch (CurLevelState)
 	{

@@ -81,6 +81,7 @@ protected:
 	void Render(float _Delta) override;
 	void PushCameraRender(int _CameraOrder);
 
+	void HBSCControl(std::shared_ptr<class GameEngineSpriteRenderer> _Object, float _saturation, float _brightness, float _contrast);
 private:
 	bool IsCameraCulling = false;
 
@@ -93,4 +94,5 @@ private:
 	RenderBaseValue BaseValue;
 
 	void RenderTransformUpdate(GameEngineCamera* _Camera);
+
 };

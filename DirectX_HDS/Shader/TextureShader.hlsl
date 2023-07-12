@@ -115,6 +115,7 @@ cbuffer ColorOption : register(b0)
 {
     float4 MulColor;
     float4 PlusColor;
+    float4 HBSCColor;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -123,14 +124,17 @@ SamplerState SAMPLER : register(s0);
 struct OutColor
 {
     float4 Color0 : SV_Target0;
-    float4 Color1 : SV_Target1;
-    float4 Color2 : SV_Target2;
-    float4 Color3 : SV_Target3;
+    //float4 Color1 : SV_Target1;
+    //float4 Color2 : SV_Target2;
+    //float4 Color3 : SV_Target3;
 };
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(SAMPLER, _Value.UV.xy);
+    float saturation = HBSCColor.g * 2;
+    float brightness = HBSCColor.b * 2 - 1;
+    float contrast = HBSCColor.a * 2;
     
     if (Clip.z == 0)
     {
@@ -167,5 +171,11 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     Color *= MulColor;
     Color += PlusColor;
     
+    Color.rgb = (Color.rgb - 0.5f) * contrast + 0.5f;
+    Color.rgb = Color.rgb + brightness;
+    float3 intensity = dot(Color.rgb, float3(0.39, 0.59, 0.11));
+
+    Color.rgb = lerp(intensity, Color.rgb, saturation);
+
     return Color;
 }
