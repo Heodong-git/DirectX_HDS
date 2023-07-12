@@ -39,7 +39,7 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 		m_Render->ColorOptionValue.MulColor.r = 0.0f;
 		m_Render->ColorOptionValue.MulColor.g = 1.0f;
 		m_Render->ColorOptionValue.MulColor.b = 1.0f;
-		m_Render->ColorOptionValue.MulColor.a = 0.6f;
+		m_Render->ColorOptionValue.MulColor.a = 0.4f;
 
 		bool PlayerDir = Player::MainPlayer->GetDir();
 		if (true == PlayerDir)
@@ -69,7 +69,7 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 		m_Render->ColorOptionValue.MulColor.r = 1.0f;
 		m_Render->ColorOptionValue.MulColor.g = 0.0f;
 		m_Render->ColorOptionValue.MulColor.b = 1.0f;
-		m_Render->ColorOptionValue.MulColor.a = 0.6f;
+		m_Render->ColorOptionValue.MulColor.a = 0.4f;
 
 		// 여기서 방향 ㅇㅇ 
 		bool BossDir = Boss_HeadHunter::m_MainBoss->GetDir();

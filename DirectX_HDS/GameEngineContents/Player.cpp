@@ -238,6 +238,7 @@ void Player::Update(float _DeltaTime)
 	}
 
 	m_RecordingFrame = !m_RecordingFrame;
+	m_TrailEffect = !m_TrailEffect;
 
 	// 디버그 업데이트
 	DebugUpdate();
@@ -272,7 +273,6 @@ void Player::Update(float _DeltaTime)
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
-	
 
 	if (PlayerState::RECORDING_PROGRESS != m_CurState && PlayerState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
@@ -297,6 +297,11 @@ void Player::LevelChangeEnd()
 // test ㅇㅇ 
 void Player::CreateTrailEffect()
 {
+	if (false == m_TrailEffect)
+	{
+		return;
+	}
+
 	// 이펙트 생성시 텍스쳐 이름을 받아오고, 
 	std::string TexName = m_Render->GetTexName();
 	std::shared_ptr<GameEngineTexture> Tex = m_Render->GetCurTexture();
@@ -305,7 +310,6 @@ void Player::CreateTrailEffect()
 		float4 TexSize = Tex->GetScale();
 		// 잔상 이펙트 액터 생성 
 		std::shared_ptr<Trail_Effect> Effect = GetLevel()->CreateActor<Trail_Effect>();
-
 		// 이펙트의 위치 세팅
 		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		Effect->SetTexture(TexName, TexSize, TrailType::PLAYER);
@@ -2472,8 +2476,9 @@ void Player::FallEnd()
 void Player::RightWallStart()
 {
 	m_Render->ChangeAnimation("player_wallslide");
+	m_Direction = true;
 	GetTransform()->SetLocalPositiveScaleX();
-
+	
 	if (true == GameEngineInput::IsPress("player_jump"))
 	{
 		float PressTime = GameEngineInput::GetPressTime("player_jump");
@@ -2589,6 +2594,7 @@ void Player::RightWallEnd()
 void Player::LeftWallStart()
 {
 	m_Render->ChangeAnimation("player_wallslide");
+	m_Direction = false;
 	GetTransform()->SetLocalNegativeScaleX();
 
 	if (true == GameEngineInput::IsPress("player_jump"))

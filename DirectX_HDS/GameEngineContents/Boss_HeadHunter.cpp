@@ -45,6 +45,7 @@ void Boss_HeadHunter::Start()
 void Boss_HeadHunter::Update(float _DeltaTime)
 {
 	m_RecordingFrame = !m_RecordingFrame;
+	m_TrailEffect = !m_TrailEffect;
 
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
@@ -82,6 +83,10 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 
 void Boss_HeadHunter::CreateTrailEffect()
 {
+	if (false == m_TrailEffect)
+	{
+		return;
+	}
 	// 이펙트 생성시 텍스쳐 이름을 받아오고, 
 	std::string TexName = m_MainRender->GetTexName();
 	std::shared_ptr<GameEngineTexture> Tex = m_MainRender->GetCurTexture();

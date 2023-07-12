@@ -132,6 +132,7 @@ protected:
 	virtual void LevelChangeEnd() override;
 private:
 	void CreateTrailEffect();
+	bool m_TrailEffect = false;
 
 	// 점프애니메이션 이벤트추가용
 	void FallAnimChange();
