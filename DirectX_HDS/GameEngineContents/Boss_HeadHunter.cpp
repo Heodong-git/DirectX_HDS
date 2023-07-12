@@ -1204,23 +1204,51 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 	// 애니메이션이 종료되었거나, 이펙트가 데스상태라면
 	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect->GetCurState())
 	{ 
-		m_Effect = nullptr;
-		int RandomValue = CreateRandomValue(2);
-		switch (RandomValue)
+		if (BossPhase::FIRST == m_CurPhase)
 		{
-		case 1:
-			ChangeState(BossState::ROLL);
-			break;
-		case 2:
-			ChangeState(BossState::TELEPORTIN_WALL);
-			break;
-		default:
+			m_Effect = nullptr;
+			int RandomValue = CreateRandomValue(2);
+			switch (RandomValue)
+			{
+			case 1:
+				ChangeState(BossState::ROLL);
+				break;
+			case 2:
+				ChangeState(BossState::TELEPORTIN_WALL);
+				break;
+			default:
+			{
+				MsgAssert("이상한 랜덤값이 반환 되었습니다. CreateRandomValue 함수를 확인하세요.");
+				break;
+			}
+			}
+			return;
+		}
+
+		
+		if (BossPhase::SECOND == m_CurPhase)
 		{
-			MsgAssert("이상한 랜덤값이 반환 되었습니다. CreateRandomValue 함수를 확인하세요.");
-			break;
+			m_Effect = nullptr;
+			int RandomValue = CreateRandomValue(3);
+			switch (RandomValue)
+			{
+			case 1:
+				ChangeState(BossState::ROLL);
+				break;
+			case 2:
+				ChangeState(BossState::TELEPORTIN_WALL);
+				break;
+			case 3:
+				ChangeState(BossState::TELEPORTIN_CEILING);
+				break;
+			default:
+			{
+				MsgAssert("이상한 랜덤값이 반환 되었습니다. CreateRandomValue 함수를 확인하세요.");
+				break;
+			}
+			}
+			return;
 		}
-		}
-		return;
 	}
 }
 
@@ -1981,9 +2009,27 @@ void Boss_HeadHunter::TpOutRifleUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		// 여기서 벽타기상태로전환 
-		ChangeState(BossState::TELEPORTIN_WALL);
-		return;
+		if (BossPhase::FIRST == m_CurPhase)
+		{
+			ChangeState(BossState::TELEPORTIN_WALL);
+			return;
+		}
+
+		if (BossPhase::SECOND == m_CurPhase)
+		{
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			if (0 == RandomValue)
+			{
+				ChangeState(BossState::TELEPORTIN_WALL);
+				return;
+			}
+
+			else if (1 == RandomValue)
+			{
+				ChangeState(BossState::TELEPORTIN_CEILING);
+				return;
+			}
+		}
 	}
 }
 

@@ -255,7 +255,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Player_Trail.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PlaySupporter.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PompEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -457,7 +465,9 @@
     <ClCompile Include="LaserSwitch.cpp" />
     <ClCompile Include="Partition.cpp" />
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Player_Trail.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
+    <ClCompile Include="PompEffect.cpp" />
     <ClCompile Include="Remote_Mine.cpp" />
     <ClCompile Include="SlidingDoor.cpp" />
     <ClCompile Include="ClubLevel_01.cpp" />

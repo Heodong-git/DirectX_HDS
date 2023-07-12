@@ -65,6 +65,6 @@ void SlashLaser_Effect::ComponentSetting()
 {
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
 	m_MainRender->SetTexture("slash_laser.png");
-	m_MainRender->GetTransform()->SetLocalScale(float4{ 800.0f , 7.5f });
+	m_MainRender->GetTransform()->SetLocalScale(float4{ 800.0f , 6.0f });
 	m_MainRender->ColorOptionValue.MulColor.a = 0.8f;
 }

@@ -121,8 +121,6 @@ void Player::LoadAndCreateAnimation()
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_roll").GetFullPath());
 			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("player_die").GetFullPath());
 
-			
-
 			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
 		}
 	}

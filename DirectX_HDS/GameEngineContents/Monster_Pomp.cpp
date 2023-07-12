@@ -14,6 +14,7 @@
 #include "IronDoor.h"
 #include "EnemyFollow_Effect.h"
 #include "HitEffect.h"
+#include "PompEffect.h"
 
 Monster_Pomp::Monster_Pomp()
 {
@@ -216,7 +217,7 @@ void Monster_Pomp::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "pomp_forcefall", .SpriteName = "pomp_forcefall", .Start = 0, .End = 1 ,
 						  .FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
 
-	m_MainRender->SetAnimationStartEvent("pomp_attack", static_cast<size_t>(3), std::bind(&Monster_Pomp::Attack, this));
+	m_MainRender->SetAnimationStartEvent("pomp_attack", static_cast<size_t>(1), std::bind(&Monster_Pomp::Attack, this));
 	m_MainRender->SetAnimationStartEvent("pomp_attack", static_cast<size_t>(5), std::bind(&Monster_Pomp::AttackOff, this));
 
 	m_MainRender->ChangeAnimation("pomp_idle");
@@ -406,6 +407,21 @@ inline void Monster_Pomp::ResetDir()
 	else if (1 == Random)
 	{
 		m_Direction = true;
+	}
+}
+
+void Monster_Pomp::CreateAttackEffect()
+{
+	std::shared_ptr<PompEffect> Effect = GetLevel()->CreateActor<PompEffect>();
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 0.0f, 50.0f});
+	if (true == m_Direction)
+	{
+		Effect->GetTransform()->SetLocalPositiveScaleX();
+	}
+
+	else if (false == m_Direction)
+	{
+		Effect->GetTransform()->SetLocalNegativeScaleX();
 	}
 }
 
@@ -760,6 +776,7 @@ void Monster_Pomp::AttackStart()
 {
 	DirCheck();
 	m_MainRender->ChangeAnimation("pomp_attack");
+	CreateAttackEffect();
 }
 
 void Monster_Pomp::AttackUpdate(float _DeltaTime)
