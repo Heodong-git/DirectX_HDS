@@ -21,8 +21,11 @@
 #include "Bullet.h"
 #include "Trail_Effect.h"
 
+Boss_HeadHunter* Boss_HeadHunter::m_MainBoss = nullptr;
+
 Boss_HeadHunter::Boss_HeadHunter()
 {
+	m_MainBoss = this;
 }
 
 Boss_HeadHunter::~Boss_HeadHunter()
@@ -1034,7 +1037,6 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 
 void Boss_HeadHunter::UpdateState(float _DeltaTime)
 {
-	CreateTrailEffect();
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
 	{
@@ -1220,6 +1222,7 @@ void Boss_HeadHunter::RifleStart()
  
 void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 애니메이션이 종료되었거나, 이펙트가 데스상태라면
 	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect->GetCurState())
 	{ 
@@ -1368,6 +1371,7 @@ void Boss_HeadHunter::RollStart()
 
 void Boss_HeadHunter::RollUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 애니메이션 종료시 idle 
 	if (true == m_MainRender->IsAnimationEnd())
 	{
@@ -1404,8 +1408,10 @@ void Boss_HeadHunter::RollEnd()
 
 void Boss_HeadHunter::HurtStart()
 {
+
 	// 시작할때 플레이어 위치x, 내위치 x를 비교, 방향을 정한다.
 	ChangeDir();
+	
 
 	// 현재 2페이즈, 히트카운트가 0이라면 데드 애니메이션으로 변경함 
 	// ?? 이뭔 ???? 뭐임 
@@ -1433,7 +1439,7 @@ void Boss_HeadHunter::HurtStart()
 
 void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 {
-
+	CreateTrailEffect();
 	// 특정위치에 도달했다면 return 일단 그냥 리턴인데, 9번프레임이라면 
 	if (1.0f <= m_Ratio)
 	{
@@ -1525,6 +1531,7 @@ void Boss_HeadHunter::RecoverStart()
 
 void Boss_HeadHunter::RecoverUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
 		CreateTpEffect();
@@ -1720,6 +1727,7 @@ void Boss_HeadHunter::SweepStart()
 
 void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
 		if (nullptr != m_SweepEffect)
@@ -1839,6 +1847,7 @@ void Boss_HeadHunter::DashStart()
 // 여기부터 다시 
 void Boss_HeadHunter::DashUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
 		int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
@@ -1896,6 +1905,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 {	
 	// 애니메이션 변경하고 
 	m_MainRender->ChangeAnimation("headhunter_teleportin_ceiling");
+	DirCheck();
 
 	// 첫텔레포트라면 
 	if (false == m_TpInStart)
@@ -2121,6 +2131,7 @@ void Boss_HeadHunter::JumpRifleStart()
 
 void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// ??
 	if (m_FireAngleCount == m_CurFireAngleCount)
 	{
@@ -2270,6 +2281,8 @@ void Boss_HeadHunter::JumpRifleLandStart()
 
 void Boss_HeadHunter::JumpRifleLandUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	if (true == m_MainRender->IsAnimationEnd())
 	{
 		ChangeState(BossState::IDLE);

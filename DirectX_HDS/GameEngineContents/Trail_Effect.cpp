@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "Player.h"
+#include "Boss_HeadHunter.h"
 
 Trail_Effect::Trail_Effect()
 {
@@ -26,15 +27,19 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 		// 여기서 플레이어 렌더러 위치랑 동일 
 
 		// 얘가지금 플레이어 로컬포지션 
-		m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f, 36.0f, -1.0f });
+		m_Render->GetTransform()->SetLocalPosition(m_PlayerRenderPivot);
 		m_Render->SetTexture(_Name);
 		m_Render->GetTransform()->SetLocalScale(Size);
 
-		m_Render->ColorOptionValue.MulColor.r = static_cast<float>(0.2535294117647059);
-		m_Render->ColorOptionValue.MulColor.g = static_cast<float>(0.996078431372549);
-		m_Render->ColorOptionValue.MulColor.b = static_cast<float>(0.9058823529411765);
-		m_Render->ColorOptionValue.MulColor.a = 0.6f;
+		m_Render->ColorOptionValue.PlusColor.r = 0.0f;
+		m_Render->ColorOptionValue.PlusColor.g = 0.5f;
+		m_Render->ColorOptionValue.PlusColor.b = 0.5f;
+		m_Render->ColorOptionValue.PlusColor.a = 0.0f;
 
+		m_Render->ColorOptionValue.MulColor.r = 0.0f;
+		m_Render->ColorOptionValue.MulColor.g = 1.0f;
+		m_Render->ColorOptionValue.MulColor.b = 1.0f;
+		m_Render->ColorOptionValue.MulColor.a = 0.6f;
 
 		bool PlayerDir = Player::MainPlayer->GetDir();
 		if (true == PlayerDir)
@@ -51,7 +56,7 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 	case TrailType::BOSS:
 	{
 		// 얘를 보스렌더러 
-		m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f, 42.0f , -1.0f });
+		m_Render->GetTransform()->SetLocalPosition(m_HeadHunterRenderPivot);
 		// 봐서 색바꾸기 
 		m_Render->SetTexture(_Name);
 		m_Render->GetTransform()->SetLocalScale(Size);
@@ -66,6 +71,17 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 		m_Render->ColorOptionValue.MulColor.b = 1.0f;
 		m_Render->ColorOptionValue.MulColor.a = 0.6f;
 
+		// 여기서 방향 ㅇㅇ 
+		bool BossDir = Boss_HeadHunter::m_MainBoss->GetDir();
+		if (true == BossDir)
+		{
+			GetTransform()->SetLocalPositiveScaleX();
+		}
+
+		else if (false == BossDir)
+		{
+			GetTransform()->SetLocalNegativeScaleX();
+		}
 	}
 		break;
 	}
@@ -87,7 +103,7 @@ void Trail_Effect::Update(float _DeltaTime)
 		return;
 	}
 
-	if (0.07f <= GetLiveTime())
+	if (m_MaxLivetime <= GetLiveTime())
 	{
 		this->Death();
 	}

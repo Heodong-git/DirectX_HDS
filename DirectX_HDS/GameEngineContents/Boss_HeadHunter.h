@@ -60,6 +60,9 @@ enum class BossState
 class Boss_HeadHunter : public BaseActor
 {
 	friend class ClubLevel_Boss_01;
+
+public:
+	static Boss_HeadHunter* m_MainBoss;
 public:
 	// constrcuter destructer
 	Boss_HeadHunter();
@@ -81,6 +84,11 @@ public:
 	inline const int GetPhase2_HitCount()
 	{
 		return m_Phase2_HitCount;
+	}
+
+	inline bool GetDir() const
+	{
+		return m_Dir;
 	}
 
 protected:
