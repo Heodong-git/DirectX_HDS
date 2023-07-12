@@ -19,6 +19,7 @@
 #include "Turret_Wall.h"
 #include "Turret.h"
 #include "Bullet.h"
+#include "Trail_Effect.h"
 
 Boss_HeadHunter::Boss_HeadHunter()
 {
@@ -73,6 +74,23 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 		{
 			InfoSetting(m_MainRender.get());
 		}
+	}
+}
+
+void Boss_HeadHunter::CreateTrailEffect()
+{
+	// 이펙트 생성시 텍스쳐 이름을 받아오고, 
+	std::string TexName = m_MainRender->GetTexName();
+	std::shared_ptr<GameEngineTexture> Tex = m_MainRender->GetCurTexture();
+	if (nullptr != Tex)
+	{
+		float4 TexSize = Tex->GetScale();
+		// 잔상 이펙트 액터 생성 
+		std::shared_ptr<Trail_Effect> Effect = GetLevel()->CreateActor<Trail_Effect>();
+
+		// 이펙트의 위치 세팅
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect->SetTexture(TexName, TexSize, TrailType::BOSS);
 	}
 }
 
@@ -1016,6 +1034,7 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 
 void Boss_HeadHunter::UpdateState(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 현재 상태의 update 호출 
 	switch (m_CurState)
 	{

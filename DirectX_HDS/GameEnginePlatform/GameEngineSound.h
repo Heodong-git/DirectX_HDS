@@ -124,7 +124,6 @@ class GameEngineSound
 private: // manager
 	static std::unordered_map<std::string, std::shared_ptr<GameEngineSound>> AllSound;
 
-
 public:
 	static void ResourcesClear();
 
@@ -158,6 +157,5 @@ private:
 	// Hash기반 맵입니다. 
 
 	FMOD::Sound* FMODSound = nullptr;
-
 };
 

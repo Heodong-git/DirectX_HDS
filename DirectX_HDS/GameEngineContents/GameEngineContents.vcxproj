@@ -255,7 +255,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Player_Trail.h">
+    <ClInclude Include="Trail_Effect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -405,7 +405,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="RecordingManager.h" />
     <ClInclude Include="ClubLevel_00.h">
       <SubType>
       </SubType>
@@ -465,7 +464,7 @@
     <ClCompile Include="LaserSwitch.cpp" />
     <ClCompile Include="Partition.cpp" />
     <ClCompile Include="Platform.cpp" />
-    <ClCompile Include="Player_Trail.cpp" />
+    <ClCompile Include="Trail_Effect.cpp" />
     <ClCompile Include="PlaySupporter.cpp" />
     <ClCompile Include="PompEffect.cpp" />
     <ClCompile Include="Remote_Mine.cpp" />
@@ -506,7 +505,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="CameraSetter.cpp" />
-    <ClCompile Include="RecordingManager.cpp" />
     <ClCompile Include="ClubLevel_00.cpp" />
     <ClCompile Include="ClubLevel_Boss.cpp" />
     <ClCompile Include="Timer.cpp" />

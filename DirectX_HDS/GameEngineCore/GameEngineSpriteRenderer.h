@@ -219,6 +219,11 @@ public:
 		RenderEndCallBack = _CallBack;
 	}
 
+	std::shared_ptr<GameEngineTexture> GetCurTexture()
+	{
+		return CurTexture;
+	}
+
 protected:
 
 	void SpriteRenderInit();

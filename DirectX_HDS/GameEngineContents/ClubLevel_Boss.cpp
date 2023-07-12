@@ -88,11 +88,7 @@ void ClubLevel_Boss::LevelChangeStart()
 	// 서포터, 커서
 	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
-
 	CreateObjAndInit();
-
-	// 레벨의 상태를 변경해주는데 일단 지금은 바로 PLAY 
-	// SetState(BaseLevel::LevelState::PLAY);
 }
 
 void ClubLevel_Boss::LevelChangeEnd()

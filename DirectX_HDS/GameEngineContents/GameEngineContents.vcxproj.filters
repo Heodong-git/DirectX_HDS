@@ -30,9 +30,6 @@
     <ClInclude Include="TitleEditer.h">
       <Filter>04.Editer</Filter>
     </ClInclude>
-    <ClInclude Include="RecordingManager.h">
-      <Filter>03.Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Battery.h">
       <Filter>02.Actor\05.UI\00.Battery</Filter>
     </ClInclude>
@@ -210,7 +207,7 @@
     <ClInclude Include="GlitchEffect.h">
       <Filter>02.Actor\08.CameraEffect\Glitch</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Trail.h">
+    <ClInclude Include="Trail_Effect.h">
       <Filter>02.Actor\01.Player\Trail</Filter>
     </ClInclude>
     <ClInclude Include="PompEffect.h">
@@ -248,9 +245,6 @@
     </ClCompile>
     <ClCompile Include="TitleEditer.cpp">
       <Filter>04.Editer</Filter>
-    </ClCompile>
-    <ClCompile Include="RecordingManager.cpp">
-      <Filter>03.Manager</Filter>
     </ClCompile>
     <ClCompile Include="Battery.cpp">
       <Filter>02.Actor\05.UI\00.Battery</Filter>
@@ -426,7 +420,7 @@
     <ClCompile Include="GlitchEffect.cpp">
       <Filter>02.Actor\08.CameraEffect\Glitch</Filter>
     </ClCompile>
-    <ClCompile Include="Player_Trail.cpp">
+    <ClCompile Include="Trail_Effect.cpp">
       <Filter>02.Actor\01.Player\Trail</Filter>
     </ClCompile>
     <ClCompile Include="PompEffect.cpp">

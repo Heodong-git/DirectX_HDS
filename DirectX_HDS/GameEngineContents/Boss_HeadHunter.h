@@ -88,6 +88,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	void CreateTrailEffect();
+
 	// 초기세팅
 	void ComponentSetting();
 	void LoadAndCreateAnimation();

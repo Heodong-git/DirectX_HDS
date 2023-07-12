@@ -35,11 +35,11 @@
 #include "DashEffect.h"
 #include "HitEffect.h"
 #include "IronDoor.h"
-
-// test
 #include "Explosion_Effect.h"
 #include "FadeEffect.h"
 #include "DistotionEffect.h"
+#include "Trail_Effect.h"
+
 
 Player* Player::MainPlayer = nullptr;
 
@@ -207,10 +207,8 @@ void Player::LoadSound()
 		// 문
 		GameEngineSound::Load(NewDir.GetPlusFileName("door_open.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("gun_fire_00.wav").GetFullPath());
-
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_sword.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_bullet.wav").GetFullPath());
-
 		GameEngineSound::Load(NewDir.GetPlusFileName("slash_00.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("slash_01.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("slash_02.wav").GetFullPath());
@@ -274,6 +272,7 @@ void Player::Update(float _DeltaTime)
 
 	// 상태업데이트 
 	UpdateState(_DeltaTime);
+	
 
 	if (PlayerState::RECORDING_PROGRESS != m_CurState && PlayerState::RECORDING_PROGRESS_FORWARD != m_CurState)
 	{
@@ -293,6 +292,24 @@ void Player::Render(float _DeltaTime)
 void Player::LevelChangeEnd()
 {
 	m_MoveSoundPlayer.Stop();
+}
+
+// test ㅇㅇ 
+void Player::CreateTrailEffect()
+{
+	// 이펙트 생성시 텍스쳐 이름을 받아오고, 
+	std::string TexName = m_Render->GetTexName();
+	std::shared_ptr<GameEngineTexture> Tex = m_Render->GetCurTexture();
+	if (nullptr != Tex)
+	{
+		float4 TexSize = Tex->GetScale();
+		// 잔상 이펙트 액터 생성 
+		std::shared_ptr<Trail_Effect> Effect = GetLevel()->CreateActor<Trail_Effect>();
+
+		// 이펙트의 위치 세팅
+		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect->SetTexture(TexName, TexSize, TrailType::PLAYER);
+	}
 }
 
 void Player::FallAnimChange()
@@ -726,6 +743,9 @@ void Player::Slow()
 {
 	if (true == m_IsSkill)
 	{
+		// 여기서 한번에 모든사운드를 느리게 할 수 없나??
+		//m_SoundPlayer.SetPitch(0.15f);
+
 		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
 
 	    //팬블레이드는 여기서 더느리게 만들어 
@@ -735,6 +755,7 @@ void Player::Slow()
 
 void Player::SlowReset()
 {
+	// m_SoundPlayer.SetPitch(1.0f);
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(m_Ratio);
 	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, m_Ratio);
 }
@@ -1037,6 +1058,8 @@ void Player::IdleToRunStart()
 
 void Player::IdleToRunUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
@@ -1183,6 +1206,8 @@ void Player::MoveStart()
 
 void Player::MoveUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
@@ -1231,6 +1256,7 @@ void Player::MoveUpdate(float _DeltaTime)
 			ChangeState(PlayerState::DOORBREAK);
 			return;
 		}
+	
 
 		ChangeState(PlayerState::SLASH);
 		return;
@@ -1413,6 +1439,8 @@ void Player::SlashStart()
 
 void Player::SlashUpdate(float _DeltaTime)
 { 
+	CreateTrailEffect();
+
 	// 만약 공격 애니메이션이 종료되었을 때 
 	if (true == m_Render->IsAnimationEnd())
 	{
@@ -1618,6 +1646,7 @@ void Player::JumpStart()
 
 void Player::JumpUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 단순하게 머리통박으면 fall 로바꾸는것도 수정해야될수도 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
 	{
@@ -1833,6 +1862,8 @@ void Player::CrouchStart()
 
 void Player::CrouchUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	if (false == GameEngineInput::IsPress("player_crouch"))
 	{
 		ChangeState(PlayerState::IDLE);
@@ -1925,6 +1956,8 @@ void Player::RollStart()
 
 void Player::RollUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	// 우측, 나, 내아래가 흰색이라면 
 	if (PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Right->GetTransform()->GetWorldPosition()) &&
 		PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom->GetTransform()->GetWorldPosition()) &&
@@ -2117,6 +2150,7 @@ void Player::RightFlipStart()
 
 void Player::RightFlipUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 만약 플립지속시간동안 벽을 만나지 않았고, 내가 흰색픽셀이라면 
 	m_FlipTime -= _DeltaTime;
 	if (0 >= m_FlipTime)
@@ -2184,6 +2218,7 @@ void Player::LeftFlipStart()
 
 void Player::LeftFlipUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 만약 플립지속시간동안 벽을 만나지 않았고, 내가 흰색픽셀이라면 
 	m_FlipTime -= _DeltaTime;
 	if (0 >= m_FlipTime)
@@ -2245,6 +2280,8 @@ void Player::FallStart()
 
 void Player::FallUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	// 단순하게. 내아래픽셀이 검은색이라면.
 	// 나를 땅으로 올려주고 IDLE로 전환. 
 	if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_DebugRender_Bottom_Down->GetTransform()->GetWorldPosition()))
@@ -2446,6 +2483,7 @@ void Player::RightWallStart()
 
 void Player::RightWallUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 내머리위의 픽셀이 검은색이 아닐때만
 	// 내가 점프키를 누르고 있는 상태라면 
 	if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
@@ -2562,6 +2600,7 @@ void Player::LeftWallStart()
 
 void Player::LeftWallUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 내머리위의 픽셀이 검은색이 아닐때만 
 	if (PixelCollider::g_BlackPixel != PixelCollider::PixelCol->PixelCollision(m_DebugRender_Top->GetTransform()->GetWorldPosition()))
 	{
@@ -2674,6 +2713,8 @@ void Player::DoorBreakStart()
 
 void Player::DoorBreakUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	if (true == m_Render->IsAnimationEnd())
 	{
 		std::shared_ptr<GameEngineCollision> DoorCol = m_Collision->Collision(ColOrder::DOOR, ColType::AABBBOX2D, ColType::AABBBOX2D);
@@ -2715,6 +2756,7 @@ void Player::DeathStart()
 
 void Player::DeathUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 개이상함 바꿔야함  
 	if (true == m_Render->IsAnimationEnd())
 	{
@@ -2799,6 +2841,7 @@ void Player::ForceFallStart()
 
 void Player::ForceFallUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
 	// 플레이어 아래로 추락, 픽셀충돌 하지 않음
 	GetTransform()->AddLocalPosition(float4::Down * (m_MoveSpeed  / 2.0f ) *_DeltaTime);
 }
