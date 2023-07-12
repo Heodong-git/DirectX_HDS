@@ -98,6 +98,17 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetBlendState("OldFilm");
 		Pipe->SetDepthState("EngineDepth");
 	}
+
+	// 글리치 파이프라인 세팅
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Glitch");
+
+		Pipe->SetVertexShader("GlitchShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("GlitchShader.hlsl");
+		Pipe->SetBlendState("OldFilm");
+		Pipe->SetDepthState("EngineDepth");
+	}
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("DebugRect");
 		//Pipe->SetVertexBuffer("Rect");

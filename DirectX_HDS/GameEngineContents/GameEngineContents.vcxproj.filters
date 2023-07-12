@@ -207,6 +207,9 @@
     <ClInclude Include="DistotionEffect.h">
       <Filter>02.Actor\08.CameraEffect\Distotion</Filter>
     </ClInclude>
+    <ClInclude Include="GlitchEffect.h">
+      <Filter>02.Actor\08.CameraEffect\Glitch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -414,6 +417,9 @@
     <ClCompile Include="DistotionEffect.cpp">
       <Filter>02.Actor\08.CameraEffect\Distotion</Filter>
     </ClCompile>
+    <ClCompile Include="GlitchEffect.cpp">
+      <Filter>02.Actor\08.CameraEffect\Glitch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -601,6 +607,9 @@
     </Filter>
     <Filter Include="02.Actor\08.CameraEffect\Distotion">
       <UniqueIdentifier>{e5be19c9-3b4f-47c5-af62-73c340cc2cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect\Glitch">
+      <UniqueIdentifier>{29d4ec52-e9af-4411-bcd8-c84bc9b2cbff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

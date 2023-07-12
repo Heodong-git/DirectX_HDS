@@ -1,6 +1,5 @@
 #include "PrecompileHeader.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
-
 #include "GameEngineRenderer.h"
 #include "GameEngineLevel.h"
 #include "GameEngineCamera.h"
@@ -86,7 +85,7 @@ void GameEngineRenderer::Start()
 {
 	// 기본적으로는 메인카메라에 세팅
 	PushCameraRender(0);
-	HBSCControl(DynamicThis<GameEngineSpriteRenderer>(), 0.5f, 0.5f, 0.4f);
+	HBSCControl(DynamicThis<GameEngineSpriteRenderer>(), 0.6f, 0.52f, 0.4f);
 }
 
 void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)

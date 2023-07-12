@@ -32,7 +32,7 @@ void JumpEffect::Start()
 	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
 	float PlayerRenderPivot = Player::MainPlayer->GetRenderPivot();
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
-	m_Render->GetTransform()->SetLocalPosition( { PlayerPos.x , PlayerPos.y + 50.0f });
+	m_Render->GetTransform()->SetLocalPosition( { PlayerPos.x , PlayerPos.y + 50.0f , -2.0f});
 	m_Render->ColorOptionValue.MulColor.a = 0.7f;
 	m_Render->SetScaleRatio(2.0f);
 	m_Render->CreateAnimation({ .AnimationName = "jump_cloud", .SpriteName = "jumpcloud", .Start = 0, .End = 3 ,

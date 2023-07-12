@@ -9,5 +9,6 @@
     <FxCompile Include="TileMapShader.hlsl" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
+    <FxCompile Include="GlitchShader.hlsl" />
   </ItemGroup>
 </Project>

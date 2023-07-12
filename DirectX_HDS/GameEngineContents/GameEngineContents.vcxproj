@@ -209,6 +209,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GlitchEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Go_UI.h" />
     <ClInclude Include="GruntEffect.h">
       <SubType>
@@ -440,6 +444,7 @@
     <ClCompile Include="Explosion_Effect.cpp" />
     <ClCompile Include="FanBlade.cpp" />
     <ClCompile Include="FireEffect.cpp" />
+    <ClCompile Include="GlitchEffect.cpp" />
     <ClCompile Include="Go_UI.cpp" />
     <ClCompile Include="GruntEffect.cpp" />
     <ClCompile Include="GunSmoke_Effect.cpp" />

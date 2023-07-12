@@ -63,7 +63,7 @@ void HeadHunter_RifleEffect::Start()
 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BOSS_EFFECT);
 	m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 2.0f, 1.0f });
-	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f, -2.0f });
+	m_Render->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f, -3.0f });
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::BOSS_ATTACK);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f , 1.0f  });
