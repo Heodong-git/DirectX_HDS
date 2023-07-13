@@ -20,6 +20,7 @@ void HeadHunter_RifleEffect::SetType(RifleEffectType _Type)
 	switch (m_Type)
 	{
 	case RifleEffectType::NORMAL:
+		m_Render->SetAnimationStartEvent("headhunter_rifle_effect", static_cast<size_t>(2), std::bind(&HeadHunter_RifleEffect::RifleShotSoundPlay, this));
 		break;
 	case RifleEffectType::SWEEP:
 	{
@@ -43,6 +44,26 @@ void HeadHunter_RifleEffect::EffectDeath()
 	m_Collision->Off();
 	m_Render->Off();
 	m_IsRecording = false;
+}
+
+void HeadHunter_RifleEffect::RifleShotSoundPlay()
+{
+	int RandomValue = CreateRandomValue(3);
+	switch (RandomValue)
+	{
+	case 1:
+		m_SoundPlayer = GameEngineSound::Play("headhunter_rifle_shot_01.wav");
+		break;
+	case 2:
+		m_SoundPlayer = GameEngineSound::Play("headhunter_rifle_shot_02.wav");
+		break;
+	case 3:
+		m_SoundPlayer = GameEngineSound::Play("headhunter_rifle_shot_03.wav");
+		break;
+
+	default:
+		break;
+	}
 }
 
 void HeadHunter_RifleEffect::Start()
@@ -69,8 +90,6 @@ void HeadHunter_RifleEffect::Start()
 	m_Collision->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f , 1.0f  });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->Off();
-
-	
 	
 	{
 		// 기본 라이플이펙트 
@@ -128,6 +147,8 @@ void HeadHunter_RifleEffect::Start()
 	
 	m_Render->SetAnimationStartEvent("headhunter_rifle_effect_sweep", static_cast<size_t>(1), std::bind(&HeadHunter_RifleEffect::ChangeLoopAnimation, this));
 	m_Render->ChangeAnimation("headhunter_rifle_effect");
+	
+	//m_Render->SetAnimationStartEvent("headhunter_rifle_effect", static_cast<size_t>(2), std::bind(&HeadHunter_RifleEffect::RifleShotSoundPlay, this));
 }
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
@@ -186,7 +207,6 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 			return;
 		}
 
-
 		if (1 == m_Render->GetCurrentFrame())
 		{
 			m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f, 1.0f });
@@ -216,8 +236,6 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		if (true == m_Render->IsAnimationEnd())
 		{
 			EffectDeath();
-		
-
 			/*this->Death();
 			if (nullptr != m_Render)
 			{

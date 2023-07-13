@@ -2916,7 +2916,6 @@ void Player::RecordingProgressUpdate(float _DeltaTime)
 }
 void Player::RecordingProgressEnd()
 {
-
 	// 녹화종료시에 모든 정보를 리셋한다. 
 }
 

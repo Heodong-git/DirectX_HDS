@@ -95,12 +95,17 @@ void Boss_HeadHunter::CreateTrailEffect()
 	{
 		float4 TexSize = Tex->GetScale();
 		// 잔상 이펙트 액터 생성 
-		std::shared_ptr<Trail_Effect> Effect = GetLevel()->CreateActor<Trail_Effect>();
+		std::weak_ptr<Trail_Effect> Effect = GetLevel()->CreateActor<Trail_Effect>();
 
 		// 이펙트의 위치 세팅
-		Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-		Effect->SetTexture(TexName, TexSize, TrailType::BOSS);
+		Effect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+		Effect.lock()->SetTexture(TexName, TexSize, TrailType::BOSS);
 	}
+}
+
+void Boss_HeadHunter::RotaitionFireSoundPlay()
+{
+	GameEngineSound::Play("headhunter_rotaitionfire.wav");
 }
 
 // -179, -1 
@@ -126,16 +131,16 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 				return;
 			}
 			// 불릿 오브젝트생성
-			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
-			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
-			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
-			Obj->SetMoveDir(Dir);
-			Obj->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
+			std::weak_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
+			Obj.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Obj.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
+			float4 Dir = float4::AngleToDirection2DToDeg(Obj.lock()->GetTransform()->GetLocalRotation().z);
+			Obj.lock()->SetMoveDir(Dir);
+			Obj.lock()->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
 
-			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
-			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
+			std::weak_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
+			Effect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
 			
 			++m_CurFireAngleCount;
 			return;
@@ -151,16 +156,16 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 				return;
 			}
 			// 불릿 오브젝트생성
-			std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
-			Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-			Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
-			float4 Dir = float4::AngleToDirection2DToDeg(Obj->GetTransform()->GetLocalRotation().z);
-			Obj->SetMoveDir(Dir);
-			Obj->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
+			std::weak_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
+			Obj.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Obj.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
+			float4 Dir = float4::AngleToDirection2DToDeg(Obj.lock()->GetTransform()->GetLocalRotation().z);
+			Obj.lock()->SetMoveDir(Dir);
+			Obj.lock()->ChangeColOrder(static_cast<int>(ColOrder::BOSS_ATTACK));
 
-			std::shared_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
-			Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
-			Effect->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
+			std::weak_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
+			Effect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+			Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
 			
 			--m_CurFireAngleCount_Reverse;
 			return;
@@ -239,13 +244,24 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_death_land").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_moribund").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_nohead").GetFullPath());
+
+		Dir.MoveParentToDirectory("katanazero_resources");
+		Dir.Move("katanazero_resources");
+		Dir.Move("sound");
+		Dir.Move("headhunter");
+
+		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rotaitionfire.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_lockon.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_01.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_02.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_03.wav").GetFullPath());
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
 									  .FrameInter = 0.09f , .Loop = true , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_intro", .SpriteName = "headhunter_intro", .Start = 0, .End = 2 ,
 									  .FrameInter = 0.06f , .Loop = false , .ScaleToTexture = true });
-	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_takeout_rifle", .SpriteName = "headhunter_takeout_rifle", .Start = 0, .End = 7 ,
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_takeout_rifle", .SpriteName = "headhunter_takeout_rifle", .Start = 0, .End = 14 ,
 								  .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_roll", .SpriteName = "headhunter_roll", .Start = 0, .End = 6 ,
 								    .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
@@ -336,8 +352,11 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 	}
 	
 	m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(5), std::bind(&Boss_HeadHunter::CreateRifleEffect, this));
+	// m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(11), std::bind(&Boss_HeadHunter::RifleShotSoundPlay, this));
 	m_MainRender->SetAnimationStartEvent("headhunter_dash_end_ground", static_cast<size_t>(0), std::bind(&Boss_HeadHunter::AttCollisionOn, this));
 	m_MainRender->SetAnimationStartEvent("headhunter_dash_end_ground", static_cast<size_t>(3), std::bind(&Boss_HeadHunter::AttCollisionOff, this));
+	m_MainRender->SetAnimationStartEvent("headhunter_jump_rifle", static_cast<size_t>(2), std::bind(&Boss_HeadHunter::RotaitionFireSoundPlay, this));
+
 	m_MainRender->ChangeAnimation("headhunter_idle");
 	m_MainRender->SetScaleRatio(2.0f);
 }
@@ -373,6 +392,11 @@ void Boss_HeadHunter::CreateRifleEffect()
 	float4 MyPos = GetTransform()->GetLocalPosition();
 	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
 	m_Effect->SetActor(DynamicThis<Boss_HeadHunter>());
+
+	if (BossState::RIFLE == m_CurState)
+	{
+		m_Effect->SetType(RifleEffectType::NORMAL);
+	}
 
 	if (BossState::TELEPORTIN_CEILING == m_CurState)
 	{
@@ -1222,6 +1246,7 @@ void Boss_HeadHunter::IdleEnd()
 
 void Boss_HeadHunter::RifleStart()
 {
+	GameEngineSound::Play("headhunter_lockon.wav");
 	// CreateRifleEffect();
 	ChangeDir();
 	DirCheck();
@@ -1918,7 +1943,6 @@ void Boss_HeadHunter::TpInCeilingStart()
 	// 첫텔레포트라면 
 	if (false == m_TpInStart)
 	{
-		// 처음에만 셔플 
 		m_TpInStart = true;
 		++m_TpCount;
 		m_TpCeilingPos = m_vecCeilingPos[0];

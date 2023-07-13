@@ -96,7 +96,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer m_SoundPlayer; 
 	void CreateTrailEffect();
+	void RotaitionFireSoundPlay();
+	
 
 	// 초기세팅
 	void ComponentSetting();

@@ -38,6 +38,8 @@ public:
 	
 	void EffectDeath();
 
+	void RifleShotSoundPlay();
+
 
 protected:
 	void Start() override;
@@ -45,6 +47,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer m_SoundPlayer;
+
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 	std::shared_ptr<class GameEngineCollision> m_Collision = nullptr;
 	std::shared_ptr<class Boss_HeadHunter> m_Actor = nullptr;
