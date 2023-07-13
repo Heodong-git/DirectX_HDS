@@ -58,6 +58,7 @@ void Player::BulletCollision()
 	if (PlayerState::DEATH != m_CurState)
 	{
 		m_Collision->Off();
+		PlaySupporter::MainSupporter->CameraShakeOn();
 		ChangeState(PlayerState::DEATH);
 	}
 }
@@ -382,6 +383,7 @@ bool Player::FanBladeColCheck()
 	if (nullptr != FanCol)
 	{
 		ChangeState(PlayerState::DEATH);
+		PlaySupporter::MainSupporter->CameraShakeOn();
 		m_Collision->Off();
 		m_SubCollision->Off();
 		return true;
@@ -398,6 +400,7 @@ bool Player::HitCheck()
 		CreateHitEffect(Col);
 		// 나를 데스상태로 
 		ChangeState(PlayerState::DEATH);
+		PlaySupporter::MainSupporter->CameraShakeOn();
 		m_Collision->Off();
 		m_SubCollision->Off();
 		return true;
@@ -416,7 +419,7 @@ bool Player::BossHitCheck()
 	{
 		// 여기서 익스플로전 이펙트 생성
 		CreateExplosionEffect();
-
+		PlaySupporter::MainSupporter->CameraShakeOn();
 		// 충돌한 시점에 내충돌체 off 
 		m_Collision->Off();
 		m_SubCollision->Off();

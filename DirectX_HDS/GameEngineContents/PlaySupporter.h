@@ -38,7 +38,7 @@ protected:
 private:
 	bool m_CameraShake = false;
 	
-	float m_CameraShakeTime = 0.3f;
+	float m_CameraShakeTime = 0.275f;
 	float m_CameraShakeXValue = 0.0f;
 
 	float4 m_CamOriginPos = float4::Zero;
@@ -47,7 +47,7 @@ private:
 	const float cameraShakeAmplitude = 2.0f;
 	const float cameraShakeFrequency = 10.0f;
 	// x축 흔들림 범위
-	const float cameraXRange = 7.0f;
+	const float cameraXRange = 7.7f;
 
 
 	void CameraMovement(float _DeltaTime);

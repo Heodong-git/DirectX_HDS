@@ -18,6 +18,7 @@
 #include "HitEffect.h"
 
 #include "PixelCollider.h"
+#include "PlaySupporter.h"
 
 Monster_Gangster::Monster_Gangster()
 {
@@ -422,7 +423,7 @@ void Monster_Gangster::DeathCheck()
 		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
 		CreateHitEffect();
-
+		PlaySupporter::MainSupporter->CameraShakeOn();
 		// 내가죽었으니까 -1 
 		GetReturnCastLevel()->DisCount();
 		ChangeState(GangsterState::HITGROUND);

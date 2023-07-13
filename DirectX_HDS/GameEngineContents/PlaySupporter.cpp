@@ -155,7 +155,7 @@ void PlaySupporter::CameraShake(float _DeltaTime)
 		GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(m_CamOriginPos);
 		m_CamOriginPos = float4::Zero;
 		m_CameraShakeXValue = 0.0f;
-		m_CameraShakeTime = 0.4f;
+		m_CameraShakeTime = 0.275f;
 		m_CameraShake = false;
 	}
 }
