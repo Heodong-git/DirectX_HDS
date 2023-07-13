@@ -50,6 +50,8 @@ void BaseLevel::Start()
 
 	// 카메라이펙트 생성
 	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+
+	
 }
 
 void BaseLevel::Update(float _DeltaTime)
@@ -228,12 +230,16 @@ void BaseLevel::PlayerSkillCheck()
 	// 플레이어 페이드인이펙트 
 	if (true == Player::MainPlayer->IsSkill())
 	{
-		// GetFadeEffect()->FadeIn();
+		// 플레이어가 스킬 사용중이라면
+		if (true == m_SoundPlayer.IsValid())
+		{
+			m_SoundPlayer.SetPitch(0.15f);
+		}
 	}
 
 	else if (false == Player::MainPlayer->IsSkill())
 	{
-		//m_FadeEffect->FadeOut();
+		m_SoundPlayer.SetPitch(1.0f);
 	}
 }
 

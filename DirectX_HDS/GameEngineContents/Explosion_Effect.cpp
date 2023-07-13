@@ -46,33 +46,49 @@ void Explosion_Effect::Start()
 	m_Collision->GetTransform()->SetLocalScale(float4{ 20.0f , 20.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 
-	if (nullptr == GameEngineSprite::Find("explosion_effect"))
 	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("katanazero_resources");
-		Dir.Move("katanazero_resources");
-		Dir.Move("Texture");
-		Dir.Move("ClubLevel");
-		Dir.Move("effect");
+		if (nullptr == GameEngineSprite::Find("explosion_effect"))
+		{
+			// 텍스쳐 
+			GameEngineDirectory Dir;
+			Dir.MoveParentToDirectory("katanazero_resources");
+			Dir.Move("katanazero_resources");
+			Dir.Move("Texture");
+			Dir.Move("ClubLevel");
+			Dir.Move("effect");
 
-		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("explosion_effect").GetFullPath());
-		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("explosion_effect2").GetFullPath());
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("explosion_effect").GetFullPath());
+			GameEngineSprite::LoadFolder(Dir.GetPlusFileName("explosion_effect2").GetFullPath());
+			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
+
+			// 사운드
+			Dir.MoveParentToDirectory("katanazero_resources");
+			Dir.Move("katanazero_resources");
+			Dir.Move("sound");
+			Dir.Move("playlevel");
+
+			// 문
+			GameEngineSound::Load(Dir.GetPlusFileName("explosion_1.wav").GetFullPath());
+			GameEngineSound::Load(Dir.GetPlusFileName("explosion_2.wav").GetFullPath());
+			GameEngineSound::Load(Dir.GetPlusFileName("explosion_3.wav").GetFullPath());
+
+		}
+
+		m_Render->CreateAnimation({ .AnimationName = "explosion_effect", .SpriteName = "explosion_effect", .Start = 0, .End = 9 ,
+									  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+
+		m_Render->CreateAnimation({ .AnimationName = "explosion_effect2", .SpriteName = "explosion_effect2", .Start = 0, .End = 9 ,
+									  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
+
+
+		m_Render->SetAnimationStartEvent("explosion_effect", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
+		m_Render->SetAnimationStartEvent("explosion_effect2", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
+
+		m_Render->SetScaleRatio(2.0f);
+		m_Render->ChangeAnimation("explosion_effect");
 	}
 
-	m_Render->CreateAnimation({ .AnimationName = "explosion_effect", .SpriteName = "explosion_effect", .Start = 0, .End = 9 ,
-								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
-
-	m_Render->CreateAnimation({ .AnimationName = "explosion_effect2", .SpriteName = "explosion_effect2", .Start = 0, .End = 9 ,
-								  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
-
-	
-	m_Render->SetAnimationStartEvent("explosion_effect", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
-	m_Render->SetAnimationStartEvent("explosion_effect2", static_cast<size_t>(7), std::bind(&Explosion_Effect::CollisionOff, this));
-
-	m_Render->SetScaleRatio(2.0f);
-	m_Render->ChangeAnimation("explosion_effect");
-
+	m_SoundPlayer = GameEngineSound::Play("explosion_1.wav");
 }
 
 void Explosion_Effect::Update(float _DeltaTime)

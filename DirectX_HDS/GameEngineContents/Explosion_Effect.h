@@ -32,6 +32,8 @@ public:
 	void SetType(EffectType _Type);
 	void CollisionOff();
 
+	GameEngineSoundPlayer m_SoundPlayer; 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

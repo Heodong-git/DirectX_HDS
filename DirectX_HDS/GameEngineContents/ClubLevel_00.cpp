@@ -86,7 +86,13 @@ void ClubLevel_00::LoadSound()
 		NewDir.Move("sound");
 		NewDir.Move("playlevel");
 
+		// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
 		GameEngineSound::Load(NewDir.GetPlusFileName("Sneaky_Driver.mp3").GetFullPath());
+
+		// 폭발사운드 
+		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_1.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_2.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_3.wav").GetFullPath());
 	}
 }
 

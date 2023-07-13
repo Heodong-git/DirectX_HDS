@@ -20,8 +20,6 @@ protected:
 	void Update(float _DeltaTime);
 
 private:
-	
-
 	virtual void LoadSound() override;
 
 	void LevelChangeStart() override;

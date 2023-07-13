@@ -137,9 +137,11 @@ private:
 	// 점프애니메이션 이벤트추가용
 	void FallAnimChange();
 	void SlashSoundPlay();
+
 	GameEngineSoundPlayer m_SoundPlayer;
 	GameEngineSoundPlayer m_MoveSoundPlayer;
-
+	GameEngineSoundPlayer m_SkillSoundPlayer;
+	GameEngineSoundPlayer m_RewindSoundPlayer;
 
 	// 특정 충돌체와의 충돌체크
 	bool DoorColCheck();		 // 문 

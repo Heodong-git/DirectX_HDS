@@ -207,6 +207,7 @@ void Player::LoadSound()
 		
 		// 문
 		GameEngineSound::Load(NewDir.GetPlusFileName("door_open.wav").GetFullPath());
+
 		GameEngineSound::Load(NewDir.GetPlusFileName("gun_fire_00.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_sword.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_bullet.wav").GetFullPath());
@@ -220,6 +221,8 @@ void Player::LoadSound()
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_run.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_prerun.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("slash_bullet_parring.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("death_generic.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("Rewind.wav").GetFullPath());
 	}
 }
 
@@ -369,6 +372,7 @@ bool Player::LaserColCheck()
 	std::shared_ptr<GameEngineCollision> LaserCol = m_Collision->Collision(ColOrder::LASER, ColType::AABBBOX2D, ColType::AABBBOX2D);
 	if (nullptr != LaserCol)
 	{
+		m_SoundPlayer = GameEngineSound::Play("death_generic.wav");
 		ChangeState(PlayerState::DEATH);
 		m_Collision->Off();
 		return true;
@@ -663,6 +667,8 @@ void Player::SkillUpdate(float _DeltaTime)
 
 	if (PlayerState::DEATH == m_CurState)
 	{
+		//m_SkillSoundPlayer.Stop();
+		
 		// 스킬 false
 		m_IsSkill = false;
 		// 색돌리고 
@@ -750,19 +756,25 @@ void Player::Slow()
 {
 	if (true == m_IsSkill)
 	{
-		// 여기서 한번에 모든사운드를 느리게 할 수 없나??
-		//m_SoundPlayer.SetPitch(0.15f);
+		if (true == m_SoundPlayer.IsValid())
+		{
+			m_SoundPlayer.SetPitch(0.15f);
+			m_MoveSoundPlayer.SetPitch(0.15f);
+		}
 
 		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.15f);
-
-	    //팬블레이드는 여기서 더느리게 만들어 
 	    GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, 0.1f);
 	}
 }
 
 void Player::SlowReset()
 {
-	// m_SoundPlayer.SetPitch(1.0f);
+	if (true == m_SoundPlayer.IsValid())
+	{
+		m_SoundPlayer.SetPitch(1.0f);
+		m_MoveSoundPlayer.SetPitch(1.0f);
+	}
+	
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(m_Ratio);
 	GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::FANBLADE, m_Ratio);
 }
@@ -2884,6 +2896,7 @@ void Player::ExplosionDeathEnd()
 void Player::RecordingProgressStart()
 {
 	m_Collision->Off();
+	GameEngineSound::Play("Rewind.wav");
 }
 void Player::RecordingProgressUpdate(float _DeltaTime)
 {
