@@ -45,9 +45,9 @@ private:
 
 	// 흔들림 세기 
 	const float cameraShakeAmplitude = 2.0f;
-	const float cameraShakeFrequency = 10.0f;
+	const float cameraShakeFrequency = 20.0f;
 	// x축 흔들림 범위
-	const float cameraXRange = 7.7f;
+	const float cameraXRange = 12.0f;
 
 
 	void CameraMovement(float _DeltaTime);

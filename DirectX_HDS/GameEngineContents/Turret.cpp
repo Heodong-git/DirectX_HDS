@@ -9,6 +9,7 @@
 
 #include "Bullet.h"
 #include "GunSpark_Effect.h"
+#include "PlaySupporter.h"
 
 Turret::Turret()
 {
@@ -89,6 +90,7 @@ void Turret::Update(float _DeltaTime)
 			if (nullptr != Col)
 			{
 				// 플레이어와 충돌했다면, 
+				PlaySupporter::MainSupporter->CameraShakeOn();
 				m_TopRender->ChangeAnimation("turret_die");
 				m_TopRender->GetTransform()->AddLocalPosition(float4{ -16.0f ,5.0f });
 				m_TopRender->SetScaleRatio(2.0f);

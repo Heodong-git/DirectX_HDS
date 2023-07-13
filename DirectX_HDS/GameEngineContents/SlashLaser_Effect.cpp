@@ -11,8 +11,6 @@ SlashLaser_Effect::~SlashLaser_Effect()
 {
 }
 
-// 어택을 찍는 순간 맵밖에 만들어져. 위치는 ㅅㅂ 이거 어케하지 ?
-// 
 void SlashLaser_Effect::Start()
 {
 	if (nullptr == GameEngineTexture::Find("slash_laser.png"))
@@ -58,13 +56,13 @@ void SlashLaser_Effect::MoveUpdate(float _DeltaTime)
 	float Angle = atan2f(Dir.y, Dir.x) * GameEngineMath::RadToDeg;
 	m_MainRender->GetTransform()->SetLocalRotation({ 0 , 0 , Angle });
 	float4 MoveDir = float4::AngleToDirection2DToDeg(m_MainRender->GetTransform()->GetLocalRotation().z);
-	m_MainRender->GetTransform()->AddLocalPosition(MoveDir * 10000.0f * _DeltaTime);
+	m_MainRender->GetTransform()->AddLocalPosition(MoveDir * m_MoveSpeed * _DeltaTime);
 }
 
 void SlashLaser_Effect::ComponentSetting()
 {
 	m_MainRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::PLAYER_EFFECT);
 	m_MainRender->SetTexture("slash_laser.png");
-	m_MainRender->GetTransform()->SetLocalScale(float4{ 800.0f , 6.0f });
+	m_MainRender->GetTransform()->SetLocalScale(float4{ 750.0f , 6.0f });
 	m_MainRender->ColorOptionValue.MulColor.a = 0.8f;
 }

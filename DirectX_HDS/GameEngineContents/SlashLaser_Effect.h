@@ -20,12 +20,19 @@ public:
 		m_MovePos = _Pos;
 	}
 
+	inline void SetAngle(const float _Angle)
+	{
+		m_Angle = _Angle;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+	float m_MoveSpeed = 10000.0f;
+	float m_Angle = 0.0f;
 	void MoveUpdate(float _DeltaTime);
 	float4 m_MovePos = {};
 	// 렌더러생성 및 세팅

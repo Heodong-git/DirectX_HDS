@@ -127,6 +127,11 @@ void PlaySupporter::CameraZoomEffect(float _Ratio)
 
 void PlaySupporter::CameraShakeOn()
 {
+	if (true == m_CameraShake)
+	{
+		return;
+	}
+
 	m_CamOriginPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
 	m_CameraShake = true;
 }
