@@ -6,6 +6,7 @@
 #include "ReflectEffect.h"
 
 #include "Player.h"
+#include "PlaySupporter.h"
 
 Bullet::Bullet()
 {
@@ -119,8 +120,6 @@ void Bullet::Update(float _DeltaTime)
 		return;
 	}
 
-	// 플레이어의 공격과 충돌했다면
-	// 임시로 구충돌로 
 	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK);
 	if (nullptr != AttCol)
 	{
@@ -128,6 +127,8 @@ void Bullet::Update(float _DeltaTime)
 			// 내가 패링이 아닌상태에서
 			if (false == m_Parring)
 			{
+				PlaySupporter::MainSupporter->CameraShakeOn();
+				PlaySupporter::MainSupporter->CameraZoomEffect(0.97f);
 				m_SoundPlayer = GameEngineSound::Play("slash_bullet_parring.wav");
 				m_SoundPlayer.SetVolume(0.7f);
 				CreateReflectEffect();
@@ -145,7 +146,6 @@ void Bullet::Update(float _DeltaTime)
 			}
 		}
 		return;
-		// 반사사운드 출력
 	}
 
 	if (true == this->IsUpdate())

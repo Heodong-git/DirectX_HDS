@@ -1,9 +1,6 @@
 #pragma once
 #include "BaseActor.h"
 
-
-
-
 // 설명 :
 class PlaySupporter : public BaseActor
 {
@@ -29,15 +26,29 @@ public:
 	void ResetButtonOn();
 	void CameraZoomEffect(const float _Ratio);
 	void CameraShake(float _DeltaTime);
-
+	void CameraShakeOn();
 
 	virtual void ForcedReset() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+	bool m_CameraShake = false;
+	
+	float m_CameraShakeTime = 0.3f;
+	float m_CameraShakeXValue = 0.0f;
+
+	float4 m_CamOriginPos = float4::Zero;
+
+	// 흔들림 세기 
+	const float cameraShakeAmplitude = 2.0f;
+	const float cameraShakeFrequency = 10.0f;
+	// x축 흔들림 범위
+	const float cameraXRange = 7.0f;
+
 
 	void CameraMovement(float _DeltaTime);
 	

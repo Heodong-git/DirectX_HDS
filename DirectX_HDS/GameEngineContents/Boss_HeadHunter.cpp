@@ -20,6 +20,7 @@
 #include "Turret.h"
 #include "Bullet.h"
 #include "Trail_Effect.h"
+#include "PlaySupporter.h"
 
 Boss_HeadHunter* Boss_HeadHunter::m_MainBoss = nullptr;
 
@@ -539,10 +540,12 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 		return;
 	}
 
+
 	if (true == m_AttCollision->IsUpdate())
 	{
 		m_AttCollision->Off();
 	}
+
 	// 내가 플레이어의 공격과 충돌했다면.
 	std::shared_ptr<GameEngineCollision> Player_AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Player_AttCol)

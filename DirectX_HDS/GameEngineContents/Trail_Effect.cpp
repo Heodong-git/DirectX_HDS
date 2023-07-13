@@ -27,9 +27,10 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 		// 여기서 플레이어 렌더러 위치랑 동일 
 
 		// 얘가지금 플레이어 로컬포지션 
+		
 		m_Render->GetTransform()->SetLocalPosition(m_PlayerRenderPivot);
-		m_Render->SetTexture(_Name);
 		m_Render->GetTransform()->SetLocalScale(Size);
+		m_Render->SetTexture(_Name);
 
 		m_Render->ColorOptionValue.PlusColor.r = 0.0f;
 		m_Render->ColorOptionValue.PlusColor.g = 0.5f;
@@ -57,6 +58,7 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 	{
 		// 얘를 보스렌더러 
 		m_Render->GetTransform()->SetLocalPosition(m_HeadHunterRenderPivot);
+		m_Render->SetOrder(static_cast<int>(RenderOrder::BOSS));
 		// 봐서 색바꾸기 
 		m_Render->SetTexture(_Name);
 		m_Render->GetTransform()->SetLocalScale(Size);
@@ -90,9 +92,7 @@ void Trail_Effect::SetTexture(std::string_view _Name, float4& _Size, TrailType _
 
 void Trail_Effect::Start()
 {
-	m_Render = CreateComponent<GameEngineSpriteRenderer>();
-
-	
+	m_Render = CreateComponent<GameEngineSpriteRenderer>(static_cast<int>(RenderOrder::PLAYER_TRAIL));
 }
 
 void Trail_Effect::Update(float _DeltaTime)

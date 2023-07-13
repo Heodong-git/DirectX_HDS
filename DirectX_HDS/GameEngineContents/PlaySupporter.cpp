@@ -66,8 +66,6 @@ void PlaySupporter::Start()
 
 	// 컴포넌트 세팅
 	ComponentSetting();
-
-	
 }
 
 void PlaySupporter::Update(float _DeltaTime)
@@ -105,9 +103,10 @@ void PlaySupporter::Update(float _DeltaTime)
 		LevelResetCheck();
 	}
 
-	// 맵의 범위를 벗어나게 되면 카메라는 움직이지 않음 
-	// 이렇게 체크하는게 아니라 그냥 카메라 무브먼트에서 무빙까지 한번에 하는게 맞다 
-	// CameraMovement(_DeltaTime);
+	if (true == m_CameraShake)
+	{
+		CameraShake(_DeltaTime);
+	}
 }
 
 void PlaySupporter::Render(float _DeltaTime)
@@ -126,9 +125,39 @@ void PlaySupporter::CameraZoomEffect(float _Ratio)
 	GetLevel()->GetMainCamera()->SetZoomRatio(_Ratio);
 }
 
+void PlaySupporter::CameraShakeOn()
+{
+	m_CamOriginPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+	m_CameraShake = true;
+}
+
 void PlaySupporter::CameraShake(float _DeltaTime)
 {
+	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+	m_CameraShakeTime -= _DeltaTime;
+	m_CameraShakeXValue += 0.35f;
+
+	if (m_CameraShakeTime > 0.0f)
+	{
+		m_CameraShakeTime -= _DeltaTime;
+		m_CameraShakeXValue += _DeltaTime;
+
+		float cameraShakeOffset = sin(m_CameraShakeXValue * cameraShakeFrequency) * cameraShakeAmplitude * cameraXRange;
+		float newXPosition = CameraPos.x + cameraShakeOffset;
+
+		// 카메라 위치 업데이트
+		GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(float4 { newXPosition, CameraPos.y });
+	}
 	
+	else
+	{
+		// 흔들림 시간이 지났으면 초기화
+		GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(m_CamOriginPos);
+		m_CamOriginPos = float4::Zero;
+		m_CameraShakeXValue = 0.0f;
+		m_CameraShakeTime = 0.4f;
+		m_CameraShake = false;
+	}
 }
 
 void PlaySupporter::CameraMovement(float _DeltaTime)
