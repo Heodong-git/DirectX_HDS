@@ -31,11 +31,18 @@ public:
 	virtual void ForcedReset() override;
 
 protected:
+	virtual void LevelChangeStart() override;
+	virtual void LevelChangeEnd() override;
+
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
+	// 사용할 배경사운드를 저장해두고, 내가 생성될때, 현재 레벨이 어떤 레벨인지 체크해서
+	// 해당하는 사운드를 Play 시켜준다. 
+	static GameEngineSoundPlayer m_BGMPlayer;
+
 	bool m_CameraShake = false;
 	
 	float m_CameraShakeTime = 0.275f;

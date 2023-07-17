@@ -51,4 +51,5 @@ private:
 	std::shared_ptr<class Boss_HeadHunter> m_HeadHunter = nullptr;
 
 	bool m_Appear = false;
+	GameEngineSoundPlayer m_BGMPlayer;
 };

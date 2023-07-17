@@ -44,4 +44,5 @@ private:
 	void LevelChangeUpdate();
 
 	bool m_Appear = false;	
+	GameEngineSoundPlayer m_BGMPlayer;
 };

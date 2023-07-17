@@ -154,8 +154,8 @@ private:
 	void CreateTpEffect();
 	void CreateRifleEffect();
 	void CreateSweepEffect();
-	std::shared_ptr<class HeadHunter_RifleEffect> m_Effect = nullptr;
-	std::shared_ptr<class HeadHunter_RifleEffect> m_SweepEffect = nullptr;
+	std::weak_ptr<class HeadHunter_RifleEffect> m_Effect;
+	std::weak_ptr<class HeadHunter_RifleEffect> m_SweepEffect;
 	float4 m_RifleEffectPivot = float4{ 540.0f , 54.5f };
 
 	// true = 오른쪽, false = 왼쪽 

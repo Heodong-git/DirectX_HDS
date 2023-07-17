@@ -27,6 +27,9 @@ public:
 	// 사용할 렌더러 생성
 	void CreateRender();
 	
+	GameEngineSoundPlayer m_PickSound;
+	GameEngineSoundPlayer m_ElectricSound;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -16,7 +16,8 @@ public:
 	TitleLevel& operator=(const TitleLevel& _Other) = delete;
 	TitleLevel& operator=(TitleLevel&& _Other) noexcept = delete;
 
-	GameEngineSoundPlayer BgmSound;
+	GameEngineSoundPlayer m_BgmSound;
+	
 
 protected:
 	void Start() override;
@@ -27,6 +28,8 @@ protected:
 
 	virtual void ResourcesLoad() override;
 	virtual void ActorLoad() override;
+
+	
 
 private:
 	std::shared_ptr<class TitleManager> m_TitleManager = nullptr;

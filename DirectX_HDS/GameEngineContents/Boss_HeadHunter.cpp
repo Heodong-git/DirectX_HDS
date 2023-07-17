@@ -391,33 +391,33 @@ void Boss_HeadHunter::CreateRifleEffect()
 {
 	float4 MyPos = GetTransform()->GetLocalPosition();
 	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
-	m_Effect->SetActor(DynamicThis<Boss_HeadHunter>());
+	m_Effect.lock()->SetActor(DynamicThis<Boss_HeadHunter>());
 
 	if (BossState::RIFLE == m_CurState)
 	{
-		m_Effect->SetType(RifleEffectType::NORMAL);
+		m_Effect.lock()->SetType(RifleEffectType::NORMAL);
 	}
 
 	if (BossState::TELEPORTIN_CEILING == m_CurState)
 	{
-		m_Effect->SetType(RifleEffectType::CEILING_FIRE);
-		m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ 0.0f, -520.0f, -1.0f});
-		m_Effect->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f, -90.0f });
+		m_Effect.lock()->SetType(RifleEffectType::CEILING_FIRE);
+		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ 0.0f, -520.0f, -1.0f});
+		m_Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f, -90.0f });
 		return;
 	}
 
 	// 현재 텔레포트 라이플 상태라면 반대로 
 	if (BossState::TELEPORTIN_RIFLE == m_CurState)
 	{
-		m_Effect->SetType(RifleEffectType::NORMAL);
+		m_Effect.lock()->SetType(RifleEffectType::NORMAL);
 		if (false == m_Dir)
 		{
-			m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
+			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
 		}
 
 		else if (true == m_Dir)
 		{
-			m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
+			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
 		}
 
 		return;
@@ -425,20 +425,20 @@ void Boss_HeadHunter::CreateRifleEffect()
 
 	if (true == m_Dir)
 	{
-		m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x , m_RifleEffectPivot.y , 1.0f });
+		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x , m_RifleEffectPivot.y , 1.0f });
 	}
 	
 	else if (false == m_Dir)
 	{
-		m_Effect->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y, 1.0f });
+		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y, 1.0f });
 	}
 }
 
 void Boss_HeadHunter::CreateSweepEffect()
 {
 	m_SweepEffect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
-	m_SweepEffect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 3.0f, 47.0f, -1.0f });
-	m_SweepEffect->SetType(RifleEffectType::SWEEP);
+	m_SweepEffect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 3.0f, 47.0f, -1.0f });
+	m_SweepEffect.lock()->SetType(RifleEffectType::SWEEP);
 }
 
 void Boss_HeadHunter::CreateTpEffect()
@@ -491,16 +491,16 @@ void Boss_HeadHunter::ResetPhase()
 // 어차피 안죽어있지않나 ?? 
 void Boss_HeadHunter::ResetEffect()
 {
-	if (nullptr != m_Effect)
+	if (nullptr != m_Effect.lock())
 	{
-		m_Effect->Death();
-		m_Effect = nullptr;
+		m_Effect.lock()->Death();
+		m_Effect.lock() = nullptr;
 	}
 
-	if (nullptr != m_SweepEffect)
+	if (nullptr != m_SweepEffect.lock())
 	{
-		m_SweepEffect->Death();
-		m_SweepEffect = nullptr;
+		m_SweepEffect.lock()->Death();
+		m_SweepEffect.lock() = nullptr;
 	}
 }
 
@@ -1257,11 +1257,11 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 {
 	CreateTrailEffect();
 	// 애니메이션이 종료되었거나, 이펙트가 데스상태라면
-	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect->GetCurState())
+	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect.lock()->GetCurState())
 	{ 
 		if (BossPhase::FIRST == m_CurPhase)
 		{
-			m_Effect = nullptr;
+			m_Effect.lock() = nullptr;
 			int RandomValue = CreateRandomValue(2);
 			switch (RandomValue)
 			{
@@ -1283,7 +1283,7 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 		
 		if (BossPhase::SECOND == m_CurPhase)
 		{
-			m_Effect = nullptr;
+			m_Effect.lock() = nullptr;
 			int RandomValue = CreateRandomValue(3);
 			switch (RandomValue)
 			{
@@ -1309,10 +1309,10 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::RifleEnd()
 {
-	if (nullptr != m_Effect)
+	if (nullptr != m_Effect.lock())
 	{
-		m_Effect->Death();
-		m_Effect = nullptr;
+		m_Effect.lock()->Death();
+		m_Effect.lock() = nullptr;
 	}
 }
 
@@ -1763,12 +1763,12 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 	CreateTrailEffect();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		if (nullptr != m_SweepEffect)
+		if (nullptr != m_SweepEffect.lock())
 		{
 			// 얘를 죽이지않아야함 
 			// 여기서 애니메이션이 종료되면, 
 			
-			m_SweepEffect->EffectDeath();
+			m_SweepEffect.lock()->EffectDeath();
 			// m_SweepEffect = nullptr;
 		}
 
@@ -1785,15 +1785,15 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 		return;
 	}
 
-	m_SweepEffect->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } * m_SweepRotSpeed * _DeltaTime);
+	m_SweepEffect.lock()->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } * m_SweepRotSpeed * _DeltaTime);
 }
 
 void Boss_HeadHunter::SweepEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 10.0f });
-	if (nullptr != m_SweepEffect)
+	if (nullptr != m_SweepEffect.lock())
 	{
-		m_SweepEffect->EffectDeath();
+		m_SweepEffect.lock()->EffectDeath();
 	}
 }
 
@@ -1827,10 +1827,10 @@ void Boss_HeadHunter::TpSweepOutEnd()
 	// ?? 이게왜있지?? 
 	if (BossState::TELEPORTIN_RIFLE != m_NextState)
 	{
-		if (nullptr != m_Effect)
+		if (nullptr != m_Effect.lock())
 		{
-			m_Effect->Death();
-			m_Effect = nullptr;
+			m_Effect.lock()->Death();
+			m_Effect.lock() = nullptr;
 		}
 	}
 	m_MainRender->On();

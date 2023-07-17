@@ -86,9 +86,6 @@ void ClubLevel_00::LoadSound()
 		NewDir.Move("sound");
 		NewDir.Move("playlevel");
 
-		// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
-		GameEngineSound::Load(NewDir.GetPlusFileName("Sneaky_Driver.mp3").GetFullPath());
-
 		// 폭발사운드 
 		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_1.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("explosion_2.wav").GetFullPath());
@@ -99,9 +96,6 @@ void ClubLevel_00::LoadSound()
 void ClubLevel_00::LevelChangeStart()
 {
 	GetFadeEffect()->FadeIn();
-	m_SoundPlayer = GameEngineSound::Play("Sneaky_Driver.mp3");
-	m_SoundPlayer.SetLoop();
-	m_SoundPlayer.SetVolume(0.2f);
 
 	GUISetting();
 
@@ -116,7 +110,6 @@ void ClubLevel_00::LevelChangeStart()
 void ClubLevel_00::LevelChangeEnd()
 {
 	SetState(BaseLevel::LevelState::WAIT);
-
 	Player::MainPlayer->Death();
 
 	// GUI Off 

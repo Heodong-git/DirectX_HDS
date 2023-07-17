@@ -47,16 +47,22 @@ void ClubLevel_Boss::CreateHeadHunter()
 
 void ClubLevel_Boss::Start()
 {
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("katanazero_resources");
+	// 그 폴더로 이동
+	NewDir.Move("katanazero_resources");
+	NewDir.Move("sound");
+	NewDir.Move("playlevel");
+
+	// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
+	GameEngineSound::Load(NewDir.GetPlusFileName("All_For_Now.mp3").GetFullPath());
+
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 	SetLevelType(LevelType::CLUBBOSS0);
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
-
-	// test
-	// 디스토션쉐이더 적용 잘됨  
-	// GetLastTarget()->CreateEffect<DistotionEffect>();
 }
 
 void ClubLevel_Boss::Update(float _DeltaTime)
@@ -67,6 +73,10 @@ void ClubLevel_Boss::Update(float _DeltaTime)
 
 void ClubLevel_Boss::LevelChangeStart()
 {
+	m_BGMPlayer = GameEngineSound::Play("All_For_Now.mp3");
+	m_BGMPlayer.SetLoop(-1);
+	m_BGMPlayer.SetVolume(0.7f);
+
 	GetFadeEffect()->FadeIn();
 	GUISetting();
 
@@ -89,10 +99,16 @@ void ClubLevel_Boss::LevelChangeStart()
 	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 	CreateObjAndInit();
+
+	if (true == m_SoundPlayer.IsValid())
+	{
+		int a = 0;
+	}
 }
 
 void ClubLevel_Boss::LevelChangeEnd()
 {
+	m_BGMPlayer.Stop();
 	SetState(BaseLevel::LevelState::WAIT);
 	Player::MainPlayer->Death();
 	// GUI Off 
@@ -105,6 +121,8 @@ void ClubLevel_Boss::LevelChangeEnd()
 
 void ClubLevel_Boss::ResourcesLoad()
 {
+	
+
 
 }
 

@@ -46,6 +46,16 @@ void ClubLevel_Boss_01::CreateHeadHunter()
 
 void ClubLevel_Boss_01::Start()
 {
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("katanazero_resources");
+	// 그 폴더로 이동
+	NewDir.Move("katanazero_resources");
+	NewDir.Move("sound");
+	NewDir.Move("playlevel");
+
+	// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
+	GameEngineSound::Load(NewDir.GetPlusFileName("Full_Confession.mp3").GetFullPath());
+
 	// 코어에서 처음 생성 될 때의 초기화 
 	BaseLevel::Start();
 	SetLevelType(LevelType::CLUBBOSS1);
@@ -82,6 +92,10 @@ void ClubLevel_Boss_01::LevelStartCheck()
 
 void ClubLevel_Boss_01::LevelChangeStart()
 {
+	m_BGMPlayer = GameEngineSound::Play("Full_Confession.mp3");
+	m_BGMPlayer.SetLoop(-1);
+	m_BGMPlayer.SetVolume(0.7f);
+
 	GetFadeEffect()->FadeIn();
 	GUISetting();
 
@@ -111,6 +125,7 @@ void ClubLevel_Boss_01::LevelChangeStart()
 
 void ClubLevel_Boss_01::LevelChangeEnd()
 {
+	m_BGMPlayer.Stop();
 	SetState(BaseLevel::LevelState::WAIT);
 
 	Player::MainPlayer->Death();

@@ -126,7 +126,6 @@ private: // manager
 
 public:
 	static void ResourcesClear();
-
 	static void SoundUpdate();
 
 	GameEngineSound();

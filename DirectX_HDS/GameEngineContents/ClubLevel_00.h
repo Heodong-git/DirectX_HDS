@@ -35,4 +35,5 @@ private:
 
 	virtual void GUISetting() override;
 	std::shared_ptr<class StageEditer> m_GUI = nullptr;
+	GameEngineSoundPlayer m_BGMPlayer;
 };

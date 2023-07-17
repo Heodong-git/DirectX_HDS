@@ -31,6 +31,18 @@ void TitleManager::Start()
 		GameEngineInput::CreateKey("TitleMenu_Select", VK_SPACE);
 		GameEngineInput::CreateKey("TitleMenu_Select_Enter", VK_RETURN);
 		GameEngineInput::CreateKey("Title_ChangeLevel", VK_F1);
+
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("katanazero_resources");
+		// 그 폴더로 이동
+		NewDir.Move("katanazero_resources");
+		NewDir.Move("sound");
+		NewDir.Move("playlevel");
+
+		// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
+		GameEngineSound::Load(NewDir.GetPlusFileName("picksound.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("electricsound1.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("electricsound2.wav").GetFullPath());
 	}
 
 	// 메뉴추가 
@@ -144,6 +156,7 @@ void TitleManager::MenuUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("TitleMenu_Select") ||
 		true == GameEngineInput::IsDown("TitleMenu_Select_Enter"))
 	{
+		m_PickSound = GameEngineSound::Play("picksound.wav");
 		switch (m_CurMenu)
 		{
 		case EMENU_TYPE::NEWGAME:
@@ -346,19 +359,22 @@ void TitleManager::TextMenuOn()
 void TitleManager::BlinkRender()
 {
 	// 그냥 간단하게. 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 20);
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 200);
 	if (Random == 1)
 	{
+		m_ElectricSound = GameEngineSound::Play("electricsound1.wav");
 		m_ORender->Off();
 	}
 	else
 	{
+		
 		m_ORender->On();
 	}
 
-	Random = GameEngineRandom::MainRandom.RandomInt(1, 100);
+	Random = GameEngineRandom::MainRandom.RandomInt(1, 200);
 	if (Random == 1)
 	{
+		m_ElectricSound = GameEngineSound::Play("electricsound2.wav");
 		m_ZERRender->Off();
 	}
 	else

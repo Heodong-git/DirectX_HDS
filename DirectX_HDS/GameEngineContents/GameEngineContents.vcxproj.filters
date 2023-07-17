@@ -213,6 +213,9 @@
     <ClInclude Include="PompEffect.h">
       <Filter>02.Actor\02.Monster\Pomp</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>03.Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -425,6 +428,9 @@
     </ClCompile>
     <ClCompile Include="PompEffect.cpp">
       <Filter>02.Actor\02.Monster\Pomp</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>03.Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

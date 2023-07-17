@@ -18,6 +18,7 @@
 
 TitleLevel::TitleLevel()
 {
+	SetLevelType(LevelType::TITLE);
 }
 
 TitleLevel::~TitleLevel()
@@ -30,7 +31,6 @@ void TitleLevel::Start()
 	ResourcesLoad();
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
-	SetLevelType(LevelType::TITLE);
 	BaseLevel::Start();
 }
 
@@ -49,9 +49,9 @@ void TitleLevel::LevelChangeStart()
 	}
 	
 	m_GUI->Off();
-	BgmSound = GameEngineSound::Play("title_bgm.mp3");
-	BgmSound.SetVolume(0.7f);
-	BgmSound.SetLoop(-1);
+	m_BgmSound = GameEngineSound::Play("title_bgm.mp3");
+	m_BgmSound.SetVolume(0.7f);
+	m_BgmSound.SetLoop(-1);
 }
 
 void TitleLevel::LevelChangeEnd()
@@ -62,7 +62,7 @@ void TitleLevel::LevelChangeEnd()
 	}
 
 	SetState(BaseLevel::LevelState::WAIT);
-	BgmSound.Stop();
+	m_BgmSound.Stop();
 }
 
 void TitleLevel::ResourcesLoad()

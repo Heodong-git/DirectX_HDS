@@ -342,7 +342,7 @@ void Player::SlashSoundPlay()
 		break;
 	}
 
-	m_SoundPlayer.SetVolume(0.7f);
+	m_SoundPlayer.SetVolume(1.0f);
 }
 
 bool Player::DoorColCheck()

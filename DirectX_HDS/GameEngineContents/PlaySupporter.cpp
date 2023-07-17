@@ -15,6 +15,7 @@ PlaySupporter* PlaySupporter::MainSupporter = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_FailRender = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_BlackBoxRender = nullptr;
 std::shared_ptr<GameEngineUIRenderer> PlaySupporter::g_ClearRender = nullptr;
+GameEngineSoundPlayer PlaySupporter::m_BGMPlayer = nullptr;
 
 PlaySupporter::PlaySupporter()
 {
@@ -54,6 +55,33 @@ void PlaySupporter::ForcedReset()
 	}
 
 	BaseActor::ForcedReset();
+}
+
+void PlaySupporter::LevelChangeStart()
+{
+	LevelType CurLevelType = GetReturnCastLevel()->GetLevelType();
+	switch (CurLevelType)
+	{
+	case LevelType::CLUBMAP0:
+	{
+		m_BGMPlayer = GameEngineSound::Play("Sneaky_Driver.mp3");
+		m_BGMPlayer.SetVolume(0.7f);
+	}
+	break;
+	}
+}
+
+void PlaySupporter::LevelChangeEnd()
+{
+	LevelType CurLevelType = GetReturnCastLevel()->GetLevelType();
+	switch (CurLevelType)
+	{
+	case LevelType::CLUBMAP4:
+	{
+		m_BGMPlayer.Stop();
+	}
+	break;
+	}
 }
 
 void PlaySupporter::Start()
@@ -540,6 +568,16 @@ void PlaySupporter::LoadResources()
 			{
 				GameEngineTexture::Load(File[i].GetFullPath());
 			}
+
+			// 원하는 폴더를 가진 디렉터리로 이동
+			NewDir.MoveParentToDirectory("katanazero_resources");
+			// 그 폴더로 이동
+			NewDir.Move("katanazero_resources");
+			NewDir.Move("sound");
+			NewDir.Move("playlevel");
+
+			// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
+			GameEngineSound::Load(NewDir.GetPlusFileName("Sneaky_Driver.mp3").GetFullPath());
 		}
 	}
 }
