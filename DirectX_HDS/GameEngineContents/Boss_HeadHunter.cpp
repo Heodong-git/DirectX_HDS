@@ -105,7 +105,25 @@ void Boss_HeadHunter::CreateTrailEffect()
 
 void Boss_HeadHunter::RotaitionFireSoundPlay()
 {
-	GameEngineSound::Play("headhunter_rotaitionfire.wav");
+	m_SoundPlayer = GameEngineSound::Play("headhunter_rotaitionfire.wav");
+}
+
+void Boss_HeadHunter::HitSoundPlay()
+{
+	int RandomValue = CreateRandomValue(3);
+	switch (RandomValue)
+	{
+	case 1:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_hurt_1.wav");
+		break;
+	case 2:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_hurt_2.wav");
+		break;
+	case 3:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_hurt_3.wav");
+		break;
+	}
+	
 }
 
 // -179, -1 
@@ -250,11 +268,19 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		Dir.Move("sound");
 		Dir.Move("headhunter");
 
+		// 이펙트사운드
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rotaitionfire.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_lockon.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_01.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_02.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_03.wav").GetFullPath());
+
+		// 히트사운드
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_1.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_2.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_3.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntress_vanish_01.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressbeam_circle_01.wav").GetFullPath());
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -443,6 +469,7 @@ void Boss_HeadHunter::CreateSweepEffect()
 
 void Boss_HeadHunter::CreateTpEffect()
 {
+	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntress_vanish_01.wav");
 	std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>();
 	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 	if (true == m_Dir)
@@ -574,6 +601,8 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Player_AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Player_AttCol)
 	{
+		HitSoundPlay();
+
 		// 충돌했는데 내가 모리번드상태라면 
 		if (BossState::MORIBUND == m_CurState)
 		{

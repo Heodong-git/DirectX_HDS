@@ -1881,7 +1881,6 @@ void Player::CrouchStart()
 
 void Player::CrouchUpdate(float _DeltaTime)
 {
-	CreateTrailEffect();
 
 	if (false == GameEngineInput::IsPress("player_crouch"))
 	{

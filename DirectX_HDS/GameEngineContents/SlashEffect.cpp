@@ -133,7 +133,7 @@ void SlashEffect::ComponentSetting()
 	m_Collision->DebugOn();
 	
 	// 이벤트추가
-	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(3), std::bind(&SlashEffect::CollisionOff, this));
+	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(4), std::bind(&SlashEffect::CollisionOff, this));
 }
 
 // 현재 몬스터, 문은 경직완료 
@@ -142,8 +142,10 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Col)
 	{
-		Col->GetActor()->DynamicThis<BaseActor>()->SetDeath();
+		// 얘를 여기서 왜죽 
+		//Col->GetActor()->DynamicThis<BaseActor>()->SetDeath();
 		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+		
 		SlashSoundPlay();
 		PlaySupporter::MainSupporter->CameraShakeOn();
 		PlaySupporter::MainSupporter->CameraZoomEffect(0.97f);

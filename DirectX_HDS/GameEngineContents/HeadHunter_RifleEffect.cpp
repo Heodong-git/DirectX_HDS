@@ -28,6 +28,8 @@ void HeadHunter_RifleEffect::SetType(RifleEffectType _Type)
 		m_Render->GetTransform()->AddLocalPosition(float4{ 500.0f , 0.0f });
 		m_Render->ChangeAnimation("headhunter_rifle_effect_sweep");
 		m_Collision->GetTransform()->AddLocalPosition(float4{ 500.0f , 0.0f });
+
+		GameEngineSound::Play("sound_boss_huntressbeam_circle_01.wav");
 	}
 		break;
 	}
@@ -153,7 +155,6 @@ void HeadHunter_RifleEffect::Start()
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
 {
-	// 일단 적용 시켜봐 
 	m_RecordingFrame = !m_RecordingFrame;
 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())

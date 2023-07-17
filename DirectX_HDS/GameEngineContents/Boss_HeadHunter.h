@@ -99,6 +99,7 @@ private:
 	GameEngineSoundPlayer m_SoundPlayer; 
 	void CreateTrailEffect();
 	void RotaitionFireSoundPlay();
+	void HitSoundPlay();
 	
 
 	// 초기세팅

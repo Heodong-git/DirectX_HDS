@@ -433,8 +433,6 @@ void Monster_Gangster::DeathCheck()
 	// 그럼 충돌한 액터를 데스시키고 레벨리셋 호출 
 	if (nullptr != Col)
 	{
-		// 나의 충돌체를 off
-		// 애니메이션 렌더를 데스애니메이션으로전환 
 		m_Collision->Off();
 		CreateHitEffect();
 		CreateSlashHitEffect();
