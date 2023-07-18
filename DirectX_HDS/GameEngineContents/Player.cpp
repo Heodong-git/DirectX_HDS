@@ -242,7 +242,19 @@ void Player::Update(float _DeltaTime)
 	}
 
 	m_RecordingFrame = !m_RecordingFrame;
-	m_TrailEffect = !m_TrailEffect;
+	
+	if (m_TrailEffectTime <= 0.0f)
+	{
+		m_TrailEffectTime = m_TrailEffectCoolTime;
+		m_TrailEffect = true;
+	}
+
+	else
+	{
+		m_TrailEffect = false;
+	}
+
+	m_TrailEffectTime -= _DeltaTime;
 
 	// 디버그 업데이트
 	DebugUpdate();
@@ -301,8 +313,6 @@ void Player::LevelChangeEnd()
 // test ㅇㅇ 
 void Player::CreateTrailEffect()
 {
-	// 2프레임당한번은 너무 많이 만드는 느낌이고 대충 0.몇초당한번으로 제한하는게 나을듯 
-	// 일단 플레이어랑 보스 이거 변경시키고 사운드 대충마무리 
 	if (false == m_TrailEffect)
 	{
 		return;

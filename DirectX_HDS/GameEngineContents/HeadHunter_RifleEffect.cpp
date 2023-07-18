@@ -208,7 +208,10 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		if (1 == m_Render->GetCurrentFrame())
 		{
 			m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f, 1.0f });
-			m_Collision->On();
+			if (EffectState::DEATH != m_CurState)
+			{
+				m_Collision->On();
+			}
 		}
 
 		return;
@@ -221,7 +224,11 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		if (1 == m_Render->GetCurrentFrame())
 		{
 			m_Render->GetTransform()->SetLocalScale(float4{ 1000.0f , 20.0f, 1.0f });
-			m_Collision->On();
+
+			if (EffectState::DEATH != m_CurState)
+			{
+				m_Collision->On();
+			}
 		}
 
 		return;

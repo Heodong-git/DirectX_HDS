@@ -1825,13 +1825,15 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 	m_SweepEffect.lock()->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } * m_SweepRotSpeed * _DeltaTime);
 }
 
+// 스윕 이후 레이저 이펙트의 충돌체가 남아있긴한데 치트가 아니면 플레이어가 그 위치로 이동할 일이 없으니까
+// 일단 그냥 냅둠 
 void Boss_HeadHunter::SweepEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 10.0f });
-	if (nullptr != m_SweepEffect.lock())
+	/*if (nullptr != m_SweepEffect.lock())
 	{
 		m_SweepEffect.lock()->EffectDeath();
-	}
+	}*/
 }
 
 void Boss_HeadHunter::TpSweepOutStart()

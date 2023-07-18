@@ -38,7 +38,7 @@ private:
 	TrailType m_Type = TrailType::NONE;
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
 
-	const float m_MaxLivetime = 0.08f;
+	const float m_MaxLivetime = 0.1f;
 	const float4 m_PlayerRenderPivot = float4{ 0.0f, 36.0f, -1.0f };
 	const float4 m_HeadHunterRenderPivot = float4{ 0.0f, 42.0f , -1.0f };
 };

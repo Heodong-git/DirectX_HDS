@@ -134,6 +134,9 @@ private:
 	void CreateTrailEffect();
 	bool m_TrailEffect = false;
 
+	const float m_TrailEffectCoolTime = 0.04f;
+	float m_TrailEffectTime = 0.04f;
+
 	// 점프애니메이션 이벤트추가용
 	void FallAnimChange();
 	void SlashSoundPlay();
