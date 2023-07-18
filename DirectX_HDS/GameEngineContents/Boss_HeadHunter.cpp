@@ -126,6 +126,23 @@ void Boss_HeadHunter::HitSoundPlay()
 	
 }
 
+void Boss_HeadHunter::WallJumpSoundPlay()
+{
+	int RandomValue = CreateRandomValue(3);
+	switch (RandomValue)
+	{
+	case 1:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_walljump_1.wav");
+		break;
+	case 2:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_walljump_2.wav");
+		break;
+	case 3:
+		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_walljump_3.wav");
+		break;
+	}
+}
+
 // -179, -1 
 // 개수는 18개 
 // 10도당 하나 
@@ -284,7 +301,13 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_3.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntress_vanish_01.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressbeam_circle_01.wav").GetFullPath());
-		
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressknife_prep_01.wav").GetFullPath());
+
+		// 점프사운드 
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntress_jump_01.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_1.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_2.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_3.wav").GetFullPath());
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -1254,7 +1277,7 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 		if (0.0f >= m_IdleDuration)
 		{
 			// 패턴 추가해야함 , 텔레포트인라이플은 임시 적용중
-			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
 			if (0 == RandomValue)
 			{
 				ChangeState(BossState::TELEPORTIN_RIFLE);
@@ -1264,6 +1287,12 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 			else if (1 == RandomValue)
 			{
 				ChangeState(BossState::RIFLE);
+				return;
+			}
+
+			else if ((2 == RandomValue))
+			{
+				ChangeState(BossState::JUMP);
 				return;
 			}
 		}
@@ -1317,7 +1346,7 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 		if (BossPhase::SECOND == m_CurPhase)
 		{
 			m_Effect.lock() = nullptr;
-			int RandomValue = CreateRandomValue(3);
+			int RandomValue = CreateRandomValue(4);
 			switch (RandomValue)
 			{
 			case 1:
@@ -1328,6 +1357,9 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 				break;
 			case 3:
 				ChangeState(BossState::TELEPORTIN_CEILING);
+				break;
+			case 4:
+				ChangeState(BossState::JUMP);
 				break;
 			default:
 			{
@@ -1441,7 +1473,16 @@ void Boss_HeadHunter::RollUpdate(float _DeltaTime)
 	// 애니메이션 종료시 idle 
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		ChangeState(BossState::IDLE);
+		int RandomValue = CreateRandomValue(2);
+		switch (RandomValue)
+		{
+		case 1:
+			ChangeState(BossState::IDLE);
+			break;
+		case 2:
+			ChangeState(BossState::JUMP);
+			break;
+		}
 		return;
 	}
 
@@ -1474,10 +1515,8 @@ void Boss_HeadHunter::RollEnd()
 
 void Boss_HeadHunter::HurtStart()
 {
-
 	// 시작할때 플레이어 위치x, 내위치 x를 비교, 방향을 정한다.
 	ChangeDir();
-	
 
 	// 현재 2페이즈, 히트카운트가 0이라면 데드 애니메이션으로 변경함 
 	// ?? 이뭔 ???? 뭐임 
@@ -1738,16 +1777,87 @@ void Boss_HeadHunter::ChangePhaseEnd()
 // 보류 
 void Boss_HeadHunter::JumpStart()
 {
+	int RandomValue = CreateRandomValue(2);
+	switch (RandomValue)
+	{
+	case 1:
+		m_Dir = true;
+		break;
+	case 2:
+		m_Dir = false;
+		break;
+	}
+	
+	m_Collision->Off();
+	GameEngineSound::Play("sound_boss_huntress_jump_01.wav");
+	m_JumpStartPos = GetTransform()->GetLocalPosition();
 	m_MainRender->ChangeAnimation("headhunter_jump");
 }
 
 void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 {
-	// 베지에곡선사용으로 점프 ㄱㄱ
+	CreateTrailEffect();
+	
+	m_Ratio += _DeltaTime / 0.5f;
+	if (1.0f <= m_Ratio)
+	{
+		m_Ratio = 1.0f;
+	}
+
+	// 왼쪽벽일때의 로직
+	if (true == m_Dir)
+	{
+		// 중간지점, 도착지점을 정해야함 
+		float4 MiddlePos = float4{ -451.0f, -96.0f };
+		float4 EndPos = m_TeleportLeftWallPos;
+
+		float4 MovePos = float4::Lerp(m_JumpStartPos, MiddlePos, m_Ratio * 2.0f);
+		float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+		float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+		GetTransform()->SetWorldPosition(MovePos3);
+		float4 Check = GetTransform()->GetWorldPosition();
+
+		if (EndPos == GetTransform()->GetWorldPosition())
+		{
+			ChangeState(BossState::JUMP_RIFLE);
+			return;
+		}
+
+		return;
+	}
+
+	// 우측벽 
+	if (false == m_Dir)
+	{
+		// 중간지점, 도착지점을 정해야함 
+ 		float4 MiddlePos = float4{ 451.0f, -96.0f };
+		float4 EndPos = m_TeleportRightWallPos;
+
+		float4 MovePos = float4::Lerp(m_JumpStartPos, MiddlePos, m_Ratio * 2.0f);
+		float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+		float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
+
+		GetTransform()->SetWorldPosition(MovePos3);
+
+		float4 Check = GetTransform()->GetWorldPosition();
+
+		if (EndPos == GetTransform()->GetWorldPosition())
+		{
+			ChangeState(BossState::JUMP_RIFLE);
+			return;
+		}
+
+		return;
+	}
+	
 }
 
 void Boss_HeadHunter::JumpEnd()
 {
+	m_Ratio = 0.0f;
+	m_JumpStartPos = float4::Zero;
+	m_Collision->On();
 }
 
 void Boss_HeadHunter::TpSweepInStart()
@@ -1955,6 +2065,8 @@ void Boss_HeadHunter::DashEnd()
 
 void Boss_HeadHunter::DashEndStart()
 {
+		
+	GameEngineSound::Play("sound_boss_huntressknife_prep_01.wav");
 	ChangeDir();
 	DirCheck();
 	m_MainRender->ChangeAnimation("headhunter_dash_end_ground");
@@ -1964,7 +2076,16 @@ void Boss_HeadHunter::DashEndUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		ChangeState(BossState::IDLE);
+		int RandomValue = CreateRandomValue(2);
+		switch (RandomValue)
+		{
+		case 1:
+			ChangeState(BossState::IDLE);
+			break;
+		case 2:
+			ChangeState(BossState::JUMP);
+			break;
+		}
 		return;
 	}
 }
@@ -2122,7 +2243,7 @@ void Boss_HeadHunter::TpOutRifleUpdate(float _DeltaTime)
 
 		if (BossPhase::SECOND == m_CurPhase)
 		{
-			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
 			if (0 == RandomValue)
 			{
 				ChangeState(BossState::TELEPORTIN_WALL);
@@ -2132,6 +2253,12 @@ void Boss_HeadHunter::TpOutRifleUpdate(float _DeltaTime)
 			else if (1 == RandomValue)
 			{
 				ChangeState(BossState::TELEPORTIN_CEILING);
+				return;
+			}
+
+			else if (2 == RandomValue)
+			{
+				ChangeState(BossState::JUMP);
 				return;
 			}
 		}
@@ -2191,6 +2318,7 @@ void Boss_HeadHunter::TpInWallEnd()
 
 void Boss_HeadHunter::JumpRifleStart()
 {
+	WallJumpSoundPlay();
 	m_MainRender->ChangeAnimation("headhunter_jump_rifle");
 	if (true == m_Dir)
 	{
@@ -2230,6 +2358,7 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 		m_RotaitionFire = true;
 	}
 
+	// 이거 그대로 긁어다가 점프 
 	m_Ratio += _DeltaTime;
 	if (1.0f <= m_Ratio)
 	{

@@ -359,7 +359,7 @@ void TitleManager::TextMenuOn()
 void TitleManager::BlinkRender()
 {
 	// 그냥 간단하게. 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 200);
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 600);
 	if (Random == 1)
 	{
 		m_ElectricSound = GameEngineSound::Play("electricsound1.wav");

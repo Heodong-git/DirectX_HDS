@@ -100,6 +100,7 @@ private:
 	void CreateTrailEffect();
 	void RotaitionFireSoundPlay();
 	void HitSoundPlay();
+	void WallJumpSoundPlay();
 	
 
 	// 초기세팅
@@ -221,6 +222,8 @@ private:
 
 	const float4 m_TeleportLeftWallPos = float4{ -485.0f,  -50.0f };
 	const float4 m_TeleportRightWallPos = float4{ 485.0f,  -50.0f };
+
+	float4 m_JumpStartPos = float4::Zero;
 
 	// 소환스킬, 
 	void SummonsMonsters();

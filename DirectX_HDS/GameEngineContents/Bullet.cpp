@@ -124,7 +124,7 @@ void Bullet::Update(float _DeltaTime)
 		return;
 	}
 
-	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK);
+	std::shared_ptr<GameEngineCollision> AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != AttCol)
 	{
 		{
@@ -154,7 +154,7 @@ void Bullet::Update(float _DeltaTime)
 
 	if (true == this->IsUpdate())
 	{
-		std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
 		if (nullptr != PlayerCol)
 		{
 			if (true == Player::MainPlayer->IsInvincibility())
