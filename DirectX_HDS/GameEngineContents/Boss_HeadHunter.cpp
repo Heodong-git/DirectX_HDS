@@ -275,12 +275,16 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_02.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_03.wav").GetFullPath());
 
+		// 마인설치사운드
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressbomb_armed_01.wav").GetFullPath());
+
 		// 히트사운드
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_1.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_2.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_hurt_3.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntress_vanish_01.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressbeam_circle_01.wav").GetFullPath());
+		
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -1705,6 +1709,8 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 
 	if (BossPhase::FIRST == m_CurPhase && false == m_SetMine)
 	{
+		GameEngineSound::Play("sound_boss_huntressbomb_armed_01.wav");
+
 		m_SetMine = true;
 		m_Mines.reserve(m_MineCount);
 		float4 MinePos = { -600.0f, -202.0f};
@@ -1782,6 +1788,8 @@ void Boss_HeadHunter::TpSweepInEnd()
 
 void Boss_HeadHunter::SweepStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntressbeam_circle_01.wav");
+	m_SoundPlayer.SetPitch(1.4f);
 	CreateSweepEffect();
 	m_MainRender->ChangeAnimation("headhunter_sweep");
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, -10.0f });
@@ -1972,6 +1980,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 	// 첫텔레포트라면 
 	if (false == m_TpInStart)
 	{
+		GameEngineSound::Play("headhunter_lockon.wav");
 		m_TpInStart = true;
 		++m_TpCount;
 		m_TpCeilingPos = m_vecCeilingPos[0];
@@ -1982,6 +1991,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 
 	if (1 == m_TpCount)
 	{
+		GameEngineSound::Play("headhunter_lockon.wav");
 		++m_TpCount;
 		GetTransform()->SetWorldPosition(m_vecCeilingPos[1]);
 		CreateRifleEffect();
@@ -1990,6 +2000,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 	
 	if (2 == m_TpCount)
 	{
+		GameEngineSound::Play("headhunter_lockon.wav");
 		++m_TpCount;
 		GetTransform()->SetWorldPosition(m_vecCeilingPos[2]);
 		CreateRifleEffect();
@@ -1998,6 +2009,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 
 	if (3 == m_TpCount)
 	{
+		GameEngineSound::Play("headhunter_lockon.wav");
 		++m_TpCount;
 		GetTransform()->SetWorldPosition(m_vecCeilingPos[3]);
 		CreateRifleEffect();
@@ -2053,6 +2065,7 @@ void Boss_HeadHunter::TpInRifleStart()
 	// 여기서 왼쪽아니면 오른쪽 위치로 세팅
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -7.0f });
 	m_MainRender->ChangeAnimation("headhunter_teleportin_rifle_ground");
+	GameEngineSound::Play("headhunter_lockon.wav");
 
 	// 여기서 한번바꾸고 
 	int RandomValue = GameEngineRandom::MainRandom.RandomInt(1, 2);

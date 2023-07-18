@@ -29,7 +29,7 @@ void HeadHunter_RifleEffect::SetType(RifleEffectType _Type)
 		m_Render->ChangeAnimation("headhunter_rifle_effect_sweep");
 		m_Collision->GetTransform()->AddLocalPosition(float4{ 500.0f , 0.0f });
 
-		GameEngineSound::Play("sound_boss_huntressbeam_circle_01.wav");
+		
 	}
 		break;
 	}
@@ -61,9 +61,6 @@ void HeadHunter_RifleEffect::RifleShotSoundPlay()
 		break;
 	case 3:
 		m_SoundPlayer = GameEngineSound::Play("headhunter_rifle_shot_03.wav");
-		break;
-
-	default:
 		break;
 	}
 }
