@@ -27,6 +27,12 @@ void Bullet::BulletDeath()
 void Bullet::ChangeColOrder(int _ColOrder)
 {
 	m_Collision->SetOrder(_ColOrder);
+
+	if (ColOrder::BOSS_ATTACK == static_cast<ColOrder>(_ColOrder))
+	{
+		m_Render->GetTransform()->SetLocalScale(float4{ 68.0f , 2.0f });
+		m_Collision->GetTransform()->SetLocalScale(float4{ 68.0f , 2.0f });
+	}
 }
 
 void Bullet::Start()
@@ -88,8 +94,6 @@ void Bullet::Update(float _DeltaTime)
 	// 이게 묶여있어도 상관은없는거같기도한데 
 	if (EffectState::RECORDING_PROGRESS != m_CurState)
 	{
-
-
 		if (true == m_RecordingFrame)
 		{
 			InfoSetting(m_Render.get());

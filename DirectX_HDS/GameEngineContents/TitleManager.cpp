@@ -371,7 +371,7 @@ void TitleManager::BlinkRender()
 		m_ORender->On();
 	}
 
-	Random = GameEngineRandom::MainRandom.RandomInt(1, 200);
+	Random = GameEngineRandom::MainRandom.RandomInt(1, 600);
 	if (Random == 1)
 	{
 		m_ElectricSound = GameEngineSound::Play("electricsound2.wav");
