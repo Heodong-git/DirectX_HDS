@@ -45,6 +45,11 @@ void SlashEffect::Start()
 
 void SlashEffect::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(0.5f);
+	}
+
 	m_RecordingFrame = !m_RecordingFrame;
 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())

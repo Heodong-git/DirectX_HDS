@@ -145,6 +145,7 @@ private:
 	GameEngineSoundPlayer m_MoveSoundPlayer;
 	GameEngineSoundPlayer m_SkillSoundPlayer;
 	GameEngineSoundPlayer m_RewindSoundPlayer;
+	GameEngineSoundPlayer m_SlowSoundPlayer; 
 
 	// 특정 충돌체와의 충돌체크
 	bool DoorColCheck();		 // 문 

@@ -98,6 +98,16 @@ void PlaySupporter::Start()
 
 void PlaySupporter::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(0.5f);
+	}
+
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(1.0f);
+	}
+
 	// 이것도 사실 필요한지 모르겠음 
 	if (nullptr != GameEngineCore::GetCurLevel())
 	{

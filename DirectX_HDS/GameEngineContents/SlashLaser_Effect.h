@@ -31,7 +31,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	float m_MoveSpeed = 10000.0f;
+	float m_MoveSpeed = 15000.0f;
 	float m_Angle = 0.0f;
 	void MoveUpdate(float _DeltaTime);
 	float4 m_MovePos = {};

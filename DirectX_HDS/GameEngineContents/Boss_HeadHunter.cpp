@@ -2043,11 +2043,10 @@ void Boss_HeadHunter::DashUpdate(float _DeltaTime)
 
 		else if (1 == RandomValue)
 		{
-			// ChangeState(BossState::TELEPORTIN_RIFLE);
+			ChangeState(BossState::TELEPORTIN_RIFLE);
 			return;
 		}
-		// 여기서 둘중하나로 나눈다. 내려와서 칼질하던지
-		ChangeState(BossState::DASH_END);
+		
 		return;
 	}
 
@@ -2065,7 +2064,7 @@ void Boss_HeadHunter::DashEnd()
 
 void Boss_HeadHunter::DashEndStart()
 {
-		
+	m_Collision->Off();
 	GameEngineSound::Play("sound_boss_huntressknife_prep_01.wav");
 	ChangeDir();
 	DirCheck();
@@ -2092,6 +2091,7 @@ void Boss_HeadHunter::DashEndUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::DashEndEnd()
 {
+	m_Collision->On();
 }
 
 void Boss_HeadHunter::TpInCeilingStart()

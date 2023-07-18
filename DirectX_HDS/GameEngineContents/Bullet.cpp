@@ -61,6 +61,12 @@ void Bullet::Update(float _DeltaTime)
 {
 	m_RecordingFrame = !m_RecordingFrame;
 
+	// 플레이어가 현재 스킬 사용중이라면 
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(0.5f);
+	}
+
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
 		if (EffectState::RECORDING_PROGRESS != m_CurState)
@@ -162,7 +168,7 @@ void Bullet::Update(float _DeltaTime)
 				return;
 			}
 
-			GameEngineSound::Play("death_bullet.wav");
+			m_SoundPlayer = GameEngineSound::Play("death_bullet.wav");
 
 			if (static_cast<int>(ColOrder::BOSS_ATTACK) == m_Collision->GetOrder())
 			{
@@ -188,7 +194,7 @@ void Bullet::Update(float _DeltaTime)
 		std::shared_ptr<GameEngineCollision> MonsterCol = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 		if (nullptr != MonsterCol)
 		{
-			GameEngineSound::Play("death_bullet.wav");
+			m_SoundPlayer = GameEngineSound::Play("death_bullet.wav");
 			// 충돌체의 액터를 받아와서, 액터의 오버라이드된 불릿충돌 함수 호출
 
 			// 그리고 여기서 리플렉트 이펙트도 만들어야함 

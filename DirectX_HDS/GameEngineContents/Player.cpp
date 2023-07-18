@@ -223,6 +223,7 @@ void Player::LoadSound()
 		GameEngineSound::Load(NewDir.GetPlusFileName("slash_bullet_parring.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_generic.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("Rewind.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("player_slow_enter.mp3").GetFullPath());
 	}
 }
 
@@ -677,7 +678,7 @@ void Player::SkillUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (PlayerState::DEATH == m_CurState)
+	if (PlayerState::DEATH == m_CurState || PlayerState::NONE == m_CurState)
 	{
 		//m_SkillSoundPlayer.Stop();
 		
@@ -736,6 +737,10 @@ void Player::SkillUpdate(float _DeltaTime)
 			return;
 		}
 
+		if (false == m_IsSkill)
+		{
+			m_SlowSoundPlayer = GameEngineSound::Play("player_slow_enter.mp3");
+		}
 		// 지금 누르고 있는 상태이기 때문에 스킬온 
 		m_IsSkill = true;
 
@@ -749,6 +754,8 @@ void Player::SkillUpdate(float _DeltaTime)
 	// 여긴 어차피 안눌린 상태니까 기존의 델타타임이 들어올거고 
 	else if (false == GameEngineInput::IsPress("player_skill_slow"))
 	{
+		m_SlowSoundPlayer.Stop();
+
 		m_Render->ColorOptionValue.MulColor.r = 1.0f;
 		// 안눌렸으면 바로 타임스케일리셋 
 		SlowReset();
