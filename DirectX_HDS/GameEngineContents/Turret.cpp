@@ -139,7 +139,11 @@ void Turret::Update(float _DeltaTime)
 				TargetPos.Normalize();
 
 				/*
-				발생하는 문제점 : Angle 값이 nan 이 들어오고 다음 프레임에 터렛의 탑렌더러가 사라지면서 터짐 
+				발생하는 문제점 : 
+				1. Angle 값이 nan 이 들어오는 경우가 있다.
+				2. m_TopRender 의 트랜스폼 데이터가 곱창이 나서 터진다.
+				3. Angle 값이 nan 이 들어온 걸 확인 한 이후에도 터지지 않는다. ( 확인 후 F5 를 연타했을 때 터지는 경우는 없었음, 현재까지는 ) 
+
 				nan : 음수의 제곱근을 구하려고 하거나, 0으로 나누려고 했을 때 발생
 				이 주석 위쪽에서 모든 값이 정상이어도, 아래 함수(GetAngleVectorToVectorDeg360)에서 반환하는 값이 nan 인 경우가 있으며
 				이 때, 위에서 구한 변수들의 값이 인자로 들어가는데 (Dir, TargetPos) <--- 이 수치들이 모두 정상적인 값임에도 nan 이 반환 된다. 
@@ -148,7 +152,9 @@ void Turret::Update(float _DeltaTime)
 				1. 터질때도 있고 
 				2. 안터질때도 있음 , 왜 안터지는지는 잘 모름 
 				3. 아래 코드에서 Angle 변수에 nan 이 반환되면, 첫 if문에 들어가지 않고 else 에 진입, 중단점이 걸리게 되는데 
-				   다음 프레임에서 왜 m_TopRender (현재터렛액터의 렌더러) 의 트랜스폼데이터가 곱창이 나있는가??? ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+				   다음 프레임에서 왜 m_TopRender (현재터렛액터의 렌더러) 의 트랜스폼데이터가 곱창이 나있는가 <-- 딱 한번 그랬음 
+				4. 우연인지는 모르겠으나 아래 if문 코드를 임시로 작성한 이후로는 딱 한번 빼고는 m_TopRender 의 트랜스폼데이터가 멀쩡함 ( 15~20분확인함) 
+
 				*/
 
 				float Angle = float4::GetAngleVectorToVectorDeg360(Dir, TargetPos);
