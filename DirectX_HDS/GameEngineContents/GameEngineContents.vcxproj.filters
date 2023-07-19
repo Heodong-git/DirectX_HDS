@@ -626,5 +626,8 @@
     <Filter Include="02.Actor\01.Player\Trail">
       <UniqueIdentifier>{01332691-a75c-48e2-8701-eb5df448d18b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Level\02.Club\02.Ending">
+      <UniqueIdentifier>{0b404fb3-8256-4863-a548-f7b7f4267194}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

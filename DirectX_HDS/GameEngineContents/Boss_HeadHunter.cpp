@@ -48,6 +48,18 @@ void Boss_HeadHunter::Update(float _DeltaTime)
 	m_RecordingFrame = !m_RecordingFrame;
 	m_TrailEffect = !m_TrailEffect;
 
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(0.5f);
+		m_TurretSoundPlayer.SetPitch(0.5f);
+	}
+
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(1.0f);
+		m_TurretSoundPlayer.SetPitch(1.0f);
+	}
+
 	// 레벨의 상태를 체크한다. 
 	BaseLevel::LevelState CurState = GetLevelState();
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
@@ -308,6 +320,9 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_1.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_2.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_3.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_turret_deploy.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_turretdie.wav").GetFullPath());
+		
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -905,6 +920,8 @@ void Boss_HeadHunter::CreateTurretWall()
 
 void Boss_HeadHunter::CreateTurret()
 {
+	m_TurretSoundPlayer = GameEngineSound::Play("sound_turret_deploy.wav");
+
 	// 터렛 두마리 생성, 위치는 ? 
 	m_Turret_First = GetLevel()->CreateActor<Turret>();
 	m_Turret_First->SetType(TurretType::WALL);
@@ -1259,8 +1276,19 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 	{
 		if (0.0f >= m_IdleDuration)
 		{
-			ChangeState(BossState::RIFLE);
-			return;
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+			if (0 == RandomValue)
+			{
+				ChangeState(BossState::RIFLE);
+				return;
+			}
+
+			else if ((1 == RandomValue))
+			{
+				ChangeState(BossState::JUMP);
+				return;
+			}
 		}
 	}
 
@@ -1857,7 +1885,6 @@ void Boss_HeadHunter::JumpEnd()
 {
 	m_Ratio = 0.0f;
 	m_JumpStartPos = float4::Zero;
-	m_Collision->On();
 }
 
 void Boss_HeadHunter::TpSweepInStart()
@@ -1899,7 +1926,7 @@ void Boss_HeadHunter::TpSweepInEnd()
 void Boss_HeadHunter::SweepStart()
 {
 	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntressbeam_circle_01.wav");
-	m_SoundPlayer.SetPitch(1.4f);
+	m_SoundPlayer.SetPitch(1.0f);
 	CreateSweepEffect();
 	m_MainRender->ChangeAnimation("headhunter_sweep");
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, -10.0f });
@@ -1939,6 +1966,7 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 // 일단 그냥 냅둠 
 void Boss_HeadHunter::SweepEnd()
 {
+	m_SoundPlayer.SetPitch(1.0f);
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 10.0f });
 	/*if (nullptr != m_SweepEffect.lock())
 	{
@@ -2032,30 +2060,13 @@ void Boss_HeadHunter::DashUpdate(float _DeltaTime)
 	CreateTrailEffect();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 1);
-
-		if (0 == RandomValue)
-		{
-			// 여기서 둘중하나로 나눈다. 내려와서 칼질하던지
-			ChangeState(BossState::DASH_END);
-			return;
-		}
-
-		else if (1 == RandomValue)
-		{
-			ChangeState(BossState::TELEPORTIN_RIFLE);
-			return;
-		}
-		
-		return;
+		GetTransform()->SetWorldPosition(m_DashPos);
+		ChangeState(BossState::DASH_END);
 	}
-
-	GetTransform()->SetWorldPosition(m_DashPos);
 }
 
 void Boss_HeadHunter::DashEnd()
 {
-	m_Collision->On();
 	if (BossState::TELEPORTIN_RIFLE != m_CurState)
 	{
 		GetTransform()->SetWorldPosition(float4{ -68.0f, -264.0f });
@@ -2064,7 +2075,7 @@ void Boss_HeadHunter::DashEnd()
 
 void Boss_HeadHunter::DashEndStart()
 {
-	m_Collision->Off();
+	m_Collision->On();
 	GameEngineSound::Play("sound_boss_huntressknife_prep_01.wav");
 	ChangeDir();
 	DirCheck();
@@ -2075,23 +2086,27 @@ void Boss_HeadHunter::DashEndUpdate(float _DeltaTime)
 {
 	if (true == m_MainRender->IsAnimationEnd())
 	{
-		int RandomValue = CreateRandomValue(2);
+		int RandomValue = CreateRandomValue(3);
 		switch (RandomValue)
 		{
 		case 1:
 			ChangeState(BossState::IDLE);
 			break;
 		case 2:
+			ChangeState(BossState::TELEPORTIN_RIFLE);
+			break;
+		case 3:
 			ChangeState(BossState::JUMP);
 			break;
 		}
+
 		return;
 	}
 }
 
 void Boss_HeadHunter::DashEndEnd()
 {
-	m_Collision->On();
+	
 }
 
 void Boss_HeadHunter::TpInCeilingStart()
@@ -2318,6 +2333,7 @@ void Boss_HeadHunter::TpInWallEnd()
 
 void Boss_HeadHunter::JumpRifleStart()
 {
+	
 	WallJumpSoundPlay();
 	m_MainRender->ChangeAnimation("headhunter_jump_rifle");
 	if (true == m_Dir)
@@ -2331,11 +2347,13 @@ void Boss_HeadHunter::JumpRifleStart()
 		// 오른쪽벽 
 		GetTransform()->SetLocalNegativeScaleX();
 	}
+
+	m_Collision->Off();
 }
 
 void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 {
-	CreateTrailEffect();
+ 	CreateTrailEffect();
 	// ??
 	if (m_FireAngleCount == m_CurFireAngleCount)
 	{
@@ -2472,7 +2490,7 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::JumpRifleEnd()
 {
-	m_Collision->On();
+	
 	m_Ratio = 0.0f;
 	m_CurFireAngleCount = 0;
 	m_CurFireAngleCount_Reverse = m_FireAngleCount_Reverse;
@@ -2481,6 +2499,7 @@ void Boss_HeadHunter::JumpRifleEnd()
 
 void Boss_HeadHunter::JumpRifleLandStart()
 {
+	m_Collision->On();
 	m_MainRender->ChangeAnimation("headhunter_jump_rifle_land");
 }
 
@@ -2497,6 +2516,7 @@ void Boss_HeadHunter::JumpRifleLandUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::JumpRifleLandEnd()
 {
+	
 }
 
 void Boss_HeadHunter::MoribundStart()

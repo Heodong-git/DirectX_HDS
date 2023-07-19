@@ -95,6 +95,8 @@ void ClubLevel_00::LoadSound()
 
 void ClubLevel_00::LevelChangeStart()
 {
+	GameEngineSound::Play("sound_transition_begin.wav");
+
 	GetFadeEffect()->FadeIn();
 
 	GUISetting();

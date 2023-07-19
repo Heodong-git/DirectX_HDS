@@ -74,6 +74,16 @@ void Turret::Start()
 
 void Turret::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(0.5f);
+	}
+
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(1.0f);
+	}
+
 	DebugUpdate();
 	if (TurretState::DEATH == m_CurState)
 	{
@@ -90,6 +100,7 @@ void Turret::Update(float _DeltaTime)
 			if (nullptr != Col)
 			{
 				// 플레이어와 충돌했다면, 
+				m_SoundPlayer = GameEngineSound::Play("sound_turretdie.wav");
 				PlaySupporter::MainSupporter->CameraShakeOn();
 				m_TopRender->ChangeAnimation("turret_die");
 				m_TopRender->GetTransform()->AddLocalPosition(float4{ -16.0f ,5.0f });
@@ -209,6 +220,7 @@ void Turret::LoadAndCreateAnimation()
 
 void Turret::Fire(float4 _Dir , const float _Angle)
 {
+	GameEngineSound::Play("gun_fire_00.wav");
 	std::shared_ptr<Bullet> Obj = GetLevel()->CreateActor<Bullet>();
 	Obj->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 52.0f, 23.0f });
 	Obj->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, _Angle });

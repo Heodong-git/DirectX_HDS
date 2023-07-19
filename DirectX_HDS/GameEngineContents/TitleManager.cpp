@@ -41,6 +41,7 @@ void TitleManager::Start()
 
 		// 모든 플레이레벨에서 사용할, 플레이어와 관련된 사운드가 아닌 사운드는 여기서 로드 
 		GameEngineSound::Load(NewDir.GetPlusFileName("picksound.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_menu_beep_1.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("electricsound1.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("electricsound2.wav").GetFullPath());
 	}
@@ -181,6 +182,8 @@ void TitleManager::MenuUpdate(float _DeltaTime)
 		}
 		else
 		{
+			GameEngineSound::Play("sound_menu_beep_1.wav");
+
 			switch (m_CurMenu)
 			{
 			case EMENU_TYPE::SETTING:
@@ -206,6 +209,8 @@ void TitleManager::MenuUpdate(float _DeltaTime)
 
 		else
 		{
+			GameEngineSound::Play("sound_menu_beep_1.wav");
+
 			switch (m_CurMenu)
 			{
 			case EMENU_TYPE::NEWGAME:

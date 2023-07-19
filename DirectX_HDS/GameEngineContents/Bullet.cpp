@@ -158,33 +158,32 @@ void Bullet::Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == this->IsUpdate())
+
+	std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
+	if (nullptr != PlayerCol)
 	{
-		std::shared_ptr<GameEngineCollision> PlayerCol = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
-		if (nullptr != PlayerCol)
+		if (true == Player::MainPlayer->IsInvincibility())
 		{
-			if (true == Player::MainPlayer->IsInvincibility())
-			{
-				return;
-			}
-
-			m_SoundPlayer = GameEngineSound::Play("death_bullet.wav");
-
-			if (static_cast<int>(ColOrder::BOSS_ATTACK) == m_Collision->GetOrder())
-			{
-				Player::MainPlayer->CreateExplosionEffect();
-				Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
-			}
-
-			else
-			{
-				Player::MainPlayer->BulletCollision();
-				Player::MainPlayer->CreateHitEffect(m_Collision);
-			}
-			BulletDeath();
 			return;
 		}
+
+		m_SoundPlayer = GameEngineSound::Play("death_bullet.wav");
+
+		if (static_cast<int>(ColOrder::BOSS_ATTACK) == m_Collision->GetOrder())
+		{
+			Player::MainPlayer->CreateExplosionEffect();
+			Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+		}
+
+		else
+		{
+			Player::MainPlayer->BulletCollision();
+			Player::MainPlayer->CreateHitEffect(m_Collision);
+		}
+		BulletDeath();
+		return;
 	}
+
 
 
 	

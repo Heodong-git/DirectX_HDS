@@ -97,6 +97,7 @@ protected:
 
 private:
 	GameEngineSoundPlayer m_SoundPlayer; 
+	GameEngineSoundPlayer m_TurretSoundPlayer;
 	void CreateTrailEffect();
 	void RotaitionFireSoundPlay();
 	void HitSoundPlay();

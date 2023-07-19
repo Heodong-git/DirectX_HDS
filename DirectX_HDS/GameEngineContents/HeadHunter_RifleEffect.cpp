@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 
 #include "Boss_HeadHunter.h"
+#include "Player.h"
 
 HeadHunter_RifleEffect::HeadHunter_RifleEffect()
 {
@@ -152,6 +153,15 @@ void HeadHunter_RifleEffect::Start()
 
 void HeadHunter_RifleEffect::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(0.5f);
+	}
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(1.0f);
+	}
+
 	m_RecordingFrame = !m_RecordingFrame;
 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())

@@ -72,6 +72,16 @@ void ClubLevel_Boss_01::Start()
 // 리셋은 플레이어위치를 
 void ClubLevel_Boss_01::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(0.5f);
+	}
+
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(1.0f);
+	}
+
 	BaseLevel::Update(_DeltaTime);
 	if (true == m_ColCheckObj->IsUpdate())
 	{
@@ -92,6 +102,8 @@ void ClubLevel_Boss_01::LevelStartCheck()
 
 void ClubLevel_Boss_01::LevelChangeStart()
 {
+	GameEngineSound::Play("sound_transition_begin.wav");
+
 	m_BGMPlayer = GameEngineSound::Play("Full_Confession.mp3");
 	m_BGMPlayer.SetLoop(-1);
 	m_BGMPlayer.SetVolume(0.7f);

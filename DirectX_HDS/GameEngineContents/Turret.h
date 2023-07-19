@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseActor.h"
+#include <GameEnginePlatform/GameEngineSound.h>
+
 
 enum class TurretType
 {
@@ -37,6 +39,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	GameEngineSoundPlayer m_SoundPlayer;
+
 	void DebugUpdate();
 	void LoadAndCreateAnimation();
 

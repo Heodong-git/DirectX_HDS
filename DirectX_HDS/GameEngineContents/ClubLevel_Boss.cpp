@@ -67,12 +67,24 @@ void ClubLevel_Boss::Start()
 
 void ClubLevel_Boss::Update(float _DeltaTime)
 {
+	if (true == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(0.5f);
+	}
+
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_BGMPlayer.SetPitch(1.0f);
+	}
+
 	LevelChangeUpdate();
 	BaseLevel::Update(_DeltaTime);
 }
 
 void ClubLevel_Boss::LevelChangeStart()
 {
+	GameEngineSound::Play("sound_transition_begin.wav");
+
 	m_BGMPlayer = GameEngineSound::Play("All_For_Now.mp3");
 	m_BGMPlayer.SetLoop(-1);
 	m_BGMPlayer.SetVolume(0.7f);
@@ -99,11 +111,6 @@ void ClubLevel_Boss::LevelChangeStart()
 	Push_ResetActor(CreateActor<PlaySupporter>(static_cast<int>(RenderOrder::UI), "PlaySupporter"));
 	CreateActor<Cursor>(static_cast<int>(RenderOrder::CURSOR), "Cursor");
 	CreateObjAndInit();
-
-	if (true == m_SoundPlayer.IsValid())
-	{
-		int a = 0;
-	}
 }
 
 void ClubLevel_Boss::LevelChangeEnd()
@@ -218,10 +225,11 @@ void ClubLevel_Boss::GUISetting()
 // 플레이어 치트상태일때 안들어옴 ㅇㅇ 
 void ClubLevel_Boss::LevelChangeUpdate()
 {
+	// 레벨체인지 충돌체에 닿으면 익스플로전데스로 변경인데. 
 	std::shared_ptr<GameEngineCollision> PlayerCol = m_LevelChangePlatform->GetCollision()->Collision(ColOrder::PLAYER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != PlayerCol)
 	{
-		Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+		// Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
 		GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
 		return;
 	}

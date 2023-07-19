@@ -52,6 +52,8 @@ void ClubLevel_02::Update(float _DeltaTime)
 
 void ClubLevel_02::LevelChangeStart()
 {
+	GameEngineSound::Play("sound_transition_begin.wav");
+
 	GetFadeEffect()->FadeIn();
 	GUISetting();
 

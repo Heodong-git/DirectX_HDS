@@ -131,6 +131,7 @@ void SlidingDoor::ChangeState(SlidingDoorState _State)
 
 void SlidingDoor::CloseStart()
 {
+	GameEngineSound::Play("sound_boss_wall_open.wav");
 	m_BaseRender->ChangeAnimation("slidingdoor_base_red");
 }
 
@@ -151,6 +152,7 @@ void SlidingDoor::CloseEnd()
 
 void SlidingDoor::OpenStart()
 {
+	
 	m_BaseRender->ChangeAnimation("slidingdoor_base_green");
 }
 

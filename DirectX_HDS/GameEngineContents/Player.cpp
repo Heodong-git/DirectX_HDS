@@ -224,6 +224,10 @@ void Player::LoadSound()
 		GameEngineSound::Load(NewDir.GetPlusFileName("death_generic.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("Rewind.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_slow_enter.mp3").GetFullPath());
+
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_transition_begin.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_transition_end.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_boss_wall_open.wav").GetFullPath());
 	}
 }
 
@@ -2874,6 +2878,7 @@ void Player::NoneEnd()
 
 void Player::ForceFallStart()
 {
+	GameEngineSound::Play("sound_transition_end.wav");
 	m_Render->ChangeAnimation("player_fall");
 	GetReturnCastLevel()->GetFadeEffect()->FadeOut();
 }
@@ -2891,6 +2896,16 @@ void Player::ForceFallEnd()
 
 void Player::ExplosionDeathStart()
 {
+	if (LevelType::CLUBBOSS0 == GetReturnCastLevel()->GetLevelType())
+	{
+		std::weak_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLATFORM, ColType::OBBBOX2D, ColType::OBBBOX2D);
+		if (nullptr != Col.lock())
+		{
+			return;
+		}
+	}
+
+	GameEngineSound::Play("player_die.wav");
 	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 	m_Render->ChangeAnimation("player_die");
 	m_Render->SetAnimPauseOn();
