@@ -139,16 +139,20 @@ void Turret::Update(float _DeltaTime)
 				TargetPos.Normalize();
 
 				/*
-				발생하는 문제점 : Angle 값이 nan 이 들어오고, 다음 프레임에 터렛의 탑렌더러가 사라지면서 펑
-				nan : 음수의 제곱근을 구하려고 하거나, 0으로 나누려고 했을 때 발생한다. 
-				이 주석 위쪽에서 모든 값이 정상이어도, 아래 함수(GetAngleVectorToVectorDeg360)에서 반환하는 값이 nan 인 경우가 있고
-				함수 호출시 Dir 변수, TargetPos 변수 모두 값이 정상이어도 nan 을 반환하는 경우도 있음. 
-				1. 터지거나
-				2. 안터질때도 있음 
+				발생하는 문제점 : Angle 값이 nan 이 들어오고 다음 프레임에 터렛의 탑렌더러가 사라지면서 터짐 
+				nan : 음수의 제곱근을 구하려고 하거나, 0으로 나누려고 했을 때 발생
+				이 주석 위쪽에서 모든 값이 정상이어도, 아래 함수(GetAngleVectorToVectorDeg360)에서 반환하는 값이 nan 인 경우가 있으며
+				이 때, 위에서 구한 변수들의 값이 인자로 들어가는데 (Dir, TargetPos) <--- 이 수치들이 모두 정상적인 값임에도 nan 이 반환 된다. 
+				
+				1. 터질때도 있고 
+				2. 안터질때도 있음 , 왜 안터지는지는 잘 모름 
+				3. 아래 코드에서 Angle 변수에 nan 이 반환되면, 첫 if문에 들어가지 않고 else 에 진입, 중단점이 걸리게 되는데 
+				   다음 프레임에서 왜 m_TopRender (현재터렛액터의 렌더러) 의 트랜스폼데이터가 곱창이 나있는가??? ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
 				*/
 
 				float Angle = float4::GetAngleVectorToVectorDeg360(Dir, TargetPos);
 
+				// 얘는 임시로 값보려고 걸어둔 if문 
 				if (-100.0f <= Angle || 100.0f >= Angle)
 				{
 					float4 Attdir = float4{ 0.0f, 0.0f, Angle };
