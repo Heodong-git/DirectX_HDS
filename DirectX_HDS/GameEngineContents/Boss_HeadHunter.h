@@ -239,9 +239,9 @@ private:
 
 	bool m_IsTurretSummons = false;
 
-	std::shared_ptr<class Turret_Wall> m_TurretWall = nullptr;
-	std::shared_ptr<class Turret> m_Turret_First = nullptr;
-	std::shared_ptr<class Turret> m_Turret_Second = nullptr;
+	std::weak_ptr<class Turret_Wall> m_TurretWall;
+	std::weak_ptr<class Turret> m_Turret_First;
+	std::weak_ptr<class Turret> m_Turret_Second;
 	
 	// 천장레이저 
 	bool m_IsDoubleSweep = false;

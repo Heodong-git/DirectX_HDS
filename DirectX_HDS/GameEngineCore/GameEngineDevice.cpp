@@ -278,6 +278,8 @@ void GameEngineDevice::Release()
 	if (nullptr != Context)
 	{
 		Context->Release();
+		// 임시적용 
+		Context->Flush();
 		Context = nullptr;
 	}
 

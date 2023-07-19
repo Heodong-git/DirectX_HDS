@@ -364,10 +364,9 @@ void TitleManager::TextMenuOn()
 void TitleManager::BlinkRender()
 {
 	// 그냥 간단하게. 
-	int Random = GameEngineRandom::MainRandom.RandomInt(1, 600);
+	int Random = GameEngineRandom::MainRandom.RandomInt(1, 2000);
 	if (Random == 1)
 	{
-		m_ElectricSound = GameEngineSound::Play("electricsound1.wav");
 		m_ORender->Off();
 	}
 	else
@@ -376,10 +375,10 @@ void TitleManager::BlinkRender()
 		m_ORender->On();
 	}
 
-	Random = GameEngineRandom::MainRandom.RandomInt(1, 600);
+	Random = GameEngineRandom::MainRandom.RandomInt(1, 2000);
 	if (Random == 1)
 	{
-		m_ElectricSound = GameEngineSound::Play("electricsound2.wav");
+		//m_ElectricSound = GameEngineSound::Play("electricsound2.wav");
 		m_ZERRender->Off();
 	}
 	else

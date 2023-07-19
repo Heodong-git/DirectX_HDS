@@ -608,21 +608,21 @@ void Boss_HeadHunter::ResetSummons()
 		m_Mines.clear();
 	}
 
-	if (nullptr != m_TurretWall)
+	if (nullptr != m_TurretWall.lock())
 	{
-		m_TurretWall->Death();
-		m_TurretWall = nullptr;
+		m_TurretWall.lock()->Death();
+		m_TurretWall.lock() = nullptr;
 
-		if (nullptr != m_Turret_First)
+		if (nullptr != m_Turret_First.lock())
 		{
-			m_Turret_First->Death();
-			m_Turret_First = nullptr;
+			m_Turret_First.lock()->Death();
+			m_Turret_First.lock() = nullptr;
 		}
 
-		if (nullptr != m_Turret_Second)
+		if (nullptr != m_Turret_Second.lock())
 		{
-			m_Turret_Second->Death();
-			m_Turret_Second = nullptr;
+			m_Turret_Second.lock()->Death();
+			m_Turret_Second.lock() = nullptr;
 		}
 
 	}
@@ -918,7 +918,7 @@ void Boss_HeadHunter::SummonsMonsters()
 void Boss_HeadHunter::CreateTurretWall()
 {
 	m_TurretWall = GetLevel()->CreateActor<Turret_Wall>();
-	m_TurretWall->GetTransform()->SetWorldPosition(m_TurretWallPos);
+	m_TurretWall.lock()->GetTransform()->SetWorldPosition(m_TurretWallPos);
 }
 
 void Boss_HeadHunter::CreateTurret()
@@ -927,11 +927,11 @@ void Boss_HeadHunter::CreateTurret()
 
 	// 터렛 두마리 생성, 위치는 ? 
 	m_Turret_First = GetLevel()->CreateActor<Turret>();
-	m_Turret_First->SetType(TurretType::WALL);
-	m_Turret_First->GetTransform()->SetWorldPosition(m_Turret_FirstPos);
+	m_Turret_First.lock()->SetType(TurretType::WALL);
+	m_Turret_First.lock()->GetTransform()->SetWorldPosition(m_Turret_FirstPos);
 	m_Turret_Second = GetLevel()->CreateActor<Turret>();
-	m_Turret_Second->SetType(TurretType::WALL);
-	m_Turret_Second->GetTransform()->SetWorldPosition(m_Turret_SecondPos);
+	m_Turret_Second.lock()->SetType(TurretType::WALL);
+	m_Turret_Second.lock()->GetTransform()->SetWorldPosition(m_Turret_SecondPos);
 }
 
 
@@ -2030,7 +2030,7 @@ void Boss_HeadHunter::TurretSummonsUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == m_TurretWall->GetRender()->IsAnimationEnd() && false == m_IsTurretSummons)
+	if (true == m_TurretWall.lock()->GetRender()->IsAnimationEnd() && false == m_IsTurretSummons)
 	{
 		m_IsTurretSummons = true;
 		CreateTurret();

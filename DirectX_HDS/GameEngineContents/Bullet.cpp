@@ -67,6 +67,11 @@ void Bullet::Update(float _DeltaTime)
 		m_SoundPlayer.SetPitch(0.5f);
 	}
 
+	else if (false == Player::MainPlayer->IsSkill())
+	{
+		m_SoundPlayer.SetPitch(1.0f);
+	}
+
 	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
 	{
 		if (EffectState::RECORDING_PROGRESS != m_CurState)
@@ -95,9 +100,6 @@ void Bullet::Update(float _DeltaTime)
 		return;
 	}
 
-
-	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
-	// 이게 묶여있어도 상관은없는거같기도한데 
 	if (EffectState::RECORDING_PROGRESS != m_CurState)
 	{
 		if (true == m_RecordingFrame)
@@ -109,6 +111,7 @@ void Bullet::Update(float _DeltaTime)
 	// 라이브타임 종료시 데스가 아님, 
 	if (GetLiveTime() >= m_LiveTime)
 	{
+		// 내가 업데이트중이고, 이펙트가 데스상태가 아닐경우 
 		if (true == IsUpdate() && EffectState::DEATH != m_CurState)
 		{
 			BulletDeath();

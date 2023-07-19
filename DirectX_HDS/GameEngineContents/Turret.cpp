@@ -46,11 +46,11 @@ void Turret::Start()
 	m_BodyRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::TURRET_BODY);
 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::DEBUG);
-	m_DebugRender->GetTransform()->SetLocalScale(float4{ 4.0f , 4.0f });
+	m_DebugRender->GetTransform()->SetLocalScale(float4{ 4.0f , 4.0f , 1.0f});
 	m_DebugRender->Off();
 
 	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
-	m_Collision->GetTransform()->SetLocalScale(float4{ 50.0f , 70.0f });
+	m_Collision->GetTransform()->SetLocalScale(float4{ 50.0f , 70.0f , 1.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->Off();
 
@@ -58,22 +58,29 @@ void Turret::Start()
 
 	m_TopRender->SetTexture("spr_floor_turret_top_0.png");
 	m_TopRender->GetTransform()->SetLocalPosition(float4{ 3.0f, 17.0f });
-	m_TopRender->GetTransform()->SetLocalScale(float4{ 94.0f, 60.0f });
+	m_TopRender->GetTransform()->SetLocalScale(float4{ 94.0f, 60.0f , 1.0f});
 	m_TopRender->Off();
 
 	m_BodyRender->SetTexture("spr_floor_turret_1.png");
 	m_BodyRender->GetTransform()->SetLocalPosition(float4{ 5.0f, 18.0f });
-	m_BodyRender->GetTransform()->SetLocalScale(float4{ 94.0f, 60.0f });
+	m_BodyRender->GetTransform()->SetLocalScale(float4{ 94.0f, 60.0f , 1.0f });
 	m_BodyRender->Off();
 
 	m_HolderRender->SetTexture("spr_bunker_turret_holder_0.png");
 	m_HolderRender->GetTransform()->SetLocalPosition(float4{ -5.0f ,-20.0f });
-	m_HolderRender->GetTransform()->SetLocalScale(float4{ 98.0f, 52.0f });
+	m_HolderRender->GetTransform()->SetLocalScale(float4{ 98.0f, 52.0f , 1.0f });
 	m_HolderRender->Off();
 }
 
 void Turret::Update(float _DeltaTime)
 {
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState() ||
+		BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		return;
+	}
+
+
 	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_SoundPlayer.SetPitch(0.5f);
@@ -131,18 +138,34 @@ void Turret::Update(float _DeltaTime)
 				float4 TargetPos = PlayerPos - TurretPos;
 				TargetPos.Normalize();
 
+				/*
+				발생하는 문제점 : Angle 값이 nan 이 들어오고, 다음 프레임에 터렛의 탑렌더러가 사라지면서 펑
+				nan : 음수의 제곱근을 구하려고 하거나, 0으로 나누려고 했을 때 발생한다. 
+				이 주석 위쪽에서 모든 값이 정상이어도, 아래 함수(GetAngleVectorToVectorDeg360)에서 반환하는 값이 nan 인 경우가 있고
+				함수 호출시 Dir 변수, TargetPos 변수 모두 값이 정상이어도 nan 을 반환하는 경우도 있음. 
+				1. 터지거나
+				2. 안터질때도 있음 
+				*/
+
 				float Angle = float4::GetAngleVectorToVectorDeg360(Dir, TargetPos);
 
-				float4 Attdir = float4{ 0.0f, 0.0f, Angle };
-				m_TopRender->GetTransform()->AddLocalRotation(Attdir * _DeltaTime);
-	
-				if (0.0f >= m_FireTime)
+				if (-100.0f <= Angle || 100.0f >= Angle)
 				{
-					m_FireTime = 1.5f;
-					// 일단해 
-					Fire(TargetPos, m_TopRender->GetTransform()->GetLocalRotation().z);
+					float4 Attdir = float4{ 0.0f, 0.0f, Angle };
+					m_TopRender->GetTransform()->AddLocalRotation(Attdir * _DeltaTime);
+
+					if (0.0f >= m_FireTime)
+					{
+						m_FireTime = 1.5f;
+						// 일단해 
+						Fire(TargetPos, m_TopRender->GetTransform()->GetLocalRotation().z);
+					}
 				}
-				
+
+				else
+				{
+					int a = 0;
+				}
 			}
 
 			// 0.03  
