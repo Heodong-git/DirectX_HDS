@@ -21,6 +21,7 @@
 #include "Bullet.h"
 #include "Trail_Effect.h"
 #include "PlaySupporter.h"
+#include "ClubLevel_Boss_01.h"
 
 Boss_HeadHunter* Boss_HeadHunter::m_MainBoss = nullptr;
 
@@ -322,6 +323,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_voiceboss_huntress_walljump_3.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turret_deploy.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turretdie.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_walkthroughdoorway.wav").GetFullPath());
 		
 	}
 
@@ -643,8 +645,9 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Player_AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Player_AttCol)
 	{
+	
 		HitSoundPlay();
-
+		
 		// 충돌했는데 내가 모리번드상태라면 
 		if (BossState::MORIBUND == m_CurState)
 		{
@@ -1546,8 +1549,6 @@ void Boss_HeadHunter::HurtStart()
 	// 시작할때 플레이어 위치x, 내위치 x를 비교, 방향을 정한다.
 	ChangeDir();
 
-	// 현재 2페이즈, 히트카운트가 0이라면 데드 애니메이션으로 변경함 
-	// ?? 이뭔 ???? 뭐임 
 	if (BossPhase::SECOND == m_CurPhase && 0 == m_Phase2_HitCount)
 	{
 		if (true == m_Dir)
@@ -2528,6 +2529,12 @@ void Boss_HeadHunter::MoribundStart()
 
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -35.0f });
 	m_MainRender->ChangeAnimation("headhunter_moribund");
+
+	ClubLevel_Boss_01* CurLevel = dynamic_cast<ClubLevel_Boss_01*>(GetReturnCastLevel());
+	if (nullptr != CurLevel)
+	{
+		CurLevel->BGMOff();
+	}
 }
 
 void Boss_HeadHunter::MoribundUpdate(float _DeltaTime)

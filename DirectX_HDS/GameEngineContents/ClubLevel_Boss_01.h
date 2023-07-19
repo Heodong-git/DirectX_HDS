@@ -26,6 +26,10 @@ public:
 		return m_HeadHunter;
 	}
 
+	void BGMOff()
+	{
+		m_BGMPlayer.Stop();
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);

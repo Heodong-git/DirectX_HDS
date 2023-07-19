@@ -138,7 +138,8 @@ void SlashEffect::ComponentSetting()
 	m_Collision->DebugOn();
 	
 	// 이벤트추가
-	m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(4), std::bind(&SlashEffect::CollisionOff, this));
+	
+	//m_Render->SetAnimationStartEvent("slash_effect", static_cast<size_t>(4), std::bind(&SlashEffect::CollisionOff, this));
 }
 
 // 현재 몬스터, 문은 경직완료 
