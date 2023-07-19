@@ -122,7 +122,12 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 	
 }
 
-// 적절한 위치에서 이걸 호출?? 
+// 자료구조 벡터로 바꾸고
+// 플레이어 프레임값저장하고
+// 이펙트 액터들 정방향재생시 플레이어 프레임값 받아오기
+// 인덱스값도 필요
+
+// 
 void BaseActor::InfoSetting(GameEngineSpriteRenderer* _Renderer)
 {
 	SpriteInfo Info;

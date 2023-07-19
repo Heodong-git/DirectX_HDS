@@ -2178,6 +2178,7 @@ void Boss_HeadHunter::TpOutCeilingStart()
 
 void Boss_HeadHunter::TpOutCeilingUpdate(float _DeltaTime)
 {
+	int check = m_MainRender->GetCurrentFrame();
 	if (true == m_MainRender->IsAnimationEnd())
 	{
 		if (4 == m_TpCount)
