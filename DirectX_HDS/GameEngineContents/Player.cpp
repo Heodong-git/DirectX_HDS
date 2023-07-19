@@ -25,7 +25,6 @@
 
 // 카메라
 #include "PlaySupporter.h"
-
 #include "BaseLevel.h"
 #include "Cursor.h"
 #include "PixelCollider.h"
@@ -39,7 +38,6 @@
 #include "FadeEffect.h"
 #include "DistotionEffect.h"
 #include "Trail_Effect.h"
-
 
 Player* Player::MainPlayer = nullptr;
 
@@ -67,12 +65,11 @@ void Player::Start()
 {
 	// 액터 스타트 기본인터페이스 구성
 	// 키생성
-
 	// 컴포넌트 세팅
 	ComponentSetting();
+
 	// 필요한 리소스 로드및 애니메이션 생성	
 	LoadAndCreateAnimation();
-
 	LoadSound();
 
 	if (false == GameEngineInput::IsKey("player_slash"))

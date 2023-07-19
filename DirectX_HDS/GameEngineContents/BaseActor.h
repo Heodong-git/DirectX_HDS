@@ -99,7 +99,6 @@ protected:
 		Infos.clear();
 	}
 
-
 	// ---------------------------------------------------- 
 	void Update(float _DeltaTime) override;
 
@@ -119,7 +118,7 @@ protected:
 
 	bool m_IsDeath = false;
 
-	//  레벨이 녹화진행중 인 상태에서, Infos 의 size가 0이 되면 
+	// 레벨이 녹화진행중 인 상태에서, Infos 의 size가 0이 되면 
 	// 내가 true 로 변경되는데, 녹화 진행중인 상태에서 스킵을 하고 싶다면?? 
 
 	bool m_Recording_Complete = false;

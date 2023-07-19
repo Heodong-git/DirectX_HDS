@@ -61,6 +61,35 @@ void SlashEffect::Update(float _DeltaTime)
 		}
 	}
 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Reverse(m_Render.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
+		{
+			this->Death();
+		}
+
+		return;
+	}
+
 	if (EffectState::RECORDING_PROGRESS == m_CurState)
 	{
 		// 만약 좌클릭 입력시 바로 death 
