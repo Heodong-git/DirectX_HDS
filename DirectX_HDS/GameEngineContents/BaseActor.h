@@ -140,7 +140,6 @@ protected:
 	}
 
 private:
-
 	// BaseActor들은 전부 얘를 오버라이드 
 	virtual void Reset() {};
 	float4 m_InitPos = {};

@@ -82,20 +82,8 @@ void SlashEffect::Update(float _DeltaTime)
 			this->Death();
 			return;
 		}
-
-		// 정방향일때 저장되어있는 프레임값을 --
-		if (0 < m_Recording_StartFrame)
-		{
-			int a = 0;
-		}
-
-
-
-		if (0 == Infos.size())
-		{
-			this->Death();
-		}
-
+		
+		Play_RecordingForward();
 		return;
 	}
 
@@ -300,5 +288,24 @@ void SlashEffect::CollisionOff()
 
 void SlashEffect::SetStartFrame()
 {
+	// 감소시킬 프레임값 
 	m_Recording_StartFrame = Player::MainPlayer->GetReverseFrameCount();
+
+	// 맥스값
+	m_Recording_StartFrameMax = m_Recording_StartFrame;
+}
+
+void SlashEffect::Play_RecordingForward()
+{
+	// 정방향일때 저장되어있는 프레임값을 --
+	if (0 < m_Recording_StartFrame)
+	{
+		--m_Recording_StartFrame;
+	}
+
+	if (0 == m_Recording_StartFrame)
+	{
+		++m_Recording_StartFrame_Check;
+		Reverse(m_Render.get());
+	}
 }

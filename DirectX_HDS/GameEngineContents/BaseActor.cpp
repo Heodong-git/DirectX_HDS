@@ -101,7 +101,17 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 
 		// 벡터의 Idx번쨰 데이터를 받아온다. 
 		ReverseInfo& Info = Infos[m_CurrentIdx];
-	
+
+		if (true == Info.IsRecording)
+		{
+			_Renderer->On();
+		}
+
+		else if (false == Info.IsRecording)
+		{
+			this->Death();
+			return;
+		}
 
 		// 모든 데이터를 세팅해준다. 
 		this->GetTransform()->SetTransformData(Info.ActorData);
