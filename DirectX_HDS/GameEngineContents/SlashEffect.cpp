@@ -83,7 +83,7 @@ void SlashEffect::Update(float _DeltaTime)
 			return;
 		}
 		
-		Play_RecordingForward();
+		Play_RecordingForward(m_Render.get());
 		return;
 	}
 
@@ -286,26 +286,5 @@ void SlashEffect::CollisionOff()
 	}
 }
 
-void SlashEffect::SetStartFrame()
-{
-	// 감소시킬 프레임값 
-	m_Recording_StartFrame = Player::MainPlayer->GetReverseFrameCount();
 
-	// 맥스값
-	m_Recording_StartFrameMax = m_Recording_StartFrame;
-}
 
-void SlashEffect::Play_RecordingForward()
-{
-	// 정방향일때 저장되어있는 프레임값을 --
-	if (0 < m_Recording_StartFrame)
-	{
-		--m_Recording_StartFrame;
-	}
-
-	if (0 == m_Recording_StartFrame)
-	{
-		++m_Recording_StartFrame_Check;
-		Reverse(m_Render.get());
-	}
-}

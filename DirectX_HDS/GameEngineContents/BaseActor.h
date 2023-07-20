@@ -139,6 +139,13 @@ protected:
 		m_MaxIdx = Size - 1;
 	}
 
+	// 이펙트 액터가 사용할 변수
+	size_t m_Recording_StartFrame = 0;
+	size_t m_Recording_StartFrameMax = 0;
+	size_t m_Recording_StartFrame_Check = 0;
+	void SetStartFrame();
+	virtual void Play_RecordingForward(class GameEngineSpriteRenderer* _Render);
+
 private:
 	// BaseActor들은 전부 얘를 오버라이드 
 	virtual void Reset() {};

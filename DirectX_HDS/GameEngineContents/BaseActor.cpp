@@ -4,6 +4,8 @@
 
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Player.h"
+
 BaseActor::BaseActor()
 {
 }
@@ -155,3 +157,32 @@ void BaseActor::Update(float _DeltaTime)
 	
 }
 
+void BaseActor::SetStartFrame()
+{
+	// 감소시킬 프레임값 
+	m_Recording_StartFrame = Player::MainPlayer->GetReverseFrameCount();
+
+	// 맥스값
+	m_Recording_StartFrameMax = m_Recording_StartFrame;
+}
+
+void BaseActor::Play_RecordingForward(GameEngineSpriteRenderer* _Render)
+{
+	if (nullptr == _Render)
+	{
+		MsgAssert("렌더러가 nullptr 입니다.");
+		return;
+	}
+
+	// 정방향일때 저장되어있는 프레임값을 --
+	if (0 < m_Recording_StartFrame)
+	{
+		--m_Recording_StartFrame;
+	}
+
+	if (0 == m_Recording_StartFrame)
+	{
+		++m_Recording_StartFrame_Check;
+		Reverse(_Render);
+	}
+}
