@@ -840,7 +840,6 @@ void Monster_Gangster::RecordingProgressEnd()
 
 void Monster_Gangster::RecordingProgress_ForwardStart()
 {
-	Reset();
 	SetMaxIndex();
 }
 

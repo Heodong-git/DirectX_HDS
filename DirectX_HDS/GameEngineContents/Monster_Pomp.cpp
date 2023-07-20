@@ -905,7 +905,6 @@ void Monster_Pomp::RecordingProgressEnd()
 
 void Monster_Pomp::RecordingProgress_ForwardStart()
 {
-	Reset();
 	SetMaxIndex();
 }
 

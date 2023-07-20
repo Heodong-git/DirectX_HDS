@@ -2954,7 +2954,7 @@ void Player::RecordingProgressEnd()
 
 void Player::RecordingProgress_ForwardStart()
 {
-	Reset();
+	// Reset();
 	// 카메라위치 초기값으로 세팅
 	PlaySupporter::MainSupporter->ForcedReset();
 
