@@ -124,6 +124,11 @@ public:
 	void CreateExplosionEffect();
 	void CreateHitEffect(std::shared_ptr<class GameEngineCollision> _Col);
 
+	inline const size_t GetReverseFrameCount() const
+	{
+		return m_Reverse_FrameCount;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -233,6 +238,9 @@ private:
 	// 중력 
 	const float m_GravityPower = 1000.0f;
 	const float m_Ratio = 1.0f;
+
+	// 프레임값 저장용 변수 
+	size_t m_Reverse_FrameCount = 0;
 
 	// -------------------------Debug ----------------------------------
 	void DebugUpdate();

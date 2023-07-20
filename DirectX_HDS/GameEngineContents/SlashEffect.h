@@ -45,4 +45,7 @@ private:
 
 	float4 m_AttPos = float4::Null;
 	float4 m_PlayerPos = float4::Null;
+
+	size_t m_Recording_StartFrame = 0;
+	void SetStartFrame();
 };

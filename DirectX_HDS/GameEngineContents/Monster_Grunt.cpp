@@ -837,6 +837,7 @@ void Monster_Grunt::RecordingProgressEnd()
 void Monster_Grunt::RecordingProgress_ForwardStart()
 {	
 	Reset();
+	SetMaxIndex();
 }
 
 void Monster_Grunt::RecordingProgress_ForwardUpdate(float _DeltaTime)

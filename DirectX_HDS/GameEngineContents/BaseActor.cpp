@@ -63,9 +63,6 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 	}
 
 	// 뒤쪽 데이터 부터 받아온다. 
-
-	
-
 	switch (CurLevelState)
 	{
 	case BaseLevel::LevelState::RECORDING_PROGRESS:
@@ -94,26 +91,31 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 		break;
 	case BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD:
 	{
-		//ReverseInfo& Info = *(Infos.begin());
+		// 만약 인덱스 값이 벡터의 사이즈보다 같거나 커졌다면 레코딩완료 true 
+		if (m_CurrentIdx == m_MaxIdx)
+		{
+			m_Recording_Complete = true;
+			m_CurrentIdx = 0;
+			return;
+		}
 
-		//if (true == Info.IsRecording)
-		//{
-		//	_Renderer->On();
-		//}
+		// 벡터의 Idx번쨰 데이터를 받아온다. 
+		ReverseInfo& Info = Infos[m_CurrentIdx];
+	
 
-		//else if (false == Info.IsRecording)
-		//{
-		//	Infos.pop_front();
-		//	return;
-		//}
-
-		//this->GetTransform()->SetTransformData(Info.ActorData);
-		//_Renderer->GetTransform()->SetTransformData(Info.RendererData);
-		//_Renderer->SetTexture(Info.InfoData.Texture->GetName());
-		//_Renderer->SetAtlasData(Info.InfoData.CutData);
+		// 모든 데이터를 세팅해준다. 
+		this->GetTransform()->SetTransformData(Info.ActorData);
+		_Renderer->GetTransform()->SetTransformData(Info.RendererData);
+		_Renderer->SetTexture(Info.InfoData.Texture->GetName());
+		_Renderer->SetAtlasData(Info.InfoData.CutData);
 
 		//// 데이터 세팅 후 삭제 
 		//Infos.pop_front();
+
+		// 원래는 삭제인데, 삭제하지 않고 인덱스값만 ++ 시켜준다.
+		++m_CurrentIdx;
+
+		
 	}
 		break;
 	default:

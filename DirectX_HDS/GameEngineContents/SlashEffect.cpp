@@ -41,6 +41,9 @@ void SlashEffect::Start()
 	// baseactor override 하는게 맞을듯 
 	// 사용할 컴포넌트세팅
 	ComponentSetting();
+
+	// 내가 녹화를 시작해야할 프레임값 저장 
+	SetStartFrame();
 }
 
 void SlashEffect::Update(float _DeltaTime)
@@ -65,6 +68,7 @@ void SlashEffect::Update(float _DeltaTime)
 	{
 		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
 		{
+			SetMaxIndex();
 			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
 			return;
 		}
@@ -79,9 +83,14 @@ void SlashEffect::Update(float _DeltaTime)
 			return;
 		}
 
-		Reverse(m_Render.get());
+		// 정방향일때 저장되어있는 프레임값을 --
+		if (0 < m_Recording_StartFrame)
+		{
+			int a = 0;
+		}
 
-		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+
+
 		if (0 == Infos.size())
 		{
 			this->Death();
@@ -287,4 +296,9 @@ void SlashEffect::CollisionOff()
 	{
 		m_Collision->Off();
 	}
+}
+
+void SlashEffect::SetStartFrame()
+{
+	m_Recording_StartFrame = Player::MainPlayer->GetReverseFrameCount();
 }

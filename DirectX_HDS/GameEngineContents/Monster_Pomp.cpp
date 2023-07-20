@@ -906,6 +906,7 @@ void Monster_Pomp::RecordingProgressEnd()
 void Monster_Pomp::RecordingProgress_ForwardStart()
 {
 	Reset();
+	SetMaxIndex();
 }
 
 void Monster_Pomp::RecordingProgress_ForwardUpdate(float _DeltaTime)
@@ -921,5 +922,6 @@ void Monster_Pomp::RecordingProgress_ForwardUpdate(float _DeltaTime)
 
 void Monster_Pomp::RecordingProgress_ForwardEnd()
 {
+	
 }
 

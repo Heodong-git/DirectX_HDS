@@ -296,7 +296,9 @@ void Player::Update(float _DeltaTime)
 	{
 		if (true == m_RecordingFrame)
 		{
+			++m_Reverse_FrameCount;
 			InfoSetting(m_Render.get());
+			
 		}
 	}
 
@@ -2952,7 +2954,11 @@ void Player::RecordingProgressEnd()
 void Player::RecordingProgress_ForwardStart()
 {
 	Reset();
+	// 카메라위치 초기값으로 세팅
 	PlaySupporter::MainSupporter->ForcedReset();
+
+	// 정방향재생시 최대 인덱스값을 저장해준다. 
+	SetMaxIndex();
 }
 
 // 정방향 재생 진행중, 여기부터 하면됨 
@@ -2986,12 +2992,21 @@ void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 		return;
 	}
 
+	if (0 > m_Reverse_FrameCount)
+	{
+		MsgAssert("Player 의 Reverse FrameCount 의 값이 잘못되었습니다.");
+		return;
+	}
+
 	// 여기서 역재생을 수행하고
 	// 이때, 맵이 클리어 상태라면 
 	// 리셋후, 정방향으로 재생, 그리고 재생이 끝나면 레벨체인지 
 	Reverse(m_Render.get());
+	// 리버스 한번 할때마다 
+	--m_Reverse_FrameCount;
 }
 
 void Player::RecordingProgress_ForwardEnd()
 {
+	m_Reverse_FrameCount = 0;
 }

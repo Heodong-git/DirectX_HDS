@@ -84,8 +84,6 @@ protected:
 		m_CurState = _State;
 	}
 
-	
-
 	EffectState m_CurState = EffectState::NORMAL;
 
 	BaseLevel::LevelState GetLevelState();
@@ -123,9 +121,24 @@ protected:
 
 	bool m_Recording_Complete = false;
 	bool m_RecordingFrame = false;
-	
 	bool m_IsRecording = true;
 	std::vector<ReverseInfo> Infos = std::vector<ReverseInfo>();
+	size_t m_CurrentIdx = 0;
+
+	// 정방향재생 state로 진입할때, 해당 변수에 현재 Infos.size - 1 을 저장한다. 
+	size_t m_MaxIdx = 0;
+	void SetMaxIndex()
+	{
+		if (0 >= Infos.size())
+		{
+			MsgAssert("현재 벡터의 사이즈가 0이하 입니다.");
+			return;
+		}
+
+		const size_t Size = Infos.size();
+		m_MaxIdx = Size - 1;
+	}
+
 private:
 
 	// BaseActor들은 전부 얘를 오버라이드 
