@@ -43,7 +43,7 @@ void SlashEffect::Start()
 	ComponentSetting();
 
 	// 내가 녹화를 시작해야할 프레임값 저장 
-	SetStartFrame();
+	Set_Recording_StartFrame();
 }
 
 void SlashEffect::Update(float _DeltaTime)

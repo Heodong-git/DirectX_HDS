@@ -28,8 +28,34 @@ void Laser::Start()
 
 void Laser::Update(float _DeltaTime)
 {
+	// 정방향 재생인지 체크 
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
+		LaserState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		ChangeState(LaserState::RECORDING_PROGRESS_FORWARD);
+		return;
+	}
+
+	m_RecordingFrame = !m_RecordingFrame;
+
+	BaseLevel::LevelState CurState = GetLevelState();
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == CurState &&
+		LaserState::RECORDING_PROGRESS != m_CurState)
+	{
+		ChangeState(LaserState::RECORDING_PROGRESS);
+		return;
+	}
+
 	DebugUpdate();
 	UpdateState(_DeltaTime);
+
+	if (LaserState::RECORDING_PROGRESS != m_CurState && LaserState::RECORDING_PROGRESS_FORWARD != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_LaserRender.get());
+		}
+	}
 }
 
 void Laser::Render(float _DeltaTime)
@@ -118,6 +144,12 @@ void Laser::UpdateState(float _DeltaTime)
 	case LaserState::COLLISION:
 		CollisionUpdate(_DeltaTime);
 		break;
+	case LaserState::RECORDING_PROGRESS:
+		RecordingProgressUpdate(_DeltaTime);
+		break;
+	case LaserState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -136,6 +168,13 @@ void Laser::ChangeState(LaserState _State)
 	case LaserState::COLLISION:
 		CollisionStart();
 		break;
+	case LaserState::RECORDING_PROGRESS:
+		RecordingProgressStart();
+		break;
+	case LaserState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardStart();
+		break;
+		
 	}
 
 	// 이전 state의 end 
@@ -146,6 +185,12 @@ void Laser::ChangeState(LaserState _State)
 		break;
 	case LaserState::COLLISION:
 		CollisionEnd();
+		break;
+	case LaserState::RECORDING_PROGRESS:
+		RecordingProgressEnd();
+		break;
+	case LaserState::RECORDING_PROGRESS_FORWARD:
+		RecordingProgress_ForwardEnd();
 		break;
 	}
 }
@@ -194,11 +239,41 @@ void Laser::CollisionUpdate(float _DeltaTime)
 			return;
 		}
 	}
-
-
 }
 
 void Laser::CollisionEnd()
 {
 	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
+}
+
+void Laser::RecordingProgressStart()
+{
+}
+
+void Laser::RecordingProgressUpdate(float _DeltaTime)
+{
+}
+
+void Laser::RecordingProgressEnd()
+{
+}
+
+void Laser::RecordingProgress_ForwardStart()
+{
+	SetMaxIndex();
+}
+
+void Laser::RecordingProgress_ForwardUpdate(float _DeltaTime)
+{
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		return;
+	}
+
+	Reverse(m_LaserRender.get());
+}
+
+void Laser::RecordingProgress_ForwardEnd()
+{
 }

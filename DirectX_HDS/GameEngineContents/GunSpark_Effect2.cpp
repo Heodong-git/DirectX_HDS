@@ -32,6 +32,8 @@ void GunSpark_Effect2::Start()
 								  .FrameInter = 0.1f , .Loop = true , .ScaleToTexture = true });
 	m_Render->ChangeAnimation("gunspark_effect2");
 	m_Render->SetScaleRatio(2.0f);
+
+	Set_Recording_StartFrame();
 }
 
 void GunSpark_Effect2::Update(float _DeltaTime)
@@ -74,6 +76,29 @@ void GunSpark_Effect2::Update(float _DeltaTime)
 		{
 			InfoSetting(m_Render.get());
 		}
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_Render.get());
+		return;
 	}
 
 	if (true == m_Render->IsAnimationEnd())

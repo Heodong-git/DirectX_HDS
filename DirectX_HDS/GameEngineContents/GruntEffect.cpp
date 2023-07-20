@@ -32,6 +32,8 @@ void GruntEffect::Start()
 								  .FrameInter = 0.04f , .Loop = false , .ScaleToTexture = true });
 	m_Render->SetScaleRatio(1.5f);
 	m_Render->ChangeAnimation("grunt_effect");
+
+	Set_Recording_StartFrame();
 }
 
 void GruntEffect::Update(float _DeltaTime)
@@ -64,6 +66,29 @@ void GruntEffect::Update(float _DeltaTime)
 			this->Death();
 		}
 
+		return;
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_Render.get());
 		return;
 	}
 

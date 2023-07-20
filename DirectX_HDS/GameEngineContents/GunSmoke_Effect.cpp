@@ -64,6 +64,8 @@ void GunSmoke_Effect::Start()
 	m_Render->CreateAnimation({ .AnimationName = "gunsmoke_effect3", .SpriteName = "gunsmoke_effect3", .Start = 0, .End = 10 ,
 							  .FrameInter = 0.1f , .Loop = true , .ScaleToTexture = true });
 	m_Render->SetScaleRatio(2.0f);
+
+	Set_Recording_StartFrame();
 }
 
 void GunSmoke_Effect::Update(float _DeltaTime)
@@ -106,6 +108,29 @@ void GunSmoke_Effect::Update(float _DeltaTime)
 		{
 			InfoSetting(m_Render.get());
 		}
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_Render.get());
+		return;
 	}
 
 	if (true == m_Render->IsAnimationEnd())

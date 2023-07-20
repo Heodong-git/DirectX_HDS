@@ -39,6 +39,12 @@ void Go_UI::Start()
 void Go_UI::Update(float _DeltaTime)
 {
 	Move(_DeltaTime);
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		m_MainRender->Off();
+		m_SubRender->Off();
+	}
 }
 
 void Go_UI::Render(float _DeltaTime)

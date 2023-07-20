@@ -851,6 +851,7 @@ void Monster_Gangster::RecordingProgress_ForwardUpdate(float _DeltaTime)
 	{
 		return;
 	}
+
 	Reverse(m_MainRender.get());
 }
 

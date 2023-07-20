@@ -157,7 +157,7 @@ void BaseActor::Update(float _DeltaTime)
 	
 }
 
-void BaseActor::SetStartFrame()
+void BaseActor::Set_Recording_StartFrame()
 {
 	// 감소시킬 프레임값 
 	m_Recording_StartFrame = Player::MainPlayer->GetReverseFrameCount();

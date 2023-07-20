@@ -44,6 +44,8 @@ void HitEffect::Start()
 								  .FrameInter = 0.045f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->GetTransform()->SetLocalPosition(float4{ 47.0f, 30.0f });
 	m_MainRender->ChangeAnimation("hit_effect");
+
+	Set_Recording_StartFrame();
 }
 
 void HitEffect::Update(float _DeltaTime)
@@ -77,6 +79,29 @@ void HitEffect::Update(float _DeltaTime)
 		{
 			this->Death();
 		}
+		return;
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_MainRender.get());
 		return;
 	}
 

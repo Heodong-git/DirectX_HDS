@@ -143,7 +143,7 @@ protected:
 	size_t m_Recording_StartFrame = 0;
 	size_t m_Recording_StartFrameMax = 0;
 	size_t m_Recording_StartFrame_Check = 0;
-	void SetStartFrame();
+	void Set_Recording_StartFrame();
 	virtual void Play_RecordingForward(class GameEngineSpriteRenderer* _Render);
 
 private:

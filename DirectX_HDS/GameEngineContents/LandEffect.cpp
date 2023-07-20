@@ -37,6 +37,8 @@ void LandEffect::Start()
 	m_Render->CreateAnimation({ .AnimationName = "land_cloud", .SpriteName = "landcloud", .Start = 0, .End = 3 ,
 								  .FrameInter = 0.06f , .Loop = false , .ScaleToTexture = true });
 	m_Render->ChangeAnimation("land_cloud");
+
+	Set_Recording_StartFrame();
 }
 
 void LandEffect::Update(float _DeltaTime)
@@ -69,6 +71,29 @@ void LandEffect::Update(float _DeltaTime)
 			this->Death();
 		}
 
+		return;
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_Render.get());
 		return;
 	}
 

@@ -30,6 +30,8 @@ void FireEffect::Start()
 	m_Render->SetScaleRatio(2.0f);
 
 	m_Render->ChangeAnimation("gangster_fire_effect");
+
+	Set_Recording_StartFrame();
 }
 
 void FireEffect::Update(float _DeltaTime)
@@ -62,6 +64,29 @@ void FireEffect::Update(float _DeltaTime)
 			this->Death();
 		}
 
+		return;
+	}
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	{
+		if (EffectState::RECORDING_PROGRESS_FORWARD != m_CurState)
+		{
+			SetMaxIndex();
+			ChangeState(EffectState::RECORDING_PROGRESS_FORWARD);
+			return;
+		}
+	}
+
+	if (EffectState::RECORDING_PROGRESS_FORWARD == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Play_RecordingForward(m_Render.get());
 		return;
 	}
 

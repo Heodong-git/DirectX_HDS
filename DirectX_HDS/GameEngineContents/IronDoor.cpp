@@ -287,7 +287,9 @@ void IronDoor::RecordingProgressEnd()
 
 void IronDoor::RecordingProgress_ForwardStart()
 {
+	// 정방향재생시 최대 인덱스값을 저장해준다. 
 	Reset();
+	SetMaxIndex();
 }
 
 void IronDoor::RecordingProgress_ForwardUpdate(float _DeltaTime)

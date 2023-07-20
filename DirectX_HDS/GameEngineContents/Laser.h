@@ -6,6 +6,8 @@ enum class LaserState
 	NONE,
 	IDLE,
 	COLLISION,
+	RECORDING_PROGRESS,
+	RECORDING_PROGRESS_FORWARD,
 };
 
 
@@ -70,4 +72,11 @@ private:
 	void CollisionUpdate(float _DeltaTime);
 	void CollisionEnd();
 	
+	void RecordingProgressStart();
+	void RecordingProgressUpdate(float _DeltaTime);
+	void RecordingProgressEnd();
+
+	void RecordingProgress_ForwardStart();
+	void RecordingProgress_ForwardUpdate(float _DeltaTime);
+	void RecordingProgress_ForwardEnd();
 };
