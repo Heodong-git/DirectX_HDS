@@ -94,26 +94,26 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 		break;
 	case BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD:
 	{
-		ReverseInfo& Info = *(Infos.begin());
+		//ReverseInfo& Info = *(Infos.begin());
 
-		if (true == Info.IsRecording)
-		{
-			_Renderer->On();
-		}
+		//if (true == Info.IsRecording)
+		//{
+		//	_Renderer->On();
+		//}
 
-		else if (false == Info.IsRecording)
-		{
-			Infos.pop_front();
-			return;
-		}
+		//else if (false == Info.IsRecording)
+		//{
+		//	Infos.pop_front();
+		//	return;
+		//}
 
-		this->GetTransform()->SetTransformData(Info.ActorData);
-		_Renderer->GetTransform()->SetTransformData(Info.RendererData);
-		_Renderer->SetTexture(Info.InfoData.Texture->GetName());
-		_Renderer->SetAtlasData(Info.InfoData.CutData);
+		//this->GetTransform()->SetTransformData(Info.ActorData);
+		//_Renderer->GetTransform()->SetTransformData(Info.RendererData);
+		//_Renderer->SetTexture(Info.InfoData.Texture->GetName());
+		//_Renderer->SetAtlasData(Info.InfoData.CutData);
 
-		// 데이터 세팅 후 삭제 
-		Infos.pop_front();
+		//// 데이터 세팅 후 삭제 
+		//Infos.pop_front();
 	}
 		break;
 	default:
@@ -127,7 +127,6 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 // 이펙트 액터들 정방향재생시 플레이어 프레임값 받아오기
 // 인덱스값도 필요
 
-// 
 void BaseActor::InfoSetting(GameEngineSpriteRenderer* _Renderer)
 {
 	SpriteInfo Info;

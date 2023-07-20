@@ -125,7 +125,7 @@ protected:
 	bool m_RecordingFrame = false;
 	
 	bool m_IsRecording = true;
-	std::list<ReverseInfo> Infos = std::list<ReverseInfo>();
+	std::vector<ReverseInfo> Infos = std::vector<ReverseInfo>();
 private:
 
 	// BaseActor들은 전부 얘를 오버라이드 
