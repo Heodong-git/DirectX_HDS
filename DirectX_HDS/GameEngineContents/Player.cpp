@@ -222,9 +222,14 @@ void Player::LoadSound()
 		GameEngineSound::Load(NewDir.GetPlusFileName("Rewind.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("player_slow_enter.mp3").GetFullPath());
 
+		// 트랜지션사운드
 		GameEngineSound::Load(NewDir.GetPlusFileName("sound_transition_begin.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sound_transition_end.wav").GetFullPath());
 		GameEngineSound::Load(NewDir.GetPlusFileName("sound_boss_wall_open.wav").GetFullPath());
+
+		// 정방향재생 사운드
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_replay_play.wav").GetFullPath());
+		GameEngineSound::Load(NewDir.GetPlusFileName("sound_replay_rew.wav").GetFullPath());
 	}
 }
 
@@ -2954,6 +2959,10 @@ void Player::RecordingProgressEnd()
 
 void Player::RecordingProgress_ForwardStart()
 {
+
+	m_SoundPlayer = GameEngineSound::Play("sound_replay_rew.wav");
+	m_SoundPlayer.SetVolume(1.0f);
+	m_SoundPlayer.SetLoop(-1);
 	// Reset();
 	// 카메라위치 초기값으로 세팅
 	PlaySupporter::MainSupporter->ForcedReset();
@@ -2968,6 +2977,7 @@ void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 	// 레코딩이 종료 되었다면 아이들로 전환. 
 	if (true == m_Recording_Complete)
 	{
+		ChangeState(PlayerState::IDLE);
 		BaseLevel* CurLevel = GetReturnCastLevel();
 		LevelType CurLevelType = CurLevel->GetLevelType();
 
@@ -3009,5 +3019,6 @@ void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 
 void Player::RecordingProgress_ForwardEnd()
 {
+	m_SoundPlayer.Stop();
 	m_Reverse_FrameCount = 0;
 }
