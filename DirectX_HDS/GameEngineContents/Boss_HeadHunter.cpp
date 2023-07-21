@@ -2575,6 +2575,7 @@ void Boss_HeadHunter::MoribundEnd()
 
 void Boss_HeadHunter::NoHeadStart()
 {
+	m_Collision->Off();
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -37.0f });
 	m_MainRender->ChangeAnimation("headhunter_nohead");
 }

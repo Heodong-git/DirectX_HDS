@@ -141,7 +141,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ClubLevel_01>("ClubLevel_01");
 	GameEngineCore::CreateLevel<ClubLevel_02>("ClubLevel_02");
 	GameEngineCore::CreateLevel<ClubLevel_03>("ClubLevel_03");
-	GameEngineCore::CreateLevel<ClubLevel_04>("ClubLevel_04");				 // 삭제 예정
+	//GameEngineCore::CreateLevel<ClubLevel_04>("ClubLevel_04");				 // 삭제 예정
 	GameEngineCore::CreateLevel<ClubLevel_Boss>("ClubLevel_Boss");
 	GameEngineCore::CreateLevel<ClubLevel_Boss_01>("ClubLevel_Boss_01");
 

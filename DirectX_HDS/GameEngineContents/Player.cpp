@@ -2997,7 +2997,7 @@ void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 			GameEngineCore::ChangeLevel("ClubLevel_03");
 			break;
 		case LevelType::CLUBMAP3:
-			GameEngineCore::ChangeLevel("ClubLevel_04");
+			GameEngineCore::ChangeLevel("ClubLevel_Boss");
 			break;
 		case LevelType::CLUBMAP4:
 			GameEngineCore::ChangeLevel("ClubLevel_Boss");

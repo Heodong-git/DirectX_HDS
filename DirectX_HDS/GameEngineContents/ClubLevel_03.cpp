@@ -20,6 +20,7 @@
 #include "Monster_Pomp.h"
 #include "Partition.h"
 #include "FadeEffect.h"
+#include "IronDoor.h"
 
 ClubLevel_03::ClubLevel_03()
 {
@@ -106,7 +107,7 @@ void ClubLevel_03::KeyUpdate()
 {
 	if (true == GameEngineInput::IsDown("ClubLevel03_ChangeLevel_ClubLevel04"))
 	{
-		GameEngineCore::ChangeLevel("ClubLevel_04");
+		GameEngineCore::ChangeLevel("ClubLevel_Boss");
 		return;
 	}
 }

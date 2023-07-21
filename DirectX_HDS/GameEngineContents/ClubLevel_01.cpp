@@ -149,6 +149,7 @@ void ClubLevel_01::CreateObjAndInit()
 		float4 InitPos = { 650.0f , 34.0f };
 		ActorInit(PartitionObj, InitPos);
 	}
+
 }
 
 void ClubLevel_01::KeyUpdate()

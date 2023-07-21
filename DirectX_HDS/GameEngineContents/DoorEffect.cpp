@@ -13,8 +13,6 @@ DoorEffect::~DoorEffect()
 
 void DoorEffect::Start()
 {
-	ComponentSetting();
-
 	// 스프라이트네임이 nullptr 일때만 
 	if (nullptr == GameEngineSprite::Find("door_glow"))
 	{
@@ -27,11 +25,11 @@ void DoorEffect::Start()
 
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("door_glow").GetFullPath());	
 		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".Png", });
-
-		m_MainRender->CreateAnimation({ .AnimationName = "door_glow", .SpriteName = "door_glow", .Start = 0, .End = 9 ,
-							.FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
 	}
 
+	ComponentSetting();
+	m_MainRender->CreateAnimation({ .AnimationName = "door_glow", .SpriteName = "door_glow", .Start = 0, .End = 9 ,
+							.FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
 	m_MainRender->ChangeAnimation("door_glow");
 	
 }
