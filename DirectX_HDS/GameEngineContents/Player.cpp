@@ -38,6 +38,7 @@
 #include "FadeEffect.h"
 #include "DistotionEffect.h"
 #include "Trail_Effect.h"
+#include "GlitchEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -2955,6 +2956,9 @@ void Player::RecordingProgressEnd()
 {
 	// 녹화종료시에 모든 정보를 리셋한다. 
 	m_Reverse_FrameCount = 0;
+	
+	GetReturnCastLevel()->GetGlitchEffect()->EffectOn();
+	
 }
 
 void Player::RecordingProgress_ForwardStart()

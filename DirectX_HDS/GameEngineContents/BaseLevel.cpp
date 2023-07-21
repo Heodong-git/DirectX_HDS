@@ -146,19 +146,15 @@ void BaseLevel::RecordingUpdate(float _DeltaTime)
 		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
 		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
 		m_DistotionEffect->EffectOff();
-		if (nullptr != m_GlitchEffect)
-		{
-			m_GlitchEffect->EffectOn();
-		}
+		
 		ActorReset();
 		m_CurState = BaseLevel::LevelState::PLAY;
 		
+		
+
 		return;
 	}
 
-
-	// 지금 플레이어가 녹화진행중인지 체크해서, 녹화가 종료 되었다면
-	// 레벨을 PLAY 상태로 변경하고, 디스토션 이펙트를 off 시키고 있다. 
 	if (true == Player::MainPlayer->IsRecording())
 	{
 		m_CurState = BaseLevel::LevelState::PLAY;
@@ -168,8 +164,9 @@ void BaseLevel::RecordingUpdate(float _DeltaTime)
 		if (nullptr != m_DistotionEffect)
 		{
 			m_DistotionEffect->EffectOff();
-			m_DistotionEffect = nullptr;
 		}
+
+	
 
 		return;
 	}

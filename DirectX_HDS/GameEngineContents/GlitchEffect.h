@@ -24,13 +24,9 @@ public:
 
 	void EffectOn()
 	{
-		m_EffectTime = 0.5f;
+		m_Update = true;
 	}
 
-	void EffectOff()
-	{
-		m_EffectTime = 0.0f;
-	}
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
@@ -39,5 +35,6 @@ private:
 	RenderBaseValue BaseValue;
 	GlitchState State = GlitchState::NONE;
 	std::shared_ptr<GameEngineRenderUnit> GlitchUnit;
-	float m_EffectTime = 0.0;
+	float m_EffectTime = 0.6f;
+	bool m_Update = false;
 };

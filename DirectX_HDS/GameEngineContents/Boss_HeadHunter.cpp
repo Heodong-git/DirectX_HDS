@@ -540,6 +540,7 @@ void Boss_HeadHunter::Reset()
 	m_IdleDuration = 0.25f;
 	m_IsDoubleSweep = false;
 	m_TpInStart = false;
+	m_TpCount = 0;
 }
 
 void Boss_HeadHunter::ResetPhase()
@@ -2158,9 +2159,11 @@ void Boss_HeadHunter::TpInCeilingStart()
 
 void Boss_HeadHunter::TpInCeilingUpdate(float _DeltaTime)
 {
+	size_t check = m_MainRender->GetCurrentFrame();
+
 	// 업데이트에서는 
 	// 애니메이션이 종료 되었다면
-	if (true == m_MainRender->IsAnimationEnd())
+	if (true == m_MainRender->IsAnimationEnd() || 3 <= check)
 	{
 		ChangeState(BossState::TELEPORTOUT_CEILING);
 		return;

@@ -1,12 +1,10 @@
-
-
-#define shake_power  0.03
+#define shake_power 0.4
    
-#define shake_rate  0.2
+#define shake_rate  0.45
 
-#define shake_speed  5.0
+#define shake_speed  10.0
 
-#define shake_block_size  30.5
+#define shake_block_size  90.5
 
 #define shake_color_rate 0.01
 

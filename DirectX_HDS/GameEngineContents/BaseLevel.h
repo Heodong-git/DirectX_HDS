@@ -88,6 +88,11 @@ public:
 	{
 		return m_FadeEffect;
 	}
+
+	std::shared_ptr<class GlitchEffect> GetGlitchEffect()
+	{
+		return m_GlitchEffect;
+	}
 	
 	// ---------------------Stage ฐüทร ----------------------
 	inline void PlusMonsterCount()

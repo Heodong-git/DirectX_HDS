@@ -78,6 +78,8 @@ public:
 	
 	virtual void ForcedReset();
 
+	
+
 protected:
 	void ChangeState(EffectState _State)
 	{
