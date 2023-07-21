@@ -106,7 +106,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("GlitchShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("GlitchShader.hlsl");
-		Pipe->SetBlendState("OldFilm");
+		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{

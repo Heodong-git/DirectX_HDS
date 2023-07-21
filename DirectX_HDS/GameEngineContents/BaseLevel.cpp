@@ -13,6 +13,7 @@
 #include "ColEventObj.h"
 #include "Go_UI.h"
 #include "DistotionEffect.h"
+#include "GlitchEffect.h"
 
 
 BaseLevel::BaseLevel()
@@ -50,13 +51,19 @@ void BaseLevel::Start()
 
 	// 카메라이펙트 생성
 	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
-
-	
+	m_GlitchEffect = GetLastTarget()->CreateEffect<GlitchEffect>();
 }
 
 void BaseLevel::Update(float _DeltaTime)
 {
-
+	// 역재생완료체크
+	if (true == Player::MainPlayer->IsRecording())
+	{
+		if (nullptr != m_GlitchEffect)
+		{
+			m_GlitchEffect->EffectOn();
+		}
+	}
 	
 	// 마우스 포지션 저장
 	if (nullptr != Cursor::MainCursor)
@@ -139,8 +146,13 @@ void BaseLevel::RecordingUpdate(float _DeltaTime)
 		GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(m_TimeScale);
 		GameEngineTime::GlobalTime.SetAllRenderOrderTimeScale(m_TimeScale);
 		m_DistotionEffect->EffectOff();
+		if (nullptr != m_GlitchEffect)
+		{
+			m_GlitchEffect->EffectOn();
+		}
 		ActorReset();
 		m_CurState = BaseLevel::LevelState::PLAY;
+		
 		return;
 	}
 

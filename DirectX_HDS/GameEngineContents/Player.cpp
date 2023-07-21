@@ -2959,7 +2959,6 @@ void Player::RecordingProgressEnd()
 
 void Player::RecordingProgress_ForwardStart()
 {
-
 	m_SoundPlayer = GameEngineSound::Play("sound_replay_rew.wav");
 	m_SoundPlayer.SetVolume(1.0f);
 	m_SoundPlayer.SetLoop(-1);

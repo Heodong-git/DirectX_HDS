@@ -16,6 +16,9 @@
 #include "TitleEditer.h"
 #include "TitleBackGround.h"
 
+// test
+#include "GlitchEffect.h"
+
 TitleLevel::TitleLevel()
 {
 	SetLevelType(LevelType::TITLE);

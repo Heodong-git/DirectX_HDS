@@ -199,6 +199,7 @@ protected:
 	GameEngineSoundPlayer m_SoundPlayer;
 	
 	std::shared_ptr<class DistotionEffect> m_DistotionEffect = nullptr;
+	std::shared_ptr<class GlitchEffect> m_GlitchEffect = nullptr;
 
 private:
 	const float m_RecordingTimeScale = 10.0f;
@@ -235,6 +236,7 @@ private:
 
 	// 카메라이펙트
 	std::shared_ptr<class FadeEffect> m_FadeEffect = nullptr;
+	
 
 	// 상속받은 모든 level은 부모의 start를 호출하고, start 에서 카메라세팅
 	virtual void CameraSetting();

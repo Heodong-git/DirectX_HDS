@@ -1,9 +1,23 @@
-// 글리치 쉐이더 코드 긁어서 적용시켜서 사용해야함.. ㅎㅎ ; 
 
+
+#define shake_power  0.03
+   
+#define shake_rate  0.2
+
+#define shake_speed  5.0
+
+#define shake_block_size  30.5
+
+#define shake_color_rate 0.01
+
+float random(float seed)
+{
+    return frac(543.2543 * sin(dot(float2(seed, seed), float2(3525.46, -54.3415))));
+}
 
 struct Input
 {
-    float4 Pos : POSITION;
+    float4 Pos : POSITION;  
     float4 UV : TEXCOORD;
 };
 
@@ -15,7 +29,7 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
-OutPut OldTV_VS(Input _Value)
+OutPut Glitch_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
     OutPutValue.Pos = _Value.Pos;
@@ -33,56 +47,36 @@ cbuffer RenderBaseValue : register(b11)
     float4 Mouse;
 }
 
-
 Texture2D DiffuseTex : register(t0);
 SamplerState WRAP : register(s0);
 
-float2 getDistortion(float2 uv, float d, float t)
+float4 Glitch_PS(OutPut _Value) : SV_Target0
 {
-    uv.x += cos(d) + t * 0.9;
-    uv.y += sin(d + t * 0.75);
-   
-    return uv;
-}
+    float enable_shift = float(
+        random(floor(Time.x * shake_speed))
+        < shake_rate
+    );
 
-float4 getDistortedTexture(SamplerState iChannel, float2 uv)
-{
-    float4 rgb = DiffuseTex.Sample(iChannel, uv);
-    return rgb;
-}
+    float2 fixed_uv = _Value.UV;
+    fixed_uv.x += (
+        random(
+            (floor(_Value.UV.y * shake_block_size) / shake_block_size)
+            + Time.x
+        ) - 0.5
+    ) * shake_power * enable_shift;
 
-void mainImage(out float4 fragColor, in float2 fragCoord)
-{
-    // float2 uv = fragCoord.xy / ScreenSize.xy;
-    float2 uv = fragCoord.xy;
-    float t = Time.x;
-    float2 mid = float2(0.5, 0.5);
-    // float2 focus = Mouse.xy / ScreenSize.xy;
-    float2 focus = Mouse.xy;
-    float d1 = distance(focus + sin(t * 0.2) * 0.5, uv);
-    float d2 = distance(focus + cos(t), uv);
-    float4 rgb = (getDistortedTexture(WRAP, getDistortion(uv, d1, t)) + getDistortedTexture(WRAP, getDistortion(uv, -d2, t))) * 0.5f;
-    rgb.r /= d2;
-    rgb.g += -0.5 + d1;
-    rgb.b = -0.5 + (d1 + d2) / 2.0;
-    fragColor = rgb;
-}
-
-float4 OldTV_PS(OutPut _Value) : SV_Target0
-{
-    // float2 ScreenSize1 = {1280.0f, 720.0f};
-    
-    float2 uv = _Value.UV.xy;
-    //// uv.y = 1.0 - uv.y;
-    //               원래 10.0f               원래 50.0 >>> 
-    uv.x += sin(uv.y * 35.0f + Time.x * 15.0f) / 60.0;
-    
-    //// uv.x += Time.x * 0.1f;
-    float4 Color = DiffuseTex.Sample(WRAP, uv.xy);
-    
-    //float4 Color;
-    //mainImage(Color, _Value.UV.xy);
-    return Color;
+    float4 pixel_color = DiffuseTex.SampleLevel(WRAP, fixed_uv, 0.0);
+    pixel_color.r = lerp(
+        pixel_color.r,
+        DiffuseTex.SampleLevel(WRAP, fixed_uv + float2(shake_color_rate, 0.0), 0.0).r,
+        enable_shift
+    );
+    pixel_color.b = lerp(
+        pixel_color.b,
+        DiffuseTex.SampleLevel(WRAP, fixed_uv + float2(-shake_color_rate, 0.0), 0.0).b,
+        enable_shift
+    );
+    return pixel_color;
 }
 
 

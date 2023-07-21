@@ -30,6 +30,7 @@ cbuffer TransformData : register(b0)
     float4x4 WorldViewProjectionMatrix;
 }
 
+
 // 어떤 정보가 들어올지 구조체로 만들어야 합니다.
 // 어디가 포지션이고 어디가 컬이고
 // 이름 마음대로
@@ -60,5 +61,6 @@ cbuffer DebugColor : register(b0)
 
 float4 Debug_PS(OutPut _Value) : SV_Target0
 {
+
     return RenderColor;
 }

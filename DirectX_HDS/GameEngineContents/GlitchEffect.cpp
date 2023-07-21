@@ -13,7 +13,7 @@ void GlitchEffect::Start(GameEngineRenderTarget* _Target)
 {
 	GlitchUnit = std::make_shared<GameEngineRenderUnit>();
 	GlitchUnit->SetMesh("FullRect");
-	GlitchUnit->SetPipeLine("OldTV");
+	GlitchUnit->SetPipeLine("Glitch");
 
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 
@@ -24,7 +24,7 @@ void GlitchEffect::Start(GameEngineRenderTarget* _Target)
 
 void GlitchEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-	if (true == m_IsUpdate)
+	if (0 < m_EffectTime)
 	{
 		BaseValue.Mouse = GameEngineWindow::GetMousePosition();
 		BaseValue.Mouse.z = GameEngineInput::IsPress("EngineMouseLeft");
@@ -42,4 +42,13 @@ void GlitchEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 		_Target->Clear();
 		_Target->Merge(ResultTarget);
 	}
+	
+	else if(0 >= m_EffectTime)
+	{
+		EffectOff();
+		return;
+	}
+	
+	m_EffectTime -= _DeltaTime;
+
 }
