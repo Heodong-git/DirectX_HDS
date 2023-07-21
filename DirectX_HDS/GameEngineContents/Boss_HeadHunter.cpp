@@ -369,6 +369,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 							  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_moribund", .SpriteName = "headhunter_moribund", .Start = 0, .End = 18 ,
 							 .FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
+	// 0.17 , false 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_nohead", .SpriteName = "headhunter_nohead", .Start = 0, .End = 5 ,
 							  .FrameInter = 0.17f , .Loop = false , .ScaleToTexture = true });
 	
@@ -541,6 +542,7 @@ void Boss_HeadHunter::Reset()
 	m_IsDoubleSweep = false;
 	m_TpInStart = false;
 	m_TpCount = 0;
+	m_NoHeadStatePos = float4::Zero;
 }
 
 void Boss_HeadHunter::ResetPhase()
@@ -2576,19 +2578,46 @@ void Boss_HeadHunter::MoribundEnd()
 void Boss_HeadHunter::NoHeadStart()
 {
 	m_Collision->Off();
-	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -37.0f });
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -42.0f });
 	m_MainRender->ChangeAnimation("headhunter_nohead");
+	m_NoHeadStatePos = GetTransform()->GetWorldPosition();
 }
 
 // 나중에 필요한거 있으면 
 void Boss_HeadHunter::NoHeadUpdate(float _DeltaTime)
 {
-	// 공격 당하면, 충돌체 없애고, 머리통 날아가게해야함 
+	size_t Size = m_MainRender->GetCurrentFrame();
+	switch (Size)
+	{
+	case 0:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 9.0f});
+		break;
+	case 1:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 10.0f });
+		break;
+	case 2:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 10.0f });
+		break;
+	case 3:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 10.0f });
+		break;
+	case 4:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f , 1.5f});
+		break;
+	case 5:
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos);
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 void Boss_HeadHunter::NoHeadEnd()
 {
-	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 37.0f });
+	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 42.0f });
+	m_NoHeadStatePos = float4::Zero;
 }
 
 void Boss_HeadHunter::RecordingProgressStart()

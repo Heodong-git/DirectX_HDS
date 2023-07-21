@@ -257,6 +257,8 @@ private:
 	float4 m_TpRifleLeftPos = float4{ 394.0f, -263.0f , };
 	float4 m_TpRifleRightPos = float4{ -418.0f , -263.0f };
 
+	float4 m_NoHeadStatePos = float4::Zero;
+
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
 	void ChangeState(BossState _State);

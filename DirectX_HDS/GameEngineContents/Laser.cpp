@@ -67,6 +67,7 @@ void Laser::Reset()
 	m_CurState = LaserState::IDLE;
 	m_LaserRender->ChangeAnimation("laser_idle");
 	m_LaserRender->GetTransform()->SetLocalScale(m_LaserScale);
+	m_MaxIdx = 0;
 }
 
 void Laser::DebugUpdate()
@@ -260,7 +261,11 @@ void Laser::RecordingProgressEnd()
 
 void Laser::RecordingProgress_ForwardStart()
 {
-	SetMaxIndex();
+	size_t Size = Infos.size();
+	if (0 < Size)
+	{
+		SetMaxIndex();
+	}
 }
 
 void Laser::RecordingProgress_ForwardUpdate(float _DeltaTime)
