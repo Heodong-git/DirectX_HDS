@@ -39,7 +39,7 @@
 #include "DistotionEffect.h"
 #include "Trail_Effect.h"
 #include "GlitchEffect.h"
-
+#include "OldFilmEffect.h"
 
 // test 
 #include "BloodEffect.h"
@@ -2972,6 +2972,8 @@ void Player::RecordingProgressEnd()
 
 void Player::RecordingProgress_ForwardStart()
 {
+	GetReturnCastLevel()->GetOldFilmEffect()->EffectOn();
+
 	m_SoundPlayer = GameEngineSound::Play("sound_replay_rew.wav");
 	m_SoundPlayer.SetVolume(1.0f);
 	m_SoundPlayer.SetLoop(-1);
@@ -3032,5 +3034,6 @@ void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 void Player::RecordingProgress_ForwardEnd()
 {
 	m_SoundPlayer.Stop();
+	GetReturnCastLevel()->GetOldFilmEffect()->EffectOff();
 	m_Reverse_FrameCount = 0;
 }

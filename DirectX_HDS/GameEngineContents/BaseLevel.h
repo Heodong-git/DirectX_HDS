@@ -93,6 +93,11 @@ public:
 	{
 		return m_GlitchEffect;
 	}
+
+	std::shared_ptr<class OldFilmEffect> GetOldFilmEffect()
+	{
+		return m_OldFilmEffect;
+	}
 	
 	// ---------------------Stage ฐüทร ----------------------
 	inline void PlusMonsterCount()
@@ -205,6 +210,7 @@ protected:
 	
 	std::shared_ptr<class DistotionEffect> m_DistotionEffect = nullptr;
 	std::shared_ptr<class GlitchEffect> m_GlitchEffect = nullptr;
+	std::shared_ptr<class OldFilmEffect> m_OldFilmEffect = nullptr;
 
 private:
 	const float m_RecordingTimeScale = 10.0f;

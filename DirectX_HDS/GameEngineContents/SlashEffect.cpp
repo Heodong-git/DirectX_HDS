@@ -233,6 +233,58 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 		Effect->SetMovePos(ColPos);
 	}
 
+	// 다 여기서 죽일까 
+	std::shared_ptr<GameEngineCollision> TurretCol = m_Collision->Collision(ColOrder::TURRET, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr != TurretCol)
+	{
+		// 얘를 여기서 왜죽 
+		//Col->GetActor()->DynamicThis<BaseActor>()->SetDeath();
+		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
+		SlashSoundPlay();
+		PlaySupporter::MainSupporter->CameraShakeOn();
+		PlaySupporter::MainSupporter->CameraZoomEffect(0.97f);
+
+		// 그리고 한프레임만 델타타임을 느리게 하고싶은데 
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::MONSTER, 0.1f);
+		GameEngineTime::GlobalTime.SetUpdateOrderTimeScale(RenderOrder::PLAYER, 0.1f);
+
+		// 충돌한 몬스터의 좌표 
+		float4 ColPos = TurretCol->GetTransform()->GetParent()->GetLocalPosition();
+		const float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+
+		float4 Dir = ColPos - PlayerPos;
+
+		float DirY = Dir.y;
+		float EffectX = 0.0f;
+		float EffectY = 0.0f;
+		if (ColPos.x >= PlayerPos.x)
+		{
+			EffectX = -800.0f;
+		}
+
+		else
+		{
+			EffectX = 800.0f;
+		}
+
+		if (ColPos.y >= PlayerPos.y)
+		{
+			EffectY = -330.0f;
+		}
+
+		else
+		{
+			EffectY = 330.0f;
+		}
+
+		// 그러면 레이저 이펙트를 생성하는데. 
+		std::shared_ptr<SlashLaser_Effect> Effect = GetLevel()->CreateActor<SlashLaser_Effect>(static_cast<int>(RenderOrder::EFFECT));
+
+		// 위치는 좀더 신경써야할듯. 
+		Effect->GetTransform()->SetLocalPosition({ EffectX , EffectY });
+		Effect->SetMovePos(ColPos);
+	}
+
 	std::shared_ptr<GameEngineCollision> BossCol = m_Collision->Collision(ColOrder::BOSS, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != BossCol)
 	{

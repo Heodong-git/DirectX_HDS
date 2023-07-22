@@ -27,6 +27,11 @@ public:
 		m_Update = true;
 	}
 
+	void EffectOff()
+	{
+		m_Update = false;
+	}
+
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;

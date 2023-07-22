@@ -216,6 +216,9 @@
     <ClInclude Include="SoundManager.h">
       <Filter>03.Manager</Filter>
     </ClInclude>
+    <ClInclude Include="OldFilmEffect.h">
+      <Filter>02.Actor\08.CameraEffect\OldTV</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -432,6 +435,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>03.Manager</Filter>
     </ClCompile>
+    <ClCompile Include="OldFilmEffect.cpp">
+      <Filter>02.Actor\08.CameraEffect\OldTV</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -628,6 +634,9 @@
     </Filter>
     <Filter Include="01.Level\02.Club\02.Ending">
       <UniqueIdentifier>{0b404fb3-8256-4863-a548-f7b7f4267194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect\OldTV">
+      <UniqueIdentifier>{cbaea733-6959-45d8-b223-bf859cb54246}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

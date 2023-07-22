@@ -22,6 +22,7 @@
 #include "Trail_Effect.h"
 #include "PlaySupporter.h"
 #include "ClubLevel_Boss_01.h"
+#include "BloodEffect.h"
 
 Boss_HeadHunter* Boss_HeadHunter::m_MainBoss = nullptr;
 
@@ -650,6 +651,11 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 	{
 
 		HitSoundPlay();
+		float RandomValue = GameEngineRandom::MainRandom.RandomFloat(35.0f, 60.0f);
+		std::weak_ptr<BloodEffect> Blood_Effect = GetLevel()->CreateActor<BloodEffect>();
+		Blood_Effect.lock()->SetType(BloodType::NORMAL);
+		Blood_Effect.lock()->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4 { 0.0f, RandomValue });
+
 
 		// 충돌했는데 내가 모리번드상태라면 
 		if (BossState::MORIBUND == m_CurState)

@@ -98,6 +98,18 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetBlendState("OldFilm");
 		Pipe->SetDepthState("EngineDepth");
 	}
+	// 올드필름 파이프라인 세팅
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldFilm");
+
+		Pipe->SetVertexShader("OldFilmShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("OldFilmShader.hlsl");
+		Pipe->SetBlendState("OldFilm");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
+
 
 	// 글리치 파이프라인 세팅
 	{

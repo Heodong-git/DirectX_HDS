@@ -49,7 +49,7 @@ void Turret::Start()
 	m_DebugRender->GetTransform()->SetLocalScale(float4{ 4.0f , 4.0f , 1.0f});
 	m_DebugRender->Off();
 
-	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::MONSTER);
+	m_Collision = CreateComponent<GameEngineCollision>(ColOrder::TURRET);
 	m_Collision->GetTransform()->SetLocalScale(float4{ 50.0f , 70.0f , 1.0f });
 	m_Collision->SetColType(ColType::OBBBOX3D);
 	m_Collision->Off();

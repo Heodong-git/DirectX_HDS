@@ -54,4 +54,5 @@ enum class ColOrder
 	PARTITION,
 	BULLET,
 	SLIDINGDOOR,
+	TURRET,
 };

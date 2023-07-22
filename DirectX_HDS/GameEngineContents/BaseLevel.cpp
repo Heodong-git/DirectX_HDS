@@ -14,6 +14,7 @@
 #include "Go_UI.h"
 #include "DistotionEffect.h"
 #include "GlitchEffect.h"
+#include "OldFilmEffect.h"
 
 
 BaseLevel::BaseLevel()
@@ -52,6 +53,7 @@ void BaseLevel::Start()
 	// 카메라이펙트 생성
 	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	m_GlitchEffect = GetLastTarget()->CreateEffect<GlitchEffect>();
+	m_OldFilmEffect = GetLastTarget()->CreateEffect<OldFilmEffect>();
 }
 
 void BaseLevel::Update(float _DeltaTime)

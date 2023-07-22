@@ -10,5 +10,6 @@
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="GlitchShader.hlsl" />
+    <FxCompile Include="OldFilmShader.hlsl" />
   </ItemGroup>
 </Project>
