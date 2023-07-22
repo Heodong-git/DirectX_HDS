@@ -16,7 +16,6 @@ void KatanaFadeEffect::Start(GameEngineRenderTarget* _Target)
 	FadeUnit->SetPipeLine("KatanaFade");
 
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
-
 	FadeUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
 
 	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
@@ -24,19 +23,30 @@ void KatanaFadeEffect::Start(GameEngineRenderTarget* _Target)
 
 void KatanaFadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-	BaseValue.Mouse = GameEngineWindow::GetMousePosition();
-	BaseValue.Mouse.z = GameEngineInput::IsPress("EngineMouseLeft");
-	BaseValue.Mouse.w = GameEngineInput::IsPress("EngineMouseLeft");
+	if (0 > m_EffectTime)
+	{
+		m_IsUpdate = false;
+		m_EffectTime = 0.8f;
+		m_Complete = true;
+		return;
+	}
 
-	BaseValue.Time.x += _DeltaTime;
-	BaseValue.Time.y = _DeltaTime;
 
-	ResultTarget->Clear();
-	FadeUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
-	ResultTarget->Setting();
-	FadeUnit->Render(_DeltaTime);
-	FadeUnit->ShaderResHelper.AllResourcesReset();
+	if (true == m_IsUpdate)
+	{
+		m_EffectTime -= _DeltaTime;
+		BaseValue.Time.x += _DeltaTime;
+		BaseValue.Time.y = _DeltaTime;
 
-	_Target->Clear();
-	_Target->Merge(ResultTarget);
+		ResultTarget->Clear();
+		FadeUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
+		ResultTarget->Setting();
+		FadeUnit->Render(_DeltaTime);
+		FadeUnit->ShaderResHelper.AllResourcesReset();
+
+		_Target->Clear();
+		_Target->Merge(ResultTarget);
+	}
+					  
+	
 }

@@ -104,9 +104,9 @@ void ContentsCore::ContentsResourcesCreate()
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("KatanaFade");
 
-		Pipe->SetVertexShader("KatanaFadeShder.hlsl");
+		Pipe->SetVertexShader("KatanaFadeShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("KatanaFadeShder.hlsl");
+		Pipe->SetPixelShader("KatanaFadeShader.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

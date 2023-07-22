@@ -43,6 +43,7 @@
 
 // test 
 #include "BloodEffect.h"
+#include "KatanaFadeEffect.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -2894,7 +2895,7 @@ void Player::ForceFallStart()
 {
 	GameEngineSound::Play("sound_transition_end.wav");
 	m_Render->ChangeAnimation("player_fall");
-	GetReturnCastLevel()->GetFadeEffect()->FadeOut();
+	GetReturnCastLevel()->GetKatanaFadeEffect()->EffectOn();
 }
 
 void Player::ForceFallUpdate(float _DeltaTime)
@@ -2988,32 +2989,14 @@ void Player::RecordingProgress_ForwardStart()
 // 정방향 재생 진행중, 여기부터 하면됨 
 void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 {
+	
+
 	// 레코딩이 종료 되었다면 아이들로 전환. 
 	if (true == m_Recording_Complete)
 	{
+		GameEngineSound::Play("sound_transition_end.wav");
+		GetReturnCastLevel()->GetKatanaFadeEffect()->EffectOn();
 		ChangeState(PlayerState::IDLE);
-		BaseLevel* CurLevel = GetReturnCastLevel();
-		LevelType CurLevelType = CurLevel->GetLevelType();
-
-		switch (CurLevelType)
-		{
-		case LevelType::CLUBMAP0:
-			// GetReturnCastLevel()->GetFadeEffect()->FadeOut();
-			GameEngineCore::ChangeLevel("ClubLevel_01");
-			break;
-		case LevelType::CLUBMAP1:
-			GameEngineCore::ChangeLevel("ClubLevel_02");
-			break;
-		case LevelType::CLUBMAP2:
-			GameEngineCore::ChangeLevel("ClubLevel_03");
-			break;
-		case LevelType::CLUBMAP3:
-			GameEngineCore::ChangeLevel("ClubLevel_Boss");
-			break;
-		case LevelType::CLUBMAP4:
-			GameEngineCore::ChangeLevel("ClubLevel_Boss");
-			break;
-		}
 		return;
 	}
 

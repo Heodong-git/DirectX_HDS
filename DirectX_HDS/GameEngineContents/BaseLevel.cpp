@@ -15,6 +15,7 @@
 #include "DistotionEffect.h"
 #include "GlitchEffect.h"
 #include "OldFilmEffect.h"
+#include "KatanaFadeEffect.h"
 
 
 BaseLevel::BaseLevel()
@@ -54,10 +55,47 @@ void BaseLevel::Start()
 	m_FadeEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	m_GlitchEffect = GetLastTarget()->CreateEffect<GlitchEffect>();
 	m_OldFilmEffect = GetLastTarget()->CreateEffect<OldFilmEffect>();
+	m_KatanaFadeEffect = GetLastTarget()->CreateEffect<KatanaFadeEffect>();
 }
 
 void BaseLevel::Update(float _DeltaTime)
 {
+	if (LevelType::CLUBBOSS0 == m_LevelType)
+	{
+		if (true == GetKatanaFadeEffect()->IsComplete())
+		{
+			GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
+			return;
+		}
+	}
+
+	if (true == GetKatanaFadeEffect()->IsComplete() && true == Player::MainPlayer->IsRecording())
+	{
+		LevelType CurLevelType = GetLevelType();
+
+		switch (CurLevelType)
+		{
+		case LevelType::CLUBMAP0:
+			// GetReturnCastLevel()->GetFadeEffect()->FadeOut();
+			GameEngineCore::ChangeLevel("ClubLevel_01");
+			break;
+		case LevelType::CLUBMAP1:
+			GameEngineCore::ChangeLevel("ClubLevel_02");
+			break;
+		case LevelType::CLUBMAP2:
+			GameEngineCore::ChangeLevel("ClubLevel_03");
+			break;
+		case LevelType::CLUBMAP3:
+			GameEngineCore::ChangeLevel("ClubLevel_Boss");
+			break;
+		case LevelType::CLUBMAP4:
+			GameEngineCore::ChangeLevel("ClubLevel_Boss");
+			break;
+		}
+
+		return;
+	}
+
 	// 마우스 포지션 저장
 	if (nullptr != Cursor::MainCursor)
 	{

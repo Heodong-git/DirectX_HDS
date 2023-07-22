@@ -25,6 +25,7 @@
 #include "Partition.h"
 
 #include "FadeEffect.h"
+#include "KatanaFadeEffect.h"
 
 ClubLevel_01::ClubLevel_01()
 {
@@ -58,9 +59,8 @@ void ClubLevel_01::Update(float _DeltaTime)
 
 void ClubLevel_01::LevelChangeStart()
 {
-	GameEngineSound::Play("sound_transition_begin.wav");
 
-	GetFadeEffect()->FadeIn();
+	GameEngineSound::Play("sound_transition_begin.wav");	   
 
 	GUISetting();
 

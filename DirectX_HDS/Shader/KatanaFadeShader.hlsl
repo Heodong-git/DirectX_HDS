@@ -12,7 +12,7 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
-OutPut OldTV_VS(Input _Value)
+OutPut KatanaFade_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
     OutPutValue.Pos = _Value.Pos;
@@ -37,49 +37,73 @@ SamplerState WRAP : register(s0);
 
 float DiamondMask(float2 p, float zoom)
 {
-    p.x += sin(p.y + Time.x) * 0.2f;
-    float2 q = abs((float2) zoom) - (float2) zoom * p;
-    return max(-q.x, q.y) - 0.25f * zoom;
+    float x0 = min(p.x, 1.0 - p.x);
+	
+    zoom *= 0.5f;
+    
+	// Upper half of the shape.
+    float y0 = 0.5 - x0 - zoom;
+	
+	// Lower half of the shape.
+    float y1 = 1.0 - y0;
+	
+	// Shade area inside shape.
+    if (p.y > y0 && p.y < y1)
+    {
+        return 1.0f;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 
 
-void mainImage(out float4 fragColor, in float4 fragCoord, in float2 iResolution, in float iTime)
+void mainImage(out float4 fragColor, in float2 fragCoord)
 {
     // Normalized pixel coordinates (from 0 to 1)
-    float2 uv = fragCoord.xy / iResolution.xy;
-    uv = fragCoord.xy / iResolution.y;
-
+    float2 uv = float2(fragCoord.x * ScreenSize.x, -fragCoord.y * ScreenSize.y) / ScreenSize.y;
     // Time varying pixel color
-    float3 col = 0.5 + 0.5 * cos(iTime + float3(uv.x, uv.y, uv.x + 2.0f));
-
-    float2 uv2 = frac(20.0f * uv);
-    float t = frac(0.8 * iTime);
-    float zoom = lerp(2.0, -2.0, t) + lerp(1.0f, -1.0f, uv.x);
     
+    float4 col;
+    if(Time.z != 0)
+    {
+        float3 tmp = 0.5 + 0.5 * cos(Time.x + uv.xyx + float3(0, 2, 4));
+        col = float4(tmp, 1);
+
+    }
+    else
+    {
+        col = float4(1, 1, 1, 1);
+    }
+                 
+    
+    float2 uv2 = frac(20.0f * uv);
+    float t = frac(0.8 * Time.x);
+    float zoom = lerp(2.0, -2.0, t) + lerp(1.0f, -1.0f, uv.x);
     if (DiamondMask(uv2, zoom) < 0.5f)
     {
         col *= 0.0f;
     }
 
     // Output to screen
-    fragColor = float4(col, 1.0f);
+    fragColor = col;
+
 }
 
-
-
-float4 OldTV_PS(OutPut _Value) : SV_Target0
+float4 KatanaFade_PS(OutPut _Value) : SV_Target0
 {
-    // float2 ScreenSize1 = {1280.0f, 720.0f};
-    
     float4 uv = _Value.UV;
-    //// uv.y = 1.0 - uv.y;
-    //               원래 10.0f               원래 50.0 >>> 
-    uv.x += sin(uv.y * 35.0f + Time.x * 15.0f) / 60.0;
+ 
+    float4 Color;
+ 
+    mainImage(Color, _Value.UV.xy);
+    float4 PlusColor = DiffuseTex.Sample(WRAP, uv.xy);
     
-    //// uv.x += Time.x * 0.1f;
-    float4 Color = DiffuseTex.Sample(WRAP, uv.xy);
+    Color += PlusColor;
+    Color.xyz -= 1;
     
-    //float4 Color;
-    //mainImage(Color, _Value.UV.xy);
+    Color = saturate(Color);
+    //Color.a = 1.0f;
     return Color;
 }

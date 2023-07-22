@@ -74,6 +74,7 @@ float4 Glitch_PS(OutPut _Value) : SV_Target0
         DiffuseTex.SampleLevel(WRAP, fixed_uv + float2(-shake_color_rate, 0.0), 0.0).b,
         enable_shift
     );
+    
     return pixel_color;
 }
 

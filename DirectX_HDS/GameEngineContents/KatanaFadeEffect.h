@@ -18,12 +18,19 @@ public:
 	void EffectOn()
 	{
 		m_IsUpdate = true;
+		m_EffectTime = 0.8f;
 	}
 
 	void EffectOff()
 	{
 		m_IsUpdate = false;
 	}
+
+	const bool IsComplete() const
+	{
+		return m_Complete;							
+	}
+	
 
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
@@ -32,5 +39,7 @@ protected:
 private:
 	RenderBaseValue BaseValue;
 	std::shared_ptr<GameEngineRenderUnit> FadeUnit;
+	float m_EffectTime = 0.0f;
 	bool m_IsUpdate = false;
+	bool m_Complete = false;
 };

@@ -98,6 +98,11 @@ public:
 	{
 		return m_OldFilmEffect;
 	}
+
+	std::shared_ptr<class KatanaFadeEffect> GetKatanaFadeEffect()
+	{
+		return m_KatanaFadeEffect;
+	}
 	
 	// ---------------------Stage ฐüทร ----------------------
 	inline void PlusMonsterCount()
@@ -211,6 +216,7 @@ protected:
 	std::shared_ptr<class DistotionEffect> m_DistotionEffect = nullptr;
 	std::shared_ptr<class GlitchEffect> m_GlitchEffect = nullptr;
 	std::shared_ptr<class OldFilmEffect> m_OldFilmEffect = nullptr;
+	std::shared_ptr<class KatanaFadeEffect> m_KatanaFadeEffect = nullptr;
 
 private:
 	const float m_RecordingTimeScale = 10.0f;

@@ -26,7 +26,7 @@ TitleLevel::TitleLevel()
 
 TitleLevel::~TitleLevel()
 {
-
+		
 }
 
 void TitleLevel::Start()
@@ -36,7 +36,7 @@ void TitleLevel::Start()
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
 	BaseLevel::Start();
-
+			
 	
 }
 

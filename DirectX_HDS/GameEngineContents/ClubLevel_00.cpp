@@ -28,6 +28,8 @@
 #include "FadeEffect.h"
 #include "Partition.h"
 
+#include "KatanaFadeEffect.h"
+
 // test °³ÀßµÊ 
 //#include <GameEngineCore/GameEngineFont.h>
 //#include <GameEngineCore/GameEngineFontRenderer.h>
@@ -65,6 +67,7 @@ void ClubLevel_00::Start()
 	std::shared_ptr<GameEngineFontRenderer> FontRender = dd->CreateComponent<GameEngineFontRenderer>(300);
 	FontRender->SetFont("ÈÞ¸ÕµÕ±ÙÇìµå¶óÀÎ");
 	FontRender->SetText("ÁË¼ÛÇÕ´Ï´Ù~~~~~");*/
+	
 }
 
 void ClubLevel_00::Update(float _DeltaTime)
@@ -96,8 +99,6 @@ void ClubLevel_00::LoadSound()
 void ClubLevel_00::LevelChangeStart()
 {
 	GameEngineSound::Play("sound_transition_begin.wav");
-
-	GetFadeEffect()->FadeIn();
 
 	GUISetting();
 

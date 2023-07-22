@@ -78,6 +78,6 @@ float4 OldTV_PS(OutPut _Value) : SV_Target0
     float4 Color = DiffuseTex.Sample(WRAP, uv.xy);
     
     //float4 Color;
-    //mainImage(Color, _Value.UV.xy);
+    // mainImage(Color, _Value.UV.xy);
     return Color;
 }
