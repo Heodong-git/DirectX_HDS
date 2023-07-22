@@ -56,7 +56,7 @@ void ClubLevel_00::Start()
 
 	SetState(BaseLevel::LevelState::WAIT);
 
-
+	
 
 	// 폰트사용시 인터페이스임 
 	/*GameEngineFont::Load("휴먼둥근헤드라인");

@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "SlashEffect.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
 #include <GameEngineCore/GameEngineComponent.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -8,6 +10,8 @@
 #include "PlaySupporter.h"
 
 #include "SlashLaser_Effect.h"
+
+#include "BloodEffect.h"
 
 SlashEffect::SlashEffect()
 {
@@ -171,6 +175,7 @@ void SlashEffect::ComponentSetting()
 // 현재 몬스터, 문은 경직완료 
 void SlashEffect::CollisionUpdate(float _DeltaTime)
 {
+	// 다 여기서 죽일까 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Col)
 	{
@@ -178,6 +183,11 @@ void SlashEffect::CollisionUpdate(float _DeltaTime)
 		//Col->GetActor()->DynamicThis<BaseActor>()->SetDeath();
 		// 이때 몬스터랑 충돌했다면 카메라 이펙트 호출 
 		
+		float RandomValue = GameEngineRandom::MainRandom.RandomFloat(35.0f, 60.0f);
+		std::weak_ptr<BloodEffect> Blood_Effect = GetLevel()->CreateActor<BloodEffect>();
+		Blood_Effect.lock()->SetType(BloodType::NORMAL);
+		Blood_Effect.lock()->GetTransform()->SetWorldPosition(Col->GetTransform()->GetWorldPosition() + float4 { 0.0f, RandomValue });
+
 		SlashSoundPlay();
 		PlaySupporter::MainSupporter->CameraShakeOn();
 		PlaySupporter::MainSupporter->CameraZoomEffect(0.97f);

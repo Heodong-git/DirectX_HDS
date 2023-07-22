@@ -76,7 +76,7 @@ void PlaySupporter::LevelChangeEnd()
 	LevelType CurLevelType = GetReturnCastLevel()->GetLevelType();
 	switch (CurLevelType)
 	{
-	case LevelType::CLUBMAP4:
+	case LevelType::CLUBMAP3:
 	{
 		m_BGMPlayer.Stop();
 	}

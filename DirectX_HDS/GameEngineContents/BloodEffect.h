@@ -4,9 +4,7 @@
 enum class BloodType
 {
 	NONE,
-	FIRST,
-	SECOND,
-	THIRD,
+	NORMAL,
 };
 
 // Ό³Έν :
@@ -37,5 +35,5 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> m_Render = nullptr;
-	BloodType m_Type = BloodType::NONE;
+	BloodType m_CurType = BloodType::NONE;
 };

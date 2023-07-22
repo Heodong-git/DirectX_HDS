@@ -164,7 +164,7 @@ void Monster_Gangster::ComponentSetting()
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ 50.0f , 50.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0.0f, m_RenderPivot });
 
-	m_AimCollision->GetTransform()->SetLocalScale(float4{ 550.0f , 20.0f });
+	m_AimCollision->GetTransform()->SetLocalScale(float4{ 350.0f , 20.0f });
 	m_AimCollision->GetTransform()->SetLocalPosition({ 275.0f, m_RenderPivot });
 	m_AimCollision->SetColType(ColType::OBBBOX3D);
 
@@ -735,9 +735,11 @@ void Monster_Gangster::TurnEnd()
 
 void Monster_Gangster::HitGroundStart()
 {
+	
 	m_HitPos = float4{ 0.0f, 0.0f };
 	DirCheck();
 	m_MainRender->ChangeAnimation("gangster_hitground");
+	m_MainRender->GetTransform()->AddLocalPosition(float4::Down * 4.0f);
 	m_IsDeath = true;
 }
 
@@ -792,6 +794,7 @@ void Monster_Gangster::HitGroundUpdate(float _DeltaTime)
 void Monster_Gangster::HitGroundEnd()
 {
 	m_HitPos = float4{ 0.0f, 0.0f };
+	m_MainRender->GetTransform()->AddLocalPosition(float4::Up * 4.0f);
 	m_IsDeath = false;
 }
 

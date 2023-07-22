@@ -40,6 +40,10 @@
 #include "Trail_Effect.h"
 #include "GlitchEffect.h"
 
+
+// test 
+#include "BloodEffect.h"
+
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
@@ -64,6 +68,7 @@ void Player::BulletCollision()
 
 void Player::Start()
 {
+	
 	// 액터 스타트 기본인터페이스 구성
 	// 키생성
 	// 컴포넌트 세팅
@@ -2792,6 +2797,10 @@ void Player::DoorBreakEnd()
 // 죽었을때 좀 예쁘게 날아가게 바꿔야함
 void Player::DeathStart()
 {
+	std::weak_ptr<BloodEffect> Effect = GetLevel()->CreateActor<BloodEffect>();
+	Effect.lock()->SetType(BloodType::NORMAL);
+	Effect.lock()->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4::Up * 60.0f);
+
 	// 이때 뭐에죽었는지 구분해서 상황에 따라서 애니메이션 변경 
 	m_HitPos = GetTransform()->GetLocalPosition();
 	DirCheck();

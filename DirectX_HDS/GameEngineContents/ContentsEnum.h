@@ -6,6 +6,7 @@ enum class RenderOrder
 	MAP,
 	WALL,
 	DOOR,
+	BLOOD_EFFECT,
 	MONSTER_BLOOD,
 	TURRET_BODY,
 	MONSTER,

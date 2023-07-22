@@ -3,8 +3,8 @@
 #include "BaseLevel.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
-
 #include "Player.h"
+#include "BloodEffect.h"
 
 BaseActor::BaseActor()
 {
@@ -173,6 +173,7 @@ void BaseActor::Play_RecordingForward(GameEngineSpriteRenderer* _Render)
 		MsgAssert("렌더러가 nullptr 입니다.");
 		return;
 	}
+
 
 	// 정방향일때 저장되어있는 프레임값을 --
 	if (0 < m_Recording_StartFrame)

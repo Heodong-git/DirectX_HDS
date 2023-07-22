@@ -56,15 +56,6 @@ void BaseLevel::Start()
 
 void BaseLevel::Update(float _DeltaTime)
 {
-	// 역재생완료체크
-	if (true == Player::MainPlayer->IsRecording())
-	{
-		if (nullptr != m_GlitchEffect)
-		{
-			m_GlitchEffect->EffectOn();
-		}
-	}
-	
 	// 마우스 포지션 저장
 	if (nullptr != Cursor::MainCursor)
 	{

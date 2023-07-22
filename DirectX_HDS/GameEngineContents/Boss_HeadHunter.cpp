@@ -136,7 +136,7 @@ void Boss_HeadHunter::HitSoundPlay()
 		m_SoundPlayer = GameEngineSound::Play("sound_voiceboss_huntress_hurt_3.wav");
 		break;
 	}
-	
+
 }
 
 void Boss_HeadHunter::WallJumpSoundPlay()
@@ -189,7 +189,7 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 			std::weak_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 			Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount] });
-			
+
 			++m_CurFireAngleCount;
 			return;
 		}
@@ -214,13 +214,13 @@ void Boss_HeadHunter::RotaitionFireUpdate(float _DeltaTime)
 			std::weak_ptr<GunSpark_Effect> Effect = GetLevel()->CreateActor<GunSpark_Effect>();
 			Effect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 			Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f, 0.0f, m_vecFireAngle[m_CurFireAngleCount_Reverse] });
-			
+
 			--m_CurFireAngleCount_Reverse;
 			return;
 		}
-		
+
 	}
-	
+
 	m_RotaitionFireTime -= _DeltaTime;
 }
 
@@ -324,7 +324,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turret_deploy.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turretdie.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_walkthroughdoorway.wav").GetFullPath());
-		
+
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -334,7 +334,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_takeout_rifle", .SpriteName = "headhunter_takeout_rifle", .Start = 0, .End = 14 ,
 								  .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_roll", .SpriteName = "headhunter_roll", .Start = 0, .End = 6 ,
-								    .FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
+									.FrameInter = 0.055f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_recover", .SpriteName = "headhunter_recover", .Start = 0, .End = 3 ,
 							  .FrameInter = 0.03f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_jump", .SpriteName = "headhunter_jump", .Start = 0, .End = 2 ,
@@ -372,7 +372,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 	// 0.17 , false 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_nohead", .SpriteName = "headhunter_nohead", .Start = 0, .End = 5 ,
 							  .FrameInter = 0.17f , .Loop = false , .ScaleToTexture = true });
-	
+
 	{
 		std::vector<float> vFrameTime = std::vector<float>();
 		vFrameTime.push_back(0.1f);
@@ -421,7 +421,7 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 
 		m_MainRender->CreateAnimation(Para);
 	}
-	
+
 	m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(5), std::bind(&Boss_HeadHunter::CreateRifleEffect, this));
 	// m_MainRender->SetAnimationStartEvent("headhunter_takeout_rifle", static_cast<size_t>(11), std::bind(&Boss_HeadHunter::RifleShotSoundPlay, this));
 	m_MainRender->SetAnimationStartEvent("headhunter_dash_end_ground", static_cast<size_t>(0), std::bind(&Boss_HeadHunter::AttCollisionOn, this));
@@ -496,9 +496,9 @@ void Boss_HeadHunter::CreateRifleEffect()
 
 	if (true == m_Dir)
 	{
-		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x , m_RifleEffectPivot.y , 1.0f });
+		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x, m_RifleEffectPivot.y, 1.0f });
 	}
-	
+
 	else if (false == m_Dir)
 	{
 		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y, 1.0f });
@@ -648,9 +648,9 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Player_AttCol = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Player_AttCol)
 	{
-	
+
 		HitSoundPlay();
-		
+
 		// 충돌했는데 내가 모리번드상태라면 
 		if (BossState::MORIBUND == m_CurState)
 		{
@@ -688,9 +688,9 @@ void Boss_HeadHunter::HitUpdate(float _DeltaTime)
 		{
 			m_HitEndPos = m_HitPos + float4{ -100.0f, 0.0f};
 		}
-		
 
-		m_MiddlePos = m_HitPos + float4{ (m_HitEndPos.x - m_HitPos.x) / 2.0f , 25.0f };
+
+		m_MiddlePos = m_HitPos + float4{ (m_HitEndPos.x - m_HitPos.x) / 2.0f, 25.0f };
 		ChangeState(BossState::HURT);
 		return;
 	}
@@ -704,14 +704,14 @@ void Boss_HeadHunter::DebugUpdate()
 
 		if (true == IsDebug())
 		{
-			
+
 			m_DebugRender->On();
 			m_DebugRender_Right->On();
 		}
 
 		else if (false == IsDebug())
 		{
-			
+
 			m_DebugRender->Off();
 			m_DebugRender_Right->Off();
 		}
@@ -768,7 +768,7 @@ void Boss_HeadHunter::SummonsMonstersUpdate(float _DeltaTime)
 			Pomp->ChangeState(PompState::CHASE);
 			Pomp->On();
 		}
-		
+
 		{
 			std::shared_ptr<Monster_Pomp> Pomp = m_SummonsMonsters[5]->DynamicThis<Monster_Pomp>();
 			Pomp->ChangeState(PompState::CHASE);
@@ -1243,7 +1243,7 @@ void Boss_HeadHunter::IntroStart()
 {
 	m_Dir = false;
 	DirCheck();
-	m_MainRender->ChangeAnimation("headhunter_intro"); 
+	m_MainRender->ChangeAnimation("headhunter_intro");
 }
 
 void Boss_HeadHunter::IntroUpdate(float _DeltaTime)
@@ -1348,13 +1348,13 @@ void Boss_HeadHunter::RifleStart()
 	DirCheck();
 	m_MainRender->ChangeAnimation("headhunter_takeout_rifle");
 }
- 
+
 void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 {
 	CreateTrailEffect();
 	// 애니메이션이 종료되었거나, 이펙트가 데스상태라면
 	if (true == m_MainRender->IsAnimationEnd() && EffectState::DEATH == m_Effect.lock()->GetCurState())
-	{ 
+	{
 		if (BossPhase::FIRST == m_CurPhase)
 		{
 			m_Effect.lock() = nullptr;
@@ -1376,7 +1376,7 @@ void Boss_HeadHunter::RifleUpdate(float _DeltaTime)
 			return;
 		}
 
-		
+
 		if (BossPhase::SECOND == m_CurPhase)
 		{
 			m_Effect.lock() = nullptr;
@@ -1437,7 +1437,7 @@ void Boss_HeadHunter::GunEnd()
 void Boss_HeadHunter::GunShotStart()
 {
 	m_MainRender->ChangeAnimation("headhunter_gun_shot");
-	
+
 	m_GunShot_StandardPos = m_MainRender->GetTransform()->GetLocalPosition();
 }
 
@@ -1453,7 +1453,7 @@ void Boss_HeadHunter::GunShotUpdate(float _DeltaTime)
 		m_MainRender->GetTransform()->SetLocalPosition(m_GunShot_StandardPos + float4 { 4.0f, 0.0f });
 		break;
 	case 2:
-		m_MainRender->GetTransform()->SetLocalPosition(m_GunShot_StandardPos + float4 { 19.0f , 0.0f });
+		m_MainRender->GetTransform()->SetLocalPosition(m_GunShot_StandardPos + float4 { 19.0f, 0.0f });
 		break;
 	case 3:
 		m_MainRender->GetTransform()->SetLocalPosition(m_GunShot_StandardPos + float4 { 19.0f, 2.0f });
@@ -1470,12 +1470,12 @@ void Boss_HeadHunter::GunShotUpdate(float _DeltaTime)
 	case 7:
 		m_MainRender->GetTransform()->SetLocalPosition(m_GunShot_StandardPos + float4 { 0.0f, 0.0f });
 		break;
-	//case 2:
-	//	GetTransform()->SetWorldPosition(m_GunShot_StandardPos + float4{ -20.0f, 0.0f, 0.0f });
-	//	break;
-	//case 3:
-	//	GetTransform()->SetWorldPosition(m_GunShot_StandardPos + float4{ -20.0f, 0.0f, 0.0f });
-	//	break;
+		//case 2:
+		//	GetTransform()->SetWorldPosition(m_GunShot_StandardPos + float4{ -20.0f, 0.0f, 0.0f });
+		//	break;
+		//case 3:
+		//	GetTransform()->SetWorldPosition(m_GunShot_StandardPos + float4{ -20.0f, 0.0f, 0.0f });
+		//	break;
 	}
 
 
@@ -1488,7 +1488,7 @@ void Boss_HeadHunter::GunShotUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::GunShotEnd()
 {
-	m_MainRender->GetTransform()->SetLocalPosition(float4 { 0.0f, 42.0f});
+	m_MainRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 42.0f });
 }
 
 // -------------------- Gun 보류 ---------------------------
@@ -1595,11 +1595,11 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 			PixelCollider::PixelCol->GroundCheck(this);
 			ChangeState(BossState::RECOVER);
 		}
-		
+
 		return;
 	}
 
-	m_Ratio += _DeltaTime / 0.5f ;
+	m_Ratio += _DeltaTime / 0.5f;
 	if (1.0f <= m_Ratio)
 	{
 		m_Ratio = 1.0f;
@@ -1642,8 +1642,8 @@ void Boss_HeadHunter::HurtUpdate(float _DeltaTime)
 		}
 
 		// 만약 검은색  픽셀이라면 아래로만 이동시킨다. 
-		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + m_DebugPivot) && 
-				 PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
+		else if (PixelCollider::g_BlackPixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition() + m_DebugPivot) &&
+			PixelCollider::g_WhitePixel == PixelCollider::PixelCol->PixelCollision(m_NextTrans->GetWorldPosition()))
 		{
 			GetTransform()->AddLocalPosition(float4::Down * 20.0f * _DeltaTime);
 		}
@@ -1772,7 +1772,7 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 		if (true == PlayerLiveCheck())
 		{
 			Player::MainPlayer->ChangeState(PlayerState::FORCEFALL);
-			
+
 			m_CurPhase = BossPhase::SECOND;
 			return;
 		}
@@ -1784,14 +1784,14 @@ void Boss_HeadHunter::ChangePhaseUpdate(float _DeltaTime)
 
 		m_SetMine = true;
 		m_Mines.reserve(m_MineCount);
-		float4 MinePos = { -600.0f, -202.0f};
+		float4 MinePos = { -600.0f, -202.0f };
 		float XPos = 0.0f;
 		float LimitTime = 0.3f;
 		for (size_t i = 0; i < m_MineCount; i++)
 		{
 			std::shared_ptr<Remote_Mine> Mine = GetLevel()->CreateActor<Remote_Mine>();
 			Mine->GetTransform()->SetWorldPosition(float4{ MinePos.x + XPos, MinePos.y });
-			
+
 			Mine->AddTimeLimit(LimitTime);
 			XPos += 60.0f;
 			LimitTime += 0.1f;
@@ -1819,7 +1819,7 @@ void Boss_HeadHunter::JumpStart()
 		m_Dir = false;
 		break;
 	}
-	
+
 	m_Collision->Off();
 	GameEngineSound::Play("sound_boss_huntress_jump_01.wav");
 	m_JumpStartPos = GetTransform()->GetLocalPosition();
@@ -1829,7 +1829,7 @@ void Boss_HeadHunter::JumpStart()
 void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 {
 	CreateTrailEffect();
-	
+
 	m_Ratio += _DeltaTime / 0.5f;
 	if (1.0f <= m_Ratio)
 	{
@@ -1863,7 +1863,7 @@ void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 	if (false == m_Dir)
 	{
 		// 중간지점, 도착지점을 정해야함 
- 		float4 MiddlePos = float4{ 451.0f, -96.0f };
+		float4 MiddlePos = float4{ 451.0f, -96.0f };
 		float4 EndPos = m_TeleportRightWallPos;
 
 		float4 MovePos = float4::Lerp(m_JumpStartPos, MiddlePos, m_Ratio * 2.0f);
@@ -1882,7 +1882,7 @@ void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 
 		return;
 	}
-	
+
 }
 
 void Boss_HeadHunter::JumpEnd()
@@ -1945,7 +1945,7 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 		{
 			// 얘를 죽이지않아야함 
 			// 여기서 애니메이션이 종료되면, 
-			
+
 			m_SweepEffect.lock()->EffectDeath();
 			// m_SweepEffect = nullptr;
 		}
@@ -1963,7 +1963,7 @@ void Boss_HeadHunter::SweepUpdate(float _DeltaTime)
 		return;
 	}
 
-	m_SweepEffect.lock()->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } * m_SweepRotSpeed * _DeltaTime);
+	m_SweepEffect.lock()->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, -10.0f } *m_SweepRotSpeed * _DeltaTime);
 }
 
 // 스윕 이후 레이저 이펙트의 충돌체가 남아있긴한데 치트가 아니면 플레이어가 그 위치로 이동할 일이 없으니까
@@ -2043,7 +2043,7 @@ void Boss_HeadHunter::TurretSummonsUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::TurretSummonsEnd()
 {
-	m_PhaseDuration = 0.0f; 
+	m_PhaseDuration = 0.0f;
 }
 
 void Boss_HeadHunter::DashStart()
@@ -2110,11 +2110,11 @@ void Boss_HeadHunter::DashEndUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::DashEndEnd()
 {
-	
+
 }
 
 void Boss_HeadHunter::TpInCeilingStart()
-{	
+{
 	// 애니메이션 변경하고 
 	m_MainRender->ChangeAnimation("headhunter_teleportin_ceiling");
 	DirCheck();
@@ -2139,7 +2139,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 		CreateRifleEffect();
 		return;
 	}
-	
+
 	if (2 == m_TpCount)
 	{
 		GameEngineSound::Play("headhunter_lockon.wav");
@@ -2220,7 +2220,7 @@ void Boss_HeadHunter::TpInRifleStart()
 		m_Dir = false;
 		GetTransform()->SetWorldPosition(m_TpRifleRightPos);
 		GetTransform()->SetLocalPositiveScaleX();
- 		CreateRifleEffect();
+		CreateRifleEffect();
 	}
 
 	else if (2 == RandomValue)
@@ -2308,7 +2308,7 @@ void Boss_HeadHunter::TpInWallStart()
 	{
 		// 일단 왼쪽부터 
 		m_Dir = false;
-		
+
 		GetTransform()->SetWorldPosition(m_TeleportRightWallPos);
 		GetTransform()->SetLocalNegativeScaleX();
 	}
@@ -2335,12 +2335,12 @@ void Boss_HeadHunter::TpInWallUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::TpInWallEnd()
 {
-	
+
 }
 
 void Boss_HeadHunter::JumpRifleStart()
 {
-	
+
 	WallJumpSoundPlay();
 	m_MainRender->ChangeAnimation("headhunter_jump_rifle");
 	if (true == m_Dir)
@@ -2360,7 +2360,7 @@ void Boss_HeadHunter::JumpRifleStart()
 
 void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 {
- 	CreateTrailEffect();
+	CreateTrailEffect();
 	// ??
 	if (m_FireAngleCount == m_CurFireAngleCount)
 	{
@@ -2492,12 +2492,12 @@ void Boss_HeadHunter::JumpRifleUpdate(float _DeltaTime)
 			return;
 		}
 	}
-	
+
 }
 
 void Boss_HeadHunter::JumpRifleEnd()
 {
-	
+
 	m_Ratio = 0.0f;
 	m_CurFireAngleCount = 0;
 	m_CurFireAngleCount_Reverse = m_FireAngleCount_Reverse;
@@ -2523,7 +2523,7 @@ void Boss_HeadHunter::JumpRifleLandUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::JumpRifleLandEnd()
 {
-	
+
 }
 
 void Boss_HeadHunter::MoribundStart()
@@ -2563,7 +2563,7 @@ void Boss_HeadHunter::MoribundUpdate(float _DeltaTime)
 		DirCheck();
 		GetTransform()->AddLocalPosition(MovePos.NormalizeReturn() * 2.0f * _DeltaTime);
 	}
-	
+
 	else if (abs(X) < 10.0f)
 	{
 		m_MainRender->SetAnimPauseOn();
@@ -2602,7 +2602,7 @@ void Boss_HeadHunter::NoHeadUpdate(float _DeltaTime)
 		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 10.0f });
 		break;
 	case 4:
-		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f , 1.5f});
+		GetTransform()->SetWorldPosition(m_NoHeadStatePos + float4 { 0.0f, 1.5f});
 		break;
 	case 5:
 		GetTransform()->SetWorldPosition(m_NoHeadStatePos);
@@ -2610,8 +2610,6 @@ void Boss_HeadHunter::NoHeadUpdate(float _DeltaTime)
 	default:
 		break;
 	}
-
-
 }
 
 void Boss_HeadHunter::NoHeadEnd()
