@@ -29,7 +29,7 @@ void OldFilmEffect::Start(GameEngineRenderTarget* _Target)
 	OldUnit->SetMesh("FullRect");
 	OldUnit->SetPipeLine("OldFilm");
 
-	OldData.x = 10.0f;
+	OldData.x = 3.5f;
 
 	OldUnit->ShaderResHelper.SetConstantBufferLink("OldFilmData", OldData);
 

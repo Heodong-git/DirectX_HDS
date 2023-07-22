@@ -17,7 +17,7 @@
 #include "TitleBackGround.h"
 
 // test
-#include "OldFilmEffect.h"
+#include "KatanaFadeEffect.h"
 
 TitleLevel::TitleLevel()
 {
@@ -26,6 +26,7 @@ TitleLevel::TitleLevel()
 
 TitleLevel::~TitleLevel()
 {
+
 }
 
 void TitleLevel::Start()
@@ -35,6 +36,8 @@ void TitleLevel::Start()
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
 	BaseLevel::Start();
+
+	
 }
 
 void TitleLevel::Update(float _DeltaTime)

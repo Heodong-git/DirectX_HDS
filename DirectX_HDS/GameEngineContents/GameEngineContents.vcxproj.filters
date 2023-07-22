@@ -219,6 +219,9 @@
     <ClInclude Include="OldFilmEffect.h">
       <Filter>02.Actor\08.CameraEffect\OldTV</Filter>
     </ClInclude>
+    <ClInclude Include="KatanaFadeEffect.h">
+      <Filter>02.Actor\08.CameraEffect\KatanaFadeEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -438,6 +441,9 @@
     <ClCompile Include="OldFilmEffect.cpp">
       <Filter>02.Actor\08.CameraEffect\OldTV</Filter>
     </ClCompile>
+    <ClCompile Include="KatanaFadeEffect.cpp">
+      <Filter>02.Actor\08.CameraEffect\KatanaFadeEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">
@@ -637,6 +643,9 @@
     </Filter>
     <Filter Include="02.Actor\08.CameraEffect\OldTV">
       <UniqueIdentifier>{cbaea733-6959-45d8-b223-bf859cb54246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Actor\08.CameraEffect\KatanaFadeEffect">
+      <UniqueIdentifier>{666cc27b-8b6a-4ed7-b51a-997dda6cbe94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

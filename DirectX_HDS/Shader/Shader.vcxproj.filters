@@ -11,5 +11,6 @@
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="GlitchShader.hlsl" />
     <FxCompile Include="OldFilmShader.hlsl" />
+    <FxCompile Include="KatanaFadeShader.hlsl" />
   </ItemGroup>
 </Project>

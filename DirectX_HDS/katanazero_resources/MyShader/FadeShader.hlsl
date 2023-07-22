@@ -39,3 +39,4 @@ float4 Fade_PS(OutPut _Value) : SV_Target0
     Color.xyz *= Value;
     return Color;
 }
+

@@ -88,6 +88,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetPixelShader("FadeShader.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
+
 	}
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldTV");
@@ -98,6 +99,18 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetBlendState("OldFilm");
 		Pipe->SetDepthState("EngineDepth");
 	}
+
+	// 카타나제로 페이드인아웃 세팅
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("KatanaFade");
+
+		Pipe->SetVertexShader("KatanaFadeShder.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("KatanaFadeShder.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
 	// 올드필름 파이프라인 세팅
 	{
 		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldFilm");
@@ -108,8 +121,6 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetBlendState("OldFilm");
 		Pipe->SetDepthState("EngineDepth");
 	}
-
-
 
 	// 글리치 파이프라인 세팅
 	{
