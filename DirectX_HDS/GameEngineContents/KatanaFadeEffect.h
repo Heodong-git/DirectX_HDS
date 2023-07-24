@@ -15,10 +15,15 @@ public:
 	KatanaFadeEffect& operator=(const KatanaFadeEffect& _Other) = delete;
 	KatanaFadeEffect& operator=(KatanaFadeEffect&& _Other) noexcept = delete;
 
+	inline const float GetEffectTime()
+	{
+		return m_EffectTime;
+	}
+
 	void EffectOn()
 	{
 		m_IsUpdate = true;
-		m_EffectTime = 0.8f;
+		m_EffectTime = 1.2f;
 	}
 
 	void EffectOff()
@@ -31,6 +36,11 @@ public:
 		return m_Complete;							
 	}
 	
+
+	inline const bool IsUpdate()
+	{
+		return m_IsUpdate;
+	}
 
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;

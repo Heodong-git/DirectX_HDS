@@ -17,7 +17,7 @@
 #include "TitleBackGround.h"
 
 // test
-#include "KatanaFadeEffect.h"
+#include "Ending_Texture.h"
 
 TitleLevel::TitleLevel()
 {
@@ -36,7 +36,9 @@ void TitleLevel::Start()
 	ActorLoad();
 	SetState(BaseLevel::LevelState::WAIT);
 	BaseLevel::Start();
-			
+
+	
+	// CreateActor<Ending_Texture>();
 	
 }
 

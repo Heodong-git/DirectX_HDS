@@ -17,6 +17,8 @@ public:
 	Hud& operator=(const Hud& _Other) = delete;
 	Hud& operator=(Hud&& _Other) noexcept = delete;
 
+	void RenderOff();
+	
 protected:
 	void Start() override;
 private:

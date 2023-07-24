@@ -247,6 +247,10 @@ void Player::NextPosUpdate()
 
 void Player::Update(float _DeltaTime)
 {
+	
+	
+
+
 	// 정방향 재생인지 체크 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
 		PlayerState::RECORDING_PROGRESS_FORWARD != m_CurState)
@@ -877,6 +881,9 @@ void Player::UpdateState(float _DeltaTime)
 	case PlayerState::RECORDING_PROGRESS_FORWARD:
 		RecordingProgress_ForwardUpdate(_DeltaTime);
 		break;
+	case PlayerState::GAME_END:
+		GameEndUpdate(_DeltaTime);
+		break;
 	}
 }
 
@@ -947,6 +954,10 @@ void Player::ChangeState(PlayerState _State)
 	case PlayerState::RECORDING_PROGRESS_FORWARD:
 		RecordingProgress_ForwardStart();
 		break;
+	case PlayerState::GAME_END:
+		GameEndStart();
+		break;
+		
 	}
 
 	// 이전 state의 end 
@@ -1008,6 +1019,9 @@ void Player::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::RECORDING_PROGRESS_FORWARD:
 		RecordingProgress_ForwardEnd();
+		break;
+	case PlayerState::GAME_END:
+		GameEndEnd();
 		break;
 	}
 }
@@ -3019,4 +3033,16 @@ void Player::RecordingProgress_ForwardEnd()
 	m_SoundPlayer.Stop();
 	GetReturnCastLevel()->GetOldFilmEffect()->EffectOff();
 	m_Reverse_FrameCount = 0;
+}
+
+void Player::GameEndStart()
+{
+}
+
+void Player::GameEndUpdate(float _DeltaTime)
+{
+}
+
+void Player::GameEndEnd()
+{
 }

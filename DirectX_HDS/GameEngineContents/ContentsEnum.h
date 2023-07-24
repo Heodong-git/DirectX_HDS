@@ -24,6 +24,7 @@ enum class RenderOrder
 	DEBUG,
 	CURSOR,
 	LEVELCHANGE_OBJ,
+	GAME_END,
 };
 
 enum class ColOrder

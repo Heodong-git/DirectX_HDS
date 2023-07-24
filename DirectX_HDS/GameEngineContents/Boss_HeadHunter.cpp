@@ -325,7 +325,11 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turret_deploy.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_turretdie.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_walkthroughdoorway.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_head_1.wav").GetFullPath());
 
+
+		// 브금하나넣어 
+		GameEngineSound::Load(Dir.GetPlusFileName("song_ending.ogg").GetFullPath());
 	}
 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_idle", .SpriteName = "headhunter_idle", .Start = 0, .End = 11 ,
@@ -2583,6 +2587,7 @@ void Boss_HeadHunter::MoribundEnd()
 
 void Boss_HeadHunter::NoHeadStart()
 {
+	GameEngineSound::Play("sound_head_1.wav");
 	m_Collision->Off();
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -42.0f });
 	m_MainRender->ChangeAnimation("headhunter_nohead");

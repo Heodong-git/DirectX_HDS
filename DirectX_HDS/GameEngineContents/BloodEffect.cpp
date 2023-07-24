@@ -65,6 +65,7 @@ void BloodEffect::Start()
 	// 렌더러만들고, 애니메이션 세개만들어서 넣어두고, 이펙트생성할때 
 	// 어떤 애니메이션을 보여줄건지 set 
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BLOOD_EFFECT);
+	m_Render->ColorOptionValue.MulColor.a = 0.8f;
 
 	if (nullptr == GameEngineSprite::Find("normal_blood"))
 	{

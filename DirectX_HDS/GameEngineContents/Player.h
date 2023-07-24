@@ -23,13 +23,15 @@ enum class PlayerState
 	LEFTWALL,
 	DOORBREAK,
 
-	
+
 	FORCEFALL,		// 레벨체인지 연출용 state 
 	DEATH,			// 쥬금
 	EXPLOSION_DEATH,
 
 	RECORDING_PROGRESS,
 	RECORDING_PROGRESS_FORWARD,
+
+	GAME_END,
 };
 
 
@@ -363,6 +365,10 @@ private:
 	void RecordingProgress_ForwardStart();
 	void RecordingProgress_ForwardUpdate(float _DeltaTime);
 	void RecordingProgress_ForwardEnd();
+
+	void GameEndStart();
+	void GameEndUpdate(float _DeltaTime);
+	void GameEndEnd();
 };
 
 // 파일입출력이 필수다. 

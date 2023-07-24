@@ -126,6 +126,7 @@ private:
 	void SummonsSetting();
 	// 지속업데이트 필요함수 
 	void SummonsMonstersUpdate(float _DeltaTime);
+
 	// 몬스터 소환 위치
 	std::vector<float4> m_SummonsPoss = std::vector<float4>();
 	std::vector<std::shared_ptr<BaseActor>> m_SummonsMonsters = std::vector<std::shared_ptr<BaseActor>>();

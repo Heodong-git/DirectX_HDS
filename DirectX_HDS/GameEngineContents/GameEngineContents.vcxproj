@@ -196,6 +196,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Ending_Texture.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EnemyFollow_Effect.h" />
     <ClInclude Include="Explosion_Effect.h">
       <SubType>
@@ -459,6 +463,7 @@
     <ClCompile Include="ColEventObj.cpp" />
     <ClCompile Include="DistotionEffect.cpp" />
     <ClCompile Include="DoorEffect.cpp" />
+    <ClCompile Include="Ending_Texture.cpp" />
     <ClCompile Include="EnemyFollow_Effect.cpp" />
     <ClCompile Include="Explosion_Effect.cpp" />
     <ClCompile Include="FanBlade.cpp" />

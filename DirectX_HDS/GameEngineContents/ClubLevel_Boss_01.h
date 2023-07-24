@@ -30,6 +30,12 @@ public:
 	{
 		m_BGMPlayer.Stop();
 	}
+
+	const inline bool IsEnding() const
+	{
+		return m_GameEnd;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime);
@@ -56,4 +62,9 @@ private:
 
 	bool m_Appear = false;
 	GameEngineSoundPlayer m_BGMPlayer;
+
+	float m_Duration = 3.5f;
+	bool m_GameEnd = false;
+	bool m_RealEnd = false;
+	void GameEngineCheck(float _DeltaTime);
 };

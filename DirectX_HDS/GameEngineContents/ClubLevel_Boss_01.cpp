@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 
 #include "StageEditer.h"
 #include "PlaySupporter.h"
@@ -25,6 +26,10 @@
 #include "Turret_Wall.h"
 
 #include "FadeEffect.h"
+#include "KatanaFadeEffect.h"
+#include "PlaySupporter.h"
+
+#include "Ending_Texture.h"
 
 
 ClubLevel_Boss_01::ClubLevel_Boss_01()
@@ -72,6 +77,14 @@ void ClubLevel_Boss_01::Start()
 // 리셋은 플레이어위치를 
 void ClubLevel_Boss_01::Update(float _DeltaTime)
 {
+	GameEngineCheck(_DeltaTime);
+
+	if (true == m_GameEnd)
+	{
+		return;
+	}
+
+
 	if (true == Player::MainPlayer->IsSkill())
 	{
 		m_BGMPlayer.SetPitch(0.5f);
@@ -195,5 +208,52 @@ void ClubLevel_Boss_01::GUISetting()
 		MsgAssert("GUI Window가 nullptr 입니다.");
 		return;
 	}
+
 	m_GUI->On();
+}
+
+void ClubLevel_Boss_01::GameEngineCheck(float _DeltaTime)
+{
+	if (true == m_RealEnd)
+	{
+		return;
+	}
+
+	if (true == m_GameEnd)
+	{
+		if (0.2f >= m_KatanaFadeEffect->GetEffectTime())
+		{
+			/*PlaySupporter::MainSupporter->g_BlackBoxRender->On();
+			PlaySupporter::MainSupporter->g_BlackBoxRender->ColorOptionValue.MulColor.a = 1.0f;
+			PlaySupporter::MainSupporter->g_BlackBoxRender->GetTransform()->SetLocalScale(float4{ 1280.0f, 960.0f });
+			PlaySupporter::MainSupporter->g_BlackBoxRender->GetTransform()->SetLocalPosition(float4{ 0.0f, 0.0f, -100.0f });*/
+			
+			
+
+			CreateActor<Ending_Texture>();
+
+			m_RealEnd = true;
+			return;
+		}
+	}
+
+	if (nullptr == m_HeadHunter)
+	{
+		return;
+	}
+
+	// 현재 보스가 노헤드 상태라면 
+	if (BossState::NOHEAD == GetBossPtr()->GetCurState())
+	{
+		m_Duration -= _DeltaTime;
+	}
+
+	if (0.0f >= m_Duration && m_GameEnd == false)
+	{
+		Player::MainPlayer->ChangeState(PlayerState::GAME_END);
+		m_GameEnd = true;
+		GameEngineSound::Play("sound_transition_end.wav");
+		GameEngineSound::Play("song_ending.ogg");
+		m_KatanaFadeEffect->EffectOn();
+	}
 }

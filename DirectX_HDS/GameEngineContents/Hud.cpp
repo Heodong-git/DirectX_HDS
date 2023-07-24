@@ -19,6 +19,11 @@ Hud::~Hud()
 {	
 }
 
+void Hud::RenderOff()
+{
+	Off();
+}
+
 void Hud::Start()
 {
 	{

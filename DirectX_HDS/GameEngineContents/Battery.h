@@ -18,6 +18,8 @@ public:
 	Battery& operator=(const Battery& _Other) = delete;
 	Battery& operator=(Battery&& _Other) noexcept = delete;
 
+	void RenderOff();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -5,6 +5,9 @@
 class Inven : public BaseActor
 {
 public:
+	static Inven* MainInven;
+
+public:
 	// constrcuter destructer
 	Inven();
 	~Inven();
@@ -14,6 +17,8 @@ public:
 	Inven(Inven&& _Other) noexcept = delete;
 	Inven& operator=(const Inven& _Other) = delete;
 	Inven& operator=(Inven&& _Other) noexcept = delete;
+
+	void RenderOff();
 
 protected:
 	void Start() override;

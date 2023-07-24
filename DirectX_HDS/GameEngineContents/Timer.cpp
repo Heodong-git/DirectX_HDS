@@ -15,6 +15,11 @@ Timer::~Timer()
 {
 }
 
+void Timer::RenderOff()
+{
+	Off();
+}
+
 void Timer::Start()
 {
 	{

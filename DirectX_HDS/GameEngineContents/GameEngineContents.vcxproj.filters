@@ -222,6 +222,9 @@
     <ClInclude Include="KatanaFadeEffect.h">
       <Filter>02.Actor\08.CameraEffect\KatanaFadeEffect</Filter>
     </ClInclude>
+    <ClInclude Include="Ending_Texture.h">
+      <Filter>01.Level\02.Club\02.Ending</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -444,6 +447,7 @@
     <ClCompile Include="KatanaFadeEffect.cpp">
       <Filter>02.Actor\08.CameraEffect\KatanaFadeEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Ending_Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.Core">

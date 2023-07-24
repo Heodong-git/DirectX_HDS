@@ -17,6 +17,8 @@ public:
 	Timer& operator=(const Timer& _Other) = delete;
 	Timer& operator=(Timer&& _Other) noexcept = delete;
 
+	void RenderOff();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -26,7 +26,7 @@ void KatanaFadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	if (0 > m_EffectTime)
 	{
 		m_IsUpdate = false;
-		m_EffectTime = 0.8f;
+		m_EffectTime = 1.2f;
 		m_Complete = true;
 		return;
 	}

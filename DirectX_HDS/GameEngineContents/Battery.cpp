@@ -24,6 +24,11 @@ Battery::~Battery()
 {
 }
 
+void Battery::RenderOff()
+{
+	Off();
+}
+
 void Battery::Start()
 {
 	{

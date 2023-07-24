@@ -4,12 +4,22 @@
 #include "BaseLevel.h"
 #include <GameEngineBase/GameEngineRandom.h>
 
+
+Inven* Inven::MainInven = nullptr;
+
+
 Inven::Inven()
 {
+	MainInven = this;
 }
 
 Inven::~Inven()
 {
+}
+
+void Inven::RenderOff()
+{
+	Off();
 }
 
 void Inven::Start()

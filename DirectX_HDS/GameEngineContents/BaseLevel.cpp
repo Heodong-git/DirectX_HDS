@@ -62,14 +62,14 @@ void BaseLevel::Update(float _DeltaTime)
 {
 	if (LevelType::CLUBBOSS0 == m_LevelType)
 	{
-		if (true == GetKatanaFadeEffect()->IsComplete())
+		if (0.2f >= m_KatanaFadeEffect->GetEffectTime() && true == m_KatanaFadeEffect->IsUpdate())
 		{
 			GameEngineCore::ChangeLevel("ClubLevel_Boss_01");
 			return;
 		}
 	}
 
-	if (true == GetKatanaFadeEffect()->IsComplete() && true == Player::MainPlayer->IsRecording())
+	if (0.2f >= m_KatanaFadeEffect->GetEffectTime() && true == m_KatanaFadeEffect->IsUpdate() && true == Player::MainPlayer->IsRecording())
 	{
 		LevelType CurLevelType = GetLevelType();
 
