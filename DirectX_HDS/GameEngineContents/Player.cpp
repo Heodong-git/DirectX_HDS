@@ -433,6 +433,8 @@ bool Player::HitCheck()
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::MONSTER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	if (nullptr != Col)
 	{
+		// 여기서 충돌체랑 내위치 계산, 오른쪽,왼쪽 판단, Dir 변경
+
 		CreateHitEffect(Col);
 		// 나를 데스상태로 
 		ChangeState(PlayerState::DEATH);

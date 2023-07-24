@@ -674,6 +674,23 @@ void Monster_Gangster::ChaseEnd()
 
 void Monster_Gangster::AimStart()
 {
+	// 플레이어 위치를 계산해서 플레이어의 방향으로 사격해야함 
+
+	float4 PlayerPos = Player::MainPlayer->GetTransform()->GetWorldPosition();
+	float4 MyPos = GetTransform()->GetWorldPosition();
+
+	float4 Distance = PlayerPos - MyPos;
+	if (0 >= Distance.x)
+	{
+		m_Direction = false;
+	}
+
+	else
+	{
+		m_Direction = true;
+	}
+
+
 	m_MainRender->ChangeAnimation("gangster_aim");
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f , 11.0f });
 	CreateFollowEffect();
