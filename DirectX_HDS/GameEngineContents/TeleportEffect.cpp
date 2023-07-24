@@ -180,7 +180,7 @@ void TeleportEffect::LoadAndCreateAnimation()
 	m_SparkRenders.reserve(m_FirstRenderCount + m_SecondRenderCount);
 	for (size_t i = 0; i < m_FirstRenderCount + m_SecondRenderCount; ++i)
 	{
-		std::shared_ptr<GameEngineSpriteRenderer> Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::EFFECT);
+		std::shared_ptr<GameEngineSpriteRenderer> Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::BOSS_EFFECT);
 
 		if (i < m_FirstRenderCount)
 		{
@@ -197,6 +197,7 @@ void TeleportEffect::LoadAndCreateAnimation()
 		}
 
 		Render->SetScaleRatio(2.0f);
+		Render->GetTransform()->SetLocalPosition(float4{ 0.0f, 0.0f, -100.0f });
 		m_SparkRenders.push_back(Render);
 	}
 

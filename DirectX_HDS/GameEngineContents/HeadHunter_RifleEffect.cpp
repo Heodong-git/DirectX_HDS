@@ -22,6 +22,7 @@ void HeadHunter_RifleEffect::SetType(RifleEffectType _Type)
 	{
 	case RifleEffectType::NORMAL:
 		m_Render->SetAnimationStartEvent("headhunter_rifle_effect", static_cast<size_t>(2), std::bind(&HeadHunter_RifleEffect::RifleShotSoundPlay, this));
+		m_Render->GetTransform()->AddLocalPosition(float4{ 0.0f , 0.0f , -10.0f});
 		break;
 	case RifleEffectType::SWEEP:
 	{

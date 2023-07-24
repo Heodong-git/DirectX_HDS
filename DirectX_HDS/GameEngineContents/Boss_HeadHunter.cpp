@@ -466,7 +466,8 @@ void Boss_HeadHunter::AttCollisionOff()
 void Boss_HeadHunter::CreateRifleEffect()
 {
 	float4 MyPos = GetTransform()->GetLocalPosition();
-	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
+	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>(static_cast<int>(RenderOrder::BOSS_EFFECT));
+	m_Effect.lock()->GetTransform()->SetLocalPosition(float4{0.0f, 0.0f, -150.0f});
 	m_Effect.lock()->SetActor(DynamicThis<Boss_HeadHunter>());
 
 	if (BossState::RIFLE == m_CurState)
@@ -477,7 +478,7 @@ void Boss_HeadHunter::CreateRifleEffect()
 	if (BossState::TELEPORTIN_CEILING == m_CurState)
 	{
 		m_Effect.lock()->SetType(RifleEffectType::CEILING_FIRE);
-		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ 0.0f, -520.0f, -1.0f});
+		m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ 0.0f, -520.0f, -150.0f});
 		m_Effect.lock()->GetTransform()->SetLocalRotation(float4{ 0.0f , 0.0f, -90.0f });
 		return;
 	}
@@ -488,12 +489,12 @@ void Boss_HeadHunter::CreateRifleEffect()
 		m_Effect.lock()->SetType(RifleEffectType::NORMAL);
 		if (false == m_Dir)
 		{
-			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
+			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, -150.0f });
 		}
 
 		else if (true == m_Dir)
 		{
-			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, 1.0f });
+			m_Effect.lock()->GetTransform()->SetLocalPosition(MyPos + float4{ -m_RifleEffectPivot.x, m_RifleEffectPivot.y - 11.0f, -150.0f });
 		}
 
 		return;
@@ -513,15 +514,15 @@ void Boss_HeadHunter::CreateRifleEffect()
 void Boss_HeadHunter::CreateSweepEffect()
 {
 	m_SweepEffect = GetLevel()->CreateActor<HeadHunter_RifleEffect>();
-	m_SweepEffect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 3.0f, 47.0f, -1.0f });
+	m_SweepEffect.lock()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 3.0f, 47.0f, -5.0f });
 	m_SweepEffect.lock()->SetType(RifleEffectType::SWEEP);
 }
 
 void Boss_HeadHunter::CreateTpEffect()
 {
 	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntress_vanish_01.wav");
-	std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>();
-	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
+	std::shared_ptr<TeleportEffect> Effect = GetLevel()->CreateActor<TeleportEffect>(static_cast<int>(RenderOrder::BOSS_TP_EFFECT));
+	Effect->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4 { 0.0f, 0.0f, -100.0f });
 	if (true == m_Dir)
 	{
 		Effect->GetTransform()->SetLocalNegativeScaleX();
@@ -953,10 +954,10 @@ void Boss_HeadHunter::CeilingPointInit()
 	m_vecCeilingPos.reserve(4);
 
 	// 여기서 하나씩 
-	float4 CeilingPos1 = float4{ -448.0f, 112.0f };
-	float4 CeilingPos2 = float4{ -250.0f, 112.0f };
-	float4 CeilingPos3 = float4{ 216.0f, 112.0f };
-	float4 CeilingPos4 = float4{ 417.0f, 112.0f };
+	float4 CeilingPos1 = float4{ -435.0f, 112.0f };
+	float4 CeilingPos2 = float4{ -237.0f, 112.0f };
+	float4 CeilingPos3 = float4{ 233.0f, 112.0f };
+	float4 CeilingPos4 = float4{ 434.0f, 112.0f };
 
 	m_vecCeilingPos.push_back(CeilingPos1);
 	m_vecCeilingPos.push_back(CeilingPos2);
@@ -2127,6 +2128,7 @@ void Boss_HeadHunter::TpInCeilingStart()
 {
 	// 애니메이션 변경하고 
 	m_MainRender->ChangeAnimation("headhunter_teleportin_ceiling");
+	m_Dir = false;
 	DirCheck();
 
 	// 첫텔레포트라면 

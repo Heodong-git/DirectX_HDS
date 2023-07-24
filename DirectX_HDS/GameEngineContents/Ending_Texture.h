@@ -21,4 +21,5 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineUIRenderer> m_MainRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> m_SubRender = nullptr;
 };

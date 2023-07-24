@@ -28,11 +28,21 @@ void Ending_Texture::Start()
 
 	GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("endtex").GetFullPath());
 
+	m_SubRender = CreateComponent<GameEngineUIRenderer>();
+	m_SubRender->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f , -99.0f });
+	m_SubRender->GetTransform()->SetLocalScale(float4{ 1280.0f, 720.0f });
+	m_SubRender->SetTexture("background_black.png");
+
 	m_MainRender = CreateComponent<GameEngineUIRenderer>();
 	m_MainRender->GetTransform()->SetLocalPosition(float4{ 0.0f , 0.0f , -100.0f });
 	m_MainRender->GetTransform()->SetLocalScale(float4{ 1280.0f, 720.0f });
 	m_MainRender->SetTexture("end_tex.png");
 	m_MainRender->ColorOptionValue.MulColor.a = 0.0f;
+
+
+	
+	
+	
 }
 
 void Ending_Texture::Update(float _DeltaTime)
