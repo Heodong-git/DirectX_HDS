@@ -143,6 +143,11 @@ void BaseActor::Reverse(GameEngineSpriteRenderer* _Renderer)
 
 void BaseActor::InfoSetting(GameEngineSpriteRenderer* _Renderer)
 {
+	if (40000 <= Infos.size())
+	{
+		return;
+	}
+
 	SpriteInfo Info;
 
 	GameEngineTextureSetter* Tex = _Renderer->GetShaderResHelper().GetTextureSetter("DiffuseTex");
