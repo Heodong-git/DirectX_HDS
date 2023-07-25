@@ -253,6 +253,17 @@ void Laser::RecordingProgressStart()
 
 void Laser::RecordingProgressUpdate(float _DeltaTime)
 {
+	// 레코딩이 종료 되었다면 아이들로 전환. 
+	if (true == m_Recording_Complete)
+	{
+		m_Recording_Complete = false;
+		Reset();
+		ChangeState(LaserState::IDLE);
+		return;
+	}
+
+	// 여기서 역재생을 수행하고, 
+	Reverse(m_LaserRender.get());
 }
 
 void Laser::RecordingProgressEnd()
