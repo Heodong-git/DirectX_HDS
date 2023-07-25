@@ -35,7 +35,7 @@ void BloodEffect::SetType(BloodType _Type)
 			break;
 		case 1:
 			m_Render->SetScaleToTexture("normal_blood_01.png");
-			m_Render->GetTransform()->AddLocalPosition(float4::Down * 50.0f);
+			m_Render->GetTransform()->AddLocalPosition(float4::Down * 25.0f);
 			break;
 		case 2:
 			m_Render->SetScaleToTexture("normal_blood_03.png");
