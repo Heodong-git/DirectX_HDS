@@ -62,7 +62,7 @@ void Cursor::Start()
 	m_Render = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::CURSOR);
 	m_Render->SetScaleToTexture("cursor_0.png");
 	m_Render->GetTransform()->SetLocalScale(m_Scale);
-	m_Render->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -2.0f });
+	m_Render->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -200.0f });
 
 	// ·»´õ·¯ Á¤Áß¾ÓÀÇ µð¹ö±× ·»´õ·¯ 
 	m_DebugRender = CreateComponent<GameEngineSpriteRenderer>();
