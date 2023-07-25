@@ -269,6 +269,8 @@ private:
 	float4 m_LeftRush_EndPos = float4{ -448.6f , -263.0f };
 	float4 m_RightRush_EndPos = float4{ 448.0f , -264.0f };
 
+	const float m_RushRatio = 4.5f;
+
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
 	void ChangeState(BossState _State);

@@ -6,6 +6,7 @@
 
 #include "Boss_HeadHunter.h"
 #include "Player.h"
+#include "PlaySupporter.h"
 
 HeadHunter_RifleEffect::HeadHunter_RifleEffect()
 {
@@ -235,6 +236,7 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		{
 			if (PlayerState::EXPLOSION_DEATH != Player::MainPlayer->GetCurState())
 			{
+				PlaySupporter::MainSupporter->CameraShakeOn();
 				Player::MainPlayer->CreateExplosionEffect();
 				Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
 			}

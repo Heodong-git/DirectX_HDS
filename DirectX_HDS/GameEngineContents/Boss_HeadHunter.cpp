@@ -1354,7 +1354,7 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 		if (0.0f >= m_IdleDuration)
 		{
 			int RandomValue = CreateRandomValue(4);
-			/*switch (RandomValue)
+			switch (RandomValue)
 			{
 			case 1:
 				ChangeState(BossState::TELEPORTIN_RIFLE);
@@ -1366,28 +1366,9 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 				ChangeState(BossState::JUMP);
 				break;
 			case 4:
-				ChangeState(BossState::RUSH);
-				break;
-			}*/
-
-			//test 
-			switch (RandomValue)
-			{
-			case 1:
-				ChangeState(BossState::RUSH_READY);
-				break;
-			case 2:
-				ChangeState(BossState::RUSH_READY);
-				break;
-			case 3:
-				ChangeState(BossState::RUSH_READY);
-				break;
-			case 4:
 				ChangeState(BossState::RUSH_READY);
 				break;
 			}
-			
-
 			return;
 		}
 	}
@@ -2709,6 +2690,8 @@ void Boss_HeadHunter::RushStart()
 
 void Boss_HeadHunter::RushUpdate(float _DeltaTime)
 {
+	CreateTrailEffect();
+
 	// 이때 플레이어와 충돌하면 데스상태로 만듬 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
 	if (nullptr != Col)
@@ -2720,7 +2703,7 @@ void Boss_HeadHunter::RushUpdate(float _DeltaTime)
 	}
 
 
-	m_Ratio += _DeltaTime * 3.5f;
+	m_Ratio += _DeltaTime * m_RushRatio;
 	if (1.0f <= m_Ratio)
 	{
 		m_Ratio = 1.0f;
