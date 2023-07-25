@@ -293,6 +293,8 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_death_land").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_moribund").GetFullPath());
 		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_nohead").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_rush_ready").GetFullPath());
+		GameEngineSprite::LoadFolder(Dir.GetPlusFileName("headhunter_rush").GetFullPath());
 
 		Dir.MoveParentToDirectory("katanazero_resources");
 		Dir.Move("katanazero_resources");
@@ -374,6 +376,13 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 							  .FrameInter = 0.1f , .Loop = false , .ScaleToTexture = true });
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_moribund", .SpriteName = "headhunter_moribund", .Start = 0, .End = 18 ,
 							 .FrameInter = 0.15f , .Loop = true , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_rush_ready", .SpriteName = "headhunter_rush_ready", .Start = 0, .End = 7 ,
+							  .FrameInter = 0.08f , .Loop = false , .ScaleToTexture = true });
+
+	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_rush", .SpriteName = "headhunter_rush", .Start = 0, .End = 1 ,
+							  .FrameInter = 1.0f , .Loop = true , .ScaleToTexture = true });
+
 	// 0.17 , false 
 	m_MainRender->CreateAnimation({ .AnimationName = "headhunter_nohead", .SpriteName = "headhunter_nohead", .Start = 0, .End = 5 ,
 							  .FrameInter = 0.17f , .Loop = false , .ScaleToTexture = true });
@@ -1065,6 +1074,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 	case BossState::RECORDING_PROGRESS:
 		RecordingProgressStart();
 		break;
+	case BossState::RUSH:
+		RushStart();
+		break;
+	case BossState::RUSH_READY:
+		RushReadyStart();
+		break;
+	case BossState::RUSH_END:
+		RushEndStart();
+		break;
 	}
 
 	// 이전 state의 end 
@@ -1153,6 +1171,15 @@ void Boss_HeadHunter::ChangeState(BossState _State)
 		break;
 	case BossState::RECORDING_PROGRESS:
 		RecordingProgressEnd();
+		break;
+	case BossState::RUSH:
+		RushEnd();
+		break;
+	case BossState::RUSH_READY:
+		RushReadyEnd();
+		break;
+	case BossState::RUSH_END:
+		RushEndEnd();
 		break;
 	}
 }
@@ -1246,10 +1273,19 @@ void Boss_HeadHunter::UpdateState(float _DeltaTime)
 	case BossState::RECORDING_PROGRESS:
 		RecordingProgressUpdate(_DeltaTime);
 		break;
+	case BossState::RUSH:
+		RushUpdate(_DeltaTime);
+		break;
+	case BossState::RUSH_READY:
+		RushReadyUpdate(_DeltaTime);
+		break;
+	case BossState::RUSH_END:
+		RushEndUpdate(_DeltaTime);
+		break;
 	}
 }
 
-// 보스 최초 조우시 state 
+// 리셋시 인트로로 초기화할지 생각좀.
 void Boss_HeadHunter::IntroStart()
 {
 	m_Dir = false;
@@ -1278,6 +1314,7 @@ void Boss_HeadHunter::IdleStart()
 	m_MainRender->ChangeAnimation("headhunter_idle");
 }
 
+
 void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 {
 	if (BaseLevel::LevelState::WAIT == GetReturnCastLevel()->GetCurState())
@@ -1289,6 +1326,8 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 	DirCheck();
 
 	// 1페이즈 동작  
+	// 1. 일반라이플패턴
+	// 2. 점프라이플패턴 
 	if (BossPhase::FIRST == m_CurPhase)
 	{
 		if (0.0f >= m_IdleDuration)
@@ -1312,34 +1351,44 @@ void Boss_HeadHunter::IdleUpdate(float _DeltaTime)
 	// 2페이즈 동작 
 	if (BossPhase::SECOND == m_CurPhase)
 	{
-		// 이전상태가 투명상태였다면, 바로 rifle 상태로 전환 
-		if (BossState::TRANSPARENCY == m_PrevState)
-		{
-			ChangeState(BossState::RIFLE);
-			return;
-		}
-
 		if (0.0f >= m_IdleDuration)
 		{
-			// 패턴 추가해야함 , 텔레포트인라이플은 임시 적용중
-			int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
-			if (0 == RandomValue)
+			int RandomValue = CreateRandomValue(4);
+			/*switch (RandomValue)
 			{
+			case 1:
 				ChangeState(BossState::TELEPORTIN_RIFLE);
-				return;
-			}
-
-			else if (1 == RandomValue)
-			{
+				break;
+			case 2:
 				ChangeState(BossState::RIFLE);
-				return;
-			}
-
-			else if ((2 == RandomValue))
-			{
+				break;
+			case 3:
 				ChangeState(BossState::JUMP);
-				return;
+				break;
+			case 4:
+				ChangeState(BossState::RUSH);
+				break;
+			}*/
+
+			//test 
+			switch (RandomValue)
+			{
+			case 1:
+				ChangeState(BossState::RUSH_READY);
+				break;
+			case 2:
+				ChangeState(BossState::RUSH_READY);
+				break;
+			case 3:
+				ChangeState(BossState::RUSH_READY);
+				break;
+			case 4:
+				ChangeState(BossState::RUSH_READY);
+				break;
 			}
+			
+
+			return;
 		}
 	}
 
@@ -2646,6 +2695,121 @@ void Boss_HeadHunter::RecordingProgressUpdate(float _DeltaTime)
 }
 
 void Boss_HeadHunter::RecordingProgressEnd()
+{
+}
+
+void Boss_HeadHunter::RushStart()
+{
+	// 이거 끝나면 대쉬엔드 그라운드 
+	//m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -19.0f });
+	m_MainRender->ChangeAnimation("headhunter_rush");
+
+	m_OriginPos = GetTransform()->GetWorldPosition();
+}
+
+void Boss_HeadHunter::RushUpdate(float _DeltaTime)
+{
+	// 이때 플레이어와 충돌하면 데스상태로 만듬 
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
+	if (nullptr != Col)
+	{
+		PlaySupporter::MainSupporter->CameraShakeOn();
+		Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+		Player::MainPlayer->CreateExplosionEffect();
+		return;
+	}
+
+
+	m_Ratio += _DeltaTime * 3.5f;
+	if (1.0f <= m_Ratio)
+	{
+		m_Ratio = 1.0f;
+		ChangeState(BossState::RUSH_END);
+		return;
+	}
+	// 전방으로 돌진하는 로직 
+	// 왼쪽벽일때의 로직
+	if (true == m_Dir)
+	{
+		float4 EndPos = m_RightRush_EndPos;
+		float4 MovePos = float4::Lerp(m_OriginPos, EndPos, m_Ratio);
+		GetTransform()->SetWorldPosition(MovePos);
+		float4 Check = GetTransform()->GetWorldPosition();
+		return;
+	}
+
+	// 우측벽 
+	if (false == m_Dir)
+	{
+		float4 EndPos = m_LeftRush_EndPos;
+		float4 MovePos = float4::Lerp(m_OriginPos, EndPos, m_Ratio);
+		GetTransform()->SetWorldPosition(MovePos);
+		float4 Check = GetTransform()->GetWorldPosition();
+		return;
+	}
+
+ 	
+}
+
+void Boss_HeadHunter::RushEnd()
+{
+	//m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 19.0f });
+	m_Ratio = 0.0f;
+
+}
+
+
+void Boss_HeadHunter::RushReadyStart()
+{
+	m_MainRender->ChangeAnimation("headhunter_rush_ready");
+	m_OriginPos = GetTransform()->GetWorldPosition();
+}
+
+
+void Boss_HeadHunter::RushReadyUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		ChangeState(BossState::RUSH);
+		return;
+	}
+
+	size_t CurFrame = m_MainRender->GetCurrentFrame();
+	if (CurFrame >= 5)
+	{
+		GetTransform()->SetWorldPosition(m_OriginPos + float4{ 0.0f, -12.0f});
+	}
+
+	else if (CurFrame < 5)
+	{
+		GetTransform()->SetWorldPosition(m_OriginPos);
+	}
+
+	
+}
+
+void Boss_HeadHunter::RushReadyEnd()
+{
+	GetTransform()->SetWorldPosition(m_OriginPos);
+	
+}
+
+void Boss_HeadHunter::RushEndStart()
+{
+	m_MainRender->ChangeAnimation("headhunter_dash_end_ground");
+}
+
+void Boss_HeadHunter::RushEndUpdate(float _DeltaTime)
+{
+	if (true == m_MainRender->IsAnimationEnd())
+	{
+		m_OriginPos = float4::Zero;
+		ChangeState(BossState::IDLE);
+		return;
+	}
+}
+
+void Boss_HeadHunter::RushEndEnd()
 {
 }
 

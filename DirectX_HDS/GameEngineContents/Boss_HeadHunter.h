@@ -24,6 +24,10 @@ enum class BossState
 	DASH,			// 공중상태에서의 대쉬임 
 	DASH_END,		// 착지하면서 칼질 
 
+	RUSH_READY,
+	RUSH,
+	RUSH_END,
+
 	HURT,			 // 쳐맞
 	RECOVER,		 // 쳐맞 후 ㅌㅌ 
 
@@ -260,6 +264,11 @@ private:
 
 	float4 m_NoHeadStatePos = float4::Zero;
 
+	float4 m_OriginPos = float4::Zero;
+
+	float4 m_LeftRush_EndPos = float4{ -448.6f , -263.0f };
+	float4 m_RightRush_EndPos = float4{ 448.0f , -264.0f };
+
 	// --------------------------------------- state -----------------------------------------
 	// 상태값 변경
 	void ChangeState(BossState _State);
@@ -383,4 +392,16 @@ private:
 	void RecordingProgressStart();
 	void RecordingProgressUpdate(float _DeltaTime);
 	void RecordingProgressEnd();
+
+	void RushReadyStart();
+	void RushReadyUpdate(float _DeltaTime);
+	void RushReadyEnd();
+
+	void RushStart();
+	void RushUpdate(float _DeltaTime);
+	void RushEnd();
+
+	void RushEndStart();
+	void RushEndUpdate(float _DeltaTime);
+	void RushEndEnd();
 };
