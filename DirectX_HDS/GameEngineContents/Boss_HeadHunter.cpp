@@ -157,6 +157,11 @@ void Boss_HeadHunter::WallJumpSoundPlay()
 	}
 }
 
+void Boss_HeadHunter::RushSoundPlay()
+{
+	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntress_dash_01.wav");
+}
+
 // -179, -1 
 // 개수는 18개 
 // 10도당 하나 
@@ -307,6 +312,13 @@ void Boss_HeadHunter::LoadAndCreateAnimation()
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_01.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_02.wav").GetFullPath());
 		GameEngineSound::Load(Dir.GetPlusFileName("headhunter_rifle_shot_03.wav").GetFullPath());
+
+		// 러쉬 사운드 
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntresslaser_vertical_1.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntresslaser_vertical_2.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntresslaser_vertical_3.wav").GetFullPath());
+		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntress_dash_01.wav").GetFullPath());
+
 
 		// 마인설치사운드
 		GameEngineSound::Load(Dir.GetPlusFileName("sound_boss_huntressbomb_armed_01.wav").GetFullPath());
@@ -1850,17 +1862,6 @@ void Boss_HeadHunter::ChangePhaseEnd()
 // 보류 
 void Boss_HeadHunter::JumpStart()
 {
-	int RandomValue = CreateRandomValue(2);
-	switch (RandomValue)
-	{
-	case 1:
-		m_Dir = true;
-		break;
-	case 2:
-		m_Dir = false;
-		break;
-	}
-
 	m_Collision->Off();
 	GameEngineSound::Play("sound_boss_huntress_jump_01.wav");
 	m_JumpStartPos = GetTransform()->GetLocalPosition();
@@ -1880,12 +1881,10 @@ void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 	// 왼쪽벽일때의 로직
 	if (true == m_Dir)
 	{
-		// 중간지점, 도착지점을 정해야함 
-		float4 MiddlePos = float4{ -451.0f, -96.0f };
 		float4 EndPos = m_TeleportLeftWallPos;
 
-		float4 MovePos = float4::Lerp(m_JumpStartPos, MiddlePos, m_Ratio * 2.0f);
-		float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+		float4 MovePos = float4::Lerp(m_JumpStartPos, m_Jump_LeftMiddlePos, m_Ratio * 2.0f);
+		float4 MovePos2 = float4::Lerp(m_Jump_LeftMiddlePos, EndPos, m_Ratio);
 		float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
 
 		GetTransform()->SetWorldPosition(MovePos3);
@@ -1904,11 +1903,10 @@ void Boss_HeadHunter::JumpUpdate(float _DeltaTime)
 	if (false == m_Dir)
 	{
 		// 중간지점, 도착지점을 정해야함 
-		float4 MiddlePos = float4{ 451.0f, -96.0f };
 		float4 EndPos = m_TeleportRightWallPos;
 
-		float4 MovePos = float4::Lerp(m_JumpStartPos, MiddlePos, m_Ratio * 2.0f);
-		float4 MovePos2 = float4::Lerp(MiddlePos, EndPos, m_Ratio);
+		float4 MovePos = float4::Lerp(m_JumpStartPos, m_Jump_RightMiddlePos, m_Ratio * 2.0f);
+		float4 MovePos2 = float4::Lerp(m_Jump_RightMiddlePos, EndPos, m_Ratio);
 		float4 MovePos3 = float4::Lerp(MovePos, MovePos2, m_Ratio);
 
 		GetTransform()->SetWorldPosition(MovePos3);
@@ -2681,10 +2679,11 @@ void Boss_HeadHunter::RecordingProgressEnd()
 
 void Boss_HeadHunter::RushStart()
 {
+
 	// 이거 끝나면 대쉬엔드 그라운드 
 	//m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, -19.0f });
+	RushSoundPlay();
 	m_MainRender->ChangeAnimation("headhunter_rush");
-
 	m_OriginPos = GetTransform()->GetWorldPosition();
 }
 
@@ -2694,7 +2693,7 @@ void Boss_HeadHunter::RushUpdate(float _DeltaTime)
 
 	// 이때 플레이어와 충돌하면 데스상태로 만듬 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
-	if (nullptr != Col)
+	if (nullptr != Col && false == Player::MainPlayer->IsInvincibility())
 	{
 		PlaySupporter::MainSupporter->CameraShakeOn();
 		Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
@@ -2779,6 +2778,7 @@ void Boss_HeadHunter::RushReadyEnd()
 
 void Boss_HeadHunter::RushEndStart()
 {
+	m_SoundPlayer = GameEngineSound::Play("sound_boss_huntressknife_prep_01.wav");
 	m_MainRender->ChangeAnimation("headhunter_dash_end_ground");
 }
 

@@ -106,6 +106,7 @@ private:
 	void RotaitionFireSoundPlay();
 	void HitSoundPlay();
 	void WallJumpSoundPlay();
+	void RushSoundPlay();
 	
 
 	// 초기세팅
@@ -230,6 +231,8 @@ private:
 	const float4 m_TeleportRightWallPos = float4{ 485.0f,  -50.0f };
 
 	float4 m_JumpStartPos = float4::Zero;
+	const float4 m_Jump_LeftMiddlePos = float4{ -451.0f, -96.0f };
+	const float4 m_Jump_RightMiddlePos = float4{ 451.0f, -96.0f };
 
 	// 소환스킬, 
 	void SummonsMonsters();
