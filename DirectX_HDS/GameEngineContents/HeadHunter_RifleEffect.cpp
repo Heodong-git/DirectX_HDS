@@ -30,8 +30,6 @@ void HeadHunter_RifleEffect::SetType(RifleEffectType _Type)
 		m_Render->GetTransform()->AddLocalPosition(float4{ 500.0f , 0.0f });
 		m_Render->ChangeAnimation("headhunter_rifle_effect_sweep");
 		m_Collision->GetTransform()->AddLocalPosition(float4{ 500.0f , 0.0f });
-
-		
 	}
 		break;
 	}
@@ -203,12 +201,19 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 		}
 	}
 
+	if (EffectState::DEATH == m_CurState)
+	{
+		return;
+	}
+
 
 	// 라이브타임으로 그냥 죽이자 
 	if (RifleEffectType::CEILING_FIRE == m_Type)
 	{
 		if (true == m_Render->IsAnimationEnd())
 		{
+			
+
 			EffectDeath();
 		
 
@@ -222,6 +227,16 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 			if (EffectState::DEATH != m_CurState)
 			{
 				m_Collision->On();
+			}
+		}
+
+		std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
+		if (nullptr != Col && false == Player::MainPlayer->IsInvincibility())
+		{
+			if (PlayerState::EXPLOSION_DEATH != Player::MainPlayer->GetCurState())
+			{
+				Player::MainPlayer->CreateExplosionEffect();
+				Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
 			}
 		}
 
@@ -242,6 +257,16 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 			}
 		}
 
+		std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
+		if (nullptr != Col && false == Player::MainPlayer->IsInvincibility())
+		{
+			if (PlayerState::EXPLOSION_DEATH != Player::MainPlayer->GetCurState())
+			{
+				Player::MainPlayer->CreateExplosionEffect();
+				Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+			}
+		}
+
 		return;
 	}
 
@@ -249,8 +274,19 @@ void HeadHunter_RifleEffect::Update(float _DeltaTime)
 	if (RifleEffectType::NORMAL == m_Type)
 	{
 		BossState CurState = m_Actor->GetCurState();
-		if (true == m_Render->IsAnimationEnd())
+		HeadHunter_RifleEffect* Effect = this;
+		if (true == m_Render->IsAnimationEnd() && EffectState::DEATH != m_CurState)
 		{
+			std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER, ColType::OBBBOX2D, ColType::OBBBOX2D);
+			if (nullptr != Col && false == Player::MainPlayer->IsInvincibility())
+			{
+				if (PlayerState::EXPLOSION_DEATH != Player::MainPlayer->GetCurState())
+				{
+					Player::MainPlayer->CreateExplosionEffect();
+					Player::MainPlayer->ChangeState(PlayerState::EXPLOSION_DEATH);
+				}
+			}
+
 			EffectDeath();
 			/*this->Death();
 			if (nullptr != m_Render)

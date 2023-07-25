@@ -467,7 +467,7 @@ void Boss_HeadHunter::CreateRifleEffect()
 {
 	float4 MyPos = GetTransform()->GetLocalPosition();
 	m_Effect = GetLevel()->CreateActor<HeadHunter_RifleEffect>(static_cast<int>(RenderOrder::BOSS_EFFECT));
-	m_Effect.lock()->GetTransform()->SetLocalPosition(float4{0.0f, 0.0f, -150.0f});
+	m_Effect.lock()->GetTransform()->SetLocalPosition(float4{ 0.0f, 0.0f, -150.0f });
 	m_Effect.lock()->SetActor(DynamicThis<Boss_HeadHunter>());
 
 	if (BossState::RIFLE == m_CurState)
@@ -2256,6 +2256,7 @@ void Boss_HeadHunter::TpInRifleUpdate(float _DeltaTime)
 
 void Boss_HeadHunter::TpInRifleEnd()
 {
+	// 애니메이션이 끝났을때 죽이는게 아니라 여기서 죽임.
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 7.0f });
 }
 
@@ -2302,12 +2303,6 @@ void Boss_HeadHunter::TpOutRifleUpdate(float _DeltaTime)
 void Boss_HeadHunter::TpOutRifleEnd()
 {
 	m_MainRender->GetTransform()->AddLocalPosition(float4{ 0.0f, 7.0f });
-
-	/*if (nullptr != m_Effect)
-	{
-		m_Effect->Death();
-		m_Effect = nullptr;
-	}*/
 }
 
 // 

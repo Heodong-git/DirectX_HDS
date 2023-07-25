@@ -43,6 +43,7 @@ class Player : public BaseActor
 	friend class ClubLevel_Boss_01;
 	friend class Boss_HeadHunter;
 	friend class Bullet;
+	friend class HeadHunter_RifleEffect;
 public:
 	static Player* MainPlayer;
 

@@ -584,7 +584,8 @@ void Player::ComponentSetting()
 	m_Collision->GetTransform()->SetLocalScale(m_ColScale);
 	m_Collision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
 	m_Collision->SetColType(ColType::OBBBOX3D);
-	
+	m_Collision->On();
+
 
 	m_SubCollision->GetTransform()->SetLocalScale(float4{ m_ColScale.x - 20.0f, m_ColScale.y - 20.0f });
 	m_SubCollision->GetTransform()->SetLocalPosition({ 0, m_ColPivot });
@@ -2940,6 +2941,8 @@ void Player::ExplosionDeathStart()
 	m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
 	m_Render->ChangeAnimation("player_die");
 	m_Render->SetAnimPauseOn();
+
+	m_Collision->Off();
 }
 
 void Player::ExplosionDeathUpdate(float _DeltaTime)
@@ -2954,6 +2957,7 @@ void Player::ExplosionDeathUpdate(float _DeltaTime)
 
 void Player::ExplosionDeathEnd()
 {
+	
 	m_Render->GetTransform()->AddLocalPosition({ 0 , -15.0f });
 }
 
