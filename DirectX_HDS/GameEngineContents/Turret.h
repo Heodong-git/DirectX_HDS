@@ -51,6 +51,8 @@ private:
 
 	bool m_ChangeAnim = false;
 
+	const float m_MaxXPos = -190.0f;
+
 	TurretType m_Type = TurretType::NORMAL;
 	TurretState m_CurState = TurretState::TRANSFORM;
 

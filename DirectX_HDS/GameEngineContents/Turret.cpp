@@ -155,6 +155,25 @@ void Turret::Update(float _DeltaTime)
 				return;
 			}
 
+			std::shared_ptr<GameEngineCollision> Col2 = m_Collision->Collision(ColOrder::PLAYER_BULLET, ColType::OBBBOX3D, ColType::OBBBOX3D);
+			if (nullptr != Col2)
+			{
+				// 플레이어와 충돌했다면, 
+				m_SoundPlayer = GameEngineSound::Play("sound_turretdie.wav");
+				PlaySupporter::MainSupporter->CameraShakeOn();
+				m_TopRender->ChangeAnimation("turret_die");
+				m_TopRender->GetTransform()->AddLocalPosition(float4{ -16.0f ,5.0f });
+				m_TopRender->SetScaleRatio(2.0f);
+				m_Collision->Off();
+				m_CurState = TurretState::DEATH;
+				std::shared_ptr<Bullet> bullet = Col2->GetActor()->DynamicThis<Bullet>();
+				if (nullptr != bullet)
+				{
+					bullet->BulletDeath();
+				}
+				return;
+			}
+
 			if (nullptr != Player::MainPlayer)
 			{
 				m_FireTime -= _DeltaTime;
@@ -162,6 +181,11 @@ void Turret::Update(float _DeltaTime)
 
 				// 타겟의 위치를 받아온다. 
 				float4 PlayerPos = Player::MainPlayer->GetTransform()->GetLocalPosition();
+
+				if (PlayerPos.x <= m_MaxXPos)
+				{
+					return;
+				}
 
 				// 내 위치를 받아온다. 
 				float4 TurretPos = GetTransform()->GetLocalPosition();

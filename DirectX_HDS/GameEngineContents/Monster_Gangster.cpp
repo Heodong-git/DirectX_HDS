@@ -416,7 +416,6 @@ void Monster_Gangster::DeathCheck()
 	// 내가 플레이어의 공격과 충돌했다면 
 	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::PLAYER_ATTACK, ColType::OBBBOX3D, ColType::OBBBOX3D);
 	std::shared_ptr<GameEngineCollision> BulletCol = m_Collision->Collision(ColOrder::PLAYER_BULLET, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
 	if (nullptr != BulletCol)
 	{
 		// 나의 충돌체를 off

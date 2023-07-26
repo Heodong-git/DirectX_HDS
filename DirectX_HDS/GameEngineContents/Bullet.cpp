@@ -181,6 +181,7 @@ void Bullet::Update(float _DeltaTime)
 			{
 				m_Parring = true;
 				DirCorrection();
+				
 			}
 		}
 		return;
@@ -211,9 +212,6 @@ void Bullet::Update(float _DeltaTime)
 		BulletDeath();
 		return;
 	}
-
-
-
 	
 	if (true == m_Parring)
 	{
