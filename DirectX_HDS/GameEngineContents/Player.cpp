@@ -434,7 +434,8 @@ bool Player::HitCheck()
 	if (nullptr != Col)
 	{
 		// 여기서 충돌체랑 내위치 계산, 오른쪽,왼쪽 판단, Dir 변경
-
+		SetHitPos(GetTransform()->GetWorldPosition());
+		SetColPos(Col->GetTransform()->GetWorldPosition());
 		CreateHitEffect(Col);
 		// 나를 데스상태로 
 		ChangeState(PlayerState::DEATH);
@@ -529,6 +530,9 @@ void Player::Reset()
 	ResetSkillLimitTime();
 	ResetDir();	
 	ComponentSetting();
+
+	m_HitPos = float4::Zero;
+	m_ColPos = float4::Zero;
 }
 
 void Player::ComponentSetting()
@@ -2820,7 +2824,6 @@ void Player::DeathStart()
 	Effect.lock()->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4::Up * 60.0f);
 
 	// 이때 뭐에죽었는지 구분해서 상황에 따라서 애니메이션 변경 
-	m_HitPos = GetTransform()->GetLocalPosition();
 	DirCheck();
 	m_SoundPlayer = GameEngineSound::Play("player_die.wav");
 	m_SoundPlayer.SetVolume(0.7f);
@@ -2839,16 +2842,17 @@ void Player::DeathUpdate(float _DeltaTime)
 		return;
 	}
 
+	// 자 내가 날아갈 방향을 구해야함 
+
 	float FlyingSpeed = m_MoveSpeed * 1.3f;
-	float4 MyPos = GetTransform()->GetLocalPosition();
-	float X = abs(MyPos.x - m_HitPos.x);
-	if (X >= 60.0f)
+	
+	float PosX = abs(m_HitPos.x - m_ColPos.x);
+	if (PosX >= 60.0f)
 	{
 		FlyingSpeed *= 0.67f;
 	}
-
 	
-	if (true == m_Direction)
+	if (m_ColPos.x > m_HitPos.x)
 	{
 		m_NextTrans->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
 
@@ -2861,7 +2865,7 @@ void Player::DeathUpdate(float _DeltaTime)
 
 		GetTransform()->AddLocalPosition(float4::Left * FlyingSpeed * _DeltaTime);
 	}
-	else if (false == m_Direction)
+	else if (m_ColPos.x <= m_HitPos.x)
 	{
 		m_NextTrans->AddLocalPosition(float4::Right * FlyingSpeed * _DeltaTime);
 		// 현재 나의 좌측 픽셀이 흰색일 때 
@@ -2878,7 +2882,8 @@ void Player::DeathUpdate(float _DeltaTime)
 void Player::DeathEnd()
 {
 	//m_Render->GetTransform()->AddLocalPosition({ 0 , 15.0f });
-	m_HitPos = float4{ 0.0f, 0.0f };
+	m_HitPos = float4::Zero;
+	m_ColPos = float4::Zero;
 }
 
 void Player::NoneStart()

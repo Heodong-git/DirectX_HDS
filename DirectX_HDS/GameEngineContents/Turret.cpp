@@ -74,12 +74,50 @@ void Turret::Start()
 
 void Turret::Update(float _DeltaTime)
 {
-	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState() ||
-		BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
+	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState())
 	{
 		return;
 	}
 
+	m_RecordingFrame = !m_RecordingFrame;
+
+	if (BaseLevel::LevelState::RECORDING_PROGRESS == GetReturnCastLevel()->GetCurState())
+	{
+		if (TurretState::RECORDING_PROGRESS != m_CurState)
+		{
+			m_CurState = TurretState::RECORDING_PROGRESS;
+			return;
+		}
+	}
+
+	if (TurretState::RECORDING_PROGRESS == m_CurState)
+	{
+		// 만약 좌클릭 입력시 바로 death 
+		if (true == GameEngineInput::IsDown("EngineMouseLeft"))
+		{
+			this->Death();
+			return;
+		}
+
+		Reverse(m_TopRender.get());
+
+		// 역재생 함수 호출 후 , 나의 인포사이즈가 0 이라면 나를 death 
+		if (0 == Infos.size())
+		{
+			this->Death();
+		}
+
+		return;
+	}
+
+	// 나의 스테이트가, 녹화진행중이 아니라면, 녹화 정보를 저장한다. 
+	if (TurretState::RECORDING_PROGRESS != m_CurState)
+	{
+		if (true == m_RecordingFrame)
+		{
+			InfoSetting(m_TopRender.get());
+		}
+	}
 
 	if (true == Player::MainPlayer->IsSkill())
 	{

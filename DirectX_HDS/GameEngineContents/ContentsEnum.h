@@ -23,9 +23,9 @@ enum class RenderOrder
 	EFFECT,
 	BOSS_EFFECT,
 	DEBUG,
-	CURSOR,
 	LEVELCHANGE_OBJ,
 	GAME_END,
+	CURSOR,
 };
 
 enum class ColOrder

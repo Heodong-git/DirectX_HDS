@@ -14,6 +14,7 @@ enum class TurretState
 	TRANSFORM,
 	NORMAL,
 	DEATH,
+	RECORDING_PROGRESS,
 };
 
 // Ό³Έν :

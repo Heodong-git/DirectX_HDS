@@ -132,6 +132,15 @@ public:
 		return m_Reverse_FrameCount;
 	}
 
+	void SetHitPos(const float4& _HitPos)
+	{
+		m_HitPos = _HitPos;
+	}
+
+	void SetColPos(const float4& _ColPos)
+	{
+		m_ColPos = _ColPos;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -178,6 +187,9 @@ private:
 	// 마우스를 클릭했을 때의 좌표를 저장
 	float4 m_AttackPos = {};
 	float4 m_MyOriginPos = {};
+
+	// 충돌체의 포지션
+	float4 m_ColPos = float4::Zero;
 
 	// 이동
 	float  m_MoveSpeed = 400.0f;
