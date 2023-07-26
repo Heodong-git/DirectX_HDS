@@ -39,9 +39,7 @@
 #include "DistotionEffect.h"
 #include "Trail_Effect.h"
 #include "GlitchEffect.h"
-#include "OldFilmEffect.h"
-
-// test 
+#include "OldFilmEffect.h" 
 #include "BloodEffect.h"
 #include "KatanaFadeEffect.h"
 
@@ -59,6 +57,19 @@ Player::~Player()
 // 총에 맞았다면 
 void Player::BulletCollision()
 {
+	std::shared_ptr<GameEngineCollision> Col = m_Collision->Collision(ColOrder::BULLET, ColType::OBBBOX2D, ColType::OBBBOX2D);
+	if (nullptr != Col)
+	{
+		GameEngineActor* Obj = Col->GetActor();
+		if (nullptr == Obj)
+		{
+			return;
+		}
+
+		SetHitPos(GetTransform()->GetWorldPosition());
+		SetColPos(Obj->GetTransform()->GetWorldPosition());
+	}
+
 	if (PlayerState::DEATH != m_CurState)
 	{
 		m_Collision->Off();
@@ -247,9 +258,6 @@ void Player::NextPosUpdate()
 
 void Player::Update(float _DeltaTime)
 {
-	
-	
-
 
 	// 정방향 재생인지 체크 
 	if (BaseLevel::LevelState::RECORDING_PROGRESS_FORWARD == GetReturnCastLevel()->GetCurState() &&
