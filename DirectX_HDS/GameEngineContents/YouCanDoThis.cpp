@@ -63,6 +63,11 @@ void YouCanDoThis::Update(float _DeltaTime)
 
 	float OriginDeltaTime = GameEngineTime::GlobalTime.GetDeltaTime();
 	m_OriginLiveTime -= OriginDeltaTime;
+
+	if (1.0f > m_MainRender->ColorOptionValue.MulColor.a)
+	{
+		m_MainRender->ColorOptionValue.MulColor.a += _DeltaTime;
+	}
 }
 
 void YouCanDoThis::Render(float _DeltaTime)
@@ -74,4 +79,5 @@ void YouCanDoThis::ComponentSetting()
 	m_MainRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	m_MainRender->SetTexture("youcandothis.png");
 	m_MainRender->GetTransform()->SetLocalScale(GameEngineWindow::GetScreenSize());
+	m_MainRender->ColorOptionValue.MulColor.a = 0.0f;
 }
