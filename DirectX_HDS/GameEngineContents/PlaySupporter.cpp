@@ -65,6 +65,7 @@ void PlaySupporter::LevelChangeStart()
 	case LevelType::CLUBMAP0:
 	{
 		m_BGMPlayer = GameEngineSound::Play("Sneaky_Driver.mp3");
+		m_BGMPlayer.SetLoop(-1);
 		m_BGMPlayer.SetVolume(0.7f);
 	}
 	break;

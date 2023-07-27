@@ -1743,9 +1743,9 @@ void Player::JumpUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("player_crouch"))
+	if (true == GameEngineInput::IsDown("player_crouch"))
 	{
-		ChangeState(PlayerState::FALL);
+	ChangeState(PlayerState::FALL);
 		return;
 	}
 
