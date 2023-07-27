@@ -101,6 +101,7 @@ void Player::Start()
 		GameEngineInput::CreateKey("player_jump", 'W');
 		GameEngineInput::CreateKey("player_crouch", 'S');
 		GameEngineInput::CreateKey("player_invincibility", VK_SPACE);
+		GameEngineInput::CreateKey("replay_sound_stop", VK_F1);
 	}
 }
 
@@ -3022,7 +3023,10 @@ void Player::RecordingProgress_ForwardStart()
 // 정방향 재생 진행중, 여기부터 하면됨 
 void Player::RecordingProgress_ForwardUpdate(float _DeltaTime)
 {
-	
+	if (true == GameEngineInput::IsDown("replay_sound_stop"))
+	{
+		m_SoundPlayer.Stop();
+	}
 
 	// 레코딩이 종료 되었다면 아이들로 전환. 
 	if (true == m_Recording_Complete)
